@@ -1,0 +1,587 @@
+{
+  "paths": {
+    "/api/v1/general/send-grid-email": {
+      "post": {
+        "tags": ["General"],
+        "summary": "Send an email",
+        "description": "This endpoint sends an email with the provided details.",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "module_name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "module_uuid": {
+                  "type": "string",
+                  "default": ""
+                },
+                "comment": {
+                  "type": "string",
+                  "default": ""
+                },
+                "emails": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "default": ""
+                  }
+                },
+                "subject": {
+                  "type": "string",
+                  "default": ""
+                },
+                "body": {
+                  "type": "string",
+                  "default": ""
+                },
+                "templateName": {
+                  "type": "string",
+                  "default": null
+                },
+                "objectVariables": {
+                  "type": "object"
+                },
+                "cc": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "default": ""
+                  }
+                },
+                "bcc": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "default": ""
+                  }
+                },
+                "reply_to": {
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "type": "string",
+                      "default": null
+                    },
+                    "name": {
+                      "type": "string",
+                      "default": ""
+                    }
+                  }
+                },
+                "attachments": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "content": {
+                        "type": "string",
+                        "default": ""
+                      },
+                      "filename": {
+                        "type": "string",
+                        "default": ""
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Email sent successfully"
+          },
+          "400": {
+            "description": "Bad request, invalid input"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/api/v1/general/upload-files": {
+      "post": {
+        "tags": ["General"],
+        "summary": "It will show history of all updates in policy.",
+        "consumes": ["multipart/form-data"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "type": "array",
+            "items": {
+              "type": "file"
+            },
+            "name": "files",
+            "description": "File upload",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "module_name",
+            "description": "",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "as_payload",
+            "description": "",
+            "type": "object"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/general/download-files": {
+      "post": {
+        "tags": ["General"],
+        "summary": "It will show history of all updates in policy.",
+        "consumes": ["application/json"],
+        "produces": ["application/json", "multipart/form-data"],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "default": "json | ''"
+                },
+                "keys": {
+                  "type": "array",
+                  "default": ["string"],
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+
+    "/api/v1/general/microsoftgraph/get-inbox": {
+      "get": {
+        "tags": ["General"],
+        "summary": "Get Inbox through Microsoft Graph",
+        "description": "This endpoint Get Inbox through Microsoft Graph.",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "email",
+            "description": "",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful logout. The user has been logged out."
+          },
+          "404": {
+            "description": "Not Found. The provided user identifier was not found."
+          },
+          "500": {
+            "description": "Internal Server Error. An unexpected error occurred on the server."
+          }
+        }
+      }
+    },
+    "/api/v1/general/microsoftgraph/search": {
+      "get": {
+        "tags": ["General"],
+        "summary": "Search Subject through Microsoft Graph",
+        "description": "This endpointis to Search Subject Microsoft Graph.",
+        "produces": ["application/json"],
+
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "searchType",
+            "description": "Select all for all messages, else select subejct for subject search",
+            "required": true,
+            "type": "string",
+            "enum": ["subject", "all"]
+          },
+
+          {
+            "in": "query",
+            "name": "search",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+
+          {
+            "in": "query",
+            "name": "email",
+            "description": "",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful logout. The user has been logged out."
+          },
+          "404": {
+            "description": "Not Found. The provided user identifier was not found."
+          },
+          "500": {
+            "description": "Internal Server Error. An unexpected error occurred on the server."
+          }
+        }
+      }
+    },
+
+    "/api/v1/general/microsoftgraph/fetchUnreadEmails": {
+      "get": {
+        "tags": ["General"],
+        "summary": "Fetch unread emails through Microsoft Graph",
+        "description": "This endpoint is to fetch all unread emails from Microsoft Graph.",
+        "produces": ["application/json"],
+
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "auth-Key",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful logout. The user has been logged out."
+          },
+          "404": {
+            "description": "Not Found. The provided user identifier was not found."
+          },
+          "500": {
+            "description": "Internal Server Error. An unexpected error occurred on the server."
+          }
+        }
+      }
+    },
+
+    "/api/v1/general/microsoftgraph/send-email": {
+      "post": {
+        "tags": ["General"],
+        "summary": "Send an email",
+        "description": "This endpoint sends an email with the provided details.",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Email data to be sent",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "default": ""
+                },
+
+                "subject": {
+                  "type": "string",
+                  "default": "",
+                  "description": "Subject of the email"
+                },
+                "body": {
+                  "type": "object",
+                  "description": "Body/content of the email",
+
+                  "properties": {
+                    "contentType": {
+                      "type": "string",
+                      "default": "Text"
+                    },
+                    "content": {
+                      "type": "string",
+                      "default": ""
+                    }
+                  }
+                },
+                "toRecipients": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "emailAddress": {
+                        "type": "object",
+                        "properties": {
+                          "address": {
+                            "type": "string",
+                            "default": ""
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "ccRecipients": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "emailAddress": {
+                        "type": "object",
+                        "properties": {
+                          "address": {
+                            "type": "string",
+                            "default": ""
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "attachments": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "default": ""
+                      },
+                      "contentType": {
+                        "type": "string",
+                        "default": ""
+                      },
+                      "contentBytes": {
+                        "type": "string",
+                        "default": ""
+                      }
+                    },
+                    "required": ["name", "content"]
+                  },
+                  "description": "Attachments to include in the email"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Email sent successfully"
+          },
+          "400": {
+            "description": "Bad request, invalid input"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+
+    "/api/v1/general/approval/status-approval": {
+      "post": {
+        "tags": ["General"],
+        "summary": "Approval Status",
+        "description": "This endpoint sends for status approval.",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "approval_uuid": {
+                  "type": "string",
+                  "default": null
+                },
+                "table_name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "record_uuid": {
+                  "type": "string",
+                  "default": ""
+                },
+                "record_id": {
+                  "type": "number",
+                  "default": null
+                },
+                "record_column_name": {
+                  "type": "string",
+                  "default": null
+                },
+                "approved_by_uuid": {
+                  "type": "string",
+                  "default": ""
+                },
+                "requested_by_uuid": {
+                  "type": "string",
+                  "default": ""
+                },
+                "previous_status": {
+                  "type": "string",
+                  "default": null
+                },
+                "status": {
+                  "type": "string",
+                  "default": ""
+                },
+                "next_status": {
+                  "type": "string",
+                  "default": null
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Email sent successfully"
+          },
+          "400": {
+            "description": "Bad request, invalid input"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+
+    "/api/v1/general/base64-to-buffer": {
+      "post": {
+        "tags": ["General"],
+        "summary": "Convert base64 to buffer",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "base64Array": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Email sent successfully"
+          },
+          "400": {
+            "description": "Bad request, invalid input"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,404 @@
+{
+  "paths": {
+    "/api/v1/task/upsert-task": {
+      "post": {
+        "tags": ["Task"],
+        "summary": "Post Task",
+        "description": "Endpoint to create or update Task",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "task_uuid": {
+                  "type": "string",
+                  "default": null
+                },
+                "type": {
+                  "type": "string",
+                  "default": "Project"
+                },
+                "type_name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "type_uuid": {
+                  "type": "string",
+                  "default": ""
+                },
+                "title": {
+                  "type": "string",
+                  "default": ""
+                },
+                "description": {
+                  "type": "string",
+                  "default": null
+                },
+                "dueDate": {
+                  "type": "string",
+                  "default": null
+                },
+                "uploadFile": {
+                  "type": "object",
+                  "default": null
+                },
+                "priority": {
+                  "type": "string",
+                  "default": "HIGH || MEDIUM || LOW"
+                },
+                "assigned_to_name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "assigned_to_uuid": {
+                  "type": "string",
+                  "default": ""
+                },
+                "status": {
+                  "type": "string",
+                  "default": "TODO || PROGRESS || HOLD || COMPLETED || ARCHIVE"
+                }
+              }
+            }
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+
+    "/api/v1/task/get-task": {
+      "get": {
+        "tags": ["Task"],
+        "summary": "Get Task",
+        "description": "Endpoint to retrieve Task",
+        "produces": ["application/json"],
+
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "task_user_taskboard_id",
+            "description": "",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "in": "query",
+            "name": "task_uuid",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "columns",
+            "description": "",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "value",
+            "description": "",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "description": "",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "from_date",
+            "description": "Format will be YYYY-MM-DD.",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "to_date",
+            "description": "Format will be YYYY-MM-DD.",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "pageNo",
+            "description": "",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "in": "query",
+            "name": "itemPerPage",
+            "description": "",
+            "required": true,
+            "type": "number"
+          }
+        ],
+
+        "responses": {
+          "200": { "description": "successful operation" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/api/v1/task/upsert-task-definition": {
+      "post": {
+        "tags": ["Task"],
+        "summary": "Post Task Definition",
+        "description": "Endpoint to create or update Task Definition",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "task_definition_uuid": {
+                  "type": "string",
+                  "default": null
+                },
+                "task_type": {
+                  "type": "string",
+                  "default": "time || date || weekly || monthly || yearly || daily || interval"
+                },
+                "task_time": {
+                  "type": "string",
+                  "default": null
+                },
+                "task_date": {
+                  "type": "string",
+                  "default": null
+                },
+                "task_day_of_week": {
+                  "type": "number",
+                  "default": null
+                },
+                "task_day_of_month": {
+                  "type": "number",
+                  "default": null
+                },
+                "task_month": {
+                  "type": "number",
+                  "default": null
+                },
+                "task_year": {
+                  "type": "number",
+                  "default": null
+                },
+                "task_interval": {
+                  "type": "number",
+                  "default": null
+                },
+                "type": {
+                  "type": "string",
+                  "default": "Project"
+                },
+                "type_name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "type_uuid": {
+                  "type": "string",
+                  "default": ""
+                },
+                "title": {
+                  "type": "string",
+                  "default": ""
+                },
+                "description": {
+                  "type": "string",
+                  "default": null
+                },
+                "dueDate": {
+                  "type": "string",
+                  "default": null
+                },
+                "uploadFile": {
+                  "type": "object",
+                  "default": null
+                },
+                "priority": {
+                  "type": "string",
+                  "default": "HIGH || MEDIUM || LOW"
+                },
+                "assigned_to_name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "assigned_to_uuid": {
+                  "type": "string",
+                  "default": ""
+                },
+                "status": {
+                  "type": "string",
+                  "default": "TODO || PROGRESS || HOLD || COMPLETED || ARCHIVE"
+                }
+              }
+            }
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+
+    "/api/v1/task/get-task-definition": {
+      "get": {
+        "tags": ["Task"],
+        "summary": "Get Task Definition",
+        "description": "Endpoint to retrieve Task Definition",
+        "produces": ["application/json"],
+
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "task_definition_id",
+            "description": "",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "in": "query",
+            "name": "task_definition_uuid",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "columns",
+            "description": "",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "value",
+            "description": "",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "description": "",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "from_date",
+            "description": "Format will be YYYY-MM-DD.",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "to_date",
+            "description": "Format will be YYYY-MM-DD.",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "pageNo",
+            "description": "",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "in": "query",
+            "name": "itemPerPage",
+            "description": "",
+            "required": true,
+            "type": "number"
+          }
+        ],
+
+        "responses": {
+          "200": { "description": "successful operation" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    }
+  }
+}
