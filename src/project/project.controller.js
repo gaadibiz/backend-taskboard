@@ -44,7 +44,7 @@ exports.upsertProject = async (req, res) => {
     req.body.create_ts = setDateTimeFormat('timestemp');
     req.body.project_uuid = uuid();
   }
-  await insertRecords('project', req.body);
+  const insertProject = await insertRecords('project', req.body);
   res.json(responser('Project created or updated successfully.', req.body));
 
   // res.json(responser('Project created or updated successfully.', req.body));
