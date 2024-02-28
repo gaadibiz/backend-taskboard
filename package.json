@@ -1,0 +1,45 @@
+{
+  "name": "user-authentication",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "format": "prettier --write .",
+    "precommit": "npm run format",
+    "prepare": "husky install",
+    "postinstall": "husky install && husky add .husky/pre-commit \"npm run precommit \" && husky add .husky/pre-commit \"git add . \""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios-request": "^1.0.10",
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.2",
+    "colors": "^1.4.0",
+    "command-line-args": "^5.2.1",
+    "cors": "^2.8.5",
+    "cron": "^3.1.6",
+    "cross-fetch": "^4.0.0",
+    "crypto-js": "^4.1.1",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "joi": "^17.10.2",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.6.3",
+    "sequelize": "^6.33.0",
+    "shelljs": "^0.8.5",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0",
+    "to-words": "^4.0.0"
+  },
+  "devDependencies": {
+    "husky": "^8.0.3",
+    "nodemon": "^3.0.1",
+    "prettier": "^3.0.3",
+    "sequelize-cli": "^6.6.1"
+  }
+}

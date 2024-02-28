@@ -1,0 +1,329 @@
+const {
+  pagination,
+  filterFunctionality,
+  getCountRecord,
+  getRecords,
+  insertRecords,
+  roleFilterService,
+  isEditAccess,
+  isValidRecord,
+  isRecordExist,
+  upsertRecords,
+} = require('../../utils/dbFunctions');
+const {
+  responser,
+  removeNullValueKey,
+  throwError,
+  getData,
+  deleteKeyValuePair,
+} = require('../../utils/helperFunction');
+const { base_url } = require('../../config/server.config');
+const { v4: uuidv4 } = require('uuid');
+const bycrpt = require('bcrypt');
+
+exports.upsertUser = async (req, res) => {
+  await isEditAccess('latest_user', req.user);
+  removeNullValueKey(req.body);
+  let isUpadtion = false;
+
+  const isExistRole = await isValidRecord('latest_roles', {
+    role_uuid: req.body.role_uuid,
+    status: 'ACTIVE',
+  });
+
+  if (!isExistRole) throwError(404, 'Role not found or inactive role.');
+  const isExistBranch = await isValidRecord('latest_branch', {
+    branch_uuid: req.body.branch_uuid,
+    status: 'ACTIVE',
+  });
+
+  if (!isExistBranch) throwError(404, 'Role not found or inactive role.');
+
+  let user = [];
+  if (req.body.user_uuid) {
+    isUpadtion = true;
+    user = await getRecords(
+      'latest_user',
+      `where user_uuid='${req.body.user_uuid}' and email='${req.body.email}' and (status='ACTIVE' or status= 'INACTIVE')`,
+    );
+    if (!user.length) throwError(406, 'Invalid User');
+    if (req.body.user_password)
+      req.body.user_password = bycrpt.hashSync(req.body.user_password, 10);
+  } else {
+    const isExist = await isRecordExist(
+      'user_fact',
+      ['email'],
+      [req.body.email],
+    );
+    if (isExist) throwError(406, 'User already exist.');
+    if (!req.body.user_password) throwError(406, 'Password should be filled.');
+    req.body.user_password = bycrpt.hashSync(req.body.user_password, 10);
+    req.body.user_uuid = uuidv4();
+    await insertRecords('user_fact', req.body);
+    user = await getRecords(
+      'user_fact',
+      `where email='${req.body.email}'`,
+      null,
+      null,
+      { isPrmiaryId: true },
+    );
+  }
+  req.body = { ...user[0], ...req.body };
+  await insertRecords('user_dim', req.body);
+  req.body.personal_email = req.body.email;
+  if (!isUpadtion) await insertRecords('user_profile', req.body);
+  delete req.body.user_password;
+
+  res.json(responser('User created successfully.', req.body));
+
+  (async () => {
+    try {
+      let historyMessage = '';
+      let userInfo = (
+        await getRecords(
+          'latest_user',
+          `where user_uuid= '${req.body.created_by_uuid}'`,
+        )
+      )[0];
+      if (isUpadtion) {
+        historyMessage = `${req.body.first_name} upadate has been done`;
+      } else {
+        historyMessage = `${req.body.first_name} you have successfuly signed up`;
+      }
+      const bodyData = {
+        module_name: 'UserDim and UserProfile',
+        module_uuid: req.body.user_uuid,
+        message: historyMessage,
+        module_column_name: 'user_uuid',
+        created_by_uuid: req.body.user_uuid,
+      };
+      await getData(
+        base_url + '/api/v1/history/upsert-history',
+        null,
+        'json',
+        bodyData,
+        'POST',
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  })();
+};
+
+exports.upsertUserProfile = async (req, res) => {
+  await isEditAccess('latest_user', req.user);
+  removeNullValueKey(req.body);
+  let isUpadtion = false;
+  const { user_uuid } = req.body;
+  let user = await getRecords(
+    'latest_user',
+    `where user_uuid='${user_uuid}' and status='ACTIVE'`,
+  );
+  if (!user.length) throwError(404, 'User not found.');
+  user = user[0];
+  updatedData = { ...user, ...req.body };
+  await insertRecords('user_profile', updatedData);
+  res.json(responser('User Profile created  successfully.', updatedData));
+
+  (async () => {
+    try {
+      let historyMessage = '';
+      let userInfo = (
+        await getRecords(
+          'latest_user',
+          `where user_uuid= '${req.body.created_by_uuid}'`,
+        )
+      )[0];
+      if (isUpadtion) {
+        historyMessage = `${userInfo?.first_name} has made an update in User.`;
+      } else {
+        historyMessage = `${userInfo?.first_name} has created a User.`;
+      }
+      const bodyData = {
+        module_name: 'User',
+        module_uuid: req.body.user_uuid,
+        message: historyMessage,
+        module_column_name: 'user_uuid',
+        created_by_uuid: req.body.created_by_uuid,
+      };
+      await getData(
+        base_url + '/api/v1/history/upsert-history',
+        null,
+        'json',
+        bodyData,
+        'POST',
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  })();
+};
+
+exports.getUser = async (req, res) => {
+  const {
+    user_uuid,
+    role_uuid,
+    role_group,
+    pageNo,
+    itemPerPage,
+    from_date,
+    to_date,
+    status,
+    columns,
+    value,
+  } = req.query;
+
+  let tableName = 'latest_user';
+  let filter = filterFunctionality(
+    {
+      user_uuid,
+      role_uuid,
+      role_group,
+    },
+    status,
+    to_date,
+    from_date,
+    Array.isArray(columns) ? columns : [columns],
+    value,
+  );
+  if (user_uuid !== req.user.user_uuid) {
+    filter = await roleFilterService(filter, tableName, req.user);
+  }
+  let pageFilter = pagination(pageNo, itemPerPage);
+  let totalRecords = await getCountRecord(tableName, filter);
+  let result = await getRecords(tableName, filter, pageFilter);
+  if (user_uuid === req.user.user_uuid && result.length) {
+    result[0].module_security = await getRecords(
+      'latest_module',
+      `where role_uuid= '${req.user.role_uuid}'`,
+    );
+  }
+  deleteKeyValuePair(result, ['user_password']);
+  return res.json(responser('All User', result, result.length, totalRecords));
+};
+
+exports.upsertBranch = async (req, res) => {
+  await isEditAccess('latest_branch', req.user);
+  removeNullValueKey(req.body);
+  req.body.branch_name = req.body.branch_name.toUpperCase();
+  let isUpadtion = false;
+  if (req.body.branch_uuid) {
+    let isExist = await isValidRecord('branch', {
+      branch_uuid: req.body.branch_uuid,
+    });
+    if (!isExist) throwError(404, 'Branch not found.');
+    isUpadtion = true;
+  } else {
+    let isExist = await isValidRecord('branch', {
+      branch_name: req.body.branch_name,
+    });
+    if (isExist) throwError(404, 'Branch is already exists.');
+    req.body.branch_uuid = uuidv4();
+  }
+  let branch = await insertRecords('branch', req.body);
+  res.json(responser('Branch created  successfully.', req.body));
+};
+exports.getBranch = async (req, res) => {
+  const {
+    branch_uuid,
+    pageNo,
+    itemPerPage,
+    from_date,
+    to_date,
+    status,
+    columns,
+    value,
+  } = req.query;
+
+  let tableName = 'latest_branch';
+  let filter = filterFunctionality(
+    {
+      branch_uuid,
+    },
+    status,
+    to_date,
+    from_date,
+    Array.isArray(columns) ? columns : [columns],
+    value,
+  );
+  filter = await roleFilterService(filter, tableName, req.user);
+  let pageFilter = pagination(pageNo, itemPerPage);
+  let totalRecords = await getCountRecord(tableName, filter);
+  let result = await getRecords(tableName, filter, pageFilter);
+  return res.json(responser('All Branch', result, result.length, totalRecords));
+};
+
+exports.upsertZone = async (req, res) => {
+  await isEditAccess('zone', req.user);
+  removeNullValueKey(req.body);
+  let isUpadtion = false;
+  req.body.zone_name = req.body.zone_name.toUpperCase();
+  if (req.body.zone_uuid) {
+    let isExist = await isValidRecord('zone', {
+      zone_uuid: req.body.zone_uuid,
+    });
+    if (!isExist) throwError(404, 'zone not found.');
+    isUpadtion = true;
+  } else {
+    let isExist = await isValidRecord('zone', {
+      zone_name: req.body.zone_name,
+    });
+    if (isExist) throwError(404, 'Zone is already exists.');
+    req.body.zone_uuid = uuidv4();
+  }
+  let zone = await insertRecords('zone', req.body);
+  res.json(responser('Zone created  successfully.', req.body));
+};
+
+exports.getZone = async (req, res) => {
+  const {
+    zone_uuid,
+    pageNo,
+    itemPerPage,
+    from_date,
+    to_date,
+    status,
+    columns,
+    value,
+  } = req.query;
+
+  let tableName = 'zone';
+  let filter = filterFunctionality(
+    {
+      zone_uuid,
+    },
+    status,
+    to_date,
+    from_date,
+    Array.isArray(columns) ? columns : [columns],
+    value,
+  );
+  filter = await roleFilterService(filter, tableName, req.user);
+  let pageFilter = pagination(pageNo, itemPerPage);
+  let totalRecords = await getCountRecord(tableName, filter);
+  let result = await getRecords(tableName, filter, pageFilter);
+  return res.json(responser('All Zone', result, result.length, totalRecords));
+};
+
+exports.changeUserRole = async (req, res) => {
+  // isEditAccess('change_role',req.user);
+  const { user_uuid, role_uuid } = req.body;
+  const isUserExist = await isValidRecord('latest_user', {
+    user_uuid,
+    status: 'ACTIVE',
+  });
+  if (!isUserExist) throwError(400, 'Invalid User');
+  const isRoleExist = await isValidRecord('latest_roles', {
+    role_uuid,
+    status: 'ACTIVE',
+  });
+  if (!isRoleExist) throwError(400, 'Invalid Role');
+  await upsertRecords(
+    'user_dim',
+    req.body,
+    `where user_uuid="${user_uuid}"`,
+    null,
+    { otherViewName: 'latest_user' },
+  );
+  res.json(responser('Role has been changed.'));
+};

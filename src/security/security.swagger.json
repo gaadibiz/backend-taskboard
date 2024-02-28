@@ -1,0 +1,273 @@
+{
+  "paths": {
+    "/api/v1/security/upsert-roles": {
+      "post": {
+        "tags": ["Security"],
+        "summary": "Post Roles",
+        "description": "Endpoint to create or update Roles",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "role_name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "role_group": {
+                  "type": "string",
+                  "default": ""
+                },
+                "role_uuid": {
+                  "type": "string",
+                  "default": null
+                },
+                "status": {
+                  "type": "string",
+                  "default": "ACTIVE"
+                }
+              }
+            }
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+
+    "/api/v1/security/get-roles": {
+      "get": {
+        "tags": ["Security"],
+        "summary": "Get Roles",
+        "description": "Endpoint to retrieve Roles",
+        "produces": ["application/json"],
+
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "role_id",
+            "description": "",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "in": "query",
+            "name": "role_uuid",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "columns",
+            "description": "",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "value",
+            "description": "",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "description": "",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "from_date",
+            "description": "Format will be YYYY-MM-DD.",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "to_date",
+            "description": "Format will be YYYY-MM-DD.",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "pageNo",
+            "description": "",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "in": "query",
+            "name": "itemPerPage",
+            "description": "",
+            "required": true,
+            "type": "number"
+          }
+        ],
+
+        "responses": {
+          "200": { "description": "successful operation" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+
+    "/api/v1/security/upsert-role-module-content-access-permission": {
+      "post": {
+        "tags": ["Security"],
+        "summary": "Upsert Security Modules",
+        "description": "Endpoint to create or update Security Modules",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "properties": {
+                  "role_module_uuid": {
+                    "type": "string",
+                    "default": null
+                  },
+                  "module_uuid": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "role_uuid": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "show_module": {
+                    "type": "number",
+                    "default": 0
+                  },
+                  "view_access": {
+                    "type": "number",
+                    "default": 0
+                  },
+                  "edit_access": {
+                    "type": "number",
+                    "default": 0
+                  },
+                  "delete_access": {
+                    "type": "number",
+                    "default": 0
+                  },
+                  "bulk_import": {
+                    "type": "number",
+                    "default": 0
+                  },
+                  "send_sms": {
+                    "type": "number",
+                    "default": 0
+                  },
+                  "send_mail": {
+                    "type": "number",
+                    "default": 0
+                  },
+                  "send_whatsapp": {
+                    "type": "number",
+                    "default": 0
+                  },
+                  "send_call": {
+                    "type": "number",
+                    "default": 0
+                  },
+                  "filter_values": {
+                    "type": "object",
+                    "default": {}
+                  },
+                  "status": {
+                    "type": "string",
+                    "default": "ACTIVE"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": { "description": "successful operation" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+
+    "/api/v1/security/get-role-module-content-access-permission": {
+      "get": {
+        "tags": ["Security"],
+        "summary": "Get Roles",
+        "description": "Endpoint to retrieve Roles",
+        "produces": ["application/json"],
+
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "required": true,
+            "type": "string"
+          },
+
+          {
+            "in": "query",
+            "name": "role_uuid",
+            "description": "",
+            "required": false,
+            "type": "string"
+          }
+        ],
+
+        "responses": {
+          "200": { "description": "successful operation" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    }
+  }
+}

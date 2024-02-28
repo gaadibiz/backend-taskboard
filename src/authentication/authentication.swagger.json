@@ -1,0 +1,221 @@
+{
+  "paths": {
+    "/api/v1/authentication/user-verification": {
+      "post": {
+        "tags": ["Authentication"],
+        "summary": "User account verification",
+        "description": "",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "default": ""
+                },
+                "otp": {
+                  "type": "number",
+                  "default": 0
+                },
+                "action": {
+                  "type": "string",
+                  "default": "SEND"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/authentication/login": {
+      "post": {
+        "tags": ["Authentication"],
+        "summary": "Login",
+        "description": "",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "default": ""
+                },
+                "password": {
+                  "type": "string",
+                  "default": ""
+                }
+              }
+            }
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/authentication/validate-otp-get-token": {
+      "post": {
+        "tags": ["Authentication"],
+        "summary": "Validate OTP for getting token.",
+        "description": "",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "default": ""
+                },
+                "otp": {
+                  "type": "number",
+                  "default": 0
+                }
+              }
+            }
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/authentication/forget-password": {
+      "post": {
+        "tags": ["Authentication"],
+        "summary": "Generate OTP for forget password or compare OTP for new password.",
+        "description": "",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "default": ""
+                },
+                "otp": {
+                  "type": "number",
+                  "default": 0
+                },
+                "user_password": {
+                  "type": "string",
+                  "default": ""
+                },
+                "action": {
+                  "type": "string",
+                  "default": "SEND"
+                }
+              }
+            }
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/authentication/logout": {
+      "put": {
+        "tags": ["Authentication"],
+        "summary": "Logout a user",
+        "description": "This endpoint allows a user to log out by providing their unique identifier.",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "user_uuid": {
+                  "type": "string",
+                  "default": ""
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful logout. The user has been logged out."
+          },
+          "404": {
+            "description": "Not Found. The provided user identifier was not found."
+          },
+          "500": {
+            "description": "Internal Server Error. An unexpected error occurred on the server."
+          }
+        }
+      }
+    }
+  }
+}
