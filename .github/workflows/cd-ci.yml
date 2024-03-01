@@ -32,11 +32,11 @@ jobs:
       
       - name: Deploy to Testing Environment
         run: |
-          sshpass -p "Welcome@12" ssh -o StrictHostKeyChecking=no "gadibiz-task-apidev"@"139.59.1.185" << EOF
-              export PATH=/home/gadibiz-task-apidev/.nvm/versions/node/v20.11.1/bin:$PATH
-              export PATH=/home/gadibiz-task-apidev/.nvm/versions/node/v20.11.1/bin:$PATH
-              cd /home/gadibiz-task-apidev/htdocs/task-apidev.gadibiz.com
-              node -v
-              npm -v
-              pm2 list
+          sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no "${{ secrets.SSH_USER }}"@"${{ secrets.DROPLET_IP }}" << EOF
+              export PATH=/home/${{ secrets.SSH_USER }}/.nvm/versions/node/v20.11.1/bin:$PATH
+              export PATH=/home/${{ secrets.SSH_USER }}/.nvm/versions/node/v20.11.1/bin:$PATH
+              cd /home/${{ secrets.SSH_USER }}/${{secrets.SSH_URL}}
+              git pull
+              npm i
+              pm2 restart all
           EOF
