@@ -280,7 +280,7 @@
             "name": "role_group",
             "required": false,
             "type": "string",
-            "enum": ["SALES", "DC"]
+            "enum": ["MANAGER", "USER"]
           },
           {
             "in": "query",
