@@ -23,12 +23,6 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout code
         uses: actions/checkout@v3
-      
-      - name: Use Node.js 20.x
-        uses: actions/setup-node@v2
-        with:
-          node-version: '20.x'
-
 
       # Runs a single command using the runners shell
       - name: Updating github ubuntu server
@@ -41,6 +35,7 @@ jobs:
           sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no "${{ secrets.SSH_USER }}"@"${{ secrets.DROPLET_IP }}" << EOF
               cd /home/gadibiz-task-apidev/htdocs/task-apidev.gadibiz.com
               git pull
+              echo $PATH
               npm i
               pm2 restart 0
           EOF
