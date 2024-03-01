@@ -34,6 +34,7 @@ jobs:
           sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no "${{ secrets.SSH_USER }}"@"${{ secrets.DROPLET_IP }}" << EOF
               cd /home/gadibiz-task-apidev/htdocs/task-apidev.gadibiz.com
               git pull
-              npm i
+              pwd
+              npm install
               pm2 restart all
           EOF
