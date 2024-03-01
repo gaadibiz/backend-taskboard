@@ -36,5 +36,7 @@ jobs:
               export PATH=/home/${{ secrets.SSH_USER }}/.nvm/versions/node/v20.11.1/bin:$PATH
               export PATH=/home/${{ secrets.SSH_USER }}/.nvm/versions/node/v20.11.1/bin:$PATH
               cd /home/${{ secrets.SSH_USER }}/htdocs/${{vars.URL}}
-              pwd
+              git pull
+              npm i
+              pm2 restart all
           EOF
