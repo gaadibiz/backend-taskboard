@@ -35,7 +35,5 @@ jobs:
               cd /home/gadibiz-task-apidev/htdocs/task-apidev.gadibiz.com
               git pull
               pwd
-              node --version
-              npm install
-              pm2 restart all
+              ./script.sh
           EOF
