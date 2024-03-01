@@ -35,6 +35,7 @@ jobs:
               cd /home/gadibiz-task-apidev/htdocs/task-apidev.gadibiz.com
               git pull
               pwd
+              whoami
               npm install
               pm2 restart all
           EOF
