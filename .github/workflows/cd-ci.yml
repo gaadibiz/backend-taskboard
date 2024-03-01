@@ -33,7 +33,8 @@ jobs:
       - name: Deploy to Testing Environment
         run: |
           sshpass -p "Welcome@12" ssh -o StrictHostKeyChecking=no "gadibiz-task-apidev"@"139.59.1.185" << EOF
-              cd /home/gadibiz-task-apidev/
               export PATH=/home/gadibiz-task-apidev/.nvm/versions/node/v20.11.1/bin:$PATH
+              cd /home/gadibiz-task-apidev/htdocs/task-apidev.gadibiz.com
               node -v
+              npm -v
           EOF
