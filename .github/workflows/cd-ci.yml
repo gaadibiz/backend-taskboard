@@ -32,7 +32,7 @@ jobs:
       
       - name: Deploy to Testing Environment
         run: |
-          sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no "${{ secrets.SSH_USER }}"@"${{ secrets.DROPLET_IP }}" << EOF
+          sshpass -p "Welcome@12" ssh -o StrictHostKeyChecking=no "gadibiz-task-apidev"@"139.59.1.185" << EOF
               cd /home/gadibiz-task-apidev/htdocs/task-apidev.gadibiz.com
               git pull
               echo $PATH
