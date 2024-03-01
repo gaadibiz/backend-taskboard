@@ -35,8 +35,6 @@ jobs:
           sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no "${{ secrets.SSH_USER }}"@"${{ secrets.DROPLET_IP }}" << EOF
               export PATH=/home/${{ secrets.SSH_USER }}/.nvm/versions/node/v20.11.1/bin:$PATH
               export PATH=/home/${{ secrets.SSH_USER }}/.nvm/versions/node/v20.11.1/bin:$PATH
-              cd /home/${{ secrets.SSH_USER }}/htdocs/${{secrets.SSH_URL}}
-              git pull
-              npm i
-              pm2 restart all
+              cd /home/gadibiz-task-apidev/htdocs/${{env.URL}}
+              pwd
           EOF
