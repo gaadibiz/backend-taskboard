@@ -3,6 +3,7 @@ const Joi = require('joi');
 exports.upsertCategorySchema = Joi.object({
   category_uuid: Joi.string().guid().max(100).allow(null),
   category_name: Joi.string().max(100),
+  description: Joi.string().max(250),
   status: Joi.string().valid('ACTIVE', 'INACTIVE'),
   created_by_uuid: Joi.string().guid().max(50).allow(null),
 });
