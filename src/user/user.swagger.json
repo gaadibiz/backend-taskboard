@@ -9,6 +9,13 @@
         "produces": ["application/json"],
         "parameters": [
           {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "required": true,
+            "type": "string"
+          },
+          {
             "in": "body",
             "name": "body",
             "description": "",

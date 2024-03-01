@@ -4,10 +4,15 @@ const router = require('express').Router();
 const Schema = require('./user.validation');
 const checkAuth = require('../../middleware/checkAuth');
 
-router.route('/upsert-user').post(
-  // checkAuth,
-  requestErrorHandlingDecorator(Schema.upsertUserSchema, controller.upsertUser),
-);
+router
+  .route('/upsert-user')
+  .post(
+    checkAuth,
+    requestErrorHandlingDecorator(
+      Schema.upsertUserSchema,
+      controller.upsertUser,
+    ),
+  );
 
 router
   .route('/update-profile')

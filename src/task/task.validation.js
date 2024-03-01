@@ -30,11 +30,23 @@ exports.getTaskSchema = Joi.object({
   value: Joi.string(),
 });
 
+exports.getTaskListSchema = Joi.object({
+  task_user_taskboard_id: Joi.number().integer(),
+  task_uuid: Joi.string().guid(),
+  pageNo: Joi.number().integer().min(1),
+  itemPerPage: Joi.number().integer().min(1),
+  from_date: Joi.string().isoDate(),
+  to_date: Joi.string().isoDate(),
+  status: Joi.string(),
+  columns: Joi.string(),
+  value: Joi.string(),
+});
+
 exports.upsertTaskDefinitionSchema = Joi.object({
   task_definition_uuid: Joi.string().guid().allow('', null),
   task_type: Joi.string()
     .required()
-    .valid('time', 'date', 'weekly', 'monthly', 'yearly', 'daily', 'interval'),
+    .valid('date', 'weekly', 'monthly', 'yearly', 'daily', 'interval'),
   task_time: Joi.string().allow(null),
   task_date: Joi.date().iso().allow(null),
   task_day_of_week: Joi.number().allow(null),

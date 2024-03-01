@@ -193,6 +193,40 @@ exports.getTask = async (req, res) => {
   });
 };
 
+exports.getTaskList = async (req, res) => {
+  const {
+    task_user_taskboard_id,
+    task_uuid,
+    pageNo,
+    itemPerPage,
+    from_date,
+    to_date,
+    status,
+    columns,
+    value,
+  } = req.query;
+
+  let tableName = 'latest_tasks';
+  let filter = filterFunctionality(
+    {
+      task_user_taskboard_id,
+      task_uuid,
+    },
+    status,
+    to_date,
+    from_date,
+    Array.isArray(columns) ? columns : [columns],
+    value,
+  );
+
+  let pageFilter = pagination(pageNo, itemPerPage);
+  let totalRecords = await getCountRecord(tableName, filter);
+  let result = await getRecords(tableName, filter, pageFilter);
+  return res.json(
+    responser('Task List: ', result, result.length, totalRecords),
+  );
+};
+
 exports.upsertTaskDefinition = async (req, res) => {
   await isEditAccess('latest_task_definition', req.user);
   removeNullValueKey(req.body);
@@ -423,7 +457,7 @@ async function checkAndExecuteTasks() {
 }
 
 // checkAndExecuteTasks();
-const cronSchedule = '45 * * * *'; // Run every hour.
+const cronSchedule = '20 * * * *'; // Run every hour.
 
 // Create the cron job
 const job = new CronJob(cronSchedule, async () => {

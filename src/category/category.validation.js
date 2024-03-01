@@ -1,16 +1,13 @@
 const Joi = require('joi');
 
-exports.upsertCommentSchema = Joi.object({
-  comment_t_uuid: Joi.string().guid().max(100).allow('', null),
-  module_uuid: Joi.string().max(100),
-  module_name: Joi.string().max(100).valid('TASK', 'PROJECT'),
-  comment_remark: Joi.string(),
+exports.upsertCategorySchema = Joi.object({
+  category_uuid: Joi.string().guid().max(100).allow(null),
+  category_name: Joi.string().max(100),
   status: Joi.string().valid('ACTIVE', 'INACTIVE'),
-  created_by_name: Joi.string(),
-  created_by_uuid: Joi.string().guid().max(50).allow('', null),
+  created_by_uuid: Joi.string().guid().max(50).allow(null),
 });
 
-exports.getCommentSchema = Joi.object({
+exports.getCategorySchema = Joi.object({
   comment_t_id: Joi.number().integer(),
   comment_t_uuid: Joi.string().guid(),
   parent_module_no: Joi.string(),
