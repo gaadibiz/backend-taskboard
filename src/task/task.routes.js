@@ -19,6 +19,15 @@ router
     checkAuth,
     requestErrorHandlingDecorator(Schema.getTaskSchema, controller.getTask),
   );
+router
+  .route('/get-task-list')
+  .get(
+    checkAuth,
+    requestErrorHandlingDecorator(
+      Schema.getTaskListSchema,
+      controller.getTaskList,
+    ),
+  );
 
 router
   .route('/upsert-task-definition')

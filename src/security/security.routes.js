@@ -4,13 +4,15 @@ const router = require('express').Router();
 const Schema = require('./security.validation');
 const checkAuth = require('../../middleware/checkAuth');
 
-router.route('/upsert-roles').post(
-  // checkAuth,
-  requestErrorHandlingDecorator(
-    Schema.upsertRoleSchema,
-    controller.upsertRoles,
-  ),
-);
+router
+  .route('/upsert-roles')
+  .post(
+    checkAuth,
+    requestErrorHandlingDecorator(
+      Schema.upsertRoleSchema,
+      controller.upsertRoles,
+    ),
+  );
 router
   .route('/get-roles')
   .get(
