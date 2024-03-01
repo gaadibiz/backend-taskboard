@@ -34,5 +34,6 @@ jobs:
         run: |
           sshpass -p "Welcome@12" ssh -o StrictHostKeyChecking=no "gadibiz-task-apidev"@"139.59.1.185" << EOF
               cd /home/gadibiz-task-apidev/
-              ls -lrta
+              export PATH=/home/gadibiz-task-apidev/.nvm/versions/node/v20.11.1/bin:$PATH
+              node -v
           EOF
