@@ -457,7 +457,7 @@ async function checkAndExecuteTasks() {
 }
 
 // checkAndExecuteTasks();
-const cronSchedule = '20 * * * *'; // Run every hour.
+const cronSchedule = '37 * * * *'; // Run every hour.
 
 // Create the cron job
 const job = new CronJob(cronSchedule, async () => {
@@ -546,6 +546,17 @@ function generateCronSchedule(taskDefinition) {
         cronSchedule = `0 0 * * ${task_day_of_week}`; // Run once a week on the specified day
       }
       break;
+    case 'weekdays':
+      // Example: task_day_of_week is '1,3,5' (Monday, Wednesday, Friday)
+      const weekdays = task_day_of_week.split(',').map(Number); // Convert to array of integers
+      const daysOfWeek = weekdays.join(',');
+      if (task_time) {
+        const [hours, minutes] = task_time.split(':');
+        cronSchedule = `${minutes} ${hours} * * ${daysOfWeek}`; // Run at the specified time on the specified weekdays
+      } else {
+        cronSchedule = `0 0 * * ${daysOfWeek}`; // Run once on the specified weekdays
+      }
+      break;
     case 'monthly':
       // Example: task_day_of_month is 15, task_time is '15:30'
       if (task_time) {
@@ -583,3 +594,13 @@ function generateCronSchedule(taskDefinition) {
 
   return cronSchedule;
 }
+
+exports.runTaskCron = async (req, res) => {
+  const { key } = req.body;
+  console.log('req.body', req.body);
+  if (key !== process.env.CRON_KEY) {
+    return res.json(responser('Cron job not Executed, Key not matched'));
+  }
+
+  res.json(responser('Cron job successfully Executed.'));
+};
