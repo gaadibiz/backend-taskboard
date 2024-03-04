@@ -29,6 +29,10 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: true,
       },
+      task_weekdays: {
+        type: Sequelize.STRING(20),
+        allowNull: true,
+      },
       task_day_of_month: {
         type: Sequelize.INTEGER,
         allowNull: true,

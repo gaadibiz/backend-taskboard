@@ -10,6 +10,7 @@ exports.upsertTaskSchema = Joi.object({
   dueDate: Joi.date().iso().allow(null),
   uploadFile: Joi.object().allow(null),
   priority: Joi.string().max(50).valid('HIGH', 'MEDIUM', 'LOW').allow(null),
+  time_taken: Joi.string().allow(null),
   assigned_to_name: Joi.string().max(100).required(),
   assigned_to_uuid: Joi.string().guid().required(),
   status: Joi.string()
@@ -46,10 +47,19 @@ exports.upsertTaskDefinitionSchema = Joi.object({
   task_definition_uuid: Joi.string().guid().allow('', null),
   task_type: Joi.string()
     .required()
-    .valid('date', 'weekly', 'monthly', 'yearly', 'daily', 'interval'),
+    .valid(
+      'date',
+      'weekly',
+      'weekdays',
+      'monthly',
+      'yearly',
+      'daily',
+      'interval',
+    ),
   task_time: Joi.string().allow(null),
   task_date: Joi.date().iso().allow(null),
   task_day_of_week: Joi.number().allow(null),
+  task_weekdays: Joi.string().allow(null),
   task_day_of_month: Joi.number().allow(null),
   task_month: Joi.number().allow(null),
   task_year: Joi.number().allow(null),
@@ -72,7 +82,7 @@ exports.upsertTaskDefinitionSchema = Joi.object({
   created_by_uuid: Joi.string().guid().max(50),
 });
 
-exports.getTaskSchema = Joi.object({
+exports.getTaskDefinitionSchema = Joi.object({
   task_definition_id: Joi.number().integer(),
   tastask_definition_uuid: Joi.string().guid(),
   pageNo: Joi.number().integer().min(1),
