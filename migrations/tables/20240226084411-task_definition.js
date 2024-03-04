@@ -30,7 +30,7 @@ module.exports = {
         allowNull: true,
       },
       task_weekdays: {
-        type: Sequelize.STRING(20),
+        type: Sequelize.JSON,
         allowNull: true,
       },
       task_day_of_month: {
