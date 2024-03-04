@@ -59,6 +59,10 @@
                   "type": "string",
                   "default": "HIGH || MEDIUM || LOW"
                 },
+                "time_taken": {
+                  "type": "string",
+                  "default": null
+                },
                 "assigned_to_name": {
                   "type": "string",
                   "default": ""
@@ -307,7 +311,7 @@
                 },
                 "task_type": {
                   "type": "string",
-                  "default": "time || date || weekly || monthly || yearly || daily || interval"
+                  "default": "time || date || weekly || weekdays || monthly || yearly || daily || interval"
                 },
                 "task_time": {
                   "type": "string",
@@ -319,6 +323,10 @@
                 },
                 "task_day_of_week": {
                   "type": "number",
+                  "default": null
+                },
+                "task_weekdays": {
+                  "type": "string",
                   "default": null
                 },
                 "task_day_of_month": {

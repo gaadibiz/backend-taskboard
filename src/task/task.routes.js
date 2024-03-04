@@ -43,7 +43,7 @@ router
   .get(
     checkAuth,
     requestErrorHandlingDecorator(
-      Schema.getTaskSchema,
+      Schema.getTaskDefinitionSchema,
       controller.getTaskDefinition,
     ),
   );

@@ -430,7 +430,7 @@ async function checkAndExecuteTasks() {
             `where user_uuid= '${taskDefinition.created_by_uuid}'`,
           );
           const header = {
-            'auth-Token': user[0].access_token, // Use camelCase or underscore_case
+            'auth-Token': user[0].access_token,
           };
           await getData(
             base_url + '/api/v1/task/upsert-task',
@@ -457,7 +457,7 @@ async function checkAndExecuteTasks() {
 }
 
 // checkAndExecuteTasks();
-const cronSchedule = '37 * * * *'; // Run every hour.
+const cronSchedule = '2 * * * *'; // Run every hour.
 
 // Create the cron job
 const job = new CronJob(cronSchedule, async () => {
@@ -494,12 +494,14 @@ function generateCronSchedule(taskDefinition) {
     task_time,
     task_date,
     task_day_of_week,
+    task_weekdays,
     task_day_of_month,
     task_month,
     task_year,
     task_interval,
   } = taskDefinition;
   console.log('task_type: ', task_type);
+  console.log('Task Definition: ', taskDefinition);
 
   // Default cron schedule
   let cronSchedule = '0 * * * *'; // Run every hour by default
@@ -547,9 +549,12 @@ function generateCronSchedule(taskDefinition) {
       }
       break;
     case 'weekdays':
-      // Example: task_day_of_week is '1,3,5' (Monday, Wednesday, Friday)
-      const weekdays = task_day_of_week.split(',').map(Number); // Convert to array of integers
+      // Example: task_weekdays is '1,3,5' (Monday, Wednesday, Friday)
+      console.log('task_weekdays: ', task_weekdays);
+      const weekdays = task_weekdays.split(',').map(Number); // Convert to array of integers
+      console.log('weekdays: ', weekdays);
       const daysOfWeek = weekdays.join(',');
+      console.log('Daysof week: ', daysOfWeek);
       if (task_time) {
         const [hours, minutes] = task_time.split(':');
         cronSchedule = `${minutes} ${hours} * * ${daysOfWeek}`; // Run at the specified time on the specified weekdays
