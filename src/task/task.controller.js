@@ -457,7 +457,7 @@ async function checkAndExecuteTasks() {
 }
 
 // checkAndExecuteTasks();
-const cronSchedule = '2 * * * *'; // Run every hour.
+const cronSchedule = '14 * * * *'; // Run every hour.
 
 // Create the cron job
 const job = new CronJob(cronSchedule, async () => {
@@ -551,9 +551,12 @@ function generateCronSchedule(taskDefinition) {
     case 'weekdays':
       // Example: task_weekdays is '1,3,5' (Monday, Wednesday, Friday)
       console.log('task_weekdays: ', task_weekdays);
-      const weekdays = task_weekdays.split(',').map(Number); // Convert to array of integers
-      console.log('weekdays: ', weekdays);
-      const daysOfWeek = weekdays.join(',');
+      // const weekdays = task_weekdays.split(',').map(Number); // Convert to array of integers
+      // console.log('weekdays: ', weekdays);
+      // const daysOfWeek = weekdays.join(',');
+
+      // task_weekdays= [1,2,3]
+      const daysOfWeek = task_weekdays.join(',');
       console.log('Daysof week: ', daysOfWeek);
       if (task_time) {
         const [hours, minutes] = task_time.split(':');

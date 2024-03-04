@@ -326,7 +326,7 @@
                   "default": null
                 },
                 "task_weekdays": {
-                  "type": "string",
+                  "type": "array",
                   "default": null
                 },
                 "task_day_of_month": {

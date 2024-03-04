@@ -59,7 +59,7 @@ exports.upsertTaskDefinitionSchema = Joi.object({
   task_time: Joi.string().allow(null),
   task_date: Joi.date().iso().allow(null),
   task_day_of_week: Joi.number().allow(null),
-  task_weekdays: Joi.string().allow(null),
+  task_weekdays: Joi.array().allow(null),
   task_day_of_month: Joi.number().allow(null),
   task_month: Joi.number().allow(null),
   task_year: Joi.number().allow(null),
