@@ -1,0 +1,31 @@
+{
+  "paths": {
+    "/api/v1/analytics/pie-chart-task-analytics": {
+      "get": {
+        "tags": ["Analytics"],
+        "summary": "It will show all pie chart data as per the status",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  }
+}
