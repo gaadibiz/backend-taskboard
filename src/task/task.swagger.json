@@ -47,11 +47,11 @@
                   "type": "string",
                   "default": null
                 },
-                "dueDate": {
+                "due_date": {
                   "type": "string",
                   "default": null
                 },
-                "uploadFile": {
+                "upload_file": {
                   "type": "object",
                   "default": null
                 },
@@ -389,11 +389,11 @@
                   "type": "string",
                   "default": null
                 },
-                "dueDate": {
+                "due_date": {
                   "type": "string",
                   "default": null
                 },
-                "uploadFile": {
+                "upload_file": {
                   "type": "object",
                   "default": null
                 },

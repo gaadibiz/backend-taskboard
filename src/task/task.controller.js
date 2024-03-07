@@ -241,7 +241,7 @@ exports.getTaskCalender = async (req, res) => {
     status: task.status,
     title: task.title,
     start: task.create_ts,
-    end: task.dueDate,
+    end: task.due_date,
   }));
 
   return res.json(responser('Calender Task Data: ', transformedResult));

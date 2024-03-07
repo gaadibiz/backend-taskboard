@@ -69,11 +69,11 @@ module.exports = {
         type: Sequelize.TEXT,
         allowNull: true,
       },
-      dueDate: {
+      due_date: {
         type: Sequelize.DATE,
         allowNull: true,
       },
-      uploadFile: {
+      upload_file: {
         type: Sequelize.JSON,
         allowNull: true,
       },
