@@ -30,6 +30,13 @@ router
   );
 
 router
+  .route('/get-task-calender')
+  .get(
+    checkAuth,
+    requestErrorHandlingDecorator(null, controller.getTaskCalender),
+  );
+
+router
   .route('/upsert-task-definition')
   .post(
     checkAuth,
