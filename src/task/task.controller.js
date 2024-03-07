@@ -227,6 +227,26 @@ exports.getTaskList = async (req, res) => {
   );
 };
 
+exports.getTaskCalender = async (req, res) => {
+  let tableName = 'latest_tasks';
+
+  let filter = await roleFilterService(null, tableName, req.user);
+
+  let result = await getRecords(tableName, filter);
+
+  // Transform the result to include only the required fields and rename some fields
+  let transformedResult = result.map((task) => ({
+    task_uuid: task.task_uuid,
+    type: task.type,
+    status: task.status,
+    title: task.title,
+    start: task.create_ts,
+    end: task.dueDate,
+  }));
+
+  return res.json(responser('Calender Task Data: ', transformedResult));
+};
+
 exports.upsertTaskDefinition = async (req, res) => {
   await isEditAccess('latest_task_definition', req.user);
   removeNullValueKey(req.body);
