@@ -55,4 +55,24 @@ router
     requestErrorHandlingDecorator(null, controller.changeUserRole),
   );
 
+router
+  .route('/upsert-manage-site')
+  .post(
+    checkAuth,
+    requestErrorHandlingDecorator(
+      Schema.upsertManageSiteSchema,
+      controller.upsertManageSite,
+    ),
+  );
+
+router
+  .route('/get-manage-site')
+  .get(
+    checkAuth,
+    requestErrorHandlingDecorator(
+      Schema.getManageSiteSchema,
+      controller.getManageSite,
+    ),
+  );
+
 module.exports = router;
