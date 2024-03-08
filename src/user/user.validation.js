@@ -78,3 +78,24 @@ exports.getUserSchema = Joi.object({
   columns: Joi.string(),
   value: Joi.string(),
 });
+
+exports.upsertManageSiteSchema = Joi.object({
+  manage_site_uuid: Joi.string().guid().max(100).allow(null),
+  logo: Joi.string().max(255).allow(null),
+  site_name: Joi.string().max(250).allow(null),
+  login_title: Joi.string().max(250).allow(null),
+  status: Joi.string().valid('ACTIVE', 'INACTIVE'),
+  created_by_uuid: Joi.string().guid().max(50).allow(null),
+});
+
+exports.getManageSiteSchema = Joi.object({
+  comment_t_id: Joi.number().integer(),
+  manage_site_uuid: Joi.string().guid(),
+  pageNo: Joi.number().integer().min(1),
+  itemPerPage: Joi.number().integer().min(1),
+  from_date: Joi.string().isoDate(),
+  to_date: Joi.string().isoDate(),
+  status: Joi.string(),
+  columns: Joi.string(),
+  value: Joi.string(),
+});

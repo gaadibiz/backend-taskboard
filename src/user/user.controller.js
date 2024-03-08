@@ -16,6 +16,7 @@ const {
   throwError,
   getData,
   deleteKeyValuePair,
+  setDateTimeFormat,
 } = require('../../utils/helperFunction');
 const { base_url } = require('../../config/server.config');
 const { v4: uuidv4 } = require('uuid');
@@ -208,13 +209,13 @@ exports.upsertBranch = async (req, res) => {
   req.body.branch_name = req.body.branch_name.toUpperCase();
   let isUpadtion = false;
   if (req.body.branch_uuid) {
-    let isExist = await isValidRecord('branch', {
+    let isExist = await isValidRecord('latest_branch', {
       branch_uuid: req.body.branch_uuid,
     });
     if (!isExist) throwError(404, 'Branch not found.');
     isUpadtion = true;
   } else {
-    let isExist = await isValidRecord('branch', {
+    let isExist = await isValidRecord('latest_branch', {
       branch_name: req.body.branch_name,
     });
     if (isExist) throwError(404, 'Branch is already exists.');
@@ -326,4 +327,56 @@ exports.changeUserRole = async (req, res) => {
     { otherViewName: 'latest_user' },
   );
   res.json(responser('Role has been changed.'));
+};
+
+exports.upsertManageSite = async (req, res) => {
+  await isEditAccess('latest_manage_site', req.user);
+  removeNullValueKey(req.body);
+  if (req.body.manage_site_uuid) {
+    let manage_site_info = await getRecords(
+      'latest_manage_site',
+      `where manage_site_uuid='${req.body.manage_site_uuid}'`,
+    );
+    if (!manage_site_info.length) throwError(404, 'manage site  not found.');
+    manage_site_info = manage_site_info[0];
+    req.body = { ...manage_site_info, ...req.body };
+  } else {
+    req.body.create_ts = setDateTimeFormat('timestemp');
+    req.body.manage_site_uuid = uuidv4();
+  }
+  await insertRecords('manage_site', req.body);
+  res.json(responser('Mange SIte created or updated successfully.', req.body));
+};
+exports.getManageSite = async (req, res) => {
+  const {
+    manage_site_id,
+    manage_site_uuid,
+    itemPerPage,
+    pageNo,
+    from_date,
+    to_date,
+    status,
+    columns,
+    value,
+  } = req.query;
+
+  let tableName = 'latest_manage_site';
+  let filter = filterFunctionality(
+    {
+      manage_site_id,
+      manage_site_uuid,
+    },
+    status,
+    to_date,
+    from_date,
+    Array.isArray(columns) ? columns : [columns],
+    value,
+  );
+
+  let pageFilter = pagination(pageNo, itemPerPage);
+  let totalRecords = await getCountRecord(tableName, filter);
+  let result = await getRecords(tableName, filter, pageFilter);
+  return res.json(
+    responser('Mange Site: ', result, result.length, totalRecords),
+  );
 };
