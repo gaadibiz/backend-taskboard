@@ -59,14 +59,20 @@ router
   .route('/upsert-manage-site')
   .post(
     checkAuth,
-    requestErrorHandlingDecorator(null, controller.upsertManageSite),
+    requestErrorHandlingDecorator(
+      Schema.upsertManageSiteSchema,
+      controller.upsertManageSite,
+    ),
   );
 
 router
   .route('/get-manage-site')
   .get(
     checkAuth,
-    requestErrorHandlingDecorator(null, controller.getManageSite),
+    requestErrorHandlingDecorator(
+      Schema.getManageSiteSchema,
+      controller.getManageSite,
+    ),
   );
 
 module.exports = router;
