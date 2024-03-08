@@ -63,6 +63,14 @@
                   "type": "string",
                   "default": null
                 },
+                "category_name": {
+                  "type": "string",
+                  "default": null
+                },
+                "category_uuid": {
+                  "type": "string",
+                  "default": null
+                },
                 "assigned_to_name": {
                   "type": "string",
                   "default": ""
