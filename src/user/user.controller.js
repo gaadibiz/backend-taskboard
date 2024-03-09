@@ -22,6 +22,9 @@ const { base_url } = require('../../config/server.config');
 const { v4: uuidv4 } = require('uuid');
 const bycrpt = require('bcrypt');
 
+const { path } = require('path');
+const { multer } = require('multer');
+
 exports.upsertUser = async (req, res) => {
   await isEditAccess('latest_user', req.user);
   removeNullValueKey(req.body);
