@@ -93,6 +93,10 @@ module.exports = {
         type: Sequelize.STRING(255),
         allowNull: true,
       },
+      task_details: {
+        type: Sequelize.STRING(255),
+        allowNull: true,
+      },
       assigned_to_name: {
         type: Sequelize.STRING(255),
         allowNull: false,
