@@ -13,6 +13,7 @@ exports.upsertTaskSchema = Joi.object({
   time_taken: Joi.string().allow(null),
   category_name: Joi.string().allow(null),
   category_uuid: Joi.string().guid().allow(null),
+  project_manager: Joi.string().allow(null),
   assigned_to_name: Joi.string().max(100).required(),
   assigned_to_uuid: Joi.string().guid().required(),
   status: Joi.string()
@@ -76,6 +77,7 @@ exports.upsertTaskDefinitionSchema = Joi.object({
   priority: Joi.string().max(50).valid('HIGH', 'MEDIUM', 'LOW').allow(null),
   category_name: Joi.string().allow(null),
   category_uuid: Joi.string().guid().allow(null),
+  project_manager: Joi.string().allow(null),
   assigned_to_name: Joi.string().max(100).required(),
   assigned_to_uuid: Joi.string().guid().required(),
   status: Joi.string()
