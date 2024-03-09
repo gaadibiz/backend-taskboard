@@ -65,14 +65,12 @@ router
     ),
   );
 
-router
-  .route('/get-manage-site')
-  .get(
-    checkAuth,
-    requestErrorHandlingDecorator(
-      Schema.getManageSiteSchema,
-      controller.getManageSite,
-    ),
-  );
+router.route('/get-manage-site').get(
+  // checkAuth,
+  requestErrorHandlingDecorator(
+    Schema.getManageSiteSchema,
+    controller.getManageSite,
+  ),
+);
 
 module.exports = router;

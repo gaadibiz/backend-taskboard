@@ -777,13 +777,6 @@
 
         "parameters": [
           {
-            "in": "header",
-            "name": "auth-Token",
-            "description": "",
-            "required": true,
-            "type": "string"
-          },
-          {
             "in": "query",
             "name": "manage_site_id",
             "description": "",
