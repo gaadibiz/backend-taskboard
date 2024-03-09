@@ -218,6 +218,7 @@ exports.getTaskList = async (req, res) => {
     Array.isArray(columns) ? columns : [columns],
     value,
   );
+  filter = await roleFilterService(filter, tableName, req.user);
 
   let pageFilter = pagination(pageNo, itemPerPage);
   let totalRecords = await getCountRecord(tableName, filter);
@@ -285,6 +286,55 @@ exports.upsertTaskDefinition = async (req, res) => {
   if (!isUserExists) {
     throwError(400, `Assigned User not found .`);
   }
+
+  function getDayName(dayIndex) {
+    const days = [
+      'Sunday',
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+    ];
+    return days[dayIndex];
+  }
+
+  // Function to construct task_details based on task type
+  function constructTaskDetails(taskType, data) {
+    let taskDetails = '';
+    switch (taskType) {
+      case 'date':
+        taskDetails = data.task_date;
+        break;
+      case 'weekly':
+        taskDetails = getDayName(data.task_day_of_week);
+        break;
+      case 'weekdays':
+        const weekdays = data.task_weekdays.map((day) => getDayName(day));
+        taskDetails = weekdays.join(', ');
+        break;
+      case 'monthly':
+        taskDetails = data.task_day_of_month.toString();
+        break;
+      case 'yearly':
+        taskDetails = `${data.task_day_of_month} ${data.task_month}`;
+        break;
+      case 'daily':
+        taskDetails = data.task_time;
+        break;
+      case 'interval':
+        taskDetails = `${data.task_interval} days`;
+        break;
+      default:
+        taskDetails = '';
+    }
+    return taskDetails;
+  }
+
+  const taskType = req.body.task_type;
+
+  req.body.task_details = constructTaskDetails(taskType, req.body);
 
   await insertRecords('task_definition', req.body);
   res.json(
