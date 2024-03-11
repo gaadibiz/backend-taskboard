@@ -73,10 +73,4 @@ router
     ),
   );
 
-// router
-//   .route('/upload-image')
-//   .post(
-//     checkAuth,
-//     requestErrorHandlingDecorator(null, controller.uploadImage),
-//   );
 module.exports = router;

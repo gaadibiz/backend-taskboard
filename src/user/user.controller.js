@@ -22,8 +22,8 @@ const { base_url } = require('../../config/server.config');
 const { v4: uuidv4 } = require('uuid');
 const bycrpt = require('bcrypt');
 
-const { path } = require('path');
-const { multer } = require('multer');
+// const path  = require('path');
+const multer = require('multer');
 
 exports.upsertUser = async (req, res) => {
   await isEditAccess('latest_user', req.user);
@@ -382,4 +382,38 @@ exports.getManageSite = async (req, res) => {
   return res.json(
     responser('Mange Site: ', result, result.length, totalRecords),
   );
+};
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'img/');
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '-' + file.originalname);
+  },
+});
+
+const upload = multer({ storage: storage }).single('image');
+
+exports.uploadImage = async (req, res) => {
+  upload(req, res, async function (err) {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    console.log('req.file: ', req.file);
+    console.log('req.body: ', req.body);
+
+    const image = req.file;
+
+    if (!image) {
+      return res.status(400).json({ error: 'No image uploaded' });
+    }
+
+    const imageName = image.filename;
+    console.log('imageName: ', imageName);
+
+    const imagePath = `img/${imageName}`;
+    console.log('imagePath: ', imagePath);
+    res.json(responser('Upload Image.', [{ imagePath: imagePath }]));
+  });
 };

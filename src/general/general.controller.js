@@ -112,9 +112,13 @@ exports.sendGridEmail = async (req, res) => {
 };
 
 exports.uploadFiles = async (req, res) => {
+  console.log('Files: ', req.files);
+  console.log('req.body: ', req.body);
   if (!req.files) {
     return throwError(404, 'No file uploaded.');
   }
+  console.log('Files: ', req.files);
+  console.log('req.body: ', req.body);
   req.body.files = Array.isArray(req.files.files)
     ? req.files.files
     : [req.files.files];
