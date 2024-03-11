@@ -333,8 +333,7 @@ exports.changeUserRole = async (req, res) => {
 };
 
 exports.upsertManageSite = async (req, res) => {
-  await isEditAccess('latest_manage_site', req.user);
-  removeNullValueKey(req.body);
+  // removeNullValueKey(req.body);
   if (req.body.manage_site_uuid) {
     let manage_site_info = await getRecords(
       'latest_manage_site',
