@@ -14,6 +14,9 @@ const {
 app.use(express.json());
 app.use(cors());
 
+// to serve static files from img folder
+app.use('/img', express.static('img'));
+
 const swagger = {
   swagger: '2.0',
   info: {
