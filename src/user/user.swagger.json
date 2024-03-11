@@ -854,6 +854,46 @@
           "500": { "description": "Internal Server Error" }
         }
       }
+    },
+
+    "/api/v1/user/upload-image": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Upload user image",
+        "description": "Endpoint to upload user image",
+        "consumes": ["multipart/form-data"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "formData",
+            "name": "image",
+            "description": "Image file to upload",
+            "required": true,
+            "type": "file"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Image uploaded successfully"
+          },
+          "400": {
+            "description": "Bad Request. Invalid parameters provided."
+          },
+          "401": {
+            "description": "Unauthorized. User not authenticated."
+          },
+          "500": {
+            "description": "Internal Server Error. An unexpected error occurred on the server."
+          }
+        }
+      }
     }
   }
 }

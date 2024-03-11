@@ -73,4 +73,9 @@ router.route('/get-manage-site').get(
   ),
 );
 
+router.route('/upload-image').post(
+  // checkAuth,
+  requestErrorHandlingDecorator(null, controller.uploadImage),
+);
+
 module.exports = router;
