@@ -75,6 +75,10 @@
                   "type": "string",
                   "default": null
                 },
+                "project_manager_uuid": {
+                  "type": "string",
+                  "default": null
+                },
                 "assigned_to_name": {
                   "type": "string",
                   "default": ""
@@ -422,6 +426,10 @@
                   "default": null
                 },
                 "project_manager": {
+                  "type": "string",
+                  "default": null
+                },
+                "project_manager_uuid": {
                   "type": "string",
                   "default": null
                 },
