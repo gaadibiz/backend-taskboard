@@ -61,6 +61,10 @@ module.exports = {
         type: Sequelize.STRING(255),
         allowNull: true,
       },
+      project_manager_uuid: {
+        type: Sequelize.STRING(50),
+        allowNull: true,
+      },
       assigned_to_name: {
         type: Sequelize.STRING(255),
         allowNull: false,

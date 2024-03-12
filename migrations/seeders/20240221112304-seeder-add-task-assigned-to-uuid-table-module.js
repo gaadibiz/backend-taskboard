@@ -4,8 +4,11 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.sequelize.query(
-      "UPDATE `module` SET `map_column_user_uuid`='[\"created_by_uuid\",\"assigned_to_uuid\"]' WHERE table_name='latest_tasks' and submodule_name='Taskboard';",
+      'UPDATE `module` SET `map_column_user_uuid`=\'["created_by_uuid","assigned_to_uuid"]\' WHERE table_name=\'latest_tasks\';',
     );
+    // await queryInterface.sequelize.query(
+    //   "UPDATE `module` SET `map_column_user_uuid`='[\"created_by_uuid\",\"assigned_to_uuid\"]' WHERE table_name='latest_tasks' and submodule_name='Taskboard';",
+    // );
   },
 
   async down(queryInterface, Sequelize) {

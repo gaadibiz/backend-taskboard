@@ -176,6 +176,7 @@ exports.getTask = async (req, res) => {
 
   let pageFilter = pagination(pageNo, itemPerPage);
   let result = await getRecords(tableName, filter, pageFilter);
+  console.log('result: ', result);
 
   let groupedTasks = {};
 
