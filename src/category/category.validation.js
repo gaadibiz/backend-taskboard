@@ -6,6 +6,7 @@ exports.upsertCategorySchema = Joi.object({
   description: Joi.string().max(250),
   status: Joi.string().valid('ACTIVE', 'INACTIVE'),
   created_by_uuid: Joi.string().guid().max(50).allow(null),
+  modified_by_uuid: Joi.string().guid().allow('', null),
 });
 
 exports.getCategorySchema = Joi.object({

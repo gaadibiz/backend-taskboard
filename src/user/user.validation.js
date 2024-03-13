@@ -63,6 +63,7 @@ exports.upsertUserProfileSchema = Joi.object({
   branch_uuid: Joi.string().guid().max(50).required(),
   status: Joi.string().valid('ACTIVE', 'INACTIVE').default('ACTIVE').required(),
   created_by_uuid: Joi.string().guid().max(50).allow('', null),
+  modified_by_uuid: Joi.string().guid().allow('', null),
 });
 
 exports.getUserSchema = Joi.object({
@@ -86,6 +87,7 @@ exports.upsertManageSiteSchema = Joi.object({
   login_title: Joi.string().max(250).allow(null),
   status: Joi.string().valid('ACTIVE', 'INACTIVE'),
   created_by_uuid: Joi.string().guid().max(50).allow(null),
+  modified_by_uuid: Joi.string().guid().allow('', null),
 });
 
 exports.getManageSiteSchema = Joi.object({

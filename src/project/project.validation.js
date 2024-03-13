@@ -8,6 +8,7 @@ exports.upsertProjectSchema = Joi.object({
   project_manager_uuid: Joi.string().guid().required(),
   status: Joi.string().valid('ACTIVE', 'INACTIVE').default('ACTIVE').required(),
   created_by_uuid: Joi.string().guid().allow('', null),
+  modified_by_uuid: Joi.string().guid().allow('', null),
 });
 
 exports.getProjectSchema = Joi.object({

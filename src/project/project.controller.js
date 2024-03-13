@@ -35,11 +35,10 @@ exports.upsertProject = async (req, res) => {
     );
     if (!project_info.length) throwError(404, 'project_info not found.');
     project_info = project_info[0];
-    project_info.create_ts = setDateTimeFormat(
-      'timestemp',
-      project_info.create_ts,
-    );
+    req.body.modified_by_uuid = req.body.created_by_uuid;
+    req.body.created_by_uuid = project_info.created_by_uuid;
     req.body = { ...project_info, ...req.body };
+    console.log('req.body in update: ', req.body);
   } else {
     req.body.create_ts = setDateTimeFormat('timestemp');
     req.body.project_uuid = uuid();

@@ -35,6 +35,42 @@ const checkAuth = (req, res, next) => {
         };
       }
     }
+
+    // if (req.method === 'POST') {
+    //   if (Array.isArray(req.body)) {
+    //     console.log("req.body post 1: ", req.body);
+    //     req.body = req.body.map((item) => {
+    //       console.log("post 1");
+    //       return {
+    //         ...item,
+    //         created_by_uuid: item.created_by_uuid || user.user_uuid, // handle create_by_id for every table
+    //         modified_by_uuid: item.created_by_uuid ? user.user_uuid : null, // handle modified_by_id for every table
+    //       };
+    //     });
+    //   } else {
+    //     console.log("req.body post 2: ", req.body);
+    //     let modified_by_uuid;
+    //     if(req.body.created_by_uuid) {
+    //       modified_by_uuid = user.user_uuid;
+    //     } else {
+    //       modified_by_uuid = null;
+    //       created_by_uuid = user.user_uuid;
+    //     }
+    //     console.log("cretedby uuid: ", created_by_uuid);
+    //     console.log("modisifed uuid: ", modified_by_uuid);
+    //     // const created_by_uuid = req.body.created_by_uuid || user.user_uuid;
+    //     // const modified_by_uuid = req.body.created_by_uuid ? user.user_uuid : null;
+    //     console.log("post 2");
+
+    //     req.body = {
+
+    //       ...req.body,
+    //       created_by_uuid,
+    //       modified_by_uuid, // handle modified_by_id for every table
+    //     };
+    //   }
+    // }
+
     next();
   });
 };

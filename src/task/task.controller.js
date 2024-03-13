@@ -488,8 +488,12 @@ async function checkAndExecuteTasks() {
             title: taskDefinition.title,
             description: taskDefinition.description,
             dueDate: taskDefinition.dueDate,
-            uploadFile: taskDefinition.uploadFile,
+            upload_file: taskDefinition.upload_file,
             priority: taskDefinition.priority,
+            category_name: taskDefinition.category_name,
+            category_uuid: taskDefinition.category_uuid,
+            project_manager: taskDefinition.project_manager,
+            project_manager_uuid: taskDefinition.project_manager_uuid,
             assigned_to_name: taskDefinition.assigned_to_name,
             assigned_to_uuid: taskDefinition.assigned_to_uuid,
             status: taskDefinition.status,
@@ -528,7 +532,7 @@ async function checkAndExecuteTasks() {
 }
 
 // checkAndExecuteTasks();
-const cronSchedule = '14 * * * *'; // Run every hour.
+const cronSchedule = '7 * * * *'; // Run every hour.
 
 // Create the cron job
 const job = new CronJob(cronSchedule, async () => {

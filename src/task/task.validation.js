@@ -21,6 +21,7 @@ exports.upsertTaskSchema = Joi.object({
     .valid('TODO', 'PROGRESS', 'HOLD', 'COMPLETED', 'ARCHIVE')
     .required(),
   created_by_uuid: Joi.string().guid().max(50),
+  modified_by_uuid: Joi.string().guid().allow('', null),
 });
 
 exports.getTaskSchema = Joi.object({
@@ -87,6 +88,7 @@ exports.upsertTaskDefinitionSchema = Joi.object({
     .valid('TODO', 'PROGRESS', 'HOLD', 'COMPLETED', 'ARCHIVE')
     .required(),
   created_by_uuid: Joi.string().guid().max(50),
+  modified_by_uuid: Joi.string().guid().allow('', null),
 });
 
 exports.getTaskDefinitionSchema = Joi.object({
