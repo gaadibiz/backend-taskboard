@@ -22,6 +22,12 @@ node migration.js --migrate:tables
 
 This command migrates database tables according to the defined schema.
 
+# Migration of views:
+
+node migration.js --migrate:views
+
+This command migrates views.
+
 # Migration of Procedures:
 
 node migration.js --migrate:procs
