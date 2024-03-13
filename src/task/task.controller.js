@@ -32,6 +32,8 @@ exports.upsertTask = async (req, res) => {
     );
     if (!task_info.length) throwError(404, 'Task not found.');
     task_info = task_info[0];
+    req.body.modified_by_uuid = req.body.created_by_uuid;
+    req.body.created_by_uuid = task_info.created_by_uuid;
     req.body = { ...task_info, ...req.body };
   } else {
     req.body.create_ts = setDateTimeFormat('timestemp');
