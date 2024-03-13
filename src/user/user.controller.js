@@ -345,7 +345,7 @@ exports.upsertManageSite = async (req, res) => {
     if (!manage_site_info.length) throwError(404, 'manage site  not found.');
     manage_site_info = manage_site_info[0];
     req.body.modified_by_uuid = req.body.created_by_uuid;
-    req.body.created_by_uuid = project_info.created_by_uuid;
+    req.body.created_by_uuid = manage_site_info.created_by_uuid;
     req.body = { ...manage_site_info, ...req.body };
   } else {
     req.body.create_ts = setDateTimeFormat('timestemp');
