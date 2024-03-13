@@ -27,6 +27,8 @@ exports.upsertComment = async (req, res) => {
     );
     if (!comment_info.length) throwError(404, 'comment  not found.');
     comment_info = comment_info[0];
+    req.body.modified_by_uuid = req.body.created_by_uuid;
+    req.body.created_by_uuid = comment_info.created_by_uuid;
     req.body = { ...comment_info, ...req.body };
   } else {
     req.body.create_ts = setDateTimeFormat('timestemp');

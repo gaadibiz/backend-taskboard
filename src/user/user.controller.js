@@ -125,6 +125,8 @@ exports.upsertUserProfile = async (req, res) => {
   );
   if (!user.length) throwError(404, 'User not found.');
   user = user[0];
+  req.body.modified_by_uuid = req.body.created_by_uuid;
+  req.body.created_by_uuid = user.created_by_uuid;
   updatedData = { ...user, ...req.body };
   await insertRecords('user_profile', updatedData);
   res.json(responser('User Profile created  successfully.', updatedData));
@@ -207,7 +209,7 @@ exports.getUser = async (req, res) => {
 };
 
 exports.upsertBranch = async (req, res) => {
-  await isEditAccess('latest_branch', req.user);
+  // await isEditAccess('latest_branch', req.user);
   removeNullValueKey(req.body);
   req.body.branch_name = req.body.branch_name.toUpperCase();
   let isUpadtion = false;
@@ -227,6 +229,7 @@ exports.upsertBranch = async (req, res) => {
   let branch = await insertRecords('branch', req.body);
   res.json(responser('Branch created  successfully.', req.body));
 };
+
 exports.getBranch = async (req, res) => {
   const {
     branch_uuid,
@@ -341,6 +344,8 @@ exports.upsertManageSite = async (req, res) => {
     );
     if (!manage_site_info.length) throwError(404, 'manage site  not found.');
     manage_site_info = manage_site_info[0];
+    req.body.modified_by_uuid = req.body.created_by_uuid;
+    req.body.created_by_uuid = project_info.created_by_uuid;
     req.body = { ...manage_site_info, ...req.body };
   } else {
     req.body.create_ts = setDateTimeFormat('timestemp');
