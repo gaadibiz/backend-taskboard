@@ -7,6 +7,7 @@ exports.upsertRoleSchema = Joi.object({
   role_group: Joi.string().min(2).max(100).required(),
   status: Joi.string().valid('ACTIVE', 'INACTIVE').required(),
   created_by_uuid: Joi.string().guid().max(50).allow('', null),
+  modified_by_uuid: Joi.string().guid().allow('', null),
 });
 
 exports.getRoleSchema = Joi.object({

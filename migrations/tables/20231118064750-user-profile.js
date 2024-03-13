@@ -141,6 +141,10 @@ module.exports = {
         type: Sequelize.STRING(100),
         allowNull: true,
       },
+      modified_by_uuid: {
+        type: Sequelize.STRING(50),
+        allowNull: true,
+      },
       insert_ts: {
         type: Sequelize.DATE,
         allowNull: false,
