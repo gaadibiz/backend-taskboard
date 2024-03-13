@@ -80,6 +80,25 @@ exports.getUserSchema = Joi.object({
   value: Joi.string(),
 });
 
+exports.upsertBranchSchema = Joi.object({
+  branch_uuid: Joi.string().guid().max(500).allow(null),
+  branch_name: Joi.string().max(100).allow(null),
+  status: Joi.string().valid('ACTIVE', 'INACTIVE'),
+  created_by_uuid: Joi.string().guid().max(50).allow(null),
+  modified_by_uuid: Joi.string().guid().allow('', null),
+});
+
+exports.getBranchSchema = Joi.object({
+  branch_uuid: Joi.string().guid(),
+  pageNo: Joi.number().integer().min(1),
+  itemPerPage: Joi.number().integer().min(1),
+  from_date: Joi.string().isoDate(),
+  to_date: Joi.string().isoDate(),
+  status: Joi.string(),
+  columns: Joi.string(),
+  value: Joi.string(),
+});
+
 exports.upsertManageSiteSchema = Joi.object({
   manage_site_uuid: Joi.string().guid().max(100).allow(null),
   logo: Joi.string().max(255).allow(null),

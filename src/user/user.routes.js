@@ -33,12 +33,18 @@ router
 
 router.route('/upsert-branch').post(
   // checkAuth,
-  requestErrorHandlingDecorator(null, controller.upsertBranch),
+  requestErrorHandlingDecorator(
+    Schema.upsertBranchSchema,
+    controller.upsertBranch,
+  ),
 );
 
 router
   .route('/get-branch')
-  .get(checkAuth, requestErrorHandlingDecorator(null, controller.getBranch));
+  .get(
+    checkAuth,
+    requestErrorHandlingDecorator(Schema.getBranchSchema, controller.getBranch),
+  );
 
 router
   .route('/upsert-zone')

@@ -41,6 +41,8 @@ exports.upsertRoles = async (req, res) => {
     if (!role_info.length) throwError(404, 'Role not found.');
     role_info = role_info[0];
     deleteKeyValuePair(req.body, ['role_name']);
+    req.body.modified_by_uuid = req.body.created_by_uuid;
+    req.body.created_by_uuid = role_info.created_by_uuid;
     req.body = { ...role_info, ...req.body };
   } else {
     let isExist = await isRecordExist(
