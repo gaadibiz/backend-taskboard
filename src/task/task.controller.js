@@ -536,7 +536,8 @@ async function checkAndExecuteTasks() {
 }
 
 // checkAndExecuteTasks();
-const cronSchedule = '7 * * * *'; // Run every hour.
+// const cronSchedule = '7 * * * *'; // Run every hour.
+const cronSchedule = '0 0 * * *'; // Run 12 AM daily.
 
 // Create the cron job
 const job = new CronJob(cronSchedule, async () => {
