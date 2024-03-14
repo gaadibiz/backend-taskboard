@@ -273,6 +273,9 @@ exports.upsertTaskDefinition = async (req, res) => {
     req.body.dueDate = setDateTimeFormat('timestemp', req.body.dueDate);
     req.body.task_definition_uuid = uuid();
   }
+  if (!req.body.task_date) {
+    req.body.task_date = null;
+  }
 
   let { type, type_uuid } = req.body;
   type = type.toLowerCase();
