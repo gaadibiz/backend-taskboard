@@ -262,13 +262,15 @@ exports.parseRequestParams = async (
  * @return {Promise<void>} void.
  */
 exports.insertRecords = async (name, data, columnIndex, options) => {
+  let columns = await this.getTableColumnsNames(name, null, options);
+  await this.handleAuditColumns(name, data, columns.split(','));
   let formValue = await this.parseRequestParams(
     Array.isArray(data) ? [...data] : JSON.parse(JSON.stringify(data)),
     name,
     columnIndex,
     options,
   );
-  let columns = await this.getTableColumnsNames(name, null, options);
+
   if (formValue.every((ele) => ele && ele.constructor === Array)) {
     return await this.dbRequest(
       `INSERT INTO ${name} (${columns.toString()}) VALUES ?`,
@@ -673,4 +675,25 @@ exports.listOrderBy = (filter, value, desc = true) => {
   return (
     filter + ` order by ${value ? value : 'insert_ts'} ${desc ? 'DESC' : 'ASC'}`
   );
+};
+
+exports.handleAuditColumns = async (tableName, data, columns) => {
+  let selectedColumns = [];
+  if (columns.includes('`created_by_uuid`'))
+    selectedColumns.push('created_by_uuid');
+  if (columns.includes('`create_ts`')) selectedColumns.push('create_ts');
+  let auditColumns = (
+    await this.getRecords(
+      `latest_${tableName}`,
+      `where ${tableName}_uuid='${data[`${tableName}_uuid`]}'`,
+      null,
+      selectedColumns,
+    )
+  )[0];
+  if (auditColumns) {
+    deleteKeyValuePair(data, selectedColumns);
+    for (let key in auditColumns) {
+      data[key] = auditColumns[key];
+    }
+  }
 };
