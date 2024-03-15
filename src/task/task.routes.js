@@ -54,14 +54,5 @@ router
       controller.getTaskDefinition,
     ),
   );
-router
-  .route('/run-task-cron')
-  .post(
-    checkAuth,
-    requestErrorHandlingDecorator(
-      Schema.runTaskCronSchema,
-      controller.runTaskCron,
-    ),
-  );
 
 module.exports = router;

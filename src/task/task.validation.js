@@ -102,8 +102,3 @@ exports.getTaskDefinitionSchema = Joi.object({
   columns: Joi.string(),
   value: Joi.string(),
 });
-
-exports.runTaskCronSchema = Joi.object({
-  key: Joi.string().required(),
-  created_by_uuid: Joi.string().guid().max(50),
-});

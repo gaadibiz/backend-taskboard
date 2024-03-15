@@ -557,52 +557,6 @@
           "500": { "description": "Internal Server Error" }
         }
       }
-    },
-
-    "/api/v1/task/run-task-cron": {
-      "post": {
-        "tags": ["Task"],
-        "summary": "Post Task",
-        "description": "Endpoint to create or update Task",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
-        "parameters": [
-          {
-            "in": "header",
-            "name": "auth-Token",
-            "description": "",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "description": "",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "key": {
-                  "type": "string",
-                  "default": ""
-                }
-              }
-            }
-          }
-        ],
-
-        "responses": {
-          "200": {
-            "description": "successful operation"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
     }
   }
 }

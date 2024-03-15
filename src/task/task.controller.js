@@ -685,13 +685,3 @@ function generateCronSchedule(taskDefinition) {
 
   return cronSchedule;
 }
-
-exports.runTaskCron = async (req, res) => {
-  const { key } = req.body;
-  console.log('req.body', req.body);
-  if (key !== process.env.CRON_KEY) {
-    return res.json(responser('Cron job not Executed, Key not matched'));
-  }
-
-  res.json(responser('Cron job successfully Executed.'));
-};
