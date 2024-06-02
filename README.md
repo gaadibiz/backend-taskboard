@@ -45,7 +45,7 @@ Configuration
 Before running the migration commands, ensure to configure the database connection details in the config.js file.
 
 <!--
-### Generate migration file under module folder.
+### Generate migration file under module folder .
 
 ```
 node migration.js --generate:<table | alter | seeder>-{expectated file name} [create migration file]
