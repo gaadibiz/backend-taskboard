@@ -5,6 +5,7 @@ Introduction
 
 This readme file provides instructions on how to use migration commands to manage database migrations using Node.js.
 Prerequisites
+mandatory
 
     Node.js installed on your system.
     Properly configured database connection details.
