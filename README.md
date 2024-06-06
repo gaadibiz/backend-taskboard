@@ -1,2 +1,2 @@
 # teskboard
-Added new
+Added new task
