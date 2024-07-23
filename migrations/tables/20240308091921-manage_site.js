@@ -10,7 +10,7 @@ module.exports = {
         autoIncrement: true,
       },
       manage_site_uuid: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.CHAR(36),
         allowNull: false,
       },
       logo: {
@@ -30,11 +30,11 @@ module.exports = {
         allowNull: false,
       },
       created_by_uuid: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.CHAR(36),
         allowNull: true,
       },
       modified_by_uuid: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.CHAR(36),
         allowNull: true,
       },
       create_ts: {

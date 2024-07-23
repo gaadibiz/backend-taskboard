@@ -10,7 +10,7 @@ module.exports = {
         autoIncrement: true,
       },
       user_uuid: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.CHAR(36),
         allowNull: false,
       },
       first_name: {
@@ -30,7 +30,7 @@ module.exports = {
         allowNull: true,
       },
       manager_uuid: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.CHAR(36),
         allowNull: true,
       },
       hierarchy_uuids: {
@@ -130,7 +130,7 @@ module.exports = {
         allowNull: false,
       },
       branch_uuid: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.CHAR(36),
         allowNull: false,
       },
       status: {
@@ -138,11 +138,11 @@ module.exports = {
         allowNull: true,
       },
       created_by_uuid: {
-        type: Sequelize.STRING(100),
+        type: Sequelize.CHAR(36),
         allowNull: true,
       },
       modified_by_uuid: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.CHAR(36),
         allowNull: true,
       },
       insert_ts: {

@@ -10,7 +10,7 @@ module.exports = {
         autoIncrement: true,
       },
       category_uuid: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.CHAR(36),
         allowNull: false,
       },
       category_name: {
@@ -26,11 +26,11 @@ module.exports = {
         allowNull: false,
       },
       created_by_uuid: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.CHAR(36),
         allowNull: true,
       },
       modified_by_uuid: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.CHAR(36),
         allowNull: true,
       },
       create_ts: {

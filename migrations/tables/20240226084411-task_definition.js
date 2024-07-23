@@ -10,7 +10,7 @@ module.exports = {
         autoIncrement: true,
       },
       task_definition_uuid: {
-        type: Sequelize.STRING(100),
+        type: Sequelize.CHAR(36),
         allowNull: false,
       },
       task_type: {
@@ -58,7 +58,7 @@ module.exports = {
         allowNull: false,
       },
       type_uuid: {
-        type: Sequelize.STRING(100),
+        type: Sequelize.CHAR(36),
         allowNull: false,
       },
       title: {
@@ -86,7 +86,7 @@ module.exports = {
         allowNull: true,
       },
       category_uuid: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.CHAR(36),
         allowNull: true,
       },
       project_manager: {
@@ -94,7 +94,7 @@ module.exports = {
         allowNull: true,
       },
       project_manager_uuid: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.CHAR(36),
         allowNull: true,
       },
       task_details: {
@@ -106,7 +106,7 @@ module.exports = {
         allowNull: false,
       },
       assigned_to_uuid: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.CHAR(36),
         allowNull: false,
       },
       status: {
@@ -114,11 +114,11 @@ module.exports = {
         allowNull: false,
       },
       created_by_uuid: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.CHAR(36),
         allowNull: true,
       },
       modified_by_uuid: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.CHAR(36),
         allowNull: true,
       },
       create_ts: {

@@ -63,5 +63,5 @@ const appendRoutes = async (folder) => {
 appendRoutes('src');
 
 app.listen(config.PORT, () => {
-  console.log('Server is running at:', config.base_url);
+  console.log('Server is running at:', config.base_url + `/api-docs`);
 });

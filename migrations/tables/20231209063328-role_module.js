@@ -10,15 +10,15 @@ module.exports = {
         autoIncrement: true,
       },
       role_module_uuid: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.CHAR(36),
         allowNull: false,
       },
       module_uuid: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.CHAR(36),
         allowNull: false,
       },
       role_uuid: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.CHAR(36),
         allowNull: false,
       },
       show_module: {
@@ -71,7 +71,7 @@ module.exports = {
         defaultValue: 'ACTIVE',
       },
       created_by_uuid: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.CHAR(36),
         allowNull: true,
       },
       insert_ts: {

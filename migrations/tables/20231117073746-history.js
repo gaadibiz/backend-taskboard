@@ -10,7 +10,7 @@ module.exports = {
         autoIncrement: true,
       },
       history_uuid: {
-        type: Sequelize.STRING(100),
+        type: Sequelize.CHAR(36),
         allowNull: false,
       },
       module_name: {
@@ -18,7 +18,7 @@ module.exports = {
         allowNull: false,
       },
       module_uuid: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.CHAR(36),
         allowNull: true,
       },
       module_id: {
@@ -34,7 +34,7 @@ module.exports = {
         allowNull: true,
       },
       created_by_uuid: {
-        type: Sequelize.STRING(100),
+        type: Sequelize.CHAR(36),
         allowNull: true,
       },
       create_ts: {

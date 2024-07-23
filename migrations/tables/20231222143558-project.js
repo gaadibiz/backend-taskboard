@@ -10,7 +10,7 @@ module.exports = {
         autoIncrement: true,
       },
       project_uuid: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.CHAR(36),
         allowNull: false,
       },
       project_name: {
@@ -26,7 +26,7 @@ module.exports = {
         allowNull: false,
       },
       project_manager_uuid: {
-        type: Sequelize.STRING(100),
+        type: Sequelize.CHAR(36),
         allowNull: false,
       },
       status: {
@@ -35,11 +35,11 @@ module.exports = {
         defaultValue: 'ACTIVE',
       },
       created_by_uuid: {
-        type: Sequelize.STRING(100),
+        type: Sequelize.CHAR(36),
         allowNull: true,
       },
       modified_by_uuid: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.CHAR(36),
         allowNull: true,
       },
       create_ts: {

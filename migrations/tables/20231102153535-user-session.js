@@ -10,7 +10,7 @@ module.exports = {
         autoIncrement: true,
       },
       user_uuid: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.CHAR(36),
         allowNull: false,
       },
       access_token: {

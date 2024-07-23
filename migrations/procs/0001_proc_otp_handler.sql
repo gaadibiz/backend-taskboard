@@ -1,4 +1,5 @@
 DROP PROCEDURE IF EXISTS otp_handler;
+
 CREATE PROCEDURE otp_handler(
     IN user_uuid_arg VARCHAR(50),
     IN otp_arg INT(6),
