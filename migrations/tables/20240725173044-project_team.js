@@ -3,11 +3,15 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('project', {
-      project_id: {
+    await queryInterface.createTable('project_team', {
+      project_team_id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
+      },
+      project_team_uuid: {
+        type: Sequelize.CHAR(36),
+        allowNull: false,
       },
       project_uuid: {
         type: Sequelize.CHAR(36),
@@ -17,29 +21,9 @@ module.exports = {
         type: Sequelize.STRING(100),
         allowNull: false,
       },
-      legal_entity: {
-        type: Sequelize.STRING(50),
-        allowNull: true,
-      },
-      project_manager_name: {
-        type: Sequelize.STRING(50),
-        allowNull: false,
-      },
-      project_manager_uuid: {
+      user_uuid: {
         type: Sequelize.CHAR(36),
         allowNull: false,
-      },
-      remarks: {
-        type: Sequelize.STRING(500),
-        allowNull: true,
-      },
-      start_date: {
-        type: Sequelize.DATE,
-        allowNull: true,
-      },
-      end_date: {
-        type: Sequelize.DATE,
-        allowNull: true,
       },
       status: {
         type: Sequelize.STRING(20),

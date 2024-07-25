@@ -24,4 +24,24 @@ router
     ),
   );
 
+router
+  .route('/upsert-project-team')
+  .post(
+    checkAuth,
+    requestErrorHandlingDecorator(
+      Schema.upsertProjectTeamSchema,
+      controller.upsertProjectTeam,
+    ),
+  );
+
+router
+  .route('/get-project-team')
+  .get(
+    checkAuth,
+    requestErrorHandlingDecorator(
+      Schema.getProjectTeamSchema,
+      controller.getProjectTeam,
+    ),
+  );
+
 module.exports = router;
