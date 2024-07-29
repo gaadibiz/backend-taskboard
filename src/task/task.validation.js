@@ -35,6 +35,9 @@ exports.getTaskSchema = Joi.object({
   columns: Joi.string(),
   value: Joi.string(),
 });
+exports.getTaskSchema = Joi.object({
+  assigned_to_uuid: Joi.string().guid(),
+});
 
 exports.getTaskListSchema = Joi.object({
   task_user_taskboard_id: Joi.number().integer(),
