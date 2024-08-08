@@ -25,7 +25,7 @@ exports.getProjectSchema = Joi.object({
   value: Joi.string(),
 });
 
-exports.upsertProjectSchema = Joi.object({
+exports.upsertProjectTeamSchema = Joi.object({
   project_team_uuid: Joi.string().guid().allow('', null),
   project_uuid: Joi.string().guid().allow('', null),
   project_name: Joi.string().required(),
