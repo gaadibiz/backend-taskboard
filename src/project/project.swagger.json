@@ -209,6 +209,10 @@
                   "type": "string",
                   "default": null
                 },
+                "user_name": {
+                  "type": "string",
+                  "default": null
+                },
                 "status": {
                   "type": "string",
                   "default": "ACTIVE"

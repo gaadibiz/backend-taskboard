@@ -198,8 +198,9 @@ exports.getTask = async (req, res) => {
 };
 
 exports.getTaskCount = async (req, res) => {
-  const { assigned_to_uuid } = req.query;
   let tableName = 'latest_tasks';
+
+  let filter = await roleFilterService('', tableName, req.user);
 
   let sql = `SELECT 
   s.status,
@@ -220,15 +221,12 @@ LEFT JOIN
      COUNT(*) as count
    FROM 
      ${tableName}
-   WHERE 
-     assigned_to_uuid = '${assigned_to_uuid}'
+   ${filter}
    GROUP BY 
      status) t
 ON 
   s.status = t.status
 `;
-
-  filter = await roleFilterService(sql, tableName, req.user);
 
   const result = await dbRequest(sql);
   console.log('result: ', result);

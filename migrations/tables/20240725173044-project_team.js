@@ -25,6 +25,10 @@ module.exports = {
         type: Sequelize.CHAR(36),
         allowNull: false,
       },
+      user_name: {
+        type: Sequelize.STRING(500),
+        allowNull: false,
+      },
       status: {
         type: Sequelize.STRING(20),
         allowNull: false,

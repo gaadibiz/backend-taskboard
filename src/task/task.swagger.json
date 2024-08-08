@@ -218,13 +218,6 @@
             "description": "",
             "required": true,
             "type": "string"
-          },
-          {
-            "in": "query",
-            "name": "assigned_to_uuid",
-            "description": "",
-            "required": false,
-            "type": "string"
           }
         ],
 
