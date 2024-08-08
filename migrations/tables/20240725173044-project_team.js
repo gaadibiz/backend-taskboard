@@ -3,35 +3,36 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('comment_t', {
-      comment_t_id: {
+    await queryInterface.createTable('project_team', {
+      project_team_id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
       },
-      comment_t_uuid: {
+      project_team_uuid: {
         type: Sequelize.CHAR(36),
         allowNull: false,
       },
-      module_uuid: {
+      project_uuid: {
         type: Sequelize.CHAR(36),
         allowNull: false,
       },
-      module_name: {
+      project_name: {
         type: Sequelize.STRING(100),
         allowNull: false,
       },
-      comment_remark: {
-        type: Sequelize.TEXT,
+      user_uuid: {
+        type: Sequelize.CHAR(36),
+        allowNull: false,
+      },
+      user_name: {
+        type: Sequelize.STRING(500),
         allowNull: false,
       },
       status: {
         type: Sequelize.STRING(20),
         allowNull: false,
-      },
-      created_by_name: {
-        type: Sequelize.STRING(100),
-        allowNull: false,
+        defaultValue: 'ACTIVE',
       },
       created_by_uuid: {
         type: Sequelize.CHAR(36),

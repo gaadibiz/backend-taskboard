@@ -63,11 +63,11 @@
               "properties": {
                 "email": {
                   "type": "string",
-                  "default": ""
+                  "default": "superadmin@edgenroots.com"
                 },
                 "password": {
                   "type": "string",
-                  "default": ""
+                  "default": "superadmin@edgenroots"
                 }
               }
             }

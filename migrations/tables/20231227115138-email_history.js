@@ -10,7 +10,7 @@ module.exports = {
         autoIncrement: true,
       },
       email_history_uuid: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.CHAR(36),
         allowNull: false,
       },
       email_conversation_id: {
@@ -22,7 +22,7 @@ module.exports = {
         allowNull: true,
       },
       module_uuid: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.CHAR(36),
         allowNull: true,
       },
       from_email: {
@@ -58,7 +58,7 @@ module.exports = {
         allowNull: true,
       },
       created_by_uuid: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.CHAR(36),
         allowNull: true,
       },
       send_received_ts: {

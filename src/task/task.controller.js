@@ -7,6 +7,7 @@ const {
   isValidRecord,
   isEditAccess,
   roleFilterService,
+  dbRequest,
 } = require('../../utils/dbFunctions');
 const {
   responser,
@@ -193,6 +194,48 @@ exports.getTask = async (req, res) => {
     message: 'All Tasks according to status.',
     totalRecords: result.length,
     data: groupedTasks,
+  });
+};
+
+exports.getTaskCount = async (req, res) => {
+  let tableName = 'latest_tasks';
+
+  let filter = await roleFilterService('', tableName, req.user);
+
+  let sql = `SELECT 
+  s.status,
+  COALESCE(t.count, 0) as count
+FROM 
+  (SELECT 'TODO' as status
+   UNION ALL
+   SELECT 'PROGRESS'
+   UNION ALL
+   SELECT 'HOLD'
+   UNION ALL
+   SELECT 'COMPLETED'
+   UNION ALL
+   SELECT 'ARCHIVE') s
+LEFT JOIN 
+  (SELECT 
+     status,
+     COUNT(*) as count
+   FROM 
+     ${tableName}
+   ${filter}
+   GROUP BY 
+     status) t
+ON 
+  s.status = t.status
+`;
+
+  const result = await dbRequest(sql);
+  console.log('result: ', result);
+  // console.log('FILTER:', filter);
+
+  return res.json({
+    message: 'All Tasks count according to status.',
+    totalRecords: result.length,
+    data: result,
   });
 };
 

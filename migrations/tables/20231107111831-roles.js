@@ -10,7 +10,7 @@ module.exports = {
         autoIncrement: true,
       },
       role_uuid: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.CHAR(36),
         allowNull: false,
       },
       role_name: {
@@ -32,11 +32,11 @@ module.exports = {
         defaultValue: 'ACTIVE',
       },
       created_by_uuid: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.CHAR(36),
         allowNull: true,
       },
       modified_by_uuid: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.CHAR(36),
         allowNull: true,
       },
       insert_ts: {

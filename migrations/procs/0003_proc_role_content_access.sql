@@ -1,6 +1,7 @@
 DROP PROCEDURE IF EXISTS role_content_access;
+
 create PROCEDURE role_content_access(
-    IN role_uuid_arg VARCHAR(50),
+    IN role_uuid_arg CHAR(36),
     IN table_name_arg VARCHAR(200)
 )
 BEGIN

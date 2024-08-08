@@ -10,7 +10,7 @@ module.exports = {
         autoIncrement: true,
       },
       user_uuid: {
-        type: Sequelize.STRING(100),
+        type: Sequelize.CHAR(36),
         allowNull: false,
       },
       user_password: {
@@ -18,11 +18,11 @@ module.exports = {
         allowNull: false,
       },
       role_uuid: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.CHAR(36),
         allowNull: false,
       },
       created_by_uuid: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.CHAR(36),
         allowNull: true,
       },
       insert_ts: {

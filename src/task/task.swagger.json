@@ -204,6 +204,30 @@
         }
       }
     },
+    "/api/v1/task/get-task-count": {
+      "get": {
+        "tags": ["Task"],
+        "summary": "Get Task",
+        "description": "Endpoint to retrieve Task",
+        "produces": ["application/json"],
+
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "required": true,
+            "type": "string"
+          }
+        ],
+
+        "responses": {
+          "200": { "description": "successful operation" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
     "/api/v1/task/get-task-list": {
       "get": {
         "tags": ["Task"],

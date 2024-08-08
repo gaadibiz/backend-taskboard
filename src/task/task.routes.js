@@ -20,6 +20,15 @@ router
     requestErrorHandlingDecorator(Schema.getTaskSchema, controller.getTask),
   );
 router
+  .route('/get-task-count')
+  .get(
+    checkAuth,
+    requestErrorHandlingDecorator(
+      Schema.getTaskCountSchema,
+      controller.getTaskCount,
+    ),
+  );
+router
   .route('/get-task-list')
   .get(
     checkAuth,

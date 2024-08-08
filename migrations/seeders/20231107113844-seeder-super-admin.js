@@ -23,7 +23,7 @@ module.exports = {
     ]);
     const admin = (
       await queryInterface.sequelize.query(
-        `SELECT * FROM latest_roles WHERE role_name = 'ADMIN'`,
+        `SELECT * FROM latest_roles WHERE role_name = 'SUPERADMIN'`,
       )
     )[0][0];
     await queryInterface.bulkInsert('user_dim', [

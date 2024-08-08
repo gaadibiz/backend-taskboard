@@ -70,6 +70,7 @@ module.exports = {
         status: 'ACTIVE',
       },
     ]);
+
     await queryInterface.sequelize.query(`UPDATE \`module\`
       SET map_column_user_uuid = '["created_by_uuid"]',
           column_relation_options = '[{
@@ -88,6 +89,10 @@ module.exports = {
 
     await queryInterface.sequelize.query(
       `UPDATE \`module\` SET map_column_user_uuid = '["created_by_uuid","user_uuid"]' where table_name="latest_user";`,
+    );
+
+    await queryInterface.sequelize.query(
+      `UPDATE \`module\` SET map_column_user_uuid = '["created_by_uuid","assigned_to_uuid","project_manager_uuid"]' where table_name="latest_tasks" AND submodule_name="Taskboard" AND module_name="Tasks";`,
     );
   },
 

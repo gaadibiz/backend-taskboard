@@ -10,7 +10,7 @@ module.exports = {
         autoIncrement: true,
       },
       user_uuid: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.CHAR(36),
         allowNull: false,
       },
       email: {
@@ -24,7 +24,7 @@ module.exports = {
         defaultValue: 'ACTIVE',
       },
       created_by_uuid: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.CHAR(36),
         allowNull: true,
       },
       insert_ts: {
