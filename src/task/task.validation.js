@@ -8,7 +8,7 @@ exports.upsertTaskSchema = Joi.object({
   title: Joi.string().max(255).required(),
   description: Joi.string().allow(null),
   due_date: Joi.date().iso().allow(null),
-  upload_file: Joi.object().allow(null),
+  upload_file: Joi.string().allow(null),
   priority: Joi.string().max(50).valid('HIGH', 'MEDIUM', 'LOW').allow(null),
   time_taken: Joi.string().allow(null),
   category_name: Joi.string().allow(null),
