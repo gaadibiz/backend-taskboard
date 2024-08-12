@@ -1,6 +1,7 @@
 const express = require('express');
 
 const swaggerUI = require('swagger-ui-express');
+const fileUpload = require('express-fileupload');
 
 const app = express();
 const cors = require('cors');
@@ -13,6 +14,9 @@ const {
 
 app.use(express.json());
 app.use(cors());
+
+// Enable file uploads
+app.use(fileUpload({ limits: { fileSize: 50 * 1024 * 1024 } }));
 
 // to serve static files from img folder
 app.use('/img', express.static('img'));

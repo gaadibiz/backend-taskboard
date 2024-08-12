@@ -120,13 +120,13 @@ exports.upsertProjectTeam = async (req, res) => {
   // isEditAccess('latest_leads_with_project', req.user);
   removeNullValueKey(req.body);
   let isUpadtion = false;
-  if (req.body.project_uuid) {
+  if (req.body.project_team_uuid) {
     isUpadtion = true;
     let project_info = await getRecords(
       'latest_project_team',
-      `where project_team_uuid='${req.body.project_uuid}'`,
+      `where project_team_uuid='${req.body.project_team_uuid}'`,
     );
-    if (!project_info.length) throwError(404, 'project_info not found.');
+    if (!project_info.length) throwError(404, 'project not found.');
     project_info = project_info[0];
     req.body.modified_by_uuid = req.body.created_by_uuid;
     req.body.created_by_uuid = project_info.created_by_uuid;
