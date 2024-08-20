@@ -51,6 +51,24 @@ module.exports = {
         column_relation_options: JSON.stringify([]),
         status: 'ACTIVE',
       },
+      {
+        module_uuid: uuidv4(),
+        module_name: 'Report',
+        submodule_name: 'Report',
+        table_name: 'latest_report',
+        map_column_user_uuid: JSON.stringify([]),
+        column_relation_options: JSON.stringify([]),
+        status: 'ACTIVE',
+      },
+      {
+        module_uuid: uuidv4(),
+        module_name: 'Report',
+        submodule_name: 'Expense',
+        table_name: 'latest_expense',
+        map_column_user_uuid: JSON.stringify([]),
+        column_relation_options: JSON.stringify([]),
+        status: 'ACTIVE',
+      },
     ]);
     await queryInterface.sequelize.query(`UPDATE \`module\`
       SET map_column_user_uuid = '["created_by_uuid"]',

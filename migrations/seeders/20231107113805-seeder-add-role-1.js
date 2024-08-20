@@ -31,6 +31,12 @@ module.exports = {
         role_uuid: uuidv4(),
         role_group: 'USER',
       },
+      {
+        role_name: 'Finance Manager',
+        role_value: 'FINANCE_MANAGER',
+        role_uuid: uuidv4(),
+        role_group: 'USER',
+      },
     ]);
   },
 

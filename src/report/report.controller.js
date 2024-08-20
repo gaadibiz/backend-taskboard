@@ -22,30 +22,30 @@ const {
 const { base_url } = require('../../config/server.config');
 const { responser, removeNullValueKey } = require('../../utils/helperFunction');
 
-exports.upsertProject = async (req, res) => {
-  // isEditAccess('latest_leads_with_project', req.user);
+exports.upsertExpense = async (req, res) => {
+  // isEditAccess('latest_leads_with_expense', req.user);
   removeNullValueKey(req.body);
   let isUpadtion = false;
-  if (req.body.project_uuid) {
+  if (req.body.expense_uuid) {
     isUpadtion = true;
-    let project_info = await getRecords(
-      'latest_project',
-      `where project_uuid='${req.body.project_uuid}'`,
+    let expense_info = await getRecords(
+      'latest_expense',
+      `where expense_uuid='${req.body.expense_uuid}'`,
     );
-    if (!project_info.length) throwError(404, 'project_info not found.');
-    project_info = project_info[0];
+    if (!expense_info.length) throwError(404, 'expense_info not found.');
+    expense_info = expense_info[0];
     req.body.modified_by_uuid = req.body.created_by_uuid;
-    req.body.created_by_uuid = project_info.created_by_uuid;
-    req.body = { ...project_info, ...req.body };
+    req.body.created_by_uuid = expense_info.created_by_uuid;
+    req.body = { ...expense_info, ...req.body };
     console.log('req.body in update: ', req.body);
   } else {
     req.body.create_ts = setDateTimeFormat('timestemp');
-    req.body.project_uuid = uuid();
+    req.body.expense_uuid = uuid();
   }
-  const insertProject = await insertRecords('project', req.body);
-  res.json(responser('Project created or updated successfully.', req.body));
+  const insertexpense = await insertRecords('expense', req.body);
+  res.json(responser('expense created or updated successfully.', req.body));
 
-  // res.json(responser('Project created or updated successfully.', req.body));
+  // res.json(responser('expense created or updated successfully.', req.body));
 
   // <---------------- history entry ---------------->
   (async () => {
@@ -58,17 +58,17 @@ exports.upsertProject = async (req, res) => {
         )
       )[0];
       if (isUpadtion) {
-        historyMessage = `${userInfo?.first_name} has made an update in project.`;
+        historyMessage = `${userInfo?.first_name} has made an update in expense.`;
       } else {
-        historyMessage = `${userInfo?.first_name} has created a project.`;
+        historyMessage = `${userInfo?.first_name} has created a expense.`;
       }
-      const moduleId = insertProject.insertId;
+      const moduleId = insertexpense.insertId;
       const bodyData = {
-        module_name: 'project',
-        module_uuid: req.body.project_uuid,
+        module_name: 'expense',
+        module_uuid: req.body.expense_uuid,
         module_id: moduleId,
         message: historyMessage,
-        module_column_name: 'project_uuid',
+        module_column_name: 'expense_uuid',
         created_by_uuid: req.body.created_by_uuid,
       };
       await getData(
@@ -84,8 +84,10 @@ exports.upsertProject = async (req, res) => {
   })();
 };
 
-exports.getProject = async (req, res) => {
+exports.getExpense = async (req, res) => {
   const {
+    expense_uuid,
+    report_uuid,
     project_uuid,
     pageNo,
     itemPerPage,
@@ -96,9 +98,11 @@ exports.getProject = async (req, res) => {
     value,
   } = req.query;
 
-  let tableName = 'latest_project';
+  let tableName = 'latest_expense';
   let filter = filterFunctionality(
     {
+      expense_uuid,
+      report_uuid,
       project_uuid,
     },
     status,
@@ -107,23 +111,23 @@ exports.getProject = async (req, res) => {
     Array.isArray(columns) ? columns : [columns],
     value,
   );
-  filter = await roleFilterService(filter, 'latest_project', req.user);
+  filter = await roleFilterService(filter, 'latest_expense', req.user);
   let pageFilter = pagination(pageNo, itemPerPage);
   let totalRecords = await getCountRecord(tableName, filter);
   let result = await getRecords(tableName, filter, pageFilter);
 
-  return res.json(responser('Project: ', result, result.length, totalRecords));
+  return res.json(responser('expense: ', result, result.length, totalRecords));
 };
 
-exports.upsertProjectTeam = async (req, res) => {
+exports.upsertReport = async (req, res) => {
   // isEditAccess('latest_leads_with_project', req.user);
   removeNullValueKey(req.body);
   let isUpadtion = false;
-  if (req.body.project_team_uuid) {
+  if (req.body.report_uuid) {
     isUpadtion = true;
     let project_info = await getRecords(
-      'latest_project_team',
-      `where project_team_uuid='${req.body.project_team_uuid}'`,
+      'latest_report',
+      `where report_uuid='${req.body.report_uuid}'`,
     );
     if (!project_info.length) throwError(404, 'project not found.');
     project_info = project_info[0];
@@ -133,11 +137,26 @@ exports.upsertProjectTeam = async (req, res) => {
     console.log('req.body in update: ', req.body);
   } else {
     req.body.create_ts = setDateTimeFormat('timestemp');
-    req.body.project_team_uuid = uuid();
+    req.body.report_uuid = uuid();
   }
-  const insertProject = await insertRecords('project_team', req.body);
+  const insertProject = await insertRecords('report', req.body);
   res.json(
     responser('Project team created or updated successfully.', req.body),
+  );
+
+  //<------------ handle costing sheet approval modal properly ----------->
+  const bodyData = {
+    table_name: 'latest_report',
+    record_uuid: req.body.report_uuid,
+    record_column_name: 'report_uuid',
+  };
+  getData(
+    base_url + '/api/v1/approval/insert-approval',
+    null,
+    'json',
+    bodyData,
+    'POST',
+    req.headers,
   );
 
   // res.json(responser('Project created or updated successfully.', req.body));
@@ -179,9 +198,11 @@ exports.upsertProjectTeam = async (req, res) => {
   })();
 };
 
-exports.getProjectTeam = async (req, res) => {
+exports.getReport = async (req, res) => {
   const {
     project_uuid,
+    report_uuid,
+    project_manager_uuid,
     pageNo,
     itemPerPage,
     from_date,
@@ -191,10 +212,12 @@ exports.getProjectTeam = async (req, res) => {
     value,
   } = req.query;
 
-  let tableName = 'latest_project_team';
+  let tableName = 'latest_report';
   let filter = filterFunctionality(
     {
       project_uuid,
+      report_uuid,
+      project_manager_uuid,
     },
     status,
     to_date,
@@ -203,7 +226,7 @@ exports.getProjectTeam = async (req, res) => {
     value,
   );
   // need suggestion
-  // filter = await roleFilterService(filter, 'latest_project_team', req.user);
+  // filter = await roleFilterService(filter, 'latest_report', req.user);
   let pageFilter = pagination(pageNo, itemPerPage);
   let totalRecords = await getCountRecord(tableName, filter);
   let result = await getRecords(tableName, filter, pageFilter);
