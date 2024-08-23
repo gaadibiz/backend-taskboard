@@ -17,6 +17,10 @@ module.exports = {
         type: Sequelize.CHAR(36),
         allowNull: true,
       },
+      project_name: {
+        type: Sequelize.STRING(500),
+        allowNull: false,
+      },
       project_manager_name: {
         type: Sequelize.STRING(100),
         allowNull: true,

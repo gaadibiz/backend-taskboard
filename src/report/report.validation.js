@@ -30,6 +30,7 @@ exports.getExpenseSchema = Joi.object({
 exports.upsertReportSchema = Joi.object({
   report_uuid: Joi.string().guid().allow('', null),
   project_uuid: Joi.string().guid().allow('', null),
+  project_name: Joi.string().allow('', null),
   project_manager_name: Joi.string().required(),
   project_manager_uuid: Joi.string().guid().allow('', null),
   department_uuid: Joi.string().guid().allow('', null),
