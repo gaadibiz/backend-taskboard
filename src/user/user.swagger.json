@@ -379,6 +379,10 @@
                   "type": "string",
                   "default": ""
                 },
+                "branch_address": {
+                  "type": "string",
+                  "default": ""
+                },
                 "branch_uuid": {
                   "type": "string",
                   "default": null

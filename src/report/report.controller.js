@@ -64,7 +64,7 @@ exports.upsertExpense = async (req, res) => {
       }
       const moduleId = insertexpense.insertId;
       const bodyData = {
-        module_name: 'expense',
+        module_name: 'Expense',
         module_uuid: req.body.expense_uuid,
         module_id: moduleId,
         message: historyMessage,
@@ -140,9 +140,7 @@ exports.upsertReport = async (req, res) => {
     req.body.report_uuid = uuid();
   }
   const insertProject = await insertRecords('report', req.body);
-  res.json(
-    responser('Project team created or updated successfully.', req.body),
-  );
+  res.json(responser('department created or updated successfully.', req.body));
 
   //<------------ handle costing sheet approval modal properly ----------->
   const bodyData = {
@@ -172,17 +170,17 @@ exports.upsertReport = async (req, res) => {
         )
       )[0];
       if (isUpadtion) {
-        historyMessage = `${userInfo?.first_name} has made an update in project team.`;
+        historyMessage = `${userInfo?.first_name} has made an update in Report.`;
       } else {
-        historyMessage = `${userInfo?.first_name} has created a project team.`;
+        historyMessage = `${userInfo?.first_name} has created a department.`;
       }
       const moduleId = insertProject.insertId;
       const bodyData = {
-        module_name: 'project',
+        module_name: 'Report',
         module_uuid: req.body.project_uuid,
         module_id: moduleId,
         message: historyMessage,
-        module_column_name: 'project_uuid',
+        module_column_name: 'report_uuid',
         created_by_uuid: req.body.created_by_uuid,
       };
       await getData(
@@ -203,6 +201,7 @@ exports.getReport = async (req, res) => {
     project_uuid,
     report_uuid,
     project_manager_uuid,
+    department_uuid,
     pageNo,
     itemPerPage,
     from_date,
@@ -218,6 +217,7 @@ exports.getReport = async (req, res) => {
       project_uuid,
       report_uuid,
       project_manager_uuid,
+      department_uuid,
     },
     status,
     to_date,
@@ -232,6 +232,6 @@ exports.getReport = async (req, res) => {
   let result = await getRecords(tableName, filter, pageFilter);
 
   return res.json(
-    responser('Project team: ', result, result.length, totalRecords),
+    responser('department: ', result, result.length, totalRecords),
   );
 };

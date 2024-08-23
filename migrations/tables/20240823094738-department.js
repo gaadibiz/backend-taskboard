@@ -3,35 +3,51 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('branch', {
-      branch_id: {
+    await queryInterface.createTable('department', {
+      department_id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
       },
-      branch_uuid: {
+      department_uuid: {
         type: Sequelize.CHAR(36),
         allowNull: false,
       },
-      branch_name: {
+      department_head_uuid: {
+        type: Sequelize.CHAR(36),
+        allowNull: true,
+      },
+      department_head_name: {
+        type: Sequelize.STRING(100),
+        allowNull: true,
+      },
+      department_name: {
         type: Sequelize.STRING(100),
         allowNull: false,
       },
-      branch_address: {
+      department_details: {
+        type: Sequelize.STRING(100),
+        allowNull: true,
+      },
+      category: {
         type: Sequelize.STRING(100),
         allowNull: true,
       },
       status: {
         type: Sequelize.STRING(20),
-        allowNull: false,
+        allowNull: true,
         defaultValue: 'ACTIVE',
       },
       created_by_uuid: {
         type: Sequelize.CHAR(36),
-        allowNull: true,
+        allowNull: false,
       },
       modified_by_uuid: {
         type: Sequelize.CHAR(36),
+        allowNull: true,
+      },
+      create_ts: {
+        type: Sequelize.DATE,
         allowNull: true,
       },
       insert_ts: {

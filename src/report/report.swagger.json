@@ -224,6 +224,14 @@
                   "type": "string",
                   "default": ""
                 },
+                "department_uuid": {
+                  "type": "string",
+                  "default": ""
+                },
+                "department_name": {
+                  "type": "string",
+                  "default": ""
+                },
                 "report_name": {
                   "type": "string",
                   "default": ""
@@ -303,6 +311,13 @@
           {
             "in": "query",
             "name": "project_manager_uuid",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "department_uuid",
             "description": "",
             "required": false,
             "type": "string"

@@ -2,13 +2,13 @@ const Joi = require('joi');
 
 exports.upsertUserSchema = Joi.object({
   user_uuid: Joi.string().guid().allow(null),
-  last_name: Joi.string().max(50).allow(null),
   email: Joi.string().email().max(500).required(),
   first_name: Joi.alternatives().conditional('user_uuid', {
     is: Joi.string().required(),
     then: Joi.optional(),
     otherwise: Joi.string().min(1).max(50).required(),
   }),
+  last_name: Joi.string().max(50).allow('', null),
   user_password: Joi.when('user_uuid', {
     is: Joi.string().required(),
     then: Joi.optional(),
@@ -83,6 +83,7 @@ exports.getUserSchema = Joi.object({
 exports.upsertBranchSchema = Joi.object({
   branch_uuid: Joi.string().guid().max(500).allow(null),
   branch_name: Joi.string().max(100).allow(null),
+  branch_address: Joi.string().max(500).allow(null),
   status: Joi.string().valid('ACTIVE', 'INACTIVE'),
   created_by_uuid: Joi.string().guid().max(50).allow(null),
   modified_by_uuid: Joi.string().guid().allow('', null),

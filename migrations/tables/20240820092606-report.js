@@ -25,6 +25,14 @@ module.exports = {
         type: Sequelize.CHAR(36),
         allowNull: true,
       },
+      department_name: {
+        type: Sequelize.STRING(100),
+        allowNull: true,
+      },
+      department_uuid: {
+        type: Sequelize.CHAR(36),
+        allowNull: true,
+      },
       report_name: {
         type: Sequelize.STRING(100),
         allowNull: false,

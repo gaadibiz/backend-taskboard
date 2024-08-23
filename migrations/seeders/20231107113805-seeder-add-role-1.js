@@ -37,6 +37,12 @@ module.exports = {
         role_uuid: uuidv4(),
         role_group: 'USER',
       },
+      {
+        role_name: 'Department Head',
+        role_value: 'DEPARTMENT_HEAD',
+        role_uuid: uuidv4(),
+        role_group: 'USER',
+      },
     ]);
   },
 
