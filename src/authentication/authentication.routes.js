@@ -25,6 +25,11 @@ router
       controller.validateOtpGetToken,
     ),
   );
+router
+  .route('/generate-otp')
+  .post(
+    requestErrorHandlingDecorator(Schema.generateOtp, controller.generateOtp),
+  );
 
 router
   .route('/forget-password')

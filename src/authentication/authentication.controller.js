@@ -137,6 +137,36 @@ exports.validateOtpGetToken = async (req, res, next) => {
     }),
   );
 };
+exports.generateOtp = async (req, res) => {
+  let { email, otp_for } = req.body;
+  let isUserExist = await getRecords(
+    'latest_user',
+    `WHERE email = '${email}' AND status = 'ACTIVE'`,
+  );
+  console.log('data', isUserExist.length);
+  if (!isUserExist?.length) throwError(404, 'Invalid user.');
+  let otp = await otpHandler({
+    user_fact_id: isUserExist[0].user_fact_id,
+    otp_for: otp_for,
+  });
+  try {
+    await sendEmailService(
+      [email],
+      `OTP FOR , ${otp_for}`,
+      `<H1>Your otp for ${otp_for} is  ${otp} </H1>`,
+      null,
+      null,
+      [],
+      [],
+      null,
+      [],
+    );
+    return res.json(responser('Otp has been sent to your email'));
+  } catch (e) {
+    console.log('Error in email service' + e);
+    throwError(500, 'Email is not send!');
+  }
+};
 
 exports.forgetPassword = async (req, res) => {
   let { email, otp, user_password, action } = req.body;

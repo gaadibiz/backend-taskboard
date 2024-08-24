@@ -3,6 +3,7 @@ select
     uf.user_fact_id,
     uf.user_uuid,
     uf.email,
+    up.status,
     uf.created_by_uuid,
     uf.insert_ts,
     lud.user_dim_id,
@@ -39,8 +40,7 @@ select
     up.languages_known,
     up.documents,
     up.branch_name,
-    up.branch_uuid,
-    up.status
+    up.branch_uuid
 from
     user_fact uf
     INNER JOIN (

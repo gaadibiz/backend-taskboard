@@ -30,6 +30,10 @@ exports.validateOtpGetToken = Joi.object({
   email: Joi.string().email().required(),
   otp: Joi.number().required(),
 });
+exports.generateOtp = Joi.object({
+  email: Joi.string().email().required(),
+  otp_for: Joi.string().required(),
+});
 
 exports.forgotPassword = Joi.object({
   email: Joi.string().email().required(),
