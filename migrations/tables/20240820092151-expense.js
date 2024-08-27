@@ -23,14 +23,14 @@ module.exports = {
       },
       project_uuid: {
         type: Sequelize.CHAR(36),
-        allowNull: false,
+        allowNull: true,
       },
       project_name: {
         type: Sequelize.STRING(100),
-        allowNull: false,
+        allowNull: true,
       },
       receipt: {
-        type: Sequelize.STRING(100),
+        type: Sequelize.JSON,
         allowNull: true,
       },
       merchant: {
@@ -43,7 +43,7 @@ module.exports = {
       },
       amount: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
       },
       description: {
         type: Sequelize.STRING(500),

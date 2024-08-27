@@ -6,7 +6,7 @@ exports.upsertExpenseSchema = Joi.object({
   report_uuid: Joi.string().guid().allow('', null),
   project_name: Joi.string().max(100).allow('', null),
   project_uuid: Joi.string().guid().allow('', null),
-  receipt: Joi.string(),
+  receipt: Joi.array(),
   merchant: Joi.string().max(100).allow('', null),
   category: Joi.string().max(100).allow('', null),
   expense_date: Joi.string().allow('', null),
