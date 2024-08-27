@@ -9,6 +9,7 @@ exports.upsertExpenseSchema = Joi.object({
   receipt: Joi.string(),
   merchant: Joi.string().max(100).allow('', null),
   category: Joi.string().max(100).allow('', null),
+  expense_date: Joi.string().allow('', null),
   amount: Joi.number().allow('', null),
   description: Joi.string().max(100).allow(null),
   status: Joi.string().valid('ACTIVE', 'INACTIVE').default('ACTIVE').required(),

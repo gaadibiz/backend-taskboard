@@ -49,6 +49,10 @@ module.exports = {
         type: Sequelize.STRING(500),
         allowNull: true,
       },
+      expense_date: {
+        type: Sequelize.DATEONLY,
+        allowNull: true,
+      },
       status: {
         type: Sequelize.STRING(20),
         allowNull: false,

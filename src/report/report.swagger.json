@@ -55,6 +55,10 @@
                   "type": "string",
                   "default": null
                 },
+                "expense_date": {
+                  "type": "string",
+                  "default": null
+                },
                 "amount": {
                   "type": "number",
                   "default": null
