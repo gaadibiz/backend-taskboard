@@ -27,13 +27,21 @@
                   "type": "string",
                   "default": null
                 },
-                "report_uuid": {
+                "project_name": {
                   "type": "string",
-                  "default": null
+                  "default": ""
                 },
                 "project_uuid": {
                   "type": "string",
                   "default": ""
+                },
+                "report_name": {
+                  "type": "string",
+                  "default": null
+                },
+                "report_uuid": {
+                  "type": "string",
+                  "default": null
                 },
                 "receipt": {
                   "type": "string",

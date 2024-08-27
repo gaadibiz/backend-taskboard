@@ -17,8 +17,16 @@ module.exports = {
         type: Sequelize.CHAR(36),
         allowNull: true,
       },
+      report_name: {
+        type: Sequelize.STRING(100),
+        allowNull: true,
+      },
       project_uuid: {
         type: Sequelize.CHAR(36),
+        allowNull: false,
+      },
+      project_name: {
+        type: Sequelize.STRING(100),
         allowNull: false,
       },
       receipt: {

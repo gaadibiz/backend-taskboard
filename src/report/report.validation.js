@@ -2,11 +2,13 @@ const Joi = require('joi');
 
 exports.upsertExpenseSchema = Joi.object({
   expense_uuid: Joi.string().guid().allow('', null),
+  report_name: Joi.string().max(100).allow('', null),
   report_uuid: Joi.string().guid().allow('', null),
+  project_name: Joi.string().max(100).allow('', null),
   project_uuid: Joi.string().guid().allow('', null),
   receipt: Joi.string(),
-  merchant: Joi.string().max(100).allow(null),
-  category: Joi.string().max(100).allow(null),
+  merchant: Joi.string().max(100).allow('', null),
+  category: Joi.string().max(100).allow('', null),
   amount: Joi.number().allow('', null),
   description: Joi.string().max(100).allow(null),
   status: Joi.string().valid('ACTIVE', 'INACTIVE').default('ACTIVE').required(),
