@@ -153,7 +153,7 @@ module.exports = {
     ]);
 
     await queryInterface.sequelize.query(`UPDATE \`module\`
-      SET map_column_user_uuid = '["created_by_uuid"]',
+      SET map_column_user_uuid = '["created_by_uuid","modified_by_uuid"]',
           column_relation_options = '[{
               "api": "/user/get-user",
               "field": "email",
@@ -168,16 +168,16 @@ module.exports = {
             "column_label": "Branch"
             }]';`);
     await queryInterface.sequelize.query(
-      `UPDATE \`module\` SET map_column_user_uuid = '["created_by_uuid","user_uuid"]' where table_name="latest_user" AND module_name='Admin' AND submodule_name = 'Users' ;`,
+      `UPDATE \`module\` SET map_column_user_uuid = '["created_by_uuid","modified_by_uuid","user_uuid"]' where table_name="latest_user" AND module_name='Admin' AND submodule_name = 'Users' ;`,
     );
     await queryInterface.sequelize.query(
-      `UPDATE \`module\` SET map_column_user_uuid = '["created_by_uuid","assigned_to_uuid","project_manager_uuid"]' where table_name="latest_tasks" AND submodule_name="Taskboard" AND module_name="Tasks";`,
+      `UPDATE \`module\` SET map_column_user_uuid = '["created_by_uuid","modified_by_uuid","assigned_to_uuid","project_manager_uuid"]' where table_name="latest_tasks" AND submodule_name="Taskboard" AND module_name="Tasks";`,
     );
     await queryInterface.sequelize.query(
-      `UPDATE \`module\` SET map_column_user_uuid = '["created_by_uuid","project_manager_uuid"]' where table_name="latest_report" AND submodule_name="Report" AND module_name="Report";`,
+      `UPDATE \`module\` SET map_column_user_uuid = '["created_by_uuid","modified_by_uuid","project_manager_uuid"]' where table_name="latest_report" AND submodule_name="Report" AND module_name="Report";`,
     );
     await queryInterface.sequelize.query(
-      `UPDATE \`module\` SET map_column_user_uuid = '["created_by_uuid","department_head_uuid"]' where table_name="latest_department" AND submodule_name="Department" AND module_name="Department";`,
+      `UPDATE \`module\` SET map_column_user_uuid = '["created_by_uuid","modified_by_uuid","department_head_uuid"]' where table_name="latest_department" AND submodule_name="Department" AND module_name="Department";`,
     );
   },
 
