@@ -55,9 +55,20 @@ exports.upsertTask = async (req, res) => {
 
   const isUserExists = await isValidRecord('latest_user', {
     user_uuid: req.body.assigned_to_uuid,
+    status: 'ACTIVE',
   });
   if (!isUserExists) {
     throwError(400, `Assigned User not found .`);
+  }
+  const isProjectExists = await isValidRecord('latest_project', {
+    project_uuid: req.body.type_uuid,
+    status: 'ACTIVE',
+  });
+
+  console.log('project', isProjectExists);
+
+  if (!isProjectExists) {
+    throwError(400, `project  not found .`);
   }
 
   await insertRecords('tasks', req.body);

@@ -44,6 +44,15 @@ module.exports = {
       },
       {
         module_uuid: uuidv4(),
+        module_name: 'Data Management',
+        submodule_name: 'Expense Category',
+        table_name: 'latest_expense_category',
+        map_column_user_uuid: JSON.stringify([]),
+        column_relation_options: JSON.stringify([]),
+        status: 'ACTIVE',
+      },
+      {
+        module_uuid: uuidv4(),
         module_name: 'Admin',
         submodule_name: 'Users',
         table_name: 'latest_user',

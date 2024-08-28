@@ -898,6 +898,156 @@
           }
         }
       }
+    },
+
+    "/api/v1/user/upsert-expense-category": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Create or update User",
+        "description": "Endpoint Create or update Branch",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "expense_category_uuid": {
+                  "type": "string",
+                  "default": ""
+                },
+                "expense_category_name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "expense_category_description": {
+                  "type": "string",
+                  "default": null
+                },
+
+                "status": {
+                  "type": "string",
+                  "default": "ACTIVE"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/user/get-expense-category": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Get all User ",
+        "description": "This endpoint to get branches.",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "expense_category_uuid",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "columns",
+            "description": "",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "value",
+            "description": "",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "description": "",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "from_date",
+            "description": "Format will be YYYY-MM-DD.",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "to_date",
+            "description": "Format will be YYYY-MM-DD.",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "pageNo",
+            "description": "",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "in": "query",
+            "name": "itemPerPage",
+            "description": "",
+            "required": true,
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful logout. The user has been logged out."
+          },
+          "404": {
+            "description": "Not Found. The provided user identifier was not found."
+          },
+          "500": {
+            "description": "Internal Server Error. An unexpected error occurred on the server."
+          }
+        }
+      }
     }
   }
 }
