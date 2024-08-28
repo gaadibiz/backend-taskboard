@@ -252,7 +252,7 @@ exports.upsertExpenseCategory = async (req, res) => {
       expense_category_name: req.body.expense_category_name,
     });
     if (isExist) throwError(404, 'expense_category is already exists.');
-    req.body.expense_category_uuid = uuidv4();
+    req.body.expense_category_uuid = uuid();
   }
   let expense_category = await insertRecords('expense_category', req.body);
   res.json(responser('expense_category created  successfully.', req.body));
