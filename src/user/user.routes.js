@@ -84,24 +84,4 @@ router.route('/upload-image').post(
   requestErrorHandlingDecorator(null, controller.uploadImage),
 );
 
-router
-  .route('/upsert-expense-category')
-  .post(
-    checkAuth,
-    requestErrorHandlingDecorator(
-      Schema.upsertExpenseCategory,
-      controller.upsertExpenseCategory,
-    ),
-  );
-
-router
-  .route('/get-expense-category')
-  .get(
-    checkAuth,
-    requestErrorHandlingDecorator(
-      Schema.getExpenseCategory,
-      controller.getExpenseCategory,
-    ),
-  );
-
 module.exports = router;

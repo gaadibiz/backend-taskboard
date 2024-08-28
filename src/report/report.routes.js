@@ -41,4 +41,24 @@ router
     requestErrorHandlingDecorator(Schema.getReportSchema, controller.getReport),
   );
 
+router
+  .route('/upsert-expense-category')
+  .post(
+    checkAuth,
+    requestErrorHandlingDecorator(
+      Schema.upsertExpenseCategory,
+      controller.upsertExpenseCategory,
+    ),
+  );
+
+router
+  .route('/get-expense-category')
+  .get(
+    checkAuth,
+    requestErrorHandlingDecorator(
+      Schema.getExpenseCategory,
+      controller.getExpenseCategory,
+    ),
+  );
+
 module.exports = router;

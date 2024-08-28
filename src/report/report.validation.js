@@ -69,3 +69,23 @@ exports.getReportSchema = Joi.object({
   columns: Joi.string(),
   value: Joi.string(),
 });
+
+exports.upsertExpenseCategory = Joi.object({
+  expense_category_uuid: Joi.string().guid().max(500).allow('', null),
+  expense_category_name: Joi.string().max(100).allow(null),
+  expense_category_description: Joi.string().max(500).allow('', null),
+  status: Joi.string().valid('ACTIVE', 'INACTIVE'),
+  created_by_uuid: Joi.string().guid().max(50).allow(null),
+  modified_by_uuid: Joi.string().guid().allow('', null),
+});
+
+exports.getExpenseCategory = Joi.object({
+  expense_category_uuid: Joi.string().guid(),
+  pageNo: Joi.number().integer().min(1),
+  itemPerPage: Joi.number().integer().min(1),
+  from_date: Joi.string().isoDate(),
+  to_date: Joi.string().isoDate(),
+  status: Joi.string(),
+  columns: Joi.string(),
+  value: Joi.string(),
+});
