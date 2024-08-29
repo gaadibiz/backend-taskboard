@@ -119,10 +119,7 @@ exports.upsertUserProfile = async (req, res) => {
   removeNullValueKey(req.body);
   let isUpadtion = false;
   const { user_uuid, role_uuid } = req.body;
-  let user = await getRecords(
-    'latest_user',
-    `where user_uuid='${user_uuid}' and status='ACTIVE'`,
-  );
+  let user = await getRecords('latest_user', `where user_uuid='${user_uuid}'`);
   if (!user.length) throwError(404, 'User not found.');
   user = user[0];
   req.body.modified_by_uuid = req.body.created_by_uuid;

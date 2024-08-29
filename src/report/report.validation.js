@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const { join } = require('path');
 
 exports.upsertExpenseSchema = Joi.object({
   expense_uuid: Joi.string().guid().allow('', null),
@@ -13,6 +14,13 @@ exports.upsertExpenseSchema = Joi.object({
   amount: Joi.number().allow('', null),
   description: Joi.string().max(100).allow(null),
   status: Joi.string().valid('ACTIVE', 'INACTIVE').default('ACTIVE').required(),
+  created_by_uuid: Joi.string().guid().allow('', null),
+  modified_by_uuid: Joi.string().guid().allow('', null),
+});
+exports.InsertBlukUnreportedExpense = Joi.object({
+  report_name: Joi.string().max(100).allow('', null),
+  report_uuid: Joi.string().guid().allow('', null),
+  expense_uuid_list: Joi.array().min(1),
   created_by_uuid: Joi.string().guid().allow('', null),
   modified_by_uuid: Joi.string().guid().allow('', null),
 });
