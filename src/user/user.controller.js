@@ -24,6 +24,9 @@ const bycrpt = require('bcrypt');
 
 // const path  = require('path');
 const multer = require('multer');
+const {
+  userSessionService,
+} = require('../authentication/authentication.service');
 
 exports.upsertUser = async (req, res) => {
   await isEditAccess('latest_user', req.user);
@@ -146,6 +149,9 @@ exports.upsertUserProfile = async (req, res) => {
       null,
       { otherViewName: 'latest_user' },
     );
+    // log out user
+    userSessionService({ user_uuid });
+    console.log('log out user');
   }
 
   await insertRecords('user_profile', updatedData);

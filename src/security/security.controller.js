@@ -118,6 +118,14 @@ exports.getRoles = async (req, res) => {
     value,
   );
   filter = await roleFilterService(filter, 'role_module', req.user);
+  console.log('filter', filter);
+
+  if (filter) {
+    filter = filter + " AND role_value <> 'SUPERADMIN'";
+  } else {
+    filter = filter + " WHERE role_value <> 'SUPERADMIN'";
+  }
+
   let pageFilter = pagination(pageNo, itemPerPage);
   let totalRecords = await getCountRecord(tableName, filter);
   let result = await getRecords(tableName, filter, pageFilter, null, {
