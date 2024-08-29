@@ -84,24 +84,6 @@ exports.upsertExpense = async (req, res) => {
   })();
 };
 
-exports.InsertBlukUnreportedExpense = async (req, res) => {
-  const { report_uuid, report_name, expense_uuid_list } = req.body;
-
-  let expense_data = await getRecords(
-    'latest_expense',
-    `where expense_uuid IN (${expense_uuid_list.map((item) => `'${item}'`).join(',')})`,
-  );
-
-  if (!expense_data.length) throwError(404, 'expense not found');
-  expense_data = expense_data.map((item) => {
-    return { ...item, report_uuid: report_uuid, report_name: report_name };
-  });
-
-  const insertexpense = await insertRecords('expense', expense_data);
-  res.json(
-    responser('Expense  successfully inserted in ' + report_name, req.body),
-  );
-};
 exports.getExpense = async (req, res) => {
   const {
     expense_uuid,
@@ -139,6 +121,8 @@ exports.getExpense = async (req, res) => {
 
 exports.upsertReport = async (req, res) => {
   // isEditAccess('latest_leads_with_project', req.user);
+  const { report_uuid, report_name, expense_uuid_list } = req.body;
+
   removeNullValueKey(req.body);
   let isUpadtion = false;
   if (req.body.report_uuid) {
@@ -158,6 +142,21 @@ exports.upsertReport = async (req, res) => {
     req.body.report_uuid = uuid();
   }
   const insertProject = await insertRecords('report', req.body);
+
+  if (expense_uuid_list.length) {
+    let expense_data = await getRecords(
+      'latest_expense',
+      `where expense_uuid IN (${expense_uuid_list.map((item) => `'${item}'`).join(',')})`,
+    );
+
+    if (!expense_data.length) throwError(404, 'expense not found');
+    expense_data = expense_data.map((item) => {
+      return { ...item, report_uuid: report_uuid, report_name: report_name };
+    });
+
+    const insertexpense = await insertRecords('expense', expense_data);
+  }
+
   res.json(responser('department created or updated successfully.', req.body));
 
   //<------------ handle costing sheet approval modal properly ----------->

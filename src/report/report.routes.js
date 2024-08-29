@@ -15,16 +15,6 @@ router
   );
 
 router
-  .route('/insert-bluk-unreported-expense')
-  .post(
-    checkAuth,
-    requestErrorHandlingDecorator(
-      Schema.InsertBlukUnreportedExpense,
-      controller.InsertBlukUnreportedExpense,
-    ),
-  );
-
-router
   .route('/get-expense')
   .get(
     checkAuth,

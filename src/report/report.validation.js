@@ -17,13 +17,6 @@ exports.upsertExpenseSchema = Joi.object({
   created_by_uuid: Joi.string().guid().allow('', null),
   modified_by_uuid: Joi.string().guid().allow('', null),
 });
-exports.InsertBlukUnreportedExpense = Joi.object({
-  report_name: Joi.string().max(100).allow('', null),
-  report_uuid: Joi.string().guid().allow('', null),
-  expense_uuid_list: Joi.array().min(1),
-  created_by_uuid: Joi.string().guid().allow('', null),
-  modified_by_uuid: Joi.string().guid().allow('', null),
-});
 
 exports.getExpenseSchema = Joi.object({
   expense_uuid: Joi.string().guid(),
@@ -44,6 +37,7 @@ exports.upsertReportSchema = Joi.object({
   project_name: Joi.string().allow('', null),
   project_manager_name: Joi.string().required(),
   project_manager_uuid: Joi.string().guid().allow('', null),
+  expense_uuid_list: Joi.array(),
   department_uuid: Joi.string().guid().allow('', null),
   department_name: Joi.string().allow('', null),
   report_name: Joi.string().allow('', null),

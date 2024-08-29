@@ -92,62 +92,6 @@
         }
       }
     },
-    "/api/v1/report/insert-bluk-unreported-expense": {
-      "post": {
-        "tags": ["expense"],
-        "summary": "insert Bluk expense",
-        "description": "",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
-        "parameters": [
-          {
-            "in": "header",
-            "name": "auth-Token",
-            "description": "",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "description": "",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "report_name": {
-                  "type": "string",
-                  "default": null
-                },
-                "report_uuid": {
-                  "type": "string",
-                  "default": null
-                },
-                "expense_uuid_list": {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "example": ""
-                  }
-                }
-              }
-            }
-          }
-        ],
-
-        "responses": {
-          "200": {
-            "description": "successful operation"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
     "/api/v1/report/get-expense": {
       "get": {
         "tags": ["expense"],
@@ -309,6 +253,13 @@
                 "report_name": {
                   "type": "string",
                   "default": ""
+                },
+                "expense_uuid_list": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "example": "uuid"
+                  }
                 },
                 "business_purpose": {
                   "type": "string",
