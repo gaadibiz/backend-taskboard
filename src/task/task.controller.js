@@ -58,17 +58,23 @@ exports.upsertTask = async (req, res) => {
     status: 'ACTIVE',
   });
   if (!isUserExists) {
-    throwError(400, `Assigned User not found .`);
+    throwError(
+      400,
+      `Assigned user does not exist or is inactive. Please select an active user to proceed.`,
+    );
   }
   const isProjectExists = await isValidRecord('latest_project', {
     project_uuid: req.body.type_uuid,
     status: 'ACTIVE',
   });
 
-  console.log('project', isProjectExists);
+  // console.log('project', isProjectExists);
 
   if (!isProjectExists) {
-    throwError(400, `project  not found .`);
+    throwError(
+      400,
+      `Selected project does not exist or is inactive. Please select an active project to proceed.`,
+    );
   }
 
   await insertRecords('tasks', req.body);
