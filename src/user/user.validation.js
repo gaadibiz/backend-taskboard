@@ -102,3 +102,10 @@ exports.getManageSiteSchema = Joi.object({
   columns: Joi.string(),
   value: Joi.string(),
 });
+
+exports.changeUserPwd = Joi.object({
+  user_uuid: Joi.string().guid().required(),
+  user_password: Joi.string().min(8).max(500).required(),
+  created_by_uuid: Joi.string().guid().max(50).allow(null),
+  modified_by_uuid: Joi.string().guid().allow('', null),
+});

@@ -68,6 +68,7 @@ exports.loginUser = async (req, res, next) => {
     user_uuid: userDetail[0].user_uuid,
     email: userDetail[0].email,
     role_uuid: userDetail[0].role_uuid,
+    role_name: userDetail[0].role_name,
     branch_uuid: userDetail[0].branch_uuid,
   };
   let token = jwt.sign(payload, config.jwt.jwtAccessKey, {

@@ -902,6 +902,55 @@
           }
         }
       }
+    },
+    "/api/v1/user/change-user-pwd": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Create or update User",
+        "description": "Endpoint Create or update ZOne",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "user_uuid": {
+                  "type": "string",
+                  "default": ""
+                },
+                "user_password": {
+                  "type": "string",
+                  "default": ""
+                }
+              }
+            }
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
     }
   }
 }

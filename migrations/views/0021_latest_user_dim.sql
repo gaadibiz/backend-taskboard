@@ -6,4 +6,4 @@ from `user_dim` ft
         from `user_dim`
         group by
             user_uuid
-    ) sc on ft.user_uuid = sc.user_uuid;
+    ) sc on ft.user_dim_id = sc.user_dim_id;

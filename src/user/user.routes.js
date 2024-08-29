@@ -84,4 +84,14 @@ router.route('/upload-image').post(
   requestErrorHandlingDecorator(null, controller.uploadImage),
 );
 
+router
+  .route('/change-user-pwd')
+  .post(
+    checkAuth,
+    requestErrorHandlingDecorator(
+      Schema.changeUserPwd,
+      controller.changeUserPwd,
+    ),
+  );
+
 module.exports = router;

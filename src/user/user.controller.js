@@ -136,6 +136,7 @@ exports.upsertUserProfile = async (req, res) => {
 
   if (user_dim.role_uuid !== req.body.role_uuid) {
     // if  role are updated then chnage the role in user dim
+
     const isRoleExist = await isValidRecord('latest_roles', {
       role_uuid,
       status: 'ACTIVE',
@@ -442,4 +443,66 @@ exports.uploadImage = async (req, res) => {
     console.log('imagePath: ', imagePath);
     res.json(responser('Upload Image.', [{ imagePath: imagePath }]));
   });
+};
+
+exports.changeUserPwd = async (req, res) => {
+  // isEditAccess('change_role',req.user);
+
+  const { role_name } = req.user;
+
+  const approved_role = ['Admin', 'Superadmin'];
+
+  const isEditAccess = approved_role.includes(role_name);
+
+  if (!isEditAccess) throwError(400, 'only admin can change pwd');
+
+  console.log(role_name, isEditAccess);
+
+  const { user_uuid } = req.body;
+  const isUserExist = await isValidRecord('latest_user', {
+    user_uuid,
+    status: 'ACTIVE',
+  });
+  if (!isUserExist) throwError(400, 'Invalid User');
+
+  if (req.body.user_password) {
+    req.body.user_password = bycrpt.hashSync(req.body.user_password, 10);
+  }
+  await upsertRecords(
+    'user_dim',
+    req.body,
+    `where user_uuid="${user_uuid}"`,
+    null,
+    { otherViewName: 'latest_user' },
+  );
+
+  (async () => {
+    try {
+      let historyMessage = '';
+      let userInfo = (
+        await getRecords('latest_user', `where user_uuid= '${user_uuid}'`)
+      )[0];
+
+      historyMessage = `${req.user?.first_name} has changed ${userInfo?.first_name}'s password.`;
+
+      const bodyData = {
+        module_name: 'User',
+        module_uuid: req.body.user_uuid,
+        message: historyMessage,
+        module_column_name: 'user_uuid',
+        created_by_uuid: req.body.created_by_uuid,
+      };
+      await getData(
+        base_url + '/api/v1/history/upsert-history',
+        null,
+        'json',
+        bodyData,
+        'POST',
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  })();
+
+  res.json(responser('password has been changed.'));
 };
