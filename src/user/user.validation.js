@@ -31,6 +31,7 @@ exports.upsertUserSchema = Joi.object({
 
 exports.upsertUserProfileSchema = Joi.object({
   user_uuid: Joi.string().guid().max(50).required(),
+  role_uuid: Joi.string().guid().max(50).required(),
   first_name: Joi.string().max(50).required(),
   last_name: Joi.string().max(50).allow('', null),
   personal_email: Joi.string().email().max(500).required(),
@@ -51,7 +52,7 @@ exports.upsertUserProfileSchema = Joi.object({
   mother_maiden_name: Joi.string().max(50).allow(null),
   photo: Joi.string().max(50).allow(null),
   signature: Joi.string().max(50).allow(null),
-  street_address: Joi.string().max(50).allow(null),
+  street_address: Joi.string().max(500).allow(null),
   unit_or_suite: Joi.string().max(100).allow(null),
   city: Joi.string().max(50).allow(null),
   province_or_state: Joi.string().max(50).allow(null),

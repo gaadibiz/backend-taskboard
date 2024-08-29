@@ -118,7 +118,7 @@ exports.upsertUserProfile = async (req, res) => {
   await isEditAccess('latest_user', req.user);
   removeNullValueKey(req.body);
   let isUpadtion = false;
-  const { user_uuid } = req.body;
+  const { user_uuid, role_uuid } = req.body;
   let user = await getRecords(
     'latest_user',
     `where user_uuid='${user_uuid}' and status='ACTIVE'`,
@@ -128,6 +128,28 @@ exports.upsertUserProfile = async (req, res) => {
   req.body.modified_by_uuid = req.body.created_by_uuid;
   req.body.created_by_uuid = user.created_by_uuid;
   updatedData = { ...user, ...req.body };
+
+  let [user_dim] = await getRecords(
+    'latest_user_dim',
+    `where user_uuid='${user_uuid}'`,
+  );
+
+  if (user_dim.role_uuid !== req.body.role_uuid) {
+    // if  role are updated then chnage the role in user dim
+    const isRoleExist = await isValidRecord('latest_roles', {
+      role_uuid,
+      status: 'ACTIVE',
+    });
+    if (!isRoleExist) throwError(400, 'Invalid Role');
+    await upsertRecords(
+      'user_dim',
+      req.body,
+      `where user_uuid="${user_uuid}"`,
+      null,
+      { otherViewName: 'latest_user' },
+    );
+  }
+
   await insertRecords('user_profile', updatedData);
   res.json(responser('User Profile created  successfully.', updatedData));
 

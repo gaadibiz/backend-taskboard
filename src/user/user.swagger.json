@@ -112,6 +112,10 @@
                   "type": "string",
                   "default": ""
                 },
+                "role_uuid": {
+                  "type": "string",
+                  "default": ""
+                },
                 "branch_uuid": {
                   "type": "string",
                   "default": ""
