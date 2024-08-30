@@ -151,7 +151,6 @@ exports.upsertUserProfile = async (req, res) => {
     );
     // log out user
     userSessionService({ user_uuid });
-    console.log('log out user');
   }
 
   await insertRecords('user_profile', updatedData);
@@ -450,7 +449,6 @@ exports.uploadImage = async (req, res) => {
 
 exports.changeUserPwd = async (req, res) => {
   // isEditAccess('change_role',req.user);
-
   const { role_name } = req.user;
 
   const approved_role = ['Admin', 'Superadmin'];
@@ -478,6 +476,9 @@ exports.changeUserPwd = async (req, res) => {
     null,
     { otherViewName: 'latest_user' },
   );
+
+  // logout session after pwd chnage
+  userSessionService({ user_uuid });
 
   (async () => {
     try {
