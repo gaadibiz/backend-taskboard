@@ -370,47 +370,6 @@
           "500": { "description": "Internal Server Error" }
         }
       }
-    },
-    "/api/v1/approval/get-table-status": {
-      "get": {
-        "tags": ["Approval"],
-        "summary": "Get Table Status",
-        "description": "Endpoint to retrieve table status",
-        "produces": ["application/json"],
-
-        "parameters": [
-          {
-            "in": "header",
-            "name": "auth-Token",
-            "description": "",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "query",
-            "name": "module_name",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "query",
-            "name": "submodule_name",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "query",
-            "name": "table_name",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": { "description": "successful operation" },
-          "404": { "description": "Not Found" },
-          "500": { "description": "Internal Server Error" }
-        }
-      }
     }
   }
 }

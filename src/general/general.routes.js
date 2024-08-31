@@ -73,4 +73,15 @@ router
     ),
   );
 
+router
+  .route('/get-table-info')
+  .get(checkAuth, requestErrorHandlingDecorator(null, controller.getTableInfo));
+
+router
+  .route('/get-table-description')
+  .get(
+    checkAuth,
+    requestErrorHandlingDecorator(null, controller.getTableDescription),
+  );
+
 module.exports = router;

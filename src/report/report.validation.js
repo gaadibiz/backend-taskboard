@@ -53,6 +53,7 @@ exports.upsertReportSchema = Joi.object({
       'REPORT_REQUESTED',
       'REPORT_APPROVAL_REQUESTED',
       'FINANCE_APPROVAL_REQUESTED',
+      'INACTIVE',
     )
     .default('REPORT_APPROVAL_REQUESTED')
     .required(),

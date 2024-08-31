@@ -578,3 +578,41 @@ exports.covertBase64ToBuffer = async (req, res) => {
   );
   res.json(responser('Base64 to Buffer', bufferArray));
 };
+
+exports.getTableInfo = async (req, res) => {
+  const {
+    table_name,
+    status,
+    pageNo,
+    itemPerPage,
+    from_date,
+    to_date,
+    columns,
+    value,
+  } = req.query;
+  let tableName = 'table_reference';
+  let filter = filterFunctionality(
+    {
+      table_name,
+    },
+    status,
+    to_date,
+    from_date,
+    Array.isArray(columns) ? columns : [columns],
+    value,
+  );
+  let pageFilter = pagination(pageNo, itemPerPage);
+  let totalRecords = await getCountRecord(tableName, filter);
+  let result = await getRecords(tableName, filter, pageFilter);
+  return res.json(
+    responser('Table info ', result, result.length, totalRecords),
+  );
+};
+
+exports.getTableDescription = async (req, res) => {
+  const { table_name } = req.query;
+  let result = await getTableColumnsNames(table_name, null, {
+    columnsInArray: true,
+  });
+  return res.json(responser('Table description :  ', result, result.length));
+};
