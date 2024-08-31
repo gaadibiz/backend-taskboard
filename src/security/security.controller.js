@@ -210,3 +210,8 @@ exports.getRoleModuleContentAccessPermission = async (req, res) => {
     );
   }
 };
+
+exports.getModules = async (req, res) => {
+  let modules = await getRecords('module');
+  return res.json(responser('Modules', modules));
+};

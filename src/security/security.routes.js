@@ -38,4 +38,8 @@ router.route('/get-role-module-content-access-permission').get(
   ),
 );
 
+router
+  .route('/get-modules')
+  .get(checkAuth, requestErrorHandlingDecorator(null, controller.getModules));
+
 module.exports = router;
