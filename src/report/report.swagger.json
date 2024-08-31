@@ -53,9 +53,13 @@
                   "type": "string",
                   "default": null
                 },
-                "category": {
+                "expense_category_uuid": {
                   "type": "string",
-                  "default": null
+                  "default": ""
+                },
+                "expense_category_name": {
+                  "type": "string",
+                  "default": ""
                 },
                 "expense_date": {
                   "type": "string",
