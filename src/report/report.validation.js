@@ -22,6 +22,7 @@ exports.upsertExpenseSchema = Joi.object({
 exports.getExpenseSchema = Joi.object({
   expense_uuid: Joi.string().guid(),
   report_uuid: Joi.string().guid(),
+  expense_category_uuid: Joi.string().guid(),
   project_uuid: Joi.string().guid(),
   pageNo: Joi.number().integer().min(1),
   itemPerPage: Joi.number().integer().min(1),

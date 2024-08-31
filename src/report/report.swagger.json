@@ -128,6 +128,13 @@
           },
           {
             "in": "query",
+            "name": "expense_category_uuid",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
             "name": "project_uuid",
             "description": "",
             "required": false,
