@@ -123,7 +123,7 @@ exports.getExpense = async (req, res) => {
 
 exports.upsertReport = async (req, res) => {
   // isEditAccess('latest_leads_with_project', req.user);
-  const { report_uuid, report_name, expense_uuid_list } = req.body;
+  const { expense_uuid_list } = req.body;
 
   removeNullValueKey(req.body);
   let isUpadtion = false;
@@ -153,7 +153,11 @@ exports.upsertReport = async (req, res) => {
 
     if (!expense_data.length) throwError(404, 'expense not found');
     expense_data = expense_data.map((item) => {
-      return { ...item, report_uuid: report_uuid, report_name: report_name };
+      return {
+        ...item,
+        report_uuid: req.body.report_uuid,
+        report_name: req.body.report_name,
+      };
     });
 
     const insertexpense = await insertRecords('expense', expense_data);
@@ -249,6 +253,14 @@ exports.getReport = async (req, res) => {
   let pageFilter = pagination(pageNo, itemPerPage);
   let totalRecords = await getCountRecord(tableName, filter);
   let result = await getRecords(tableName, filter, pageFilter);
+
+  console.log(result);
+  // to add new unreported expense
+  result.forEach((item) => {
+    item.expense_uuid_list = [];
+  });
+
+  console.log(result);
 
   return res.json(
     responser('department: ', result, result.length, totalRecords),
