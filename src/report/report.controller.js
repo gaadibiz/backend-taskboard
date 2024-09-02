@@ -88,6 +88,7 @@ exports.getExpense = async (req, res) => {
   const {
     expense_uuid,
     report_uuid,
+    unreported,
     project_uuid,
     expense_category_uuid,
     pageNo,
@@ -113,6 +114,16 @@ exports.getExpense = async (req, res) => {
     Array.isArray(columns) ? columns : [columns],
     value,
   );
+
+  // filter to handle unreported list
+  if (unreported === 'UNREPORTED') {
+    if (filter) {
+      filter += ' OR report_uuid IS NULL';
+    } else {
+      filter += 'WHERE report_uuid IS NULL';
+    }
+  }
+
   filter = await roleFilterService(filter, 'latest_expense', req.user);
   let pageFilter = pagination(pageNo, itemPerPage);
   let totalRecords = await getCountRecord(tableName, filter);

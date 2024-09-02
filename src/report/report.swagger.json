@@ -142,6 +142,13 @@
           },
           {
             "in": "query",
+            "name": "unreported",
+            "required": false,
+            "type": "string",
+            "enum": ["UNREPORTED"]
+          },
+          {
+            "in": "query",
             "name": "columns",
             "description": "",
             "required": false,

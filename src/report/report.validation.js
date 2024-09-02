@@ -24,6 +24,7 @@ exports.getExpenseSchema = Joi.object({
   report_uuid: Joi.string().guid(),
   expense_category_uuid: Joi.string().guid(),
   project_uuid: Joi.string().guid(),
+  unreported: Joi.string(),
   pageNo: Joi.number().integer().min(1),
   itemPerPage: Joi.number().integer().min(1),
   from_date: Joi.string().regex(/^\d{4}-\d{2}-\d{2}$/),
