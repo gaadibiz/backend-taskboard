@@ -180,15 +180,13 @@ exports.upsertReport = async (req, res) => {
     const insertexpense = await insertRecords('expense', expense_data);
   }
 
-  res.json(responser('department created or updated successfully.', req.body));
-
   //<------------ handle costing sheet approval modal properly ----------->
   const bodyData = {
     table_name: 'latest_report',
     record_uuid: req.body.report_uuid,
     record_column_name: 'report_uuid',
   };
-  getData(
+  await getData(
     base_url + '/api/v1/approval/insert-approval',
     null,
     'json',
@@ -197,6 +195,7 @@ exports.upsertReport = async (req, res) => {
     req.headers,
   );
 
+  res.json(responser('Report created or updated successfully.', req.body));
   // res.json(responser('Project created or updated successfully.', req.body));
 
   // <---------------- history entry ---------------->

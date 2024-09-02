@@ -62,7 +62,7 @@ module.exports = {
         allowNull: true,
       },
       status: {
-        type: Sequelize.STRING(20),
+        type: Sequelize.STRING(50),
         allowNull: true,
         defaultValue: 'REPORT_REQUESTED',
       },
