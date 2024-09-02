@@ -145,7 +145,7 @@ exports.upsertReport = async (req, res) => {
   }
   const insertProject = await insertRecords('report', req.body);
 
-  if (expense_uuid_list.length) {
+  if (expense_uuid_list?.length) {
     let expense_data = await getRecords(
       'latest_expense',
       `where expense_uuid IN (${expense_uuid_list.map((item) => `'${item}'`).join(',')})`,
