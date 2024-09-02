@@ -104,7 +104,6 @@ exports.getExpense = async (req, res) => {
   let filter = filterFunctionality(
     {
       expense_uuid,
-      report_uuid,
       project_uuid,
       expense_category_uuid,
     },
@@ -118,12 +117,19 @@ exports.getExpense = async (req, res) => {
   // filter to handle unreported list
   if (unreported === 'UNREPORTED') {
     if (filter) {
-      filter += ' OR report_uuid IS NULL';
+      filter += ` AND ( ${report_uuid ? `report_uuid = '${report_uuid}' OR ` : ''} report_uuid IS NULL)`;
     } else {
-      filter += 'WHERE report_uuid IS NULL';
+      filter += `WHERE ${report_uuid ? `report_uuid = '${report_uuid}' OR ` : ''}  report_uuid IS NULL`;
+    }
+  } else {
+    if (filter) {
+      filter += `${report_uuid ? `AND report_uuid = '${report_uuid}'` : ''}`;
+    } else {
+      filter += `${report_uuid ? `WHERE report_uuid = '${report_uuid}'` : ''}`;
     }
   }
 
+  console.log(filter);
   filter = await roleFilterService(filter, 'latest_expense', req.user);
   let pageFilter = pagination(pageNo, itemPerPage);
   let totalRecords = await getCountRecord(tableName, filter);
