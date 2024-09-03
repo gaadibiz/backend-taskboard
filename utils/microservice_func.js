@@ -206,3 +206,75 @@ exports.sendEmailMicrosoftgraph = async (
     attachments,
   });
 };
+
+exports.approvalEmails = async (approvalUuid, user) => {
+  let approvalInfo = (
+    await getRecords('latest_approval', `where approval_uuid="${approvalUuid}"`)
+  )[0];
+  let emailConfig =
+    actionEmails[tableMap[approvalInfo.table_name] || approvalInfo.table_name];
+  let data =
+    // await getRecords(approvalInfo.table_name, eval("`"+emailConfig.condition+"`"))
+    (
+      await getRecords(
+        tableMap[approvalInfo.table_name] || approvalInfo.table_name,
+        `where ${approvalInfo.record_column_name}='${approvalInfo.record_uuid}'`,
+      )
+    )[0];
+  removeNullValueKey(data, { removeEmptyString: true });
+  let moduleName = (
+    await getRecords(
+      'module',
+      `where table_name="${approvalInfo.table_name}"`,
+      null,
+      ['submodule_name'],
+    )
+  )[0].submodule_name;
+  let simlarFields = findKeysWithPhrase(data, 'assigned_to_uuid');
+  let userEmails = simlarFields.map((column) =>
+    getRecords('user_fact', `where user_uuid="${data[column]}"`, null, [
+      'email',
+    ]),
+  );
+  userEmails = await Promise.all(userEmails);
+  userEmails = userEmails.map((email) => email[0].email);
+  let approverEmails = [];
+  for (let obj of approvalInfo.approval_uuids) {
+    if (obj.type === 'USER') {
+      let email = (
+        await getRecords('user_fact', `where user_uuid="${obj.uuid}"`, null, [
+          'email',
+        ])
+      )[0];
+      if (email) approverEmails.push(email.email);
+    } else if (obj.type === 'ROLE') {
+      let email = (
+        await getRecords('latest_user', `where role_uuid="${obj.uuid}"`, null, [
+          'email',
+        ])
+      )[0];
+      if (email) approverEmails.push(email.email);
+    }
+  }
+  userEmails.push(user.email);
+  userEmails = new Set(userEmails);
+  userEmails = Array.from(userEmails);
+  let action = approvalInfo.status.toLowerCase();
+  // let details = emailConfig.detail_columns
+  //   .map(
+  //     (key) =>
+  //       `<b>${key.toUpperCase().replace(/_/g, ' ')}</b>: <b>${data[key]}</b>`,
+  //   )
+  //   .join('<br>');
+  // let to = approverEmails.map((email) => email.replace(/\+.+@/, '@'));
+  let resp = await getData(SERVICES_URL.sendEmail, null, 'json', {
+    to: approverEmails,
+    cc: userEmails,
+    subject: `${moduleName} ${action}: ${data[emailConfig.identifier]}`,
+    body: `Hi there,${moduleName} of ${
+      data[emailConfig.identifier]
+    } has been ${action}. ${
+      approvalInfo.remark ? `<br> Remark: <b>${approvalInfo.remark}</b>` : ''
+    } <br><br>Regards<br>Rockworth IT`,
+  });
+};

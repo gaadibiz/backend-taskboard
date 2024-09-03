@@ -56,6 +56,8 @@
         "tags": ["Approval"],
         "summary": "Create or update Approval",
         "description": "",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "header",
@@ -63,35 +65,34 @@
             "description": "",
             "required": true,
             "type": "string"
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "approval_uuid": {
-                    "type": "string",
-                    "default": ""
-                  },
-                  "remark": {
-                    "type": "string",
-                    "default": ""
-                  },
-                  "fields": {
-                    "type": "object"
-                  },
-                  "status": {
-                    "type": "string",
-                    "default": "APPROVED | REJECTED | ROLLBACK"
-                  }
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Handle Approval data",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "approval_uuid": {
+                  "type": "string",
+                  "default": ""
+                },
+                "remark": {
+                  "type": "string",
+                  "default": ""
+                },
+                "fields": {
+                  "type": "object"
+                },
+                "status": {
+                  "type": "string",
+                  "default": "APPROVED | REJECTED | ROLLBACK"
                 }
               }
             }
           }
-        },
+        ],
         "responses": {
           "200": {
             "description": "successful operation"

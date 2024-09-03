@@ -71,9 +71,14 @@ exports.loginUser = async (req, res, next) => {
     role_name: userDetail[0].role_name,
     branch_uuid: userDetail[0].branch_uuid,
   };
-  let token = jwt.sign(payload, config.jwt.jwtAccessKey, {
+
+  let jwtOption = {
     expiresIn: config.jwt.jwtAccessExpiredIn,
-  });
+  };
+  if (userDetail[0].role_value === 'SUPERADMIN') {
+    deleteKeyValuePair(jwtOption, ['expiresIn']);
+  }
+  let token = jwt.sign(payload, config.jwt.jwtAccessKey, jwtOption);
 
   console.log('userDetail[0].user_uuid: ', userDetail[0].user_uuid);
   await userSessionService({

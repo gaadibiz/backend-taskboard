@@ -9,9 +9,12 @@ module.exports = {
         primaryKey: true,
         autoIncrement: true,
       },
-
       approval_uuid: {
-        type: Sequelize.CHAR(36),
+        type: Sequelize.STRING(50),
+        allowNull: false,
+      },
+      current_level: {
+        type: Sequelize.INTEGER,
         allowNull: false,
       },
       table_name: {
@@ -19,7 +22,7 @@ module.exports = {
         allowNull: false,
       },
       record_uuid: {
-        type: Sequelize.CHAR(36),
+        type: Sequelize.STRING(50),
         allowNull: false,
       },
       record_id: {
@@ -30,29 +33,21 @@ module.exports = {
         type: Sequelize.STRING(100),
         allowNull: true,
       },
-      approved_by_uuid: {
-        type: Sequelize.CHAR(36),
-        allowNull: false,
-      },
-      approved_by_name: {
-        type: Sequelize.STRING(100),
+      approval_uuids: {
+        type: Sequelize.JSON,
         allowNull: false,
       },
       requested_by_uuid: {
-        type: Sequelize.CHAR(36),
-        allowNull: false,
-      },
-      requested_by_name: {
-        type: Sequelize.STRING(100),
+        type: Sequelize.STRING(50),
         allowNull: false,
       },
       previous_status: {
         type: Sequelize.STRING(100),
         allowNull: true,
       },
-      current_status: {
+      status: {
         type: Sequelize.STRING(100),
-        allowNull: false,
+        allowNull: true,
       },
       next_status: {
         type: Sequelize.STRING(100),
@@ -62,21 +57,14 @@ module.exports = {
         type: Sequelize.STRING(300),
         allowNull: true,
       },
-      status: {
-        type: Sequelize.STRING(50),
-        allowNull: true,
-      },
       created_by_uuid: {
-        type: Sequelize.CHAR(36),
-        allowNull: true,
-      },
-      modified_by_uuid: {
-        type: Sequelize.CHAR(36),
+        type: Sequelize.STRING(50),
         allowNull: true,
       },
       create_ts: {
         type: Sequelize.DATE,
-        allowNull: true,
+        allowNull: false,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
       insert_ts: {
         type: Sequelize.DATE,

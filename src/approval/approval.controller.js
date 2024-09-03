@@ -16,7 +16,7 @@ const {
   removeNullValueKey,
   throwError,
   responser,
-  apiRequest,
+  getData,
   setDateTimeFormat,
   deleteKeyValuePair,
 } = require('../../utils/helperFunction');
@@ -63,17 +63,17 @@ exports.insertApproval = async (req, res) => {
     approval_uuid: uuidv4(),
     requested_by_uuid: req.user.user_uuid,
     current_level: 1,
-    create_ts: setDateTimeFormat('timestamp'),
     approval_uuids: approvalCount.approval_hierarchy[0],
     previous_status: approvalCount.previous_status,
     status: 'REQUESTED',
     next_status: approvalCount.next_status,
+    create_ts: setDateTimeFormat('timestemp'),
   };
   await insertRecords('approval', req.body);
   res.status(200).json(responser('Approval inserted successfully', req.body));
 
   // <------------ Send Email On Action ------------->
-  approvalEmails(req.body.approval_uuid, req.user);
+  // approvalEmails(req.body.approval_uuid, req.user);
 };
 
 exports.handleApproval = async (req, res) => {
@@ -189,7 +189,7 @@ exports.handleApproval = async (req, res) => {
       record_uuid: approval[0].record_uuid,
       record_column_name: approval[0].record_column_name,
     };
-    await apiRequest(
+    await getData(
       base_url + '/api/v1/approval/insert-approval',
       null,
       'json',
@@ -231,7 +231,7 @@ exports.handleApproval = async (req, res) => {
       created_by_uuid: req.body.created_by_uuid,
     };
 
-    apiRequest(
+    getData(
       base_url + '/api/v1/comment/upsert-comment',
       null,
       'json',
@@ -242,7 +242,7 @@ exports.handleApproval = async (req, res) => {
   }
   res.status(200).json(responser(msg, req.body));
   // <------------ Send Email On Action ------------->
-  approvalEmails(req.body.approval_uuid, req.user);
+  // approvalEmails(req.body.approval_uuid, req.user);
 };
 
 exports.getApprovals = async (req, res) => {
