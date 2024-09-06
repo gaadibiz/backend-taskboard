@@ -69,6 +69,7 @@ exports.loginUser = async (req, res, next) => {
     email: userDetail[0].email,
     role_uuid: userDetail[0].role_uuid,
     role_name: userDetail[0].role_name,
+    role_value: userDetail[0].role_value,
     branch_uuid: userDetail[0].branch_uuid,
   };
 

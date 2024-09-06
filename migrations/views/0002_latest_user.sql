@@ -10,6 +10,7 @@ select
     lud.user_password,
     lud.role_uuid,
     r.role_name,
+    r.role_value,
     r.role_group,
     up.user_profile_id,
     up.first_name,

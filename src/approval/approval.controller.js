@@ -271,6 +271,7 @@ exports.getApprovals = async (req, res) => {
       alias: 'la',
     },
   );
+
   if (req.user.role_value !== 'ADMIN') {
     filter =
       (filter ? `${filter} AND ` : 'WHERE ') +
