@@ -449,15 +449,15 @@ exports.uploadImage = async (req, res) => {
 
 exports.changeUserPwd = async (req, res) => {
   // isEditAccess('change_role',req.user);
-  const { role_name } = req.user;
+  const { role_value } = req.user;
 
-  const approved_role = ['Admin', 'Superadmin'];
+  const approved_role = ['ADMIN', 'SUPERADMIN'];
 
-  const isEditAccess = approved_role.includes(role_name);
+  const isEditAccess = approved_role.includes(role_value);
 
   if (!isEditAccess) throwError(400, 'only admin can change pwd');
 
-  console.log(role_name, isEditAccess);
+  console.log(role_value, isEditAccess);
 
   const { user_uuid } = req.body;
   const isUserExist = await isValidRecord('latest_user', {
