@@ -25,6 +25,7 @@ exports.upsertUserSchema = Joi.object({
     otherwise: Joi.string().guid().max(50).required(),
   }),
   role_uuid: Joi.string().guid().max(50).required(),
+  role_value: Joi.string().allow('', null),
   status: Joi.string().valid('ACTIVE', 'INACTIVE').default('ACTIVE').required(),
   created_by_uuid: Joi.string().guid().max(50).allow(null),
 });
@@ -32,6 +33,7 @@ exports.upsertUserSchema = Joi.object({
 exports.upsertUserProfileSchema = Joi.object({
   user_uuid: Joi.string().guid().max(50).required(),
   role_uuid: Joi.string().guid().max(50).required(),
+  role_value: Joi.string().allow('', null),
   first_name: Joi.string().max(50).required(),
   last_name: Joi.string().max(50).allow('', null),
   personal_email: Joi.string().email().max(500).required(),
