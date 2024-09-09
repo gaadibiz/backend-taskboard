@@ -270,13 +270,26 @@ exports.getReport = async (req, res) => {
   let totalRecords = await getCountRecord(tableName, filter);
   let result = await getRecords(tableName, filter, pageFilter);
 
-  console.log(result);
   // to add new unreported expense
   result.forEach((item) => {
     item.expense_uuid_list = [];
   });
 
-  console.log(result);
+  if (report_uuid) {
+    // merge approval record logic
+    result[0] = await getData(
+      base_url + '/api/v1/approval/merge-approval-record',
+      null,
+      'json',
+      {
+        record_uuid: report_uuid,
+        table_name: 'latest_report',
+        data: result[0],
+      },
+      'POST',
+      req.headers,
+    );
+  }
 
   return res.json(
     responser('department: ', result, result.length, totalRecords),

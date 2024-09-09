@@ -445,6 +445,7 @@ exports.mergeApprovalWithRecord = async (req, res) => {
     null,
     ['approval_uuid', 'requested_by_uuid', 'approval_uuids'],
   );
+
   if (approvalRecord.length) {
     let is_user_approver = approvalRecord[0].approval_uuids.some(
       (ele) =>
