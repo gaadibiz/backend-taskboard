@@ -198,49 +198,52 @@ exports.handleApproval = async (req, res) => {
       req.headers,
     );
   }
-  let msg = '';
-  switch (req.body.status) {
-    case 'APPROVED':
-      msg = 'Approved successfully';
-      break;
-    case 'REJECTED':
-      msg = 'Rejected successfully';
-      break;
-    case 'ROLLBACK':
-      msg = 'Rollback successfully';
-      break;
-  }
-  if (req.body.remark) {
-    let parent_module_no = '';
-    //Add approval modules here in the list. First module found will be used as parent module.
-    let module_names = ['product_code', 'order_no', 'enquiry_no'];
-
-    for (let element of module_names) {
-      if (record[0].hasOwnProperty(element)) {
-        parent_module_no = record[0][element];
-        break;
-      }
-    }
-    const bodyData = {
-      parent_module_no: parent_module_no,
-      module_uuid: req.body.approval_uuid,
-      module_name: 'APPROVAL',
-      comment_remark: req.body.remark,
-      status: 'ACTIVE',
-      created_by_name: req.user.first_name + ' ' + req.user.last_name,
-      created_by_uuid: req.body.created_by_uuid,
-    };
-
-    getData(
-      base_url + '/api/v1/comment/upsert-comment',
-      null,
-      'json',
-      bodyData,
-      'POST',
-      req.headers,
-    );
-  }
   res.status(200).json(responser(msg, req.body));
+  (async () => {
+    let msg = '';
+    switch (req.body.status) {
+      case 'APPROVED':
+        msg = 'Approved successfully';
+        break;
+      case 'REJECTED':
+        msg = 'Rejected successfully';
+        break;
+      case 'ROLLBACK':
+        msg = 'Rollback successfully';
+        break;
+    }
+    if (req.body.remark) {
+      let parent_module_no = '';
+      //Add approval modules here in the list. First module found will be used as parent module.
+      let module_names = ['product_code', 'order_no', 'enquiry_no'];
+
+      for (let element of module_names) {
+        if (record[0].hasOwnProperty(element)) {
+          parent_module_no = record[0][element];
+          break;
+        }
+      }
+      const bodyData = {
+        parent_module_no: parent_module_no,
+        module_uuid: req.body.approval_uuid,
+        module_name: 'APPROVAL',
+        comment_remark: req.body.remark,
+        status: 'ACTIVE',
+        created_by_name: req.user.first_name + ' ' + req.user.last_name,
+        created_by_uuid: req.body.created_by_uuid,
+      };
+
+      await getData(
+        base_url + '/api/v1/comment/upsert-comment',
+        null,
+        'json',
+        bodyData,
+        'POST',
+        req.headers,
+      );
+    }
+  })();
+
   // <------------ Send Email On Action ------------->
   // approvalEmails(req.body.approval_uuid, req.user);
 };
