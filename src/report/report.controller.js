@@ -117,9 +117,9 @@ exports.getExpense = async (req, res) => {
   // filter to handle unreported list
   if (unreported === 'UNREPORTED') {
     if (filter) {
-      filter += ` AND ( ${report_uuid ? `report_uuid = '${report_uuid}' OR ` : ''} report_uuid IS NULL)`;
+      filter += ` AND ( ${report_uuid ? `report_uuid = '${report_uuid}' OR ` : ''} report_uuid IS NULL  OR report_uuid = '')`;
     } else {
-      filter += `WHERE ${report_uuid ? `report_uuid = '${report_uuid}' OR ` : ''}  report_uuid IS NULL`;
+      filter += `WHERE ${report_uuid ? `report_uuid = '${report_uuid}' OR ` : ''}  report_uuid IS NULL  OR report_uuid = ''`;
     }
   } else {
     if (filter) {
@@ -311,6 +311,9 @@ exports.upsertExpenseCategory = async (req, res) => {
     let isExist = await isValidRecord('latest_expense_category', {
       expense_category_name: req.body.expense_category_name,
     });
+
+    console.log(isExist);
+
     if (isExist) throwError(404, 'expense_category is already exists.');
     req.body.expense_category_uuid = uuid();
   }
