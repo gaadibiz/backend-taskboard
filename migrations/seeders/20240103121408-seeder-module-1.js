@@ -188,6 +188,9 @@ module.exports = {
     await queryInterface.sequelize.query(
       `UPDATE \`module\` SET map_column_user_uuid = '["created_by_uuid","modified_by_uuid","department_head_uuid"]' where table_name="latest_department" AND submodule_name="Department" AND module_name="Department";`,
     );
+    await queryInterface.sequelize.query(
+      `UPDATE \`module\` SET map_column_user_uuid = '["created_by_uuid", "modified_by_uuid", "project_manager_uuid"]' where table_name="latest_project" AND submodule_name="Project" AND module_name="Project";`,
+    );
   },
 
   async down(queryInterface, Sequelize) {

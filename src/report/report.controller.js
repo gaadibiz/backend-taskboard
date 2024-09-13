@@ -265,7 +265,7 @@ exports.getReport = async (req, res) => {
     value,
   );
   // need suggestion
-  // filter = await roleFilterService(filter, 'latest_report', req.user);
+  filter = await roleFilterService(filter, 'latest_report', req.user);
   let pageFilter = pagination(pageNo, itemPerPage);
   let totalRecords = await getCountRecord(tableName, filter);
   let result = await getRecords(tableName, filter, pageFilter);
