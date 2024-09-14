@@ -108,6 +108,14 @@
                   "type": "string",
                   "default": ""
                 },
+                "department_name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "department_uuid": {
+                  "type": "string",
+                  "default": ""
+                },
                 "user_uuid": {
                   "type": "string",
                   "default": ""

@@ -16,6 +16,8 @@ select
     up.first_name,
     up.last_name,
     up.personal_email,
+    up.department_name,
+    up.department_uuid,
     up.job_title,
     up.manager_uuid,
     up.user_type,
