@@ -70,6 +70,10 @@ module.exports = {
         type: Sequelize.CHAR(36),
         allowNull: false,
       },
+      created_by_name: {
+        type: Sequelize.STRING(100),
+        allowNull: true,
+      },
       modified_by_uuid: {
         type: Sequelize.CHAR(36),
         allowNull: true,

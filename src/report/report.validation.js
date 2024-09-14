@@ -1,5 +1,4 @@
 const Joi = require('joi');
-const { join } = require('path');
 
 exports.upsertExpenseSchema = Joi.object({
   expense_uuid: Joi.string().guid().allow('', null),
@@ -15,6 +14,7 @@ exports.upsertExpenseSchema = Joi.object({
   amount: Joi.number().allow('', null),
   description: Joi.string().max(100).allow(null),
   status: Joi.string().valid('ACTIVE', 'INACTIVE').default('ACTIVE').required(),
+  created_by_name: Joi.string().allow('', null),
   created_by_uuid: Joi.string().guid().allow('', null),
   modified_by_uuid: Joi.string().guid().allow('', null),
 });
@@ -59,6 +59,7 @@ exports.upsertReportSchema = Joi.object({
     .default('REPORT_APPROVAL_REQUESTED')
     .required(),
   created_by_uuid: Joi.string().guid().allow('', null),
+  created_by_name: Joi.string().allow('', null),
   modified_by_uuid: Joi.string().guid().allow('', null),
 });
 
