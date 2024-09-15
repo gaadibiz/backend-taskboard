@@ -297,6 +297,9 @@ exports.getApprovals = async (req, res) => {
         alias: 'at.',
       },
     );
+
+    console.log('role filter', filter);
+    console.log('role2 ');
     resultJoined =
       await dbRequest(`SELECT at.*, la.approval_uuid, la.requested_by_uuid, la.status as approval_status FROM latest_approval la
     INNER JOIN ${tableMap[table_name] || table_name} at ON record_uuid = ${

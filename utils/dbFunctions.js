@@ -518,8 +518,17 @@ exports.isValidRecord = async (table, condition) => {
   return (await this.dbRequest(sql))[0].isValid;
 };
 
-exports.roleFilterService = async (filterSql, tableName, selfUser) => {
-  if (!process.env.ROLE_FILTER || process.env.ROLE_FILTER === 'false')
+exports.roleFilterService = async (
+  filterSql,
+  tableName,
+  selfUser,
+  options = { alias: '' },
+) => {
+  if (
+    !process.env.ROLE_FILTER ||
+    process.env.ROLE_FILTER === 'false' ||
+    !selfUser.ROLE_FILTER === false
+  )
     return filterSql;
   let roleFiletrData = (
     await this.dbRequest(
@@ -531,7 +540,8 @@ exports.roleFilterService = async (filterSql, tableName, selfUser) => {
   if (
     !roleFiletrData[0].view_access ||
     roleFiletrData[0].status !== 'ACTIVE' ||
-    !Object.keys(roleFiletrData[0].filter_values).length
+    (roleFiletrData[0].module_name !== 'Approval' &&
+      !Object.keys(roleFiletrData[0].filter_values).length)
   )
     throwError(403, 'You have no access to see this module content!');
   let initJsonValue = roleFiletrData[0].filter_values;
@@ -585,7 +595,9 @@ exports.roleFilterService = async (filterSql, tableName, selfUser) => {
     let mapColumnIdQuery = roleFiletrData[0].map_column_user_uuid
       .map(
         (ele) =>
-          `${ele} IN ( select user_uuid from latest_user where ${roleFiletrQuery} )`,
+          `${
+            options.alias + ele
+          } IN ( select user_uuid from latest_user where ${roleFiletrQuery} )`,
       )
       .join(' OR ');
     filterSql = filterSql
