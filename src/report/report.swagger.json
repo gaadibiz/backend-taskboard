@@ -260,6 +260,14 @@
                   "type": "string",
                   "default": ""
                 },
+                "finance_manager_name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "finance_manager_uuid": {
+                  "type": "string",
+                  "default": ""
+                },
                 "department_uuid": {
                   "type": "string",
                   "default": ""
