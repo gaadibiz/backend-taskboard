@@ -76,6 +76,7 @@ exports.getUserSchema = Joi.object({
   user_uuid: Joi.string().guid().max(50),
   role_uuid: Joi.string().guid(),
   role_group: Joi.string().allow(null),
+  role_value: Joi.string().allow(null),
   pageNo: Joi.number().integer().min(1),
   itemPerPage: Joi.number().integer().min(1),
   from_date: Joi.string().regex(/^\d{4}-\d{2}-\d{2}$/),
