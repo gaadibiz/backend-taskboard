@@ -17,6 +17,14 @@ module.exports = {
         type: Sequelize.STRING(100),
         allowNull: false,
       },
+      category_manager_name: {
+        type: Sequelize.STRING(100),
+        allowNull: false,
+      },
+      category_manager_uuid: {
+        type: Sequelize.STRING(100),
+        allowNull: false,
+      },
       expense_category_description: {
         type: Sequelize.STRING(500),
         allowNull: true,

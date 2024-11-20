@@ -13,14 +13,6 @@ module.exports = {
         type: Sequelize.CHAR(36),
         allowNull: false,
       },
-      report_uuid: {
-        type: Sequelize.CHAR(36),
-        allowNull: true,
-      },
-      report_name: {
-        type: Sequelize.STRING(100),
-        allowNull: true,
-      },
       project_uuid: {
         type: Sequelize.CHAR(36),
         allowNull: true,
@@ -29,12 +21,28 @@ module.exports = {
         type: Sequelize.STRING(100),
         allowNull: true,
       },
-      receipt: {
-        type: Sequelize.JSON,
+      project_manager_name: {
+        type: Sequelize.STRING(100),
         allowNull: true,
       },
-      merchant: {
+      project_manager_uuid: {
+        type: Sequelize.CHAR(36),
+        allowNull: true,
+      },
+      finance_manager_name: {
         type: Sequelize.STRING(100),
+        allowNull: true,
+      },
+      finance_manager_uuid: {
+        type: Sequelize.CHAR(36),
+        allowNull: true,
+      },
+      department_name: {
+        type: Sequelize.STRING(100),
+        allowNull: true,
+      },
+      department_uuid: {
+        type: Sequelize.CHAR(36),
         allowNull: true,
       },
       expense_category_uuid: {
@@ -45,7 +53,31 @@ module.exports = {
         type: Sequelize.STRING(100),
         allowNull: true,
       },
-      amount: {
+      category_manager_name: {
+        type: Sequelize.STRING(100),
+        allowNull: true,
+      },
+      category_manager_uuid: {
+        type: Sequelize.CHAR(36),
+        allowNull: true,
+      },
+      receipt: {
+        type: Sequelize.JSON,
+        allowNull: true,
+      },
+      merchant: {
+        type: Sequelize.STRING(100),
+        allowNull: true,
+      },
+      business_purpose: {
+        type: Sequelize.STRING(100),
+        allowNull: true,
+      },
+      advance_amount: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+      },
+      reimbursed_amount: {
         type: Sequelize.INTEGER,
         allowNull: true,
       },
@@ -58,7 +90,7 @@ module.exports = {
         allowNull: true,
       },
       status: {
-        type: Sequelize.STRING(20),
+        type: Sequelize.STRING(50),
         allowNull: false,
         defaultValue: 'ACTIVE',
       },

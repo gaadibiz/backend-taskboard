@@ -7,8 +7,8 @@ module.exports = {
       {
         module_uuid: uuidv4(),
         module_name: 'Approval',
-        submodule_name: 'Report',
-        table_name: 'latest_report',
+        submodule_name: 'Expense',
+        table_name: 'latest_expense',
         map_column_user_uuid: '["approved_by_uuid"]',
         column_relation_options: `[{
           "api": "/user/get-user",

@@ -37,6 +37,12 @@ module.exports = {
         role_uuid: uuidv4(),
         role_group: 'USER',
       },
+      {
+        role_name: 'Category Manager',
+        role_value: 'CATEGORY_MANAGER',
+        role_uuid: uuidv4(),
+        role_group: 'USER',
+      },
     ]);
   },
 

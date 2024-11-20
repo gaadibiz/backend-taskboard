@@ -325,10 +325,10 @@ exports.insertApprovalCount = async (req, res) => {
     link_table,
     link_column,
   } = req.body;
-  if (!tableMap[table_name]) {
-    let isTableExist = await isTableOrViewExist(table_name);
-    if (!isTableExist) throwError(400, 'Invalid Table name');
-  }
+  // if (!tableMap[table_name]) {
+  //   let isTableExist = await isTableOrViewExist(table_name);
+  //   if (!isTableExist) throwError(400, 'Invalid Table name');
+  // }
   if (link_table && link_column) {
     let isColumnExist1 = await isColumnExistInTable(table_name, link_column);
     let isColumnExist2 = await isColumnExistInTable(link_table, link_column);

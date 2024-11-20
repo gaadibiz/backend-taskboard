@@ -1,6 +1,6 @@
 {
   "paths": {
-    "/api/v1/report/upsert-expense": {
+    "/api/v1/expense/upsert-expense": {
       "post": {
         "tags": ["expense"],
         "summary": "Create or update expense",
@@ -35,13 +35,46 @@
                   "type": "string",
                   "default": ""
                 },
-                "report_name": {
+                "project_manager_uuid": {
+                  "type": "string",
+                  "default": ""
+                },
+                "project_manager_name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "finance_manager_uuid": {
+                  "type": "string",
+                  "default": ""
+                },
+                "finance_manager_name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "department_uuid": {
+                  "type": "string",
+                  "default": ""
+                },
+                "department_name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "expense_category_uuid": {
                   "type": "string",
                   "default": null
                 },
-                "report_uuid": {
+                "expense_category_name": {
                   "type": "string",
                   "default": null
+                },
+                "category_manager_name": {
+                  "type": "string",
+                  "default": ""
+                },
+
+                "category_manager_uuid": {
+                  "type": "string",
+                  "default": ""
                 },
                 "receipt": {
                   "type": "array",
@@ -53,19 +86,19 @@
                   "type": "string",
                   "default": null
                 },
-                "expense_category_uuid": {
-                  "type": "string",
-                  "default": ""
-                },
-                "expense_category_name": {
-                  "type": "string",
-                  "default": ""
-                },
                 "expense_date": {
                   "type": "string",
                   "default": null
                 },
-                "amount": {
+                "business_purpose": {
+                  "type": "string",
+                  "default": null
+                },
+                "advanse_amount": {
+                  "type": "number",
+                  "default": null
+                },
+                "reimbursed_amount": {
                   "type": "number",
                   "default": null
                 },
@@ -73,10 +106,9 @@
                   "type": "string",
                   "default": null
                 },
-
                 "status": {
                   "type": "string",
-                  "default": "ACTIVE | INACTIVE"
+                  "default": "INACTIVE | EXPENSE_REQUESTED | EXPENSE_APPROVAL_REQUESTED | FINANCE_APPROVAL_REQUESTED | FINANCE"
                 }
               }
             }
@@ -96,7 +128,7 @@
         }
       }
     },
-    "/api/v1/report/get-expense": {
+    "/api/v1/expense/get-expense": {
       "get": {
         "tags": ["expense"],
         "summary": "Get all expense",
@@ -119,13 +151,7 @@
             "required": false,
             "type": "string"
           },
-          {
-            "in": "query",
-            "name": "report_uuid",
-            "description": "",
-            "required": false,
-            "type": "string"
-          },
+
           {
             "in": "query",
             "name": "expense_category_uuid",
@@ -140,13 +166,7 @@
             "required": false,
             "type": "string"
           },
-          {
-            "in": "query",
-            "name": "unreported",
-            "required": false,
-            "type": "string",
-            "enum": ["UNREPORTED"]
-          },
+
           {
             "in": "query",
             "name": "columns",
@@ -217,233 +237,8 @@
         }
       }
     },
-    "/api/v1/report/upsert-Report": {
-      "post": {
-        "tags": ["expense"],
-        "summary": "Create or update expense team",
-        "description": "",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
-        "parameters": [
-          {
-            "in": "header",
-            "name": "auth-Token",
-            "description": "",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "description": "",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "report_uuid": {
-                  "type": "string",
-                  "default": ""
-                },
-                "project_uuid": {
-                  "type": "string",
-                  "default": ""
-                },
-                "project_name": {
-                  "type": "string",
-                  "default": ""
-                },
-                "project_manager_name": {
-                  "type": "string",
-                  "default": ""
-                },
-                "project_manager_uuid": {
-                  "type": "string",
-                  "default": ""
-                },
-                "finance_manager_name": {
-                  "type": "string",
-                  "default": ""
-                },
-                "finance_manager_uuid": {
-                  "type": "string",
-                  "default": ""
-                },
-                "department_uuid": {
-                  "type": "string",
-                  "default": ""
-                },
-                "department_name": {
-                  "type": "string",
-                  "default": ""
-                },
-                "report_name": {
-                  "type": "string",
-                  "default": ""
-                },
-                "expense_uuid_list": {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "example": "uuid"
-                  }
-                },
-                "business_purpose": {
-                  "type": "string",
-                  "default": null
-                },
-                "category": {
-                  "type": "string",
-                  "default": null
-                },
-                "advance_amount": {
-                  "type": "number",
-                  "default": null
-                },
-                "reimbursed_amount": {
-                  "type": "number",
-                  "default": null
-                },
-                "description": {
-                  "type": "string",
-                  "default": null
-                },
-                "status": {
-                  "type": "string",
-                  "default": "REPORT_REQUESTED | REPORT_APPROVAL_REQUESTED | FINANCE_APPROVAL_REQUESTED"
-                }
-              }
-            }
-          }
-        ],
 
-        "responses": {
-          "200": {
-            "description": "successful operation"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/api/v1/report/get-Report": {
-      "get": {
-        "tags": ["expense"],
-        "summary": "Get all expense",
-        "description": "",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
-
-        "parameters": [
-          {
-            "in": "header",
-            "name": "auth-Token",
-            "description": "",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "query",
-            "name": "report_uuid",
-            "description": "",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "in": "query",
-            "name": "project_uuid",
-            "description": "",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "in": "query",
-            "name": "project_manager_uuid",
-            "description": "",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "in": "query",
-            "name": "department_uuid",
-            "description": "",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "in": "query",
-            "name": "columns",
-            "description": "",
-            "required": false,
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "value",
-            "description": "",
-            "required": false,
-            "type": "string",
-            "default": ""
-          },
-          {
-            "in": "query",
-            "name": "status",
-            "description": "",
-            "required": false,
-            "type": "string",
-            "default": ""
-          },
-          {
-            "in": "query",
-            "name": "from_date",
-            "description": "Format will be YYYY-MM-DD.",
-            "required": false,
-            "type": "string",
-            "default": ""
-          },
-          {
-            "in": "query",
-            "name": "to_date",
-            "description": "Format will be YYYY-MM-DD.",
-            "required": false,
-            "type": "string",
-            "default": ""
-          },
-          {
-            "in": "query",
-            "name": "pageNo",
-            "description": "",
-            "required": true,
-            "type": "number"
-          },
-          {
-            "in": "query",
-            "name": "itemPerPage",
-            "description": "",
-            "required": true,
-            "type": "number"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful logout. The user has been logged out."
-          },
-          "404": {
-            "description": "Not Found. The provided user identifier was not found."
-          },
-          "500": {
-            "description": "Internal Server Error. An unexpected error occurred on the server."
-          }
-        }
-      }
-    },
-    "/api/v1/report/upsert-expense-category": {
+    "/api/v1/expense/upsert-expense-category": {
       "post": {
         "tags": ["expense"],
         "summary": "Create or update User",
@@ -474,6 +269,15 @@
                   "type": "string",
                   "default": ""
                 },
+                "category_manager_name": {
+                  "type": "string",
+                  "default": null
+                },
+
+                "category_manager_uuid": {
+                  "type": "string",
+                  "default": null
+                },
                 "expense_category_description": {
                   "type": "string",
                   "default": null
@@ -500,7 +304,7 @@
         }
       }
     },
-    "/api/v1/report/get-expense-category": {
+    "/api/v1/expense/get-expense-category": {
       "get": {
         "tags": ["expense"],
         "summary": "Get all User ",

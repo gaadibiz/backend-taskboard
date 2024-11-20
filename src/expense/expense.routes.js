@@ -1,7 +1,7 @@
 const { requestErrorHandlingDecorator } = require('../../utils/helperFunction');
-const controller = require('./report.controller');
+const controller = require('./expense.controller');
 const router = require('express').Router();
-const Schema = require('./report.validation');
+const Schema = require('./expense.validation');
 const checkAuth = require('../../middleware/checkAuth');
 
 router
@@ -22,23 +22,6 @@ router
       Schema.getExpenseSchema,
       controller.getExpense,
     ),
-  );
-
-router
-  .route('/upsert-report')
-  .post(
-    checkAuth,
-    requestErrorHandlingDecorator(
-      Schema.upsertReportSchema,
-      controller.upsertReport,
-    ),
-  );
-
-router
-  .route('/get-report')
-  .get(
-    checkAuth,
-    requestErrorHandlingDecorator(Schema.getReportSchema, controller.getReport),
   );
 
 router

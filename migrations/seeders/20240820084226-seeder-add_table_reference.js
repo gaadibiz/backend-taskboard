@@ -36,11 +36,11 @@ module.exports = {
     await queryInterface.bulkInsert('table_reference', [
       {
         table_reference_uuid: uuidv4(),
-        module_name: 'Report',
-        submodule_name: 'Report',
-        table_name: 'latest_report',
+        module_name: 'Expense',
+        submodule_name: 'Expense',
+        table_name: 'latest_expense',
         table_status:
-          '["INACTIVE", "REPORT_REQUESTED", "REPORT_APPROVAL_REQUESTED", "FINANCE_APPROVAL_REQUESTED", "FINANCE", "REJECTED", "ROLLBACK"]',
+          '["INACTIVE", "EXPENSE_REQUESTED", "EXPENSE_APPROVAL_REQUESTED", "FINANCE_APPROVAL_REQUESTED", "FINANCE", "REJECTED", "ROLLBACK"]',
         create_ts: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
     ]);
