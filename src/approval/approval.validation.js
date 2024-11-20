@@ -9,11 +9,14 @@ exports.insertApprovalSchema = Joi.object({
   approval_uuids: Joi.array()
     .min(1)
     .items(
-      Joi.object({
-        type: Joi.string().valid('USER', 'ROLE').required(),
-        uuid: Joi.string().guid().required(),
-      }),
-    ),
+      Joi.array().items(
+        Joi.object({
+          type: Joi.string().valid('USER', 'ROLE').required(), // Valid values: 'USER', 'ROLE'
+          uuid: Joi.string().guid().required(),
+        }),
+      ),
+    )
+    .required(),
   created_by_uuid: Joi.string().guid().allow(null),
   created_by_name: Joi.string().allow(null),
   modified_by_uuid: Joi.string().guid().allow(null),
