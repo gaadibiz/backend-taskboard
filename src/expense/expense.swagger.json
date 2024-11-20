@@ -271,12 +271,12 @@
                 },
                 "category_manager_name": {
                   "type": "string",
-                  "default": null
+                  "default": ""
                 },
 
                 "category_manager_uuid": {
                   "type": "string",
-                  "default": null
+                  "default": ""
                 },
                 "expense_category_description": {
                   "type": "string",
