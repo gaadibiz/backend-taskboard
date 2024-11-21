@@ -23,7 +23,7 @@ const { base_url } = require('../../config/server.config');
 const { responser, removeNullValueKey } = require('../../utils/helperFunction');
 
 exports.upsertExpense = async (req, res) => {
-  // isEditAccess('latest_leads_with_expense', req.user);
+  isEditAccess('latest_expense', req.user);
   removeNullValueKey(req.body);
   let isUpadtion = false;
   if (req.body.expense_uuid) {
@@ -43,6 +43,22 @@ exports.upsertExpense = async (req, res) => {
     req.body.expense_uuid = uuid();
   }
   const insertexpense = await insertRecords('expense', req.body);
+
+  //<------------ handle costing sheet approval modal properly ----------->
+  const bodyData = {
+    table_name: 'latest_expense',
+    record_uuid: req.body.expense_uuid,
+    record_column_name: 'expense_uuid',
+  };
+  await getData(
+    base_url + '/api/v1/approval/insert-approval',
+    null,
+    'json',
+    bodyData,
+    'POST',
+    req.headers,
+  );
+
   res.json(responser('expense created or updated successfully.', req.body));
 
   // res.json(responser('expense created or updated successfully.', req.body));
@@ -120,24 +136,10 @@ exports.getExpense = async (req, res) => {
   return res.json(responser('expense: ', result, result.length, totalRecords));
 };
 
-// //<------------ handle costing sheet approval modal properly ----------->
-// const bodyData = {
-//   table_name: 'latest_report',
-//   record_uuid: req.body.report_uuid,
-//   record_column_name: 'report_uuid',
-// };
-// await getData(
-//   base_url + '/api/v1/approval/insert-approval',
-//   null,
-//   'json',
-//   bodyData,
-//   'POST',
-//   req.headers,
-// );
-
 // // res.json(responser('Project created or updated successfully.', req.body));
 
 exports.upsertExpenseCategory = async (req, res) => {
+  isEditAccess('latest_expense_category', req.user);
   // await isEditAccess('latest_expense_category', req.user);
   removeNullValueKey(req.body);
   req.body.expense_category_name = req.body.expense_category_name.toUpperCase();
