@@ -5,7 +5,6 @@ exports.insertApprovalSchema = Joi.object({
   table_name: Joi.string().required(),
   record_uuid: Joi.string().guid().required(),
   record_column_name: Joi.string().required(),
-
   approval_uuids: Joi.array()
     .min(1)
     .items(
@@ -15,8 +14,7 @@ exports.insertApprovalSchema = Joi.object({
           uuid: Joi.string().guid().required(),
         }),
       ),
-    )
-    .required(),
+    ),
   created_by_uuid: Joi.string().guid().allow(null),
   created_by_name: Joi.string().allow(null),
   modified_by_uuid: Joi.string().guid().allow(null),

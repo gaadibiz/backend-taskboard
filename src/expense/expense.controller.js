@@ -133,6 +133,29 @@ exports.getExpense = async (req, res) => {
   let totalRecords = await getCountRecord(tableName, filter);
   let result = await getRecords(tableName, filter, pageFilter);
 
+  // // merge approval record logic
+  mergeExpense = await getData(
+    base_url + '/api/v1/approval/merge-approval-record',
+    null,
+    'json',
+    {
+      record_uuid: result[0].expense_uuid,
+      table_name: tableName,
+      data: result[0],
+    },
+    'POST',
+    req.headers,
+  );
+  // Update the first order with response data
+  if (mergeExpense) {
+    const { approval_uuid, requested_by_uuid, is_user_approver } = mergeExpense; // Destructure for direct assignments
+    Object.assign(result[0], {
+      approval_uuid,
+      requested_by_uuid,
+      is_user_approver,
+    });
+  }
+
   return res.json(responser('expense: ', result, result.length, totalRecords));
 };
 
