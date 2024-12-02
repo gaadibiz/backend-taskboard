@@ -265,3 +265,46 @@ exports.currencyToWords = (currency, options) => {
   let toWords = new ToWords({ localeCode: options.localeCode });
   return toWords.convert(currency, { currency: true });
 };
+
+exports.incrementStringWithReset = (currentString) => {
+  // Convert string to a number
+  let currentNumber = parseInt(currentString);
+  currentNumber =
+    currentNumber === 0 || currentNumber === undefined ? 0 : currentNumber;
+
+  // Increment the number
+  let nextNumber = currentNumber + 1;
+
+  // Convert the result back to a string
+  return nextNumber.toString();
+};
+
+exports.convertISOToDate = (isoString) => {
+  // Create a new Date object from the ISO string
+  const date = new Date(isoString);
+
+  // Extract the year, month, and day as local date components
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+  const day = String(date.getDate()).padStart(2, '0');
+
+  // Format the date as YYYY-MM-DD
+  return `${year}-${month}-${day}`;
+};
+
+exports.convertIsoUTCToLocalDate = (isoString) => {
+  // Create a new Date object from the ISO string
+  const date = new Date(isoString);
+
+  // Convert to UTC+5:30
+  const offset = 5.5 * 60; // Offset in minutes
+  const localDate = new Date(date.getTime() + offset * 60000);
+
+  // Extract the year, month, and day as local date components
+  const year = localDate.getFullYear();
+  const month = String(localDate.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+  const day = String(localDate.getDate()).padStart(2, '0');
+
+  // Format the date as YYYY-MM-DD
+  return `${year}-${month}-${day}`;
+};

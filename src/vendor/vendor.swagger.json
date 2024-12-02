@@ -1,0 +1,221 @@
+{
+  "paths": {
+    "/api/v1/vendor/upsert-vendor": {
+      "post": {
+        "tags": ["job board - Vendor"],
+        "summary": "Create or update vendor",
+        "description": "Endpoint to create or update a vendor",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "Authentication token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Vendor data",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "vendor_uuid": {
+                  "type": "string",
+                  "default": ""
+                },
+                "vendor_name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "registration_type": {
+                  "type": "string",
+                  "default": ""
+                },
+                "vendor_address_line1": {
+                  "type": "string",
+                  "default": null
+                },
+                "vendor_address_line2": {
+                  "type": "string",
+                  "default": null
+                },
+                "vendor_address_city": {
+                  "type": "string",
+                  "default": null
+                },
+                "vendor_address_state": {
+                  "type": "string",
+                  "default": null
+                },
+                "vendor_address_pincode": {
+                  "type": "string",
+                  "default": null
+                },
+                "vendor_address_country": {
+                  "type": "string",
+                  "default": null
+                },
+                "contact_name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "mobile": {
+                  "type": "string",
+                  "default": null
+                },
+                "phone_number": {
+                  "type": "string",
+                  "default": null
+                },
+                "website": {
+                  "type": "string",
+                  "default": null
+                },
+                "gst_in": {
+                  "type": "string",
+                  "default": null
+                },
+                "mail_id": {
+                  "type": "string",
+                  "default": null
+                },
+                "bank_name": {
+                  "type": "string",
+                  "default": null
+                },
+                "bank_account_no": {
+                  "type": "string",
+                  "default": null
+                },
+                "bank_ifsc_code": {
+                  "type": "string",
+                  "default": null
+                },
+                "bank_branch_name": {
+                  "type": "string",
+                  "default": null
+                },
+                "note": {
+                  "type": "string",
+                  "default": null
+                },
+                "pan_no": {
+                  "type": "string",
+                  "default": null
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+
+    "/api/v1/vendor/get-vendor": {
+      "get": {
+        "tags": ["job board - Vendor"],
+        "summary": "Get all vendors",
+        "description": "This endpoint is used to get vendor details.",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "Authentication token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "vendor_uuid",
+            "description": "Vendor UUID",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "columns",
+            "description": "Array of columns to filter",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "value",
+            "description": "Filter value",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "description": "Vendor status",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "from_date",
+            "description": "Format will be YYYY-MM-DD",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "to_date",
+            "description": "Format will be YYYY-MM-DD",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "pageNo",
+            "description": "Page number",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "in": "query",
+            "name": "itemPerPage",
+            "description": "Items per page",
+            "required": true,
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation. Returns product details."
+          },
+          "404": {
+            "description": "Not Found. The provided product identifier was not found."
+          },
+          "500": {
+            "description": "Internal Server Error. An unexpected error occurred on the server."
+          }
+        }
+      }
+    }
+  }
+}

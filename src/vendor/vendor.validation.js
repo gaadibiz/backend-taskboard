@@ -1,0 +1,38 @@
+const Joi = require('joi');
+
+exports.upsertVendorSchema = Joi.object({
+  vendor_uuid: Joi.string().guid().required().max(50).allow(null, ''),
+  vendor_name: Joi.string().required().max(100),
+  registration_type: Joi.string().required().max(100),
+  vendor_address_line1: Joi.string().max(500).allow(null),
+  vendor_address_line2: Joi.string().max(500).allow(null),
+  vendor_address_city: Joi.string().max(100).allow(null),
+  vendor_address_state: Joi.string().max(255).allow(null),
+  vendor_address_pincode: Joi.string().max(255).allow(null),
+  vendor_address_country: Joi.string().max(255).allow(null),
+  contact_name: Joi.string().allow(null),
+  mobile: Joi.string().max(255).allow(null),
+  phone_number: Joi.string().max(255).allow(null),
+  website: Joi.string().max(255).allow(null),
+  gst_in: Joi.string().max(255).allow(null),
+  mail_id: Joi.string().max(255).allow(null),
+  bank_name: Joi.string().allow(null),
+  bank_account_no: Joi.string().allow(null),
+  bank_ifsc_code: Joi.string().allow(null),
+  bank_branch_name: Joi.string().allow(null),
+  note: Joi.string().allow(null),
+  pan_no: Joi.string().allow(null),
+  created_by_uuid: Joi.string().guid().max(50).allow(null),
+});
+
+exports.getVendorSchema = Joi.object({
+  vendor_id: Joi.number().integer(),
+  vendor_uuid: Joi.string().guid(),
+  pageNo: Joi.number().integer().min(1),
+  itemPerPage: Joi.number().integer().min(1),
+  from_date: Joi.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  to_date: Joi.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  status: Joi.string(),
+  columns: Joi.string(),
+  value: Joi.string(),
+});
