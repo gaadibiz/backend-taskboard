@@ -17,6 +17,15 @@ module.exports = {
         {
           module_uuid: uuidv4(),
           module_name: 'Job Board',
+          submodule_name: 'Job',
+          table_name: 'latest_job',
+          map_column_user_uuid: JSON.stringify([]),
+          column_relation_options: JSON.stringify([]),
+          status: 'ACTIVE',
+        },
+        {
+          module_uuid: uuidv4(),
+          module_name: 'Job Board',
           submodule_name: 'Customers Branch',
           table_name: 'latest_customer_branch',
           map_column_user_uuid: JSON.stringify([]),
@@ -115,19 +124,15 @@ module.exports = {
       }
 
       await queryInterface.sequelize.query(`UPDATE \`module\`
-        SET map_column_user_uuid = '["created_by_uuid"]',
+        SET map_column_user_uuid = '["created_by_uuid", "modified_by_uuid"]',
             column_relation_options = '[{
                 "api": "/user/get-user",
                 "field": "email",
                 "value": "user_uuid",
                 "column_key": "user_uuid",
                 "column_label": "User"
-            }]'
+            }]' WHERE module_name = "Job Board" ;
       `);
-
-      await queryInterface.sequelize.query(
-        `UPDATE \`module\` SET map_column_user_uuid = '["created_by_uuid","user_uuid"]' WHERE table_name="latest_user";`,
-      );
     } catch (error) {
       console.error('Error during migration:', error);
     }

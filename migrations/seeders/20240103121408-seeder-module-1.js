@@ -90,15 +90,6 @@ module.exports = {
       },
       {
         module_uuid: uuidv4(),
-        module_name: 'Approval',
-        submodule_name: 'Report',
-        table_name: 'latest_report',
-        map_column_user_uuid: JSON.stringify([]),
-        column_relation_options: JSON.stringify([]),
-        status: 'ACTIVE',
-      },
-      {
-        module_uuid: uuidv4(),
         module_name: 'Tasks',
         submodule_name: 'Task Category',
         table_name: 'latest_category',

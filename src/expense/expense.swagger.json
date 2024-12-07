@@ -27,6 +27,10 @@
                   "type": "string",
                   "default": null
                 },
+                "expense_type": {
+                  "type": "string",
+                  "default": ""
+                },
                 "project_name": {
                   "type": "string",
                   "default": ""

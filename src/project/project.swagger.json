@@ -55,6 +55,14 @@
                   "type": "string",
                   "default": ""
                 },
+                "finance_manager_name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "finance_manager_uuid": {
+                  "type": "string",
+                  "default": ""
+                },
                 "status": {
                   "type": "string",
                   "default": "ACTIVE"

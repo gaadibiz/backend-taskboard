@@ -13,6 +13,10 @@ module.exports = {
         type: Sequelize.CHAR(36),
         allowNull: false,
       },
+      expense_type: {
+        type: Sequelize.STRING(50),
+        allowNull: true,
+      },
       project_uuid: {
         type: Sequelize.CHAR(36),
         allowNull: true,

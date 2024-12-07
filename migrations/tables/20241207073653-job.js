@@ -3,11 +3,22 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('project', {
-      project_id: {
+    await queryInterface.createTable('job', {
+      job_id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
+      },
+      job_uuid: {
+        type: Sequelize.CHAR(36),
+        allowNull: false,
+      },
+      job_order_no: {
+        type: Sequelize.STRING(100),
+      },
+      job_order_date: {
+        type: Sequelize.DATE,
+        allowNull: false,
       },
       project_uuid: {
         type: Sequelize.CHAR(36),
@@ -17,45 +28,49 @@ module.exports = {
         type: Sequelize.STRING(100),
         allowNull: false,
       },
-      legal_entity: {
-        type: Sequelize.STRING(50),
-        allowNull: true,
-      },
-      project_manager_name: {
-        type: Sequelize.STRING(50),
-        allowNull: false,
-      },
       project_manager_uuid: {
         type: Sequelize.CHAR(36),
         allowNull: false,
       },
-      finance_manager_name: {
-        type: Sequelize.STRING(50),
+      project_manager_name: {
+        type: Sequelize.STRING(100),
         allowNull: false,
       },
       finance_manager_uuid: {
         type: Sequelize.CHAR(36),
-        allowNull: false,
-      },
-      remarks: {
-        type: Sequelize.STRING(500),
         allowNull: true,
       },
-      start_date: {
-        type: Sequelize.DATE,
+      finance_manager_name: {
+        type: Sequelize.STRING(100),
         allowNull: true,
       },
-      end_date: {
-        type: Sequelize.DATE,
+      vendor_uuid: {
+        type: Sequelize.CHAR(36),
+        allowNull: true,
+      },
+      vendor_name: {
+        type: Sequelize.STRING(100),
+        allowNull: true,
+      },
+      purchase_order_uuid: {
+        type: Sequelize.CHAR(36),
+        allowNull: true,
+      },
+      purchase_order_no: {
+        type: Sequelize.STRING(100),
         allowNull: true,
       },
       status: {
-        type: Sequelize.STRING(20),
+        type: Sequelize.STRING(50),
         allowNull: false,
         defaultValue: 'ACTIVE',
       },
       created_by_uuid: {
         type: Sequelize.CHAR(36),
+        allowNull: false,
+      },
+      created_by_name: {
+        type: Sequelize.STRING(100),
         allowNull: true,
       },
       modified_by_uuid: {
@@ -64,8 +79,7 @@ module.exports = {
       },
       create_ts: {
         type: Sequelize.DATE,
-        allowNull: false,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+        allowNull: true,
       },
       insert_ts: {
         type: Sequelize.DATE,
@@ -75,12 +89,5 @@ module.exports = {
     });
   },
 
-  async down(queryInterface, Sequelize) {
-    /**
-     * Add reverting commands here.
-     *
-     * Example:
-     * await queryInterface.dropTable('users');
-     */
-  },
+  async down(queryInterface, Sequelize) {},
 };
