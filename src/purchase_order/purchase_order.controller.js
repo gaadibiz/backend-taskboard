@@ -136,8 +136,8 @@ exports.getPurchaseOrder = async (req, res) => {
   let totalRecords = await getCountRecord(tableName, filter);
   let result = await getRecords(tableName, filter, pageFilter);
   if (purchase_order_uuid) {
-    const date_string = result[0].purchase_order_date.toISOString();
-    result[0].purchase_order_date = date_string.split('T')[0];
+    // const date_string = result[0].purchase_order_date.toISOString();
+    // result[0].purchase_order_date = date_string.split('T')[0];
   }
   return res.json(
     responser('Purchase Order : ', result, result.length, totalRecords),

@@ -10,12 +10,29 @@ module.exports = {
       )
     )[0][0]?.role_uuid;
 
+    const category_role_uuid = (
+      await queryInterface.sequelize.query(
+        `SELECT * FROM latest_roles WHERE role_value = 'CATEGORY_MANAGER'`,
+      )
+    )[0][0]?.role_uuid;
+
     await queryInterface.bulkInsert('approval_count', [
       {
         approval_count_uuid: uuidv4(),
         table_name: 'latest_expense',
-        level: 1,
-        approval_hierarchy: `[[{ "type": "ROLE","uuid": "${approver_role_uuid}" }]]`,
+        level: 2,
+        approval_hierarchy: ` [
+          {
+            "type": "ROLE",
+            "uuid": "${approver_role_uuid}"
+          }
+        ],
+        [
+          {
+            "type": "ROLE",
+             "uuid": "${category_role_uuid}"
+          }
+        ]`,
         approval_raise_status: 'EXPENSE_APPROVAL_REQUESTED',
         previous_status: 'EXPENSE_REQUESTED',
         next_status: 'FINANCE_APPROVAL_REQUESTED',
