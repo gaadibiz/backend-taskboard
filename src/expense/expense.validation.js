@@ -2,6 +2,8 @@ const Joi = require('joi');
 
 exports.upsertExpenseSchema = Joi.object({
   expense_uuid: Joi.string().guid().allow('', null),
+  job_order_no: Joi.string().max(100).allow('', null),
+  job_uuid: Joi.string().guid().allow('', null),
   expense_type: Joi.string().max(50).allow('', null),
   project_name: Joi.string().max(100).allow('', null),
   project_uuid: Joi.string().guid().allow('', null),

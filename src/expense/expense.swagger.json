@@ -55,6 +55,14 @@
                   "type": "string",
                   "default": ""
                 },
+                "job_order_no": {
+                  "type": "string",
+                  "default": ""
+                },
+                "job_uuid": {
+                  "type": "string",
+                  "default": ""
+                },
                 "department_uuid": {
                   "type": "string",
                   "default": ""
