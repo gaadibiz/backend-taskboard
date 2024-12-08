@@ -57,15 +57,15 @@
                 },
                 "job_order_no": {
                   "type": "string",
-                  "default": ""
+                  "default": null
                 },
                 "job_uuid": {
                   "type": "string",
-                  "default": ""
+                  "default": null
                 },
-                "department_uuid": {
+                "job_name": {
                   "type": "string",
-                  "default": ""
+                  "default": null
                 },
                 "department_name": {
                   "type": "string",
