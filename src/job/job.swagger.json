@@ -35,6 +35,10 @@
                   "type": "string",
                   "default": "YYYY-MM-DD"
                 },
+                "job_name": {
+                  "type": "string",
+                  "default": ""
+                },
                 "project_uuid": {
                   "type": "string",
                   "default": ""
@@ -67,13 +71,9 @@
                   "type": "string",
                   "default": null
                 },
-                "purchase_order_uuid": {
-                  "type": "string",
-                  "default": null
-                },
-                "purchase_order_no": {
-                  "type": "string",
-                  "default": null
+                "attachment": {
+                  "type": "array",
+                  "default": []
                 },
                 "status": {
                   "type": "string",

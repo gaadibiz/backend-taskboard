@@ -13,6 +13,10 @@ module.exports = {
         type: Sequelize.CHAR(36),
         allowNull: false,
       },
+      job_name: {
+        type: Sequelize.STRING(100),
+        allowNull: false,
+      },
       job_order_no: {
         type: Sequelize.STRING(100),
       },
@@ -52,14 +56,11 @@ module.exports = {
         type: Sequelize.STRING(100),
         allowNull: true,
       },
-      purchase_order_uuid: {
-        type: Sequelize.CHAR(36),
+      attachment: {
+        type: Sequelize.JSON,
         allowNull: true,
       },
-      purchase_order_no: {
-        type: Sequelize.STRING(100),
-        allowNull: true,
-      },
+
       status: {
         type: Sequelize.STRING(50),
         allowNull: false,

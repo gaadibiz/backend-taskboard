@@ -39,6 +39,18 @@
                   "type": "string",
                   "default": "YYYY-MM-DD"
                 },
+                "job_uuid": {
+                  "type": "string",
+                  "default": null
+                },
+                "job_name": {
+                  "type": "string",
+                  "default": null
+                },
+                "job_order_no": {
+                  "type": "string",
+                  "default": null
+                },
                 "challan_no": {
                   "type": "string",
                   "default": null
