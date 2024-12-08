@@ -33,6 +33,10 @@ module.exports = {
         type: Sequelize.STRING(50),
         allowNull: true,
       },
+      purchase_order_date: {
+        type: Sequelize.DATE,
+        allowNull: true,
+      },
       challan_no: {
         type: Sequelize.STRING(50),
         allowNull: true,
@@ -197,6 +201,7 @@ module.exports = {
         type: Sequelize.FLOAT,
         allowNull: true,
       },
+
       status: {
         type: Sequelize.STRING(100),
         allowNull: false,
