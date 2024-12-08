@@ -60,23 +60,23 @@ exports.upsertQuotation = async (req, res) => {
   }
   await insertRecords('quotation', req.body);
   //<------------ update analytics data for updates ------------>
-  if (isUpadtion) {
-    if (old_quotation_date != convertISOToDate(req.body.quotation_date)) {
-      console.log(
-        old_quotation_date,
-        '-',
-        convertISOToDate(req.body.quotation_date),
-      );
-      await dbRequest(
-        `CALL analytics_quotation("${old_quotation_date}","${old_quotation_date}")`,
-      );
-    }
-    await dbRequest(
-      `CALL analytics_quotation("${convertISOToDate(
-        req.body.quotation_date,
-      )}","${convertISOToDate(req.body.quotation_date)}")`,
-    );
-  }
+  // if (isUpadtion) {
+  //   if (old_quotation_date != convertISOToDate(req.body.quotation_date)) {
+  //     console.log(
+  //       old_quotation_date,
+  //       '-',
+  //       convertISOToDate(req.body.quotation_date),
+  //     );
+  //     await dbRequest(
+  //       `CALL analytics_quotation("${old_quotation_date}","${old_quotation_date}")`,
+  //     );
+  //   }
+  //   await dbRequest(
+  //     `CALL analytics_quotation("${convertISOToDate(
+  //       req.body.quotation_date,
+  //     )}","${convertISOToDate(req.body.quotation_date)}")`,
+  //   );
+  // }
 
   res.json(responser('Quotation created successfully.', req.body));
 

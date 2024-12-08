@@ -60,27 +60,30 @@ exports.upsertPurchaseOrder = async (req, res) => {
     req.body.create_ts = setDateTimeFormat('timestemp');
     req.body.purchase_order_uuid = v4();
   }
+
+  req.body.purchase_order_date = convertISOToDate(req.body.purchase_order_date);
+
   await insertRecords('purchase_order', req.body);
   //<------------ update analytics data for updates ------------>
-  if (isUpadtion) {
-    if (
-      old_purchase_order_date != convertISOToDate(req.body.purchase_order_date)
-    ) {
-      console.log(
-        old_purchase_order_date,
-        '-',
-        convertISOToDate(req.body.purchase_order_date),
-      );
-      await dbRequest(
-        `CALL analytics_purchase_order("${old_purchase_order_date}","${old_purchase_order_date}")`,
-      );
-    }
-    await dbRequest(
-      `CALL analytics_purchase_order("${convertISOToDate(
-        req.body.purchase_order_date,
-      )}","${convertISOToDate(req.body.purchase_order_date)}")`,
-    );
-  }
+  // if (isUpadtion) {
+  //   if (
+  //     old_purchase_order_date != convertISOToDate(req.body.purchase_order_date)
+  //   ) {
+  //     console.log(
+  //       old_purchase_order_date,
+  //       '-',
+  //       convertISOToDate(req.body.purchase_order_date),
+  //     );
+  //     await dbRequest(
+  //       `CALL analytics_purchase_order("${old_purchase_order_date}","${old_purchase_order_date}")`,
+  //     );
+  //   }
+  //   await dbRequest(
+  //     `CALL analytics_purchase_order("${convertISOToDate(
+  //       req.body.purchase_order_date,
+  //     )}","${convertISOToDate(req.body.purchase_order_date)}")`,
+  //   );
+  // }
 
   res.json(responser('Purchase Order created successfully.', req.body));
 
