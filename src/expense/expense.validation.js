@@ -22,7 +22,7 @@ exports.upsertExpenseSchema = Joi.object({
   merchant: Joi.string().max(100).allow('', null),
   expense_date: Joi.string().allow('', null),
   business_purpose: Joi.string().max(100).allow('', null),
-  advanse_amount: Joi.number().allow('', null),
+  advance_amount: Joi.number().allow('', null),
   reimbursed_amount: Joi.number().allow('', null),
   description: Joi.string().max(100).allow(null),
   status: Joi.string()

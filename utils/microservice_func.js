@@ -95,7 +95,7 @@ exports.uploadService = async (data) => {
   } catch (_) {}
   let getfilePath = await getRecords(
     'attachments_structure',
-    `where module_name= "${data.module_name}"`,
+    `where module_name = "${data.module_name}"`,
   );
   if (!getfilePath.length) return throwError(404, 'Module name is not valid');
   getfilePath = getfilePath[0].file_path;

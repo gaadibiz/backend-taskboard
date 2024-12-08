@@ -106,7 +106,7 @@
                   "type": "string",
                   "default": null
                 },
-                "advanse_amount": {
+                "advance_amount": {
                   "type": "number",
                   "default": null
                 },
