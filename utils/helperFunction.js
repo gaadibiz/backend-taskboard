@@ -308,3 +308,36 @@ exports.convertIsoUTCToLocalDate = (isoString) => {
   // Format the date as YYYY-MM-DD
   return `${year}-${month}-${day}`;
 };
+
+function aggregateData({
+  data,
+  tableName = 'default_table',
+  uniqueField,
+  aggregateField,
+  newAggregateFieldName = 'aggregated_field',
+}) {
+  if (!uniqueField || !aggregateField) {
+    throw new Error(
+      `[${tableName}] Missing required parameters: uniqueField and aggregateField.`,
+    );
+  }
+
+  const aggregated = {};
+
+  data.forEach((item) => {
+    const uniqueKey = item[uniqueField];
+    const aggregateValue = item[aggregateField];
+    const rest = { ...item };
+    delete rest[aggregateField];
+
+    if (!aggregated[uniqueKey]) {
+      aggregated[uniqueKey] = { ...rest, [newAggregateFieldName]: [] };
+    }
+
+    if (aggregateValue) {
+      aggregated[uniqueKey][newAggregateFieldName].push(aggregateValue);
+    }
+  });
+
+  return Object.values(aggregated);
+}
