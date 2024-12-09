@@ -199,7 +199,7 @@ exports.handleApproval = async (req, res) => {
     );
   }
   let msg = '';
-
+  res.status(200).json(responser(msg, req.body));
   (async () => {
     switch (req.body.status) {
       case 'APPROVED':
@@ -243,7 +243,6 @@ exports.handleApproval = async (req, res) => {
       );
     }
   })();
-  res.status(200).json(responser(msg, req.body));
 
   // <------------ Send Email On Action ------------->
   // approvalEmails(req.body.approval_uuid, req.user);
