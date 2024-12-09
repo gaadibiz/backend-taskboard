@@ -115,8 +115,11 @@ exports.getProject = async (req, res) => {
 
   let pageFilter = pagination(pageNo, itemPerPage);
 
-  let sql = `SELECT * FROM latest_project WHERE project_uuid IN (SELECT project_uuid FROM latest_project_team ${filter} )  ${pageFilter}`;
-  let result = await dbRequest(sql);
+  let totalRecords = await getCountRecord(tableName, filter);
+  let result = await getRecords(tableName, filter, pageFilter);
+
+  // let sql = `SELECT * FROM latest_project WHERE project_uuid IN (SELECT project_uuid FROM latest_project_team ${filter} )  ${pageFilter}`;
+  // let result = await dbRequest(sql);
 
   return res.json(responser('Project: ', result, result.length));
 };
