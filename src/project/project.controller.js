@@ -96,7 +96,7 @@ exports.getProject = async (req, res) => {
     value,
   } = req.query;
 
-  let tableName = 'latest_project_with_team';
+  let tableName = 'latest_project';
   let filter = filterFunctionality(
     {
       project_uuid,
@@ -107,11 +107,7 @@ exports.getProject = async (req, res) => {
     Array.isArray(columns) ? columns : [columns],
     value,
   );
-  filter = await roleFilterService(
-    filter,
-    'latest_project_with_team',
-    req.user,
-  );
+  filter = await roleFilterService(filter, 'latest_project', req.user);
 
   let pageFilter = pagination(pageNo, itemPerPage);
 
