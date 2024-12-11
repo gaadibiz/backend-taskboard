@@ -7,6 +7,8 @@ exports.upsertPurchaseOrderSchema = Joi.object({
   purchase_order_date: Joi.string().required(),
   job_uuid: Joi.string().guid().max(100).required(),
   job_name: Joi.string().max(255).required(),
+  project_manager_uuid: Joi.string().guid().max(100).required(),
+  project_manager_name: Joi.string().max(255).required(),
   job_order_no: Joi.string().max(255).required(),
   challan_no: Joi.string().allow(null, ''),
   challan_date: Joi.string().isoDate().allow(null, ''),

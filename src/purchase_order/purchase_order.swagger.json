@@ -47,6 +47,16 @@
                   "type": "string",
                   "default": null
                 },
+                "project_manager_uuid": {
+                  "type": "string",
+                  "default": null
+                },
+
+                "project_manager_name": {
+                  "type": "string",
+                  "default": null
+                },
+
                 "job_order_no": {
                   "type": "string",
                   "default": null

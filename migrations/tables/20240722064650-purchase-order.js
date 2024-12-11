@@ -29,6 +29,14 @@ module.exports = {
         type: Sequelize.STRING(100),
         allowNull: true,
       },
+      project_manager_uuid: {
+        type: Sequelize.CHAR(36),
+        allowNull: true,
+      },
+      project_manager_name: {
+        type: Sequelize.STRING(250),
+        allowNull: true,
+      },
       job_order_no: {
         type: Sequelize.STRING(50),
         allowNull: true,
