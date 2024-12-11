@@ -236,6 +236,41 @@
                   "type": "string",
                   "default": null
                 },
+                "father_name": {
+                  "type": "string",
+                  "default": null
+                },
+                "mother_name": {
+                  "type": "string",
+                  "default": null
+                },
+                "spouse_name": {
+                  "type": "string",
+                  "default": null
+                },
+                "father_contact_no": {
+                  "type": "string",
+                  "default": null
+                },
+                "mother_contact_no": {
+                  "type": "string",
+                  "default": null
+                },
+                "spouse_contact_no": {
+                  "type": "string",
+                  "default": null
+                },
+                "marital_status": {
+                  "type": "string",
+                  "default": null
+                },
+                "attachment": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {}
+                  }
+                },
                 "status": {
                   "type": "string",
                   "default": "ACTIVE"

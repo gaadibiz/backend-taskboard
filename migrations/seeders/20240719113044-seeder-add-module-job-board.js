@@ -124,7 +124,7 @@ module.exports = {
       }
 
       await queryInterface.sequelize.query(`UPDATE \`module\`
-        SET map_column_user_uuid = '["created_by_uuid", "modified_by_uuid"]',
+        SET map_column_user_uuid = '["created_by_uuid", "modified_by_uuid","project_manager_uuid","finance_manager_uuid"]',
             column_relation_options = '[{
                 "api": "/user/get-user",
                 "field": "email",

@@ -141,6 +141,38 @@ module.exports = {
         type: Sequelize.CHAR(36),
         allowNull: false,
       },
+      father_name: {
+        type: Sequelize.STRING(50),
+        allowNull: true,
+      },
+      mother_name: {
+        type: Sequelize.STRING(50),
+        allowNull: true,
+      },
+      spouse_name: {
+        type: Sequelize.STRING(50),
+        allowNull: true,
+      },
+      father_contact_no: {
+        type: Sequelize.STRING(50),
+        allowNull: true,
+      },
+      mother_contact_no: {
+        type: Sequelize.STRING(50),
+        allowNull: true,
+      },
+      spouse_contact_no: {
+        type: Sequelize.STRING(50),
+        allowNull: true,
+      },
+      marital_status: {
+        type: Sequelize.STRING(50),
+        allowNull: true,
+      },
+      attachment: {
+        type: Sequelize.JSON,
+        allowNull: true,
+      },
       status: {
         type: Sequelize.STRING(20),
         allowNull: true,

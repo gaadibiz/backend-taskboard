@@ -142,11 +142,13 @@ exports.getExpense = async (req, res) => {
       {
         record_uuid: result[0].expense_uuid,
         table_name: tableName,
-        data: result[0],
+        data: {},
       },
       'POST',
       req.headers,
     );
+
+    console.log('MERGER ------>', mergeExpense);
     // Update the first order with response data
     if (mergeExpense) {
       const { approval_uuid, requested_by_uuid, is_user_approver } =

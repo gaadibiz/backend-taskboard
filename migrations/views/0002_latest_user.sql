@@ -43,7 +43,15 @@ select
     up.languages_known,
     up.documents,
     up.branch_name,
-    up.branch_uuid
+    up.branch_uuid,
+    up.father_name,
+    up.mother_name,
+    up.spouse_name,
+    up.father_contact_no,
+    up.mother_contact_no,
+    up.spouse_contact_no,
+    up.marital_status,
+    up.attachment
 from
     user_fact uf
     INNER JOIN (

@@ -53,7 +53,15 @@ exports.upsertPurchaseOrderSchema = Joi.object({
   is_round_off: Joi.number().precision(2).allow(null),
   term_and_condition: Joi.string().max(255).allow('', null),
   total_amount_after_tax: Joi.number().precision(2).allow(null),
-  status: Joi.string().max(255).required().default('ACTIVE'),
+  status: Joi.string()
+    .max(255)
+    .valid(
+      'PURCHASE_ORDER_REQUESTED',
+      'PURCHASE_ORDER_APPROVAL_REQUESTED',
+      'INACTIVE',
+    )
+    .required()
+    .default('PURCHASE_ORDER_REQUESTED'),
   created_by_uuid: Joi.string().guid().max(50).allow('', null),
 });
 

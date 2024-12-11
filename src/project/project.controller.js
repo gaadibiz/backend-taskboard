@@ -141,6 +141,7 @@ exports.upsertProjectTeam = async (req, res) => {
     req.body.project_team_uuid = uuid();
   }
   const insertProject = await insertRecords('project_team', req.body);
+
   res.json(
     responser('Project team created or updated successfully.', req.body),
   );

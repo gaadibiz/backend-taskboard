@@ -17,6 +17,48 @@ module.exports = {
           "column_key": "user_uuid",
           "column_label": "User"
       },{
+        "api": "/user/get-branch",
+        "field": "branch_name",
+        "value": "branch_uuid",
+        "column_key": "branch_uuid",
+        "column_label": "Branch"
+        }]`,
+        status: 'ACTIVE',
+      },
+      {
+        module_uuid: uuidv4(),
+        module_name: 'Approval',
+        submodule_name: 'JOB',
+        table_name: 'latest_job',
+        map_column_user_uuid: '["approved_by_uuid"]',
+        column_relation_options: `[{
+          "api": "/user/get-user",
+          "field": "email",
+          "value": "user_uuid",
+          "column_key": "user_uuid",
+          "column_label": "User"
+      },{
+        "api": "/user/get-branch", 
+        "field": "branch_name", 
+        "value": "branch_uuid",
+        "column_key": "branch_uuid",
+        "column_label": "Branch"
+        }]`,
+        status: 'ACTIVE',
+      },
+      {
+        module_uuid: uuidv4(),
+        module_name: 'Approval',
+        submodule_name: 'Purchase Order',
+        table_name: 'latest_purchase_order',
+        map_column_user_uuid: '["approved_by_uuid"]',
+        column_relation_options: `[{
+          "api": "/user/get-user",
+          "field": "email",
+          "value": "user_uuid",
+          "column_key": "user_uuid",
+          "column_label": "User"
+      },{
         "api": "/user/get-branch", 
         "field": "branch_name", 
         "value": "branch_uuid",

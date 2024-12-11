@@ -64,6 +64,7 @@ exports.upsertPurchaseOrder = async (req, res) => {
   req.body.purchase_order_date = convertISOToDate(req.body.purchase_order_date);
 
   await insertRecords('purchase_order', req.body);
+
   //<------------ update analytics data for updates ------------>
   // if (isUpadtion) {
   //   if (
@@ -142,6 +143,36 @@ exports.getPurchaseOrder = async (req, res) => {
     // const date_string = result[0].purchase_order_date.toISOString();
     // result[0].purchase_order_date = date_string.split('T')[0];
   }
+
+  if (result.length > 0) {
+    // // merge approval record logic
+    mergeExpense = await getData(
+      base_url + '/api/v1/approval/merge-approval-record',
+      null,
+      'json',
+      {
+        record_uuid: result[0].purchase_order_uuid,
+        table_name: tableName,
+        data: {},
+      },
+      'POST',
+      req.headers,
+    );
+
+    console.log(mergeExpense);
+
+    // Update the first order with response data
+    if (mergeExpense) {
+      const { approval_uuid, requested_by_uuid, is_user_approver } =
+        mergeExpense; // Destructure for direct assignments
+      Object.assign(result[0], {
+        approval_uuid,
+        requested_by_uuid,
+        is_user_approver,
+      });
+    }
+  }
+
   return res.json(
     responser('Purchase Order : ', result, result.length, totalRecords),
   );

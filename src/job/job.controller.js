@@ -52,6 +52,22 @@ exports.upsertJob = async (req, res) => {
     req.body.job_uuid = v4();
   }
   await insertRecords('job', req.body);
+
+  //<------------ handle job approval module properly ----------->
+  const bodyData = {
+    table_name: 'latest_job',
+    record_uuid: req.body.job_uuid,
+    record_column_name: 'job_uuid',
+  };
+  getData(
+    base_url + '/api/v1/approval/insert-approval',
+    null,
+    'json',
+    bodyData,
+    'POST',
+    req.headers,
+  );
+
   //<------------ update analytics data for updates ------------>
   // if (isUpadtion) {
   //   if (old_job_date != convertISOToDate(req.body.job_date)) {
@@ -68,21 +84,6 @@ exports.upsertJob = async (req, res) => {
   // }
 
   res.json(responser('job created successfully.', req.body));
-
-  //<------------ handle job approval module properly ----------->
-  const bodyData = {
-    table_name: 'latest_job',
-    record_uuid: req.body.job_uuid,
-    record_column_name: 'job_uuid',
-  };
-  getData(
-    base_url + '/api/v1/approval/insert-approval',
-    null,
-    'json',
-    bodyData,
-    'POST',
-    req.headers,
-  );
 };
 
 exports.getJob = async (req, res) => {
@@ -95,7 +96,6 @@ exports.getJob = async (req, res) => {
     from_date,
     to_date,
     status,
-
     columns,
     value,
   } = req.query;
@@ -117,6 +117,32 @@ exports.getJob = async (req, res) => {
   let pageFilter = pagination(pageNo, itemPerPage, 'create_ts');
   let totalRecords = await getCountRecord(tableName, filter);
   let result = await getRecords(tableName, filter, pageFilter);
+
+  if (result.length > 0) {
+    // // merge approval record logic
+    mergeExpense = await getData(
+      base_url + '/api/v1/approval/merge-approval-record',
+      null,
+      'json',
+      {
+        record_uuid: result[0].job_uuid,
+        table_name: tableName,
+        data: result[0],
+      },
+      'POST',
+      req.headers,
+    );
+    // Update the first order with response data
+    if (mergeExpense) {
+      const { approval_uuid, requested_by_uuid, is_user_approver } =
+        mergeExpense; // Destructure for direct assignments
+      Object.assign(result[0], {
+        approval_uuid,
+        requested_by_uuid,
+        is_user_approver,
+      });
+    }
+  }
 
   return res.json(responser('job : ', result, result.length, totalRecords));
 };
