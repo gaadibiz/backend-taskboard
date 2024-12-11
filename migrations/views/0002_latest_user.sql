@@ -20,6 +20,8 @@ select
     up.department_uuid,
     up.job_title,
     up.manager_uuid,
+    up.manager_name,
+    up.hierarchy_uuids,
     up.user_type,
     up.assigned_phone_number,
     up.shared_email,

@@ -41,6 +41,10 @@ module.exports = {
         type: Sequelize.CHAR(36),
         allowNull: true,
       },
+      manager_name: {
+        type: Sequelize.STRING(50),
+        allowNull: true,
+      },
       hierarchy_uuids: {
         type: Sequelize.STRING(500),
         allowNull: true,

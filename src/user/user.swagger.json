@@ -55,6 +55,18 @@
                   "type": "string",
                   "default": null
                 },
+                "manager_uuid": {
+                  "type": "string",
+                  "default": null
+                },
+                "manager_name": {
+                  "type": "string",
+                  "default": null
+                },
+                "hierarchy_uuids": {
+                  "type": "string",
+                  "default": null
+                },
                 "status": {
                   "type": "string",
                   "default": "UNAUTHORIZE | ACTIVE | INACTIVE | BLOCKED"
@@ -144,6 +156,11 @@
                   "type": "string",
                   "default": null
                 },
+                "manager_name": {
+                  "type": "string",
+                  "default": null
+                },
+
                 "hierarchy_uuids": {
                   "type": "string",
                   "default": null
