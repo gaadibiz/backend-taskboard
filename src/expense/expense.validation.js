@@ -2,10 +2,15 @@ const Joi = require('joi');
 
 exports.upsertExpenseSchema = Joi.object({
   expense_uuid: Joi.string().guid().allow('', null),
-  expense_type: Joi.string().max(50).allow('', null),
+  expense_type: Joi.string()
+    .max(50)
+    .valid('EXPENSE', 'JOB', 'ADVANCE')
+    .allow('', null),
   job_order_no: Joi.string().max(100).allow('', null),
   job_uuid: Joi.string().guid().allow('', null),
   job_name: Joi.string().max(100).allow('', null),
+  user_uuid: Joi.string().guid().allow('', null),
+  user_name: Joi.string().max(100).allow('', null),
   project_name: Joi.string().max(100).allow('', null),
   project_uuid: Joi.string().guid().allow('', null),
   project_manager_uuid: Joi.string().guid().required(),
@@ -23,7 +28,10 @@ exports.upsertExpenseSchema = Joi.object({
   expense_date: Joi.string().allow('', null),
   business_purpose: Joi.string().max(100).allow('', null),
   advance_amount: Joi.number().allow('', null),
+  requested_advance_amount: Joi.number().allow('', null),
   reimbursed_amount: Joi.number().allow('', null),
+  eligible_reimbursement_amount: Joi.number().allow('', null),
+  is_deduct_from_advance: Joi.boolean().allow('', null),
   description: Joi.string().max(100).allow(null),
   status: Joi.string()
     .valid(
@@ -74,4 +82,8 @@ exports.getExpenseCategory = Joi.object({
   status: Joi.string(),
   columns: Joi.string(),
   value: Joi.string(),
+});
+
+exports.getAdvanceAmount = Joi.object({
+  user_uuid: Joi.string().guid().required(),
 });

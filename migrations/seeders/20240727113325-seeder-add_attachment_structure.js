@@ -28,6 +28,12 @@ module.exports = {
           'expense/${as_payload.title}/${as_payload.file_name}${as_payload.title}${moment().format("YYYY-MM-DD")}_${moment().format("HH-mm-ss")}.${as_payload.file_ext}',
         status: 'ACTIVE',
       },
+      {
+        module_name: 'USER',
+        file_path:
+          'user/${as_payload.title}/${as_payload.file_name}${as_payload.title}${moment().format("YYYY-MM-DD")}_${moment().format("HH-mm-ss")}.${as_payload.file_ext}',
+        status: 'ACTIVE',
+      },
     ]);
   },
 

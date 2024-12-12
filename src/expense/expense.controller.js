@@ -223,3 +223,37 @@ exports.getExpenseCategory = async (req, res) => {
     responser('All expense_category', result, result.length, totalRecords),
   );
 };
+
+exports.getAdvanceAmount = async (req, res) => {
+  const { user_uuid } = req.query;
+
+  const advance_amount = await dbRequest(`SELECT 
+     user_uuid,
+      GREATEST(
+    COALESCE(
+        SUM(
+            CASE 
+                WHEN status = 'FINANCE' AND expense_type = 'ADVANCE'  THEN IFNULL(requested_advance_amount, 0)
+                ELSE 0
+            END
+            - IF(is_deduct_from_advance, IFNULL(reimbursed_amount, 0), 0)
+        ), 
+        0
+
+        ),
+        0
+    ) AS advance_amount
+FROM expense
+WHERE user_uuid = '${user_uuid}'
+GROUP BY user_uuid;`);
+  if (!advance_amount.length) {
+    res.json(
+      responser('advance_amount', {
+        user_uuid,
+        advance_amount: '0',
+      }),
+    );
+  } else {
+    res.json(responser('advance_amount', advance_amount));
+  }
+};

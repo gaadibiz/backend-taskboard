@@ -29,6 +29,14 @@
                 },
                 "expense_type": {
                   "type": "string",
+                  "default": "JOB | EXPENSE | ADVANCE"
+                },
+                "user_uuid": {
+                  "type": "string",
+                  "default": ""
+                },
+                "user_name": {
+                  "type": "string",
                   "default": ""
                 },
                 "project_name": {
@@ -110,8 +118,20 @@
                   "type": "number",
                   "default": null
                 },
+                "requested_advance_amount": {
+                  "type": "number",
+                  "default": null
+                },
                 "reimbursed_amount": {
                   "type": "number",
+                  "default": null
+                },
+                "eligible_reimbursement_amount": {
+                  "type": "number",
+                  "default": null
+                },
+                "is_deduct_from_advance": {
+                  "type": "boolean",
                   "default": null
                 },
                 "description": {
@@ -249,7 +269,6 @@
         }
       }
     },
-
     "/api/v1/expense/upsert-expense-category": {
       "post": {
         "tags": ["expense"],
@@ -393,6 +412,42 @@
             "description": "",
             "required": true,
             "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful logout. The user has been logged out."
+          },
+          "404": {
+            "description": "Not Found. The provided user identifier was not found."
+          },
+          "500": {
+            "description": "Internal Server Error. An unexpected error occurred on the server."
+          }
+        }
+      }
+    },
+    "/api/v1/expense/get-advance-amount": {
+      "get": {
+        "tags": ["expense"],
+        "summary": "Get advance amount",
+        "description": "",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "user_uuid",
+            "description": "",
+            "required": true,
+            "type": "string"
           }
         ],
         "responses": {
