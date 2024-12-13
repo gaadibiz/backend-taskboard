@@ -52,6 +52,10 @@ select
     up.father_contact_no,
     up.mother_contact_no,
     up.spouse_contact_no,
+    up.bank_name,
+    up.bank_account_number,
+    up.bank_ifsc_code,
+    up.bank_branch,
     up.marital_status,
     up.attachment
 from
@@ -78,3 +82,6 @@ from
             ) as up2 on up.user_profile_id = up2.user_profile_id
     ) as up on uf.user_uuid = up.user_uuid
 ORDER BY insert_ts DESC;
+
+
+

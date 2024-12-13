@@ -288,6 +288,22 @@
                     "properties": {}
                   }
                 },
+                "bank_name": {
+                  "type": "string",
+                  "default": null
+                },
+                "bank_account_number": {
+                  "type": "string",
+                  "default": null
+                },
+                "bank_ifsc_code": {
+                  "type": "string",
+                  "default": null
+                },
+                "bank_branch": {
+                  "type": "string",
+                  "default": null
+                },
                 "status": {
                   "type": "string",
                   "default": "ACTIVE"

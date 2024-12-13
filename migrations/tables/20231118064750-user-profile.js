@@ -177,6 +177,25 @@ module.exports = {
         type: Sequelize.JSON,
         allowNull: true,
       },
+      bank_name: {
+        type: Sequelize.STRING(50),
+        allowNull: true,
+      },
+      bank_account_number: {
+        type: Sequelize.STRING(50),
+        allowNull: true,
+        validate: {
+          is: /^\d{10,15}$/,
+        },
+      },
+      bank_ifsc_code: {
+        type: Sequelize.STRING(10),
+        allowNull: true,
+      },
+      bank_branch: {
+        type: Sequelize.STRING(10),
+        allowNull: true,
+      },
       status: {
         type: Sequelize.STRING(20),
         allowNull: true,
