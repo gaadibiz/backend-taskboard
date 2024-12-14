@@ -198,6 +198,27 @@
             "required": false,
             "type": "string"
           },
+          {
+            "in": "query",
+            "name": "is_type_expense",
+            "description": "Boolean",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "in": "query",
+            "name": "is_type_advance",
+            "description": "Boolean",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "in": "query",
+            "name": "is_type_job",
+            "description": "Boolean",
+            "required": false,
+            "type": "boolean"
+          },
 
           {
             "in": "query",

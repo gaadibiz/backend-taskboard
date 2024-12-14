@@ -22,6 +22,12 @@ const {
 const { base_url } = require('../../config/server.config');
 const { responser, removeNullValueKey } = require('../../utils/helperFunction');
 
+function toBoolean(value) {
+  if (value === 'true' || value === true || value === 1) return true;
+  if (value === 'false' || value === false || value === 0) return false;
+  return Boolean(value); // Fallback for other truthy/falsy values
+}
+
 exports.upsertExpense = async (req, res) => {
   isEditAccess('latest_expense', req.user);
   removeNullValueKey(req.body);
@@ -112,7 +118,12 @@ exports.getExpense = async (req, res) => {
     status,
     columns,
     value,
+    is_type_expense,
+    is_type_advance,
+    is_type_job,
   } = req.query;
+
+  console.log('req.query---->', req.query);
 
   let tableName = 'latest_expense';
   let filter = filterFunctionality(
@@ -127,6 +138,16 @@ exports.getExpense = async (req, res) => {
     Array.isArray(columns) ? columns : [columns],
     value,
   );
+
+  if (toBoolean(is_type_expense)) {
+    filter += (filter ? ' AND ' : ' WHERE ') + "expense_type = 'EXPENSE'";
+  }
+  if (toBoolean(is_type_advance)) {
+    filter += (filter ? ' AND ' : ' WHERE ') + "expense_type = 'ADVANCE'";
+  }
+  if (toBoolean(is_type_job)) {
+    filter += (filter ? ' AND ' : ' WHERE ') + "expense_type = 'JOB'";
+  }
 
   filter = await roleFilterService(filter, 'latest_expense', req.user);
   let pageFilter = pagination(pageNo, itemPerPage);
