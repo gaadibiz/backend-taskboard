@@ -341,3 +341,201 @@ function aggregateData({
 
   return Object.values(aggregated);
 }
+
+exports.convertAmountToWords = (amount) => {
+  // Single digit and teen numbers
+  const words = [
+    'Zero',
+    'One',
+    'Two',
+    'Three',
+    'Four',
+    'Five',
+    'Six',
+    'Seven',
+    'Eight',
+    'Nine',
+    'Ten',
+    'Eleven',
+    'Twelve',
+    'Thirteen',
+    'Fourteen',
+    'Fifteen',
+    'Sixteen',
+    'Seventeen',
+    'Eighteen',
+    'Nineteen',
+  ];
+
+  // Tens multiples
+  const tens = [
+    '',
+    '',
+    'Twenty',
+    'Thirty',
+    'Forty',
+    'Fifty',
+    'Sixty',
+    'Seventy',
+    'Eighty',
+    'Ninety',
+  ];
+
+  if (amount < 20) {
+    return words[amount];
+  }
+
+  if (amount < 100) {
+    return (
+      tens[Math.floor(amount / 10)] +
+      (amount % 10 !== 0 ? ' ' + words[amount % 10] : '')
+    );
+  }
+
+  if (amount < 1000) {
+    return (
+      words[Math.floor(amount / 100)] +
+      ' Hundred' +
+      (amount % 100 !== 0
+        ? ' and ' + this.convertAmountToWords(amount % 100)
+        : '')
+    );
+  }
+
+  if (amount < 1000000) {
+    return (
+      this.convertAmountToWords(Math.floor(amount / 1000)) +
+      ' Thousand' +
+      (amount % 1000 !== 0
+        ? ' ' + this.convertAmountToWords(amount % 1000)
+        : '')
+    );
+  }
+
+  if (amount < 1000000000) {
+    return (
+      this.convertAmountToWords(Math.floor(amount / 1000000)) +
+      ' Million' +
+      (amount % 1000000 !== 0
+        ? ' ' + this.convertAmountToWords(amount % 1000000)
+        : '')
+    );
+  }
+
+  return 'Amount out of range';
+};
+
+//Same as above but with Indian Style(lakh, crore)
+exports.convertAmountToIndianStyleWords = (amount) => {
+  // Single digit and teen numbers
+  const words = [
+    'Zero',
+    'One',
+    'Two',
+    'Three',
+    'Four',
+    'Five',
+    'Six',
+    'Seven',
+    'Eight',
+    'Nine',
+    'Ten',
+    'Eleven',
+    'Twelve',
+    'Thirteen',
+    'Fourteen',
+    'Fifteen',
+    'Sixteen',
+    'Seventeen',
+    'Eighteen',
+    'Nineteen',
+  ];
+
+  // Tens multiples
+  const tens = [
+    '',
+    '',
+    'Twenty',
+    'Thirty',
+    'Forty',
+    'Fifty',
+    'Sixty',
+    'Seventy',
+    'Eighty',
+    'Ninety',
+  ];
+
+  if (amount < 20) {
+    return words[amount];
+  }
+
+  if (amount < 100) {
+    return (
+      tens[Math.floor(amount / 10)] +
+      (amount % 10 !== 0 ? ' ' + words[amount % 10] : '')
+    );
+  }
+
+  if (amount < 1000) {
+    return (
+      words[Math.floor(amount / 100)] +
+      ' Hundred' +
+      (amount % 100 !== 0
+        ? ' and ' + this.convertAmountToWords(amount % 100)
+        : '')
+    );
+  }
+
+  if (amount < 100000) {
+    return (
+      this.convertAmountToWords(Math.floor(amount / 1000)) +
+      ' Thousand' +
+      (amount % 1000 !== 0
+        ? ' ' + this.convertAmountToWords(amount % 1000)
+        : '')
+    );
+  }
+
+  if (amount < 10000000) {
+    return (
+      this.convertAmountToWords(Math.floor(amount / 100000)) +
+      ' Lakh' +
+      (amount % 100000 !== 0
+        ? ' ' + this.convertAmountToWords(amount % 100000)
+        : '')
+    );
+  }
+
+  if (amount < 1000000000) {
+    return (
+      this.convertAmountToWords(Math.floor(amount / 10000000)) +
+      ' Crore' +
+      (amount % 10000000 !== 0
+        ? ' ' + this.convertAmountToWords(amount % 10000000)
+        : '')
+    );
+  }
+
+  return 'Amount out of range';
+};
+
+/**
+ * Return object reponse.
+ * @param {number} number Any number
+ * @returns {The same number edited in Indian Number System Style} String.
+ */
+exports.formatIndianStyle = (number) => {
+  let parts = number.toString().split('.');
+  parts[0] = parts[0].replace(/\B(?=(\d{2})+\d{1}(?!\d))/g, ',');
+  return parts.join('.');
+};
+
+/**
+ * Return object reponse.
+ * @param {number} number Any number
+ * @returns {The same number edited in International Number System Style} String.
+ */
+exports.formatInternationalStyle = (number) => {
+  const formattedAmount = number.toLocaleString('en-US');
+  return formattedAmount;
+};

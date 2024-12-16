@@ -79,3 +79,9 @@ exports.getPurchaseOrderSchema = Joi.object({
   columns: Joi.string(),
   value: Joi.string(),
 });
+
+exports.getPOPreviewSchema = Joi.object({
+  purchase_order_uuid: Joi.string().guid(),
+  isPreview: Joi.boolean(),
+  IndianStyle: Joi.boolean(),
+});

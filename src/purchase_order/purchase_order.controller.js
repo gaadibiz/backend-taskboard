@@ -10,6 +10,8 @@ const {
   roleFilterService,
   dbRequest,
 } = require('../../utils/dbFunctions');
+const moment = require('moment');
+
 const {
   responser,
   removeNullValueKey,
@@ -17,9 +19,14 @@ const {
   throwError,
   incrementStringWithReset,
   getData,
+  formatIndianStyle,
+  formatInternationalStyle,
+  convertAmountToWords,
+  convertAmountToIndianStyleWords,
   convertIsoUTCToLocalDate,
   convertISOToDate,
 } = require('../../utils/helperFunction');
+const { ejsPreview, pdfMaker } = require('../../utils/microservice_func');
 
 const { base_url } = require('../../config/server.config');
 
@@ -176,4 +183,91 @@ exports.getPurchaseOrder = async (req, res) => {
   return res.json(
     responser('Purchase Order : ', result, result.length, totalRecords),
   );
+};
+
+exports.getPOPreview = async (req, res) => {
+  const { purchase_order_uuid, isPreview, IndianStyle } = req.query;
+
+  let invoiceInfo = (
+    await getRecords(
+      'latest_purchase_order',
+      `where purchase_order_uuid='${purchase_order_uuid}'`,
+    )
+  )[0];
+  const company_uuid = invoiceInfo.vendor_uuid;
+  let contactInfo = (
+    await getRecords('latest_vendors', `where vendor_uuid='${company_uuid}'`)
+  )[0];
+  contactInfo = contactInfo ? contactInfo : {};
+  const formattedInvoiceCreateTs = moment(invoiceInfo.create_ts).format(
+    'DD-MM-YYYY',
+  );
+  const formattedInvoiceInsertTs = moment(invoiceInfo.insert_ts).format(
+    'DD-MM-YYYY',
+  );
+  invoiceInfo.invoice_items.forEach((element) => {
+    element.total = (
+      IndianStyle == 'true' ? formatIndianStyle : formatInternationalStyle
+    )(element.total);
+    element.taxable_amount = (
+      IndianStyle == 'true' ? formatIndianStyle : formatInternationalStyle
+    )(element.taxable_amount);
+    element.unit_price = (
+      IndianStyle == 'true' ? formatIndianStyle : formatInternationalStyle
+    )(element.unit_price);
+    element.tax_amount = (
+      IndianStyle == 'true' ? formatIndianStyle : formatInternationalStyle
+    )(element.tax_amount);
+  });
+
+  const amountInWords = (
+    IndianStyle == 'true'
+      ? convertAmountToIndianStyleWords
+      : convertAmountToWords
+  )(invoiceInfo.total_amount_after_tax);
+  invoiceInfo.total_amount_after_tax = (
+    IndianStyle == 'true' ? formatIndianStyle : formatInternationalStyle
+  )(invoiceInfo.total_amount_after_tax);
+  invoiceInfo.total_amount = (
+    IndianStyle == 'true' ? formatIndianStyle : formatInternationalStyle
+  )(invoiceInfo.total_amount);
+
+  invoiceInfo.create_ts = formattedInvoiceCreateTs;
+  invoiceInfo.insert_ts = formattedInvoiceInsertTs;
+
+  invoiceInfo.amountInWords = amountInWords;
+
+  // let branch_info = (
+  //   await getRecords(
+  //     'latest_customer_branch',
+  //     `where customer_branch_uuid='${invoiceInfo.billing_company_branch_uuid}'`,
+  //   )
+  // )[0];
+  // branch_info = branch_info ? branch_info : {};
+
+  const responseData = {
+    contactInfo,
+    invoiceInfo,
+    // branch_info
+  };
+
+  let result;
+
+  console.log('response Data' + JSON.stringify(responseData));
+
+  if (isPreview === 'true') {
+    result = await ejsPreview(responseData, 'PO_T&E_Template.ejs');
+    return res.json(responser('PO EJS', result));
+  } else {
+    result = await pdfMaker(responseData, 'PO_T&E_Template.ejs', {
+      isTitlePage: false,
+    });
+
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader(
+      'Content-Disposition',
+      'attachment; filename="proforma_invoice.pdf"',
+    );
+    res.send(Buffer.from(result));
+  }
 };

@@ -23,4 +23,14 @@ router
       controller.getPurchaseOrder,
     ),
   );
+
+router
+  .route('/get-po-preview')
+  .get(
+    requestErrorHandlingDecorator(
+      Schema.getPOPreviewSchema,
+      controller.getPOPreview,
+    ),
+  );
+
 module.exports = router;

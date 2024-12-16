@@ -384,6 +384,59 @@
           "500": { "description": "Internal Server Error" }
         }
       }
+    },
+    "/api/v1/purchase_order/get-po-preview": {
+      "get": {
+        "tags": ["job board - Purchase Order"],
+        "summary": "Get the po preview",
+        "description": "This endpoint gives the po preview.",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "purchase_order_uuid",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "isPreview",
+            "description": "",
+            "required": false,
+            "type": "boolean",
+            "default": false
+          },
+          {
+            "in": "query",
+            "name": "IndianStyle",
+            "description": "",
+            "required": false,
+            "type": "boolean",
+            "default": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful logout. The user has been logged out."
+          },
+          "404": {
+            "description": "Not Found. The provided user identifier was not found."
+          },
+          "500": {
+            "description": "Internal Server Error. An unexpected error occurred on the server."
+          }
+        }
+      }
     }
   }
 }
