@@ -256,10 +256,10 @@ exports.getPOPreview = async (req, res) => {
   console.log('response Data' + JSON.stringify(responseData));
 
   if (isPreview === 'true') {
-    result = await ejsPreview(responseData, 'PO_T&E_Template.ejs');
+    result = await ejsPreview(responseData, 'po_task_and_expense.ejs');
     return res.json(responser('PO EJS', result));
   } else {
-    result = await pdfMaker(responseData, 'PO_T&E_Template.ejs', {
+    result = await pdfMaker(responseData, 'po_task_and_expense.ejs', {
       isTitlePage: false,
     });
 
