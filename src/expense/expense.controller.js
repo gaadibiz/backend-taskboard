@@ -139,14 +139,20 @@ exports.getExpense = async (req, res) => {
     value,
   );
 
+  let condition = '';
+
   if (toBoolean(is_type_expense)) {
-    filter += (filter ? ' AND ' : ' WHERE ') + "expense_type = 'EXPENSE'";
+    condition += (condition ? ' OR ' : '') + "expense_type = 'EXPENSE'";
   }
   if (toBoolean(is_type_advance)) {
-    filter += (filter ? ' AND ' : ' WHERE ') + "expense_type = 'ADVANCE'";
+    condition += (condition ? ' OR ' : '') + "expense_type = 'ADVANCE'";
   }
   if (toBoolean(is_type_job)) {
-    filter += (filter ? ' AND ' : ' WHERE ') + "expense_type = 'JOB'";
+    condition += (condition ? ' OR ' : '') + "expense_type = 'JOB'";
+  }
+
+  if (condition) {
+    filter += (filter ? ' AND ' : ' WHERE ') + `(${condition})`;
   }
 
   filter = await roleFilterService(filter, 'latest_expense', req.user);
