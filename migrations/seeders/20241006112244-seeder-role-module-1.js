@@ -109,33 +109,6 @@ module.exports = {
         filter_values: JSON.stringify({ or: { user_uuid: ['*'] } }),
       });
     }
-    // user
-    const report_module_name = ['Report'];
-    const report_module = modules.filter((module) =>
-      report_module_name.includes(module.module_name),
-    );
-    const finance_manager = (
-      await queryInterface.sequelize.query(
-        `SELECT * FROM latest_roles WHERE role_value = 'FINANCE_MANAGER'`,
-      )
-    )[0][0];
-
-    for (const module of report_module) {
-      roleSecurity.push({
-        role_module_uuid: uuidv4(),
-        module_uuid: module.module_uuid,
-        role_uuid: finance_manager.role_uuid,
-        show_module: 1,
-        view_access: 1,
-        edit_access: 1,
-        bulk_import: 1,
-        send_sms: 1,
-        send_mail: 1,
-        send_whatsapp: 1,
-        send_call: 1,
-        filter_values: JSON.stringify({ or: { user_uuid: ['*'] } }),
-      });
-    }
 
     await queryInterface.bulkInsert('role_module', roleSecurity);
   },

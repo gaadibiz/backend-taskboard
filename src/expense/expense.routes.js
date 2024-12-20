@@ -44,4 +44,13 @@ router
     ),
   );
 
+router.get(
+  '/get-advance-amount',
+  checkAuth,
+  requestErrorHandlingDecorator(
+    Schema.getAdvanceAmount,
+    controller.getAdvanceAmount,
+  ),
+);
+
 module.exports = router;

@@ -1,0 +1,159 @@
+const { requestErrorHandlingDecorator } = require('../../utils/helperFunction');
+const controller = require('./customer.controller');
+const router = require('express').Router();
+const Schema = require('./customer.validation');
+const checkAuth = require('../../middleware/checkAuth');
+
+router
+  .route('/upsert-customer')
+  .post(
+    checkAuth,
+    requestErrorHandlingDecorator(
+      Schema.upsertCustomerSchema,
+      controller.upsertCustomer,
+    ),
+  );
+router
+  .route('/get-customer')
+  .get(
+    checkAuth,
+    requestErrorHandlingDecorator(
+      Schema.getCustomerSchema,
+      controller.getCustomer,
+    ),
+  );
+
+router
+  .route('/upsert-customer-branch')
+  .post(
+    checkAuth,
+    requestErrorHandlingDecorator(
+      Schema.upsertCustomerBranchSchema,
+      controller.upsertCustomerBranch,
+    ),
+  );
+router
+  .route('/get-customer-branch')
+  .get(
+    checkAuth,
+    requestErrorHandlingDecorator(
+      Schema.getCustomerBranchSchema,
+      controller.getCustomerBranch,
+    ),
+  );
+
+router
+  .route('/upsert-customer-delivery-address')
+  .post(
+    checkAuth,
+    requestErrorHandlingDecorator(
+      Schema.upsertCustomerDeliveryAddressSchema,
+      controller.upsertCustomerDeliveryAddress,
+    ),
+  );
+router
+  .route('/get-customer-delivery-address')
+  .get(
+    checkAuth,
+    requestErrorHandlingDecorator(
+      Schema.getCustomerDeliveryAddressSchema,
+      controller.getCustomerDeliveryAddress,
+    ),
+  );
+
+router
+  .route('/upsert-billing-company-dispatch-address')
+  .post(
+    checkAuth,
+    requestErrorHandlingDecorator(
+      Schema.upsertBillingDispatchAddressSchema,
+      controller.upsertBillingDispatchAddress,
+    ),
+  );
+router
+  .route('/get-billing-company-dispatch-address')
+  .get(
+    checkAuth,
+    requestErrorHandlingDecorator(
+      Schema.getBillingDispatchAddressSchema,
+      controller.getBillingDispatchAddress,
+    ),
+  );
+
+router
+  .route('/upsert-contacts')
+  .post(
+    checkAuth,
+    requestErrorHandlingDecorator(
+      Schema.upsertContactSchema,
+      controller.upsertContact,
+    ),
+  );
+router
+  .route('/get-contacts')
+  .get(
+    checkAuth,
+    requestErrorHandlingDecorator(
+      Schema.getContactSchema,
+      controller.getContact,
+    ),
+  );
+router
+  .route('/upsert-bank-details')
+  .post(
+    checkAuth,
+    requestErrorHandlingDecorator(
+      Schema.upsertBankDetailsSchema,
+      controller.upsertBankDetails,
+    ),
+  );
+router
+  .route('/get-bank-details')
+  .get(
+    checkAuth,
+    requestErrorHandlingDecorator(
+      Schema.getBankDetailsSchema,
+      controller.getBankDetails,
+    ),
+  );
+router
+  .route('/get-billing-company-from-gst')
+  .get(
+    checkAuth,
+    requestErrorHandlingDecorator(
+      Schema.getBillingCompanyFromGstSchema,
+      controller.getBillingCompanyFromGst,
+    ),
+  );
+router
+  .route('/get-time')
+  .get(requestErrorHandlingDecorator(null, controller.getTime));
+router
+  .route('/load-customer-data')
+  .post(
+    checkAuth,
+    requestErrorHandlingDecorator(
+      Schema.loadCustomerDataSchema,
+      controller.loadCustomerData,
+    ),
+  );
+
+router
+  .route('/upsert-customer-attachments')
+  .post(
+    checkAuth,
+    requestErrorHandlingDecorator(
+      Schema.upsertCustomerAttachmentSchema,
+      controller.upsertCustomerAttachment,
+    ),
+  );
+router
+  .route('/get-customer-attachments')
+  .get(
+    checkAuth,
+    requestErrorHandlingDecorator(
+      Schema.getCustomerAttachmentSchema,
+      controller.getCustomerAttachment,
+    ),
+  );
+module.exports = router;

@@ -4,21 +4,38 @@ const { v4: uuidv4 } = require('uuid');
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    const approver_role_uuid = (
+    const project_role_uuid = (
       await queryInterface.sequelize.query(
         `SELECT * FROM latest_roles WHERE role_value = 'PROJECT_MANAGER'`,
+      )
+    )[0][0]?.role_uuid;
+
+    const category_role_uuid = (
+      await queryInterface.sequelize.query(
+        `SELECT * FROM latest_roles WHERE role_value = 'CATEGORY_MANAGER'`,
       )
     )[0][0]?.role_uuid;
 
     await queryInterface.bulkInsert('approval_count', [
       {
         approval_count_uuid: uuidv4(),
-        table_name: 'latest_report',
-        level: 1,
-        approval_hierarchy: `[[{ "type": "ROLE","uuid": "${approver_role_uuid}" }]]`,
-        approval_raise_status: 'REPORT_APPROVAL_REQUESTED',
-        previous_status: 'REPORT_REQUESTED',
-        next_status: 'REPORT',
+        table_name: 'latest_expense',
+        level: 2,
+        approval_hierarchy: ` [
+          {
+            "type": "ROLE",
+            "uuid": "${project_role_uuid}"
+          }
+        ],
+        [
+          {
+            "type": "ROLE",
+             "uuid": "${category_role_uuid}"
+          }
+        ]`,
+        approval_raise_status: 'EXPENSE_APPROVAL_REQUESTED',
+        previous_status: 'EXPENSE_REQUESTED',
+        next_status: 'FINANCE_APPROVAL_REQUESTED',
         status: 'ACTIVE',
         created_by_uuid: null,
       },
@@ -32,12 +49,39 @@ module.exports = {
     await queryInterface.bulkInsert('approval_count', [
       {
         approval_count_uuid: uuidv4(),
-        table_name: 'latest_report',
+        table_name: 'latest_expense',
         level: 1,
         approval_hierarchy: `[[{ "type": "ROLE", "uuid": "${finance_role_uuid}" }]]`,
         approval_raise_status: 'FINANCE_APPROVAL_REQUESTED',
-        previous_status: 'REPORT_APPROVAL_REQUESTED',
+        previous_status: 'EXPENSE_APPROVAL_REQUESTED',
         next_status: 'FINANCE',
+        status: 'ACTIVE',
+        created_by_uuid: null,
+      },
+    ]);
+
+    await queryInterface.bulkInsert('approval_count', [
+      {
+        approval_count_uuid: uuidv4(),
+        table_name: 'latest_job',
+        level: 1,
+        approval_hierarchy: `[[{ "type": "ROLE", "uuid": "${project_role_uuid}" }]]`,
+        approval_raise_status: 'JOB_APPROVAL_REQUESTED',
+        previous_status: 'JOB_REQUESTED',
+        next_status: 'JOB',
+        status: 'ACTIVE',
+        created_by_uuid: null,
+      },
+    ]);
+    await queryInterface.bulkInsert('approval_count', [
+      {
+        approval_count_uuid: uuidv4(),
+        table_name: 'latest_purchase_order',
+        level: 1,
+        approval_hierarchy: `[[{ "type": "ROLE", "uuid": "${project_role_uuid}" }]]`,
+        approval_raise_status: 'PURCHASE_ORDER_APPROVAL_REQUESTED',
+        previous_status: 'PURCHASE_ORDER_REQUESTED',
+        next_status: 'PURCHASE_ORDER',
         status: 'ACTIVE',
         created_by_uuid: null,
       },

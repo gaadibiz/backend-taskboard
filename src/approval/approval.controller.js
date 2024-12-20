@@ -198,9 +198,9 @@ exports.handleApproval = async (req, res) => {
       req.headers,
     );
   }
+  let msg = '';
   res.status(200).json(responser(msg, req.body));
   (async () => {
-    let msg = '';
     switch (req.body.status) {
       case 'APPROVED':
         msg = 'Approved successfully';

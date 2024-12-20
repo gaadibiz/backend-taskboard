@@ -265,3 +265,277 @@ exports.currencyToWords = (currency, options) => {
   let toWords = new ToWords({ localeCode: options.localeCode });
   return toWords.convert(currency, { currency: true });
 };
+
+exports.incrementStringWithReset = (currentString) => {
+  // Convert string to a number
+  let currentNumber = parseInt(currentString);
+  currentNumber =
+    currentNumber === 0 || currentNumber === undefined ? 0 : currentNumber;
+
+  // Increment the number
+  let nextNumber = currentNumber + 1;
+
+  // Convert the result back to a string
+  return nextNumber.toString();
+};
+
+exports.convertISOToDate = (isoString) => {
+  // Create a new Date object from the ISO string
+  const date = new Date(isoString);
+
+  // Extract the year, month, and day as local date components
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+  const day = String(date.getDate()).padStart(2, '0');
+
+  // Format the date as dd-mm-yyyy
+  return `${year}-${month}-${day}`;
+};
+
+exports.convertIsoUTCToLocalDate = (isoString) => {
+  // Create a new Date object from the ISO string
+  const date = new Date(isoString);
+
+  // Convert to UTC+5:30
+  const offset = 5.5 * 60; // Offset in minutes
+  const localDate = new Date(date.getTime() + offset * 60000);
+
+  // Extract the year, month, and day as local date components
+  const year = localDate.getFullYear();
+  const month = String(localDate.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+  const day = String(localDate.getDate()).padStart(2, '0');
+
+  // Format the date as YYYY-MM-DD
+  return `${year}-${month}-${day}`;
+};
+
+function aggregateData({
+  data,
+  tableName = 'default_table',
+  uniqueField,
+  aggregateField,
+  newAggregateFieldName = 'aggregated_field',
+}) {
+  if (!uniqueField || !aggregateField) {
+    throw new Error(
+      `[${tableName}] Missing required parameters: uniqueField and aggregateField.`,
+    );
+  }
+
+  const aggregated = {};
+
+  data.forEach((item) => {
+    const uniqueKey = item[uniqueField];
+    const aggregateValue = item[aggregateField];
+    const rest = { ...item };
+    delete rest[aggregateField];
+
+    if (!aggregated[uniqueKey]) {
+      aggregated[uniqueKey] = { ...rest, [newAggregateFieldName]: [] };
+    }
+
+    if (aggregateValue) {
+      aggregated[uniqueKey][newAggregateFieldName].push(aggregateValue);
+    }
+  });
+
+  return Object.values(aggregated);
+}
+
+exports.convertAmountToWords = (amount) => {
+  // Single digit and teen numbers
+  const words = [
+    'Zero',
+    'One',
+    'Two',
+    'Three',
+    'Four',
+    'Five',
+    'Six',
+    'Seven',
+    'Eight',
+    'Nine',
+    'Ten',
+    'Eleven',
+    'Twelve',
+    'Thirteen',
+    'Fourteen',
+    'Fifteen',
+    'Sixteen',
+    'Seventeen',
+    'Eighteen',
+    'Nineteen',
+  ];
+
+  // Tens multiples
+  const tens = [
+    '',
+    '',
+    'Twenty',
+    'Thirty',
+    'Forty',
+    'Fifty',
+    'Sixty',
+    'Seventy',
+    'Eighty',
+    'Ninety',
+  ];
+
+  if (amount < 20) {
+    return words[amount];
+  }
+
+  if (amount < 100) {
+    return (
+      tens[Math.floor(amount / 10)] +
+      (amount % 10 !== 0 ? ' ' + words[amount % 10] : '')
+    );
+  }
+
+  if (amount < 1000) {
+    return (
+      words[Math.floor(amount / 100)] +
+      ' Hundred' +
+      (amount % 100 !== 0
+        ? ' and ' + this.convertAmountToWords(amount % 100)
+        : '')
+    );
+  }
+
+  if (amount < 1000000) {
+    return (
+      this.convertAmountToWords(Math.floor(amount / 1000)) +
+      ' Thousand' +
+      (amount % 1000 !== 0
+        ? ' ' + this.convertAmountToWords(amount % 1000)
+        : '')
+    );
+  }
+
+  if (amount < 1000000000) {
+    return (
+      this.convertAmountToWords(Math.floor(amount / 1000000)) +
+      ' Million' +
+      (amount % 1000000 !== 0
+        ? ' ' + this.convertAmountToWords(amount % 1000000)
+        : '')
+    );
+  }
+
+  return 'Amount out of range';
+};
+
+//Same as above but with Indian Style(lakh, crore)
+exports.convertAmountToIndianStyleWords = (amount) => {
+  // Single digit and teen numbers
+  const words = [
+    'Zero',
+    'One',
+    'Two',
+    'Three',
+    'Four',
+    'Five',
+    'Six',
+    'Seven',
+    'Eight',
+    'Nine',
+    'Ten',
+    'Eleven',
+    'Twelve',
+    'Thirteen',
+    'Fourteen',
+    'Fifteen',
+    'Sixteen',
+    'Seventeen',
+    'Eighteen',
+    'Nineteen',
+  ];
+
+  // Tens multiples
+  const tens = [
+    '',
+    '',
+    'Twenty',
+    'Thirty',
+    'Forty',
+    'Fifty',
+    'Sixty',
+    'Seventy',
+    'Eighty',
+    'Ninety',
+  ];
+
+  if (amount < 20) {
+    return words[amount];
+  }
+
+  if (amount < 100) {
+    return (
+      tens[Math.floor(amount / 10)] +
+      (amount % 10 !== 0 ? ' ' + words[amount % 10] : '')
+    );
+  }
+
+  if (amount < 1000) {
+    return (
+      words[Math.floor(amount / 100)] +
+      ' Hundred' +
+      (amount % 100 !== 0
+        ? ' and ' + this.convertAmountToWords(amount % 100)
+        : '')
+    );
+  }
+
+  if (amount < 100000) {
+    return (
+      this.convertAmountToWords(Math.floor(amount / 1000)) +
+      ' Thousand' +
+      (amount % 1000 !== 0
+        ? ' ' + this.convertAmountToWords(amount % 1000)
+        : '')
+    );
+  }
+
+  if (amount < 10000000) {
+    return (
+      this.convertAmountToWords(Math.floor(amount / 100000)) +
+      ' Lakh' +
+      (amount % 100000 !== 0
+        ? ' ' + this.convertAmountToWords(amount % 100000)
+        : '')
+    );
+  }
+
+  if (amount < 1000000000) {
+    return (
+      this.convertAmountToWords(Math.floor(amount / 10000000)) +
+      ' Crore' +
+      (amount % 10000000 !== 0
+        ? ' ' + this.convertAmountToWords(amount % 10000000)
+        : '')
+    );
+  }
+
+  return 'Amount out of range';
+};
+
+/**
+ * Return object reponse.
+ * @param {number} number Any number
+ * @returns {The same number edited in Indian Number System Style} String.
+ */
+exports.formatIndianStyle = (number) => {
+  let parts = number.toString().split('.');
+  parts[0] = parts[0].replace(/\B(?=(\d{2})+\d{1}(?!\d))/g, ',');
+  return parts.join('.');
+};
+
+/**
+ * Return object reponse.
+ * @param {number} number Any number
+ * @returns {The same number edited in International Number System Style} String.
+ */
+exports.formatInternationalStyle = (number) => {
+  const formattedAmount = number.toLocaleString('en-US');
+  return formattedAmount;
+};

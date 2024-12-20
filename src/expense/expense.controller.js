@@ -22,8 +22,14 @@ const {
 const { base_url } = require('../../config/server.config');
 const { responser, removeNullValueKey } = require('../../utils/helperFunction');
 
+function toBoolean(value) {
+  if (value === 'true' || value === true || value === 1) return true;
+  if (value === 'false' || value === false || value === 0) return false;
+  return Boolean(value); // Fallback for other truthy/falsy values
+}
+
 exports.upsertExpense = async (req, res) => {
-  // isEditAccess('latest_leads_with_expense', req.user);
+  isEditAccess('latest_expense', req.user);
   removeNullValueKey(req.body);
   let isUpadtion = false;
   if (req.body.expense_uuid) {
@@ -43,6 +49,22 @@ exports.upsertExpense = async (req, res) => {
     req.body.expense_uuid = uuid();
   }
   const insertexpense = await insertRecords('expense', req.body);
+
+  //<------------ handle costing sheet approval modal properly ----------->
+  const bodyData = {
+    table_name: 'latest_expense',
+    record_uuid: req.body.expense_uuid,
+    record_column_name: 'expense_uuid',
+  };
+  await getData(
+    base_url + '/api/v1/approval/insert-approval',
+    null,
+    'json',
+    bodyData,
+    'POST',
+    req.headers,
+  );
+
   res.json(responser('expense created or updated successfully.', req.body));
 
   // res.json(responser('expense created or updated successfully.', req.body));
@@ -96,7 +118,12 @@ exports.getExpense = async (req, res) => {
     status,
     columns,
     value,
+    is_type_expense,
+    is_type_advance,
+    is_type_job,
   } = req.query;
+
+  console.log('req.query---->', req.query);
 
   let tableName = 'latest_expense';
   let filter = filterFunctionality(
@@ -112,32 +139,62 @@ exports.getExpense = async (req, res) => {
     value,
   );
 
+  let condition = '';
+
+  if (toBoolean(is_type_expense)) {
+    condition += (condition ? ' OR ' : '') + "expense_type = 'EXPENSE'";
+  }
+  if (toBoolean(is_type_advance)) {
+    condition += (condition ? ' OR ' : '') + "expense_type = 'ADVANCE'";
+  }
+  if (toBoolean(is_type_job)) {
+    condition += (condition ? ' OR ' : '') + "expense_type = 'JOB'";
+  }
+
+  if (condition) {
+    filter += (filter ? ' AND ' : ' WHERE ') + `(${condition})`;
+  }
+
   filter = await roleFilterService(filter, 'latest_expense', req.user);
   let pageFilter = pagination(pageNo, itemPerPage);
   let totalRecords = await getCountRecord(tableName, filter);
   let result = await getRecords(tableName, filter, pageFilter);
 
+  if (result.length > 0) {
+    // // merge approval record logic
+    mergeExpense = await getData(
+      base_url + '/api/v1/approval/merge-approval-record',
+      null,
+      'json',
+      {
+        record_uuid: result[0].expense_uuid,
+        table_name: tableName,
+        data: {},
+      },
+      'POST',
+      req.headers,
+    );
+
+    console.log('MERGER ------>', mergeExpense);
+    // Update the first order with response data
+    if (mergeExpense) {
+      const { approval_uuid, requested_by_uuid, is_user_approver } =
+        mergeExpense; // Destructure for direct assignments
+      Object.assign(result[0], {
+        approval_uuid,
+        requested_by_uuid,
+        is_user_approver,
+      });
+    }
+  }
+
   return res.json(responser('expense: ', result, result.length, totalRecords));
 };
-
-// //<------------ handle costing sheet approval modal properly ----------->
-// const bodyData = {
-//   table_name: 'latest_report',
-//   record_uuid: req.body.report_uuid,
-//   record_column_name: 'report_uuid',
-// };
-// await getData(
-//   base_url + '/api/v1/approval/insert-approval',
-//   null,
-//   'json',
-//   bodyData,
-//   'POST',
-//   req.headers,
-// );
 
 // // res.json(responser('Project created or updated successfully.', req.body));
 
 exports.upsertExpenseCategory = async (req, res) => {
+  isEditAccess('latest_expense_category', req.user);
   // await isEditAccess('latest_expense_category', req.user);
   removeNullValueKey(req.body);
   req.body.expense_category_name = req.body.expense_category_name.toUpperCase();
@@ -192,4 +249,38 @@ exports.getExpenseCategory = async (req, res) => {
   return res.json(
     responser('All expense_category', result, result.length, totalRecords),
   );
+};
+
+exports.getAdvanceAmount = async (req, res) => {
+  const { user_uuid } = req.query;
+
+  const advance_amount = await dbRequest(`SELECT 
+     user_uuid,
+      GREATEST(
+    COALESCE(
+        SUM(
+            CASE 
+                WHEN status = 'FINANCE' AND expense_type = 'ADVANCE'  THEN IFNULL(requested_advance_amount, 0)
+                ELSE 0
+            END
+            - IF(is_deduct_from_advance, IFNULL(reimbursed_amount, 0), 0)
+        ), 
+        0
+
+        ),
+        0
+    ) AS advance_amount
+FROM expense
+WHERE user_uuid = '${user_uuid}'
+GROUP BY user_uuid;`);
+  if (!advance_amount.length) {
+    res.json(
+      responser('advance_amount', {
+        user_uuid,
+        advance_amount: '0',
+      }),
+    );
+  } else {
+    res.json(responser('advance_amount', advance_amount));
+  }
 };

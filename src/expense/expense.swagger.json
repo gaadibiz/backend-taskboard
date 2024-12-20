@@ -27,6 +27,18 @@
                   "type": "string",
                   "default": null
                 },
+                "expense_type": {
+                  "type": "string",
+                  "default": "JOB | EXPENSE | ADVANCE"
+                },
+                "user_uuid": {
+                  "type": "string",
+                  "default": ""
+                },
+                "user_name": {
+                  "type": "string",
+                  "default": ""
+                },
                 "project_name": {
                   "type": "string",
                   "default": ""
@@ -51,9 +63,17 @@
                   "type": "string",
                   "default": ""
                 },
-                "department_uuid": {
+                "job_order_no": {
                   "type": "string",
-                  "default": ""
+                  "default": null
+                },
+                "job_uuid": {
+                  "type": "string",
+                  "default": null
+                },
+                "job_name": {
+                  "type": "string",
+                  "default": null
                 },
                 "department_name": {
                   "type": "string",
@@ -94,12 +114,24 @@
                   "type": "string",
                   "default": null
                 },
-                "advanse_amount": {
+                "advance_amount": {
+                  "type": "number",
+                  "default": null
+                },
+                "requested_advance_amount": {
                   "type": "number",
                   "default": null
                 },
                 "reimbursed_amount": {
                   "type": "number",
+                  "default": null
+                },
+                "eligible_reimbursement_amount": {
+                  "type": "number",
+                  "default": null
+                },
+                "is_deduct_from_advance": {
+                  "type": "boolean",
                   "default": null
                 },
                 "description": {
@@ -165,6 +197,27 @@
             "description": "",
             "required": false,
             "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "is_type_expense",
+            "description": "Boolean",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "in": "query",
+            "name": "is_type_advance",
+            "description": "Boolean",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "in": "query",
+            "name": "is_type_job",
+            "description": "Boolean",
+            "required": false,
+            "type": "boolean"
           },
 
           {
@@ -237,7 +290,6 @@
         }
       }
     },
-
     "/api/v1/expense/upsert-expense-category": {
       "post": {
         "tags": ["expense"],
@@ -271,12 +323,12 @@
                 },
                 "category_manager_name": {
                   "type": "string",
-                  "default": null
+                  "default": ""
                 },
 
                 "category_manager_uuid": {
                   "type": "string",
-                  "default": null
+                  "default": ""
                 },
                 "expense_category_description": {
                   "type": "string",
@@ -381,6 +433,42 @@
             "description": "",
             "required": true,
             "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful logout. The user has been logged out."
+          },
+          "404": {
+            "description": "Not Found. The provided user identifier was not found."
+          },
+          "500": {
+            "description": "Internal Server Error. An unexpected error occurred on the server."
+          }
+        }
+      }
+    },
+    "/api/v1/expense/get-advance-amount": {
+      "get": {
+        "tags": ["expense"],
+        "summary": "Get advance amount",
+        "description": "",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "user_uuid",
+            "description": "",
+            "required": true,
+            "type": "string"
           }
         ],
         "responses": {

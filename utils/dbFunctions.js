@@ -686,3 +686,33 @@ exports.listOrderBy = (filter, value, desc = true) => {
     filter + ` order by ${value ? value : 'insert_ts'} ${desc ? 'DESC' : 'ASC'}`
   );
 };
+
+/**
+ * Returns the highest value of a non-unique parameter based on a timestamp column and a separate filter condition.
+ * @param {string} table Table name.
+ * @param {string} parameterColumn Column name of the non-unique parameter.
+ * @param {string} timestampColumn Column name of the timestamp.
+ * @param {string} additionalFilter Additional filter condition for the parameter.
+ * @return {Promise<{highestValue}>}>}.
+ */
+exports.getHighestParameterValue = async (
+  table,
+  parameterColumn,
+  condition,
+) => {
+  try {
+    const result = await this.dbRequest(
+      `SELECT MAX(${parameterColumn}) AS highestValue
+      FROM ${table} WHERE ${condition}
+      ORDER BY create_ts DESC
+      LIMIT 1;`,
+    );
+
+    // Access the highest value while considering potential undefined cases:
+    return { highestValue: result.length > 0 ? result[0].highestValue : 0 };
+  } catch (error) {
+    console.error('Error fetching highest parameter value:', error);
+    // Handle the error appropriately, e.g., log it or throw a custom error
+    return { highestValue: 0 }; // Still return default value in case of errors
+  }
+};

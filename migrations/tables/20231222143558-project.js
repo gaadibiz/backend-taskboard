@@ -29,6 +29,14 @@ module.exports = {
         type: Sequelize.CHAR(36),
         allowNull: false,
       },
+      finance_manager_name: {
+        type: Sequelize.STRING(50),
+        allowNull: false,
+      },
+      finance_manager_uuid: {
+        type: Sequelize.CHAR(36),
+        allowNull: false,
+      },
       remarks: {
         type: Sequelize.STRING(500),
         allowNull: true,

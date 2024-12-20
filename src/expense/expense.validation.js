@@ -2,6 +2,15 @@ const Joi = require('joi');
 
 exports.upsertExpenseSchema = Joi.object({
   expense_uuid: Joi.string().guid().allow('', null),
+  expense_type: Joi.string()
+    .max(50)
+    .valid('EXPENSE', 'JOB', 'ADVANCE')
+    .allow('', null),
+  job_order_no: Joi.string().max(100).allow('', null),
+  job_uuid: Joi.string().guid().allow('', null),
+  job_name: Joi.string().max(100).allow('', null),
+  user_uuid: Joi.string().guid().allow('', null),
+  user_name: Joi.string().max(100).allow('', null),
   project_name: Joi.string().max(100).allow('', null),
   project_uuid: Joi.string().guid().allow('', null),
   project_manager_uuid: Joi.string().guid().required(),
@@ -12,14 +21,17 @@ exports.upsertExpenseSchema = Joi.object({
   department_name: Joi.string().max(100).allow('', null),
   expense_category_uuid: Joi.string().guid().max(500).allow('', null),
   expense_category_name: Joi.string().max(100).allow('', null),
-  category_manager_name: Joi.string().max(100).allow('', null),
-  category_manager_uuid: Joi.string().guid().allow('', null),
+  category_manager_name: Joi.string().max(100).required(),
+  category_manager_uuid: Joi.string().guid().required(),
   receipt: Joi.array(),
   merchant: Joi.string().max(100).allow('', null),
   expense_date: Joi.string().allow('', null),
   business_purpose: Joi.string().max(100).allow('', null),
-  advanse_amount: Joi.number().allow('', null),
+  advance_amount: Joi.number().allow('', null),
+  requested_advance_amount: Joi.number().allow('', null),
   reimbursed_amount: Joi.number().allow('', null),
+  eligible_reimbursement_amount: Joi.number().allow('', null),
+  is_deduct_from_advance: Joi.boolean().allow('', null),
   description: Joi.string().max(100).allow(null),
   status: Joi.string()
     .valid(
@@ -41,7 +53,9 @@ exports.getExpenseSchema = Joi.object({
   report_uuid: Joi.string().guid(),
   expense_category_uuid: Joi.string().guid(),
   project_uuid: Joi.string().guid(),
-  unreported: Joi.string(),
+  is_type_expense: Joi.boolean().allow(null),
+  is_type_advance: Joi.boolean().allow(null),
+  is_type_job: Joi.boolean(),
   pageNo: Joi.number().integer().min(1),
   itemPerPage: Joi.number().integer().min(1),
   from_date: Joi.string().regex(/^\d{4}-\d{2}-\d{2}$/),
@@ -54,8 +68,8 @@ exports.getExpenseSchema = Joi.object({
 exports.upsertExpenseCategory = Joi.object({
   expense_category_uuid: Joi.string().guid().max(500).allow('', null),
   expense_category_name: Joi.string().max(100).required(),
-  category_manager_name: Joi.string().max(100).allow('', null),
-  category_manager_uuid: Joi.string().max(100).allow('', null),
+  category_manager_name: Joi.string().max(100).required(),
+  category_manager_uuid: Joi.string().guid().required(),
   expense_category_description: Joi.string().max(500).allow('', null),
   status: Joi.string().valid('ACTIVE', 'INACTIVE'),
   created_by_uuid: Joi.string().guid().max(50).allow(null),
@@ -71,4 +85,8 @@ exports.getExpenseCategory = Joi.object({
   status: Joi.string(),
   columns: Joi.string(),
   value: Joi.string(),
+});
+
+exports.getAdvanceAmount = Joi.object({
+  user_uuid: Joi.string().guid().required(),
 });

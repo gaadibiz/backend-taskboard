@@ -1,0 +1,1639 @@
+{
+  "paths": {
+    "/api/v1/customer/upsert-customer": {
+      "post": {
+        "tags": ["job board - customer"],
+        "summary": "Create or Update Customer",
+        "description": "Endpoint to create or update Customer",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "customer_name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "customer_uuid": {
+                  "type": "string",
+                  "default": null
+                },
+                "organization_type": {
+                  "type": "string",
+                  "default": null
+                },
+                "is_billing_company": {
+                  "type": "number",
+                  "default": 0
+                },
+                "customer_website": {
+                  "type": "string",
+                  "default": null
+                },
+                "legal_entity": {
+                  "type": "string",
+                  "default": null
+                },
+                "registration_type": {
+                  "type": "string",
+                  "default": null
+                },
+                "status": {
+                  "type": "string",
+                  "default": "ACTIVE"
+                }
+              }
+            }
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+
+    "/api/v1/customer/get-customer": {
+      "get": {
+        "tags": ["job board - customer"],
+        "summary": "Get Customer",
+        "description": "Endpoint to retrieve Customer",
+        "produces": ["application/json"],
+
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "customer_uuid",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "is_billing_company",
+            "description": "",
+            "required": false,
+            "type": "number",
+            "default": null
+          },
+          {
+            "in": "query",
+            "name": "columns",
+            "description": "",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "value",
+            "description": "",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "description": "",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "from_date",
+            "description": "Format will be YYYY-MM-DD.",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "to_date",
+            "description": "Format will be YYYY-MM-DD.",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "pageNo",
+            "description": "",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "in": "query",
+            "name": "itemPerPage",
+            "description": "",
+            "required": true,
+            "type": "number"
+          }
+        ],
+
+        "responses": {
+          "200": { "description": "successful operation" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+
+    "/api/v1/customer/upsert-customer-branch": {
+      "post": {
+        "tags": ["job board - customer"],
+        "summary": "Create or Update Customer Branch",
+        "description": "Endpoint to create or update Customer Branch",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "customer_branch_uuid": {
+                  "type": "string",
+                  "default": ""
+                },
+                "customer_branch_name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "customer_uuid": {
+                  "type": "string",
+                  "default": ""
+                },
+                "customer_name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "customer_branch_gst_in": {
+                  "type": "string",
+                  "default": ""
+                },
+                "pan_no": {
+                  "type": "string",
+                  "default": null
+                },
+                "invoice_no_sequence": {
+                  "type": "string",
+                  "default": ""
+                },
+                "customer_branch_address̵_line1": {
+                  "type": "string",
+                  "default": null
+                },
+                "customer_branch_address_line2": {
+                  "type": "string",
+                  "default": null
+                },
+                "customer_branch_address_city": {
+                  "type": "string",
+                  "default": null
+                },
+                "customer_branch_address_state": {
+                  "type": "string",
+                  "default": null
+                },
+                "customer_branch_address_pincode": {
+                  "type": "string",
+                  "default": null
+                },
+                "customer_branch_address_country": {
+                  "type": "string",
+                  "default": null
+                },
+                "customer_branch_mobile": {
+                  "type": "string",
+                  "default": ""
+                },
+                "customer_branch_phone_number": {
+                  "type": "string",
+                  "default": ""
+                },
+                "customer_branch_website": {
+                  "type": "string",
+                  "default": ""
+                },
+                "customer_branch_mail_id": {
+                  "type": "string",
+                  "default": ""
+                }
+              }
+            }
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+
+    "/api/v1/customer/get-customer-branch": {
+      "get": {
+        "tags": ["job board - customer"],
+        "summary": "Get Customer Branch",
+        "description": "Endpoint to retrieve Customer Branch",
+        "produces": ["application/json"],
+
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "customer_branch_uuid",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "customer_uuid",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "columns",
+            "description": "",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "value",
+            "description": "",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "description": "",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "from_date",
+            "description": "Format will be YYYY-MM-DD.",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "to_date",
+            "description": "Format will be YYYY-MM-DD.",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "pageNo",
+            "description": "",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "in": "query",
+            "name": "itemPerPage",
+            "description": "",
+            "required": true,
+            "type": "number"
+          }
+        ],
+
+        "responses": {
+          "200": { "description": "successful operation" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+
+    "/api/v1/customer/upsert-customer-delivery-address": {
+      "post": {
+        "tags": ["job board - customer"],
+        "summary": "Create or Update Customer Delivery Address",
+        "description": "Endpoint to create or update Customer Delivery Address",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "customer_delivery_address_uuid": {
+                  "type": "string",
+                  "default": ""
+                },
+                "customer_uuid": {
+                  "type": "string",
+                  "default": ""
+                },
+                "customer_name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "delivery_name": {
+                  "type": "string",
+                  "default": null
+                },
+                "customer_delivery_address_line1": {
+                  "type": "string",
+                  "default": null
+                },
+                "customer_delivery_address_line2": {
+                  "type": "string",
+                  "default": null
+                },
+                "customer_delivery_address_city": {
+                  "type": "string",
+                  "default": null
+                },
+                "customer_delivery_address_state": {
+                  "type": "string",
+                  "default": null
+                },
+                "customer_delivery_address_pincode": {
+                  "type": "string",
+                  "default": null
+                },
+                "customer_delivery_address_country": {
+                  "type": "string",
+                  "default": null
+                },
+                "status": {
+                  "type": "string",
+                  "default": "ACTIVE | INACTIVE"
+                }
+              }
+            }
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+
+    "/api/v1/customer/get-customer-delivery-address": {
+      "get": {
+        "tags": ["job board - customer"],
+        "summary": "Get Customer Delivery Address",
+        "description": "Endpoint to retrieve Customer Delivery Address",
+        "produces": ["application/json"],
+
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "customer_delivery_address_uuid",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "customer_uuid",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "customer_name",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "columns",
+            "description": "",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "value",
+            "description": "",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "description": "",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "from_date",
+            "description": "Format will be YYYY-MM-DD.",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "to_date",
+            "description": "Format will be YYYY-MM-DD.",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "pageNo",
+            "description": "",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "in": "query",
+            "name": "itemPerPage",
+            "description": "",
+            "required": true,
+            "type": "number"
+          }
+        ],
+
+        "responses": {
+          "200": { "description": "successful operation" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+
+    "/api/v1/customer/upsert-billing-company-dispatch-address": {
+      "post": {
+        "tags": ["job board - customer"],
+        "summary": "Create or Update Billing Company Dispatch Address",
+        "description": "Endpoint to create or update Billing Company Dispatch Address",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "customer_dispatch_address_uuid": {
+                  "type": "string",
+                  "default": ""
+                },
+                "customer_uuid": {
+                  "type": "string",
+                  "default": ""
+                },
+                "customer_name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "dispatch_name": {
+                  "type": "string",
+                  "default": null
+                },
+                "customer_dispatch_address_line1": {
+                  "type": "string",
+                  "default": null
+                },
+                "customer_dispatch_address_line2": {
+                  "type": "string",
+                  "default": null
+                },
+                "customer_dispatch_address_city": {
+                  "type": "string",
+                  "default": null
+                },
+                "customer_dispatch_address_state": {
+                  "type": "string",
+                  "default": null
+                },
+                "customer_dispatch_address_pincode": {
+                  "type": "string",
+                  "default": null
+                },
+                "customer_dispatch_address_country": {
+                  "type": "string",
+                  "default": null
+                },
+                "dispatch_through": {
+                  "type": "string",
+                  "default": null
+                },
+                "transport_id": {
+                  "type": "string",
+                  "default": null
+                },
+                "transport_doc_no": {
+                  "type": "string",
+                  "default": null
+                },
+                "transport_doc_date": {
+                  "type": "string",
+                  "default": null
+                },
+                "vehicle_no": {
+                  "type": "string",
+                  "default": null
+                },
+                "status": {
+                  "type": "string",
+                  "default": "ACTIVE | INACTIVE"
+                }
+              }
+            }
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+
+    "/api/v1/customer/get-billing-company-dispatch-address": {
+      "get": {
+        "tags": ["job board - customer"],
+        "summary": "Get Billing Company Dispatch Address",
+        "description": "Endpoint to retrieve Billing Company Dispatch Address",
+        "produces": ["application/json"],
+
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "customer_dispatch_address_uuid",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "customer_uuid",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "customer_name",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "columns",
+            "description": "",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "value",
+            "description": "",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "description": "",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "from_date",
+            "description": "Format will be YYYY-MM-DD.",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "to_date",
+            "description": "Format will be YYYY-MM-DD.",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "pageNo",
+            "description": "",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "in": "query",
+            "name": "itemPerPage",
+            "description": "",
+            "required": true,
+            "type": "number"
+          }
+        ],
+
+        "responses": {
+          "200": { "description": "successful operation" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+
+    "/api/v1/customer/upsert-contacts": {
+      "post": {
+        "tags": ["job board - customer"],
+        "summary": "Post Contacts",
+        "description": "Endpoint to create or update Contacts",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "mail_id": {
+                  "type": "string",
+                  "default": ""
+                },
+                "customer_uuid": {
+                  "type": "string",
+                  "default": null
+                },
+                "customer_name": {
+                  "type": "string",
+                  "default": null
+                },
+                "contact_uuid": {
+                  "type": "string",
+                  "default": null
+                },
+                "salutation": {
+                  "type": "string",
+                  "default": null
+                },
+                "designation": {
+                  "type": "string",
+                  "default": null
+                },
+                "contact_type": {
+                  "type": "string",
+                  "default": null
+                },
+                "department": {
+                  "type": "string",
+                  "default": null
+                },
+                "extension": {
+                  "type": "string",
+                  "default": null
+                },
+                "company_landline": {
+                  "type": "string",
+                  "default": null
+                },
+                "fax": {
+                  "type": "string",
+                  "default": null
+                },
+                "website": {
+                  "type": "string",
+                  "default": null
+                },
+                "dob": {
+                  "type": "string",
+                  "default": null
+                },
+                "previous_organisation": {
+                  "type": "string",
+                  "default": null
+                },
+                "skype_id": {
+                  "type": "string",
+                  "default": null
+                },
+                "executive_location_line1": {
+                  "type": "string",
+                  "default": null
+                },
+                "executive_location_line2": {
+                  "type": "string",
+                  "default": null
+                },
+                "executive_location_city": {
+                  "type": "string",
+                  "default": null
+                },
+                "executive_location_state": {
+                  "type": "string",
+                  "default": null
+                },
+                "executive_location_pincode": {
+                  "type": "string",
+                  "default": null
+                },
+                "executive_location_country": {
+                  "type": "string",
+                  "default": null
+                },
+                "contact_number": {
+                  "type": "string",
+                  "default": null
+                },
+                "status": {
+                  "type": "string",
+                  "default": "ACTIVE"
+                }
+              }
+            }
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+
+    "/api/v1/customer/get-contacts": {
+      "get": {
+        "tags": ["job board - customer"],
+        "summary": "Get Contacts",
+        "description": "Endpoint to retrieve Contacts",
+        "produces": ["application/json"],
+
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "contact_uuid",
+            "description": "",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
+          },
+          {
+            "in": "query",
+            "name": "customer_uuid",
+            "description": "",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
+          },
+          {
+            "in": "query",
+            "name": "columns",
+            "description": "",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "value",
+            "description": "",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "description": "",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
+          },
+          {
+            "in": "query",
+            "name": "from_date",
+            "description": "Format will be YYYY-MM-DD.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
+          },
+          {
+            "in": "query",
+            "name": "to_date",
+            "description": "Format will be YYYY-MM-DD.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
+          },
+          {
+            "in": "query",
+            "name": "pageNo",
+            "description": "",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "in": "query",
+            "name": "itemPerPage",
+            "description": "",
+            "required": true,
+            "type": "number"
+          }
+        ],
+
+        "responses": {
+          "200": { "description": "successful operation" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+
+    "/api/v1/customer/upsert-bank-details": {
+      "post": {
+        "tags": ["job board - customer"],
+        "summary": "Create or Update Bank Details for a customer",
+        "description": "Endpoint to create or update Bank Details for a customer",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "bank_details_uuid": {
+                  "type": "string",
+                  "default": null
+                },
+                "customer_uuid": {
+                  "type": "string",
+                  "default": ""
+                },
+                "customer_name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "bank_name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "branch": {
+                  "type": "string",
+                  "default": null
+                },
+                "account_no": {
+                  "type": "string",
+                  "default": ""
+                },
+                "ifsc_code": {
+                  "type": "string",
+                  "default": null
+                },
+                "status": {
+                  "type": "string",
+                  "default": "ACTIVE"
+                }
+              }
+            }
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+
+    "/api/v1/customer/get-bank-details": {
+      "get": {
+        "tags": ["job board - customer"],
+        "summary": "Get bank details of a customer.",
+        "description": "Endpoint to retrieve bank details of a customer.",
+        "produces": ["application/json"],
+
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "bank_details_uuid",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "customer_uuid",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "customer_name",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "columns",
+            "description": "",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "value",
+            "description": "",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "description": "",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "from_date",
+            "description": "Format will be YYYY-MM-DD.",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "to_date",
+            "description": "Format will be YYYY-MM-DD.",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "pageNo",
+            "description": "",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "in": "query",
+            "name": "itemPerPage",
+            "description": "",
+            "required": true,
+            "type": "number"
+          }
+        ],
+
+        "responses": {
+          "200": { "description": "successful operation" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+
+    "/api/v1/customer/get-billing-company-from-gst": {
+      "get": {
+        "tags": ["job board - customer"],
+        "summary": "Get billing company details from GST no.",
+        "description": "Endpoint to retrieve billing company details from GST no.",
+        "produces": ["application/json"],
+
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "gst_no",
+            "description": "",
+            "required": true,
+            "type": "string"
+          }
+        ],
+
+        "responses": {
+          "200": { "description": "successful operation" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+
+    "/api/v1/customer/load-customer-data": {
+      "post": {
+        "tags": ["job board - customer"],
+        "summary": "Load Customer Data",
+        "description": "Endpoint to load customer data",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "customer_name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "organization_type": {
+                  "type": "string",
+                  "default": null
+                },
+                "customer_website": {
+                  "type": "string",
+                  "default": null
+                },
+                "legal_entity": {
+                  "type": "string",
+                  "default": null
+                },
+                "registration_type": {
+                  "type": "string",
+                  "default": null
+                },
+                "customer_branch_name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "customer_branch_gst_in": {
+                  "type": "string",
+                  "default": ""
+                },
+                "pan_no": {
+                  "type": "string",
+                  "default": null
+                },
+                "customer_branch_address_line1": {
+                  "type": "string",
+                  "default": null
+                },
+                "customer_branch_address_line2": {
+                  "type": "string",
+                  "default": null
+                },
+                "customer_branch_address_city": {
+                  "type": "string",
+                  "default": null
+                },
+                "customer_branch_address_state": {
+                  "type": "string",
+                  "default": null
+                },
+                "customer_branch_address_pincode": {
+                  "type": "string",
+                  "default": null
+                },
+                "customer_branch_address_country": {
+                  "type": "string",
+                  "default": null
+                },
+                "customer_branch_mobile": {
+                  "type": "string",
+                  "default": null
+                },
+                "customer_branch_phone_number": {
+                  "type": "string",
+                  "default": null
+                },
+                "customer_branch_website": {
+                  "type": "string",
+                  "default": null
+                },
+                "customer_branch_mail_id": {
+                  "type": "string",
+                  "default": null
+                },
+                "name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "mail_id": {
+                  "type": "string",
+                  "default": ""
+                },
+                "salutation": {
+                  "type": "string",
+                  "default": null
+                },
+                "designation": {
+                  "type": "string",
+                  "default": null
+                },
+                "contact_type": {
+                  "type": "string",
+                  "default": null
+                },
+                "department": {
+                  "type": "string",
+                  "default": null
+                },
+                "extension": {
+                  "type": "string",
+                  "default": null
+                },
+                "company_landline": {
+                  "type": "string",
+                  "default": null
+                },
+                "fax": {
+                  "type": "string",
+                  "default": null
+                },
+                "website": {
+                  "type": "string",
+                  "default": null
+                },
+                "dob": {
+                  "type": "string",
+                  "default": null
+                },
+                "previous_organisation": {
+                  "type": "string",
+                  "default": null
+                },
+                "skype_id": {
+                  "type": "string",
+                  "default": null
+                },
+                "executive_location_line1": {
+                  "type": "string",
+                  "default": null
+                },
+                "executive_location_line2": {
+                  "type": "string",
+                  "default": null
+                },
+                "executive_location_city": {
+                  "type": "string",
+                  "default": null
+                },
+                "executive_location_state": {
+                  "type": "string",
+                  "default": null
+                },
+                "executive_location_pincode": {
+                  "type": "string",
+                  "default": null
+                },
+                "executive_location_country": {
+                  "type": "string",
+                  "default": null
+                },
+                "contact_number": {
+                  "type": "string",
+                  "default": null
+                },
+                "delivery_name": {
+                  "type": "string",
+                  "default": null
+                },
+                "customer_delivery_address_line1": {
+                  "type": "string",
+                  "default": null
+                },
+                "customer_delivery_address_line2": {
+                  "type": "string",
+                  "default": null
+                },
+                "customer_delivery_address_city": {
+                  "type": "string",
+                  "default": null
+                },
+                "customer_delivery_address_state": {
+                  "type": "string",
+                  "default": null
+                },
+                "customer_delivery_address_pincode": {
+                  "type": "string",
+                  "default": null
+                },
+                "customer_delivery_address_country": {
+                  "type": "string",
+                  "default": null
+                }
+              }
+            }
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+
+    "/api/v1/customer/upsert-customer-attachments": {
+      "post": {
+        "tags": ["job board - customer"],
+        "summary": "Add an attachment for a customer",
+        "description": "Endpoint to add attachment for a customer",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "customer_attachment_uuid": {
+                  "type": "string",
+                  "default": null
+                },
+                "customer_attachment_name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "customer_uuid": {
+                  "type": "string",
+                  "default": ""
+                },
+                "customer_name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "is_vendor": {
+                  "type": "string",
+                  "default": "YES | NO"
+                },
+                "link": {
+                  "type": "string",
+                  "default": ""
+                },
+                "status": {
+                  "type": "string",
+                  "default": "ACTIVE | INACTIVE"
+                }
+              }
+            }
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+
+    "/api/v1/customer/get-customer-attachments": {
+      "get": {
+        "tags": ["job board - customer"],
+        "summary": "Get attachments of a customer.",
+        "description": "Endpoint to retrieve attachments of a customer.",
+        "produces": ["application/json"],
+
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "customer_attachment_uuid",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "customer_attachment_name",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "is_vendor",
+            "description": "YES | NO",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "customer_uuid",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "customer_name",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "columns",
+            "description": "",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "value",
+            "description": "",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "description": "",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "from_date",
+            "description": "Format will be YYYY-MM-DD.",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "to_date",
+            "description": "Format will be YYYY-MM-DD.",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "pageNo",
+            "description": "",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "in": "query",
+            "name": "itemPerPage",
+            "description": "",
+            "required": true,
+            "type": "number"
+          }
+        ],
+
+        "responses": {
+          "200": { "description": "successful operation" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    }
+  }
+}

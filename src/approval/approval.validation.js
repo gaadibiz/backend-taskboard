@@ -5,14 +5,15 @@ exports.insertApprovalSchema = Joi.object({
   table_name: Joi.string().required(),
   record_uuid: Joi.string().guid().required(),
   record_column_name: Joi.string().required(),
-
   approval_uuids: Joi.array()
     .min(1)
     .items(
-      Joi.object({
-        type: Joi.string().valid('USER', 'ROLE').required(),
-        uuid: Joi.string().guid().required(),
-      }),
+      Joi.array().items(
+        Joi.object({
+          type: Joi.string().valid('USER', 'ROLE').required(), // Valid values: 'USER', 'ROLE'
+          uuid: Joi.string().guid().required(),
+        }),
+      ),
     ),
   created_by_uuid: Joi.string().guid().allow(null),
   created_by_name: Joi.string().allow(null),

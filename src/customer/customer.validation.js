@@ -1,0 +1,271 @@
+const Joi = require('joi');
+
+exports.upsertCustomerSchema = Joi.object({
+  customer_name: Joi.string().required(),
+  organization_type: Joi.string().max(100).allow(null, ''),
+  is_billing_company: Joi.number().valid(0, 1).default(0).required(),
+  customer_uuid: Joi.string().max(50).guid().allow('', null),
+  customer_website: Joi.string().max(100).allow(null, ''),
+  legal_entity: Joi.string().max(100).allow(null, ''),
+  registration_type: Joi.string().max(100).allow(null, ''),
+  status: Joi.string().valid('ACTIVE', 'INACTIVE').default('ACTIVE').required(),
+  created_by_uuid: Joi.string().guid().allow('', null),
+});
+
+exports.getCustomerSchema = Joi.object({
+  customer_uuid: Joi.string().guid(),
+  is_billing_company: Joi.string().valid('0', '1').allow(null),
+  pageNo: Joi.number().integer().min(1),
+  itemPerPage: Joi.number().integer().min(1),
+  from_date: Joi.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  to_date: Joi.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  status: Joi.string(),
+  columns: Joi.string(),
+  value: Joi.string(),
+});
+
+exports.upsertCustomerBranchSchema = Joi.object({
+  customer_branch_uuid: Joi.string().guid().max(50).allow(null, ''),
+  customer_branch_name: Joi.string().required().max(100),
+  customer_uuid: Joi.string().guid().required().max(50).allow(null, ''),
+  customer_name: Joi.string().required().max(100),
+  customer_branch_gst_in: Joi.string().max(255).allow('', null),
+  pan_no: Joi.string().max(255).allow('', null),
+  invoice_no_sequence: Joi.string().max(100).allow('', null),
+  customer_branch_address_line1: Joi.string().max(500).allow('', null),
+  customer_branch_address_line2: Joi.string().max(500).allow('', null),
+  customer_branch_address_city: Joi.string().max(100).allow('', null),
+  customer_branch_address_state: Joi.string().max(255).allow('', null),
+  customer_branch_address_pincode: Joi.string().max(255).allow('', null),
+  customer_branch_address_country: Joi.string().max(255).allow('', null),
+  customer_branch_mobile: Joi.string().max(255).allow('', null),
+  customer_branch_phone_number: Joi.string().max(255).allow('', null),
+  customer_branch_website: Joi.string().max(255).allow('', null),
+  customer_branch_mail_id: Joi.string().max(255).allow('', null),
+  created_by_uuid: Joi.string().guid().max(50).allow('', null),
+});
+
+exports.getCustomerBranchSchema = Joi.object({
+  customer_branch_uuid: Joi.string().uuid(),
+  customer_uuid: Joi.string().guid(),
+  pageNo: Joi.number().integer().min(1),
+  itemPerPage: Joi.number().integer().min(1),
+  from_date: Joi.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  to_date: Joi.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  status: Joi.string(),
+  columns: Joi.string(),
+  value: Joi.string(),
+});
+
+exports.upsertCustomerDeliveryAddressSchema = Joi.object({
+  customer_delivery_address_uuid: Joi.string().guid().max(50).allow(null, ''),
+  customer_uuid: Joi.string().guid().required().max(50),
+  customer_name: Joi.string().required().max(100),
+  delivery_name: Joi.string().allow(null, ''),
+  customer_delivery_address_line1: Joi.string().max(255).allow(null, ''),
+  customer_delivery_address_line2: Joi.string().max(255).allow(null, ''),
+  customer_delivery_address_city: Joi.string().max(100).allow(null, ''),
+  customer_delivery_address_state: Joi.string().max(100).allow(null, ''),
+  customer_delivery_address_pincode: Joi.string().max(20).allow(null, ''),
+  customer_delivery_address_country: Joi.string().max(100).allow(null, ''),
+  status: Joi.string()
+    .required()
+    .valid('ACTIVE', 'INACTIVE')
+    .default('ACTIVE')
+    .max(20),
+  created_by_uuid: Joi.string().guid().max(50).allow('', null),
+});
+
+exports.getCustomerDeliveryAddressSchema = Joi.object({
+  customer_delivery_address_uuid: Joi.string().uuid(),
+  customer_uuid: Joi.string().guid(),
+  customer_name: Joi.string(),
+  pageNo: Joi.number().integer().min(1),
+  itemPerPage: Joi.number().integer().min(1),
+  from_date: Joi.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  to_date: Joi.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  status: Joi.string(),
+  columns: Joi.string(),
+  value: Joi.string(),
+});
+
+exports.upsertContactSchema = Joi.object({
+  name: Joi.string().required(),
+  customer_uuid: Joi.string().guid().max(100).allow(null, ''),
+  customer_name: Joi.string().allow(null, ''),
+  contact_uuid: Joi.string().guid().max(100).allow(null, ''),
+  salutation: Joi.string().max(100).allow(null, ''),
+  designation: Joi.string().max(100).allow(null, ''),
+  contact_type: Joi.string().max(100).allow(null, ''),
+  department: Joi.string().max(100).allow(null, ''),
+  extension: Joi.string().max(100).allow(null, ''),
+  company_landline: Joi.string().max(100).allow(null, ''),
+  fax: Joi.string().max(100).allow(null, ''),
+  website: Joi.string().max(100).allow(null, ''),
+  dob: Joi.string().max(100).allow(null, ''),
+  previous_organisation: Joi.string().max(100).allow(null, ''),
+  skype_id: Joi.string().max(100).allow(null, ''),
+  executive_location_line1: Joi.string().max(255).allow(null, ''),
+  executive_location_line2: Joi.string().max(255).allow(null, ''),
+  executive_location_city: Joi.string().max(100).allow(null, ''),
+  executive_location_state: Joi.string().max(100).allow(null, ''),
+  executive_location_pincode: Joi.string().max(20).allow(null, ''),
+  executive_location_country: Joi.string().max(100).allow(null, ''),
+  contact_number: Joi.string().max(20).allow(null, ''),
+  mail_id: Joi.string().email().max(255).required(),
+  status: Joi.string().valid('ACTIVE', 'INACTIVE').default('ACTIVE').required(),
+  created_by_uuid: Joi.string().guid().allow('', null),
+});
+
+exports.getContactSchema = Joi.object({
+  contact_uuid: Joi.string().guid(),
+  customer_uuid: Joi.string().guid(),
+  pageNo: Joi.number().integer().min(1),
+  itemPerPage: Joi.number().integer().min(1),
+  from_date: Joi.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  to_date: Joi.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  status: Joi.string(),
+  columns: Joi.string(),
+  value: Joi.string(),
+});
+
+exports.upsertBankDetailsSchema = Joi.object({
+  bank_details_uuid: Joi.string().max(50).guid().allow('', null),
+  customer_uuid: Joi.string().max(50).guid().required(),
+  customer_name: Joi.string().required(),
+  bank_name: Joi.string().max(100).required(),
+  branch: Joi.string().max(100).allow(null, ''),
+  account_no: Joi.string().max(100).required(),
+  ifsc_code: Joi.string().max(100).allow(null, ''),
+  status: Joi.string().valid('ACTIVE', 'INACTIVE').default('ACTIVE').required(),
+  created_by_uuid: Joi.string().guid().allow('', null),
+});
+
+exports.getBankDetailsSchema = Joi.object({
+  bank_details_uuid: Joi.string().guid(),
+  customer_uuid: Joi.string().guid(),
+  customer_name: Joi.string(),
+  pageNo: Joi.number().integer().min(1),
+  itemPerPage: Joi.number().integer().min(1),
+  from_date: Joi.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  to_date: Joi.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  status: Joi.string(),
+  columns: Joi.string(),
+  value: Joi.string(),
+});
+
+exports.getBillingCompanyFromGstSchema = Joi.object({
+  gst_no: Joi.string(),
+});
+
+exports.loadCustomerDataSchema = Joi.object({
+  customer_name: Joi.string().required(),
+  organization_type: Joi.string().max(100).allow(null, ''),
+  customer_uuid: Joi.string().max(50).guid().allow('', null),
+  customer_website: Joi.string().max(100).allow(null, ''),
+  legal_entity: Joi.string().max(100).allow(null, ''),
+  registration_type: Joi.string().max(100).allow(null, ''),
+  customer_branch_name: Joi.string().required().max(100),
+  customer_branch_gst_in: Joi.string().max(255).allow('', null),
+  pan_no: Joi.string().max(100).allow('', null),
+  customer_branch_address_line1: Joi.string().max(500).allow('', null),
+  customer_branch_address_line2: Joi.string().max(500).allow('', null),
+  customer_branch_address_city: Joi.string().max(100).allow('', null),
+  customer_branch_address_state: Joi.string().max(255).allow('', null),
+  customer_branch_address_pincode: Joi.string().max(255).allow('', null),
+  customer_branch_address_country: Joi.string().max(255).allow('', null),
+  customer_branch_mobile: Joi.string().max(255).allow('', null),
+  customer_branch_phone_number: Joi.string().max(255).allow('', null),
+  customer_branch_website: Joi.string().max(255).allow('', null),
+  customer_branch_mail_id: Joi.string().max(255).allow('', null),
+  name: Joi.string().required(),
+  customer_uuid: Joi.string().guid().max(100).allow(null, ''),
+  customer_name: Joi.string().allow(null, ''),
+  contact_uuid: Joi.string().guid().max(100).allow(null, ''),
+  salutation: Joi.string().max(100).allow(null, ''),
+  designation: Joi.string().max(100).allow(null, ''),
+  contact_type: Joi.string().max(100).allow(null, ''),
+  department: Joi.string().max(100).allow(null, ''),
+  extension: Joi.string().max(100).allow(null, ''),
+  company_landline: Joi.string().max(100).allow(null, ''),
+  fax: Joi.string().max(100).allow(null, ''),
+  website: Joi.string().max(100).allow(null, ''),
+  dob: Joi.string().max(100).allow(null, ''),
+  previous_organisation: Joi.string().max(100).allow(null, ''),
+  skype_id: Joi.string().max(100).allow(null, ''),
+  executive_location_line1: Joi.string().max(255).allow(null, ''),
+  executive_location_line2: Joi.string().max(255).allow(null, ''),
+  executive_location_city: Joi.string().max(100).allow(null, ''),
+  executive_location_state: Joi.string().max(100).allow(null, ''),
+  executive_location_pincode: Joi.string().max(20).allow(null, ''),
+  executive_location_country: Joi.string().max(100).allow(null, ''),
+  contact_number: Joi.string().max(20).allow(null, ''),
+  mail_id: Joi.string().email().max(255).required(),
+  delivery_name: Joi.string().allow(null, ''),
+  customer_delivery_address_line1: Joi.string().max(255).allow(null, ''),
+  customer_delivery_address_line2: Joi.string().max(255).allow(null, ''),
+  customer_delivery_address_city: Joi.string().max(100).allow(null, ''),
+  customer_delivery_address_state: Joi.string().max(100).allow(null, ''),
+  customer_delivery_address_pincode: Joi.string().max(20).allow(null, ''),
+  customer_delivery_address_country: Joi.string().max(100).allow(null, ''),
+  created_by_uuid: Joi.string().guid().allow('', null),
+});
+
+exports.upsertBillingDispatchAddressSchema = Joi.object({
+  customer_dispatch_address_uuid: Joi.string().max(50).guid().allow('', null),
+  customer_uuid: Joi.string().max(50).guid().required(),
+  customer_name: Joi.string().required(),
+  dispatch_name: Joi.string().max(100).required(),
+  customer_dispatch_address_line1: Joi.string().max(255).allow(null, ''),
+  customer_dispatch_address_line2: Joi.string().max(255).allow(null, ''),
+  customer_dispatch_address_city: Joi.string().max(100).allow(null, ''),
+  customer_dispatch_address_state: Joi.string().max(100).allow(null, ''),
+  customer_dispatch_address_pincode: Joi.string().max(20).allow(null, ''),
+  customer_dispatch_address_country: Joi.string().max(100).allow(null, ''),
+  dispatch_through: Joi.string().max(100).allow(null, ''),
+  transport_id: Joi.string().max(100).allow(null, ''),
+  transport_doc_no: Joi.string().max(100).allow(null, ''),
+  transport_doc_date: Joi.string().max(255).allow('', null),
+  vehicle_no: Joi.string().max(100).allow(null, ''),
+  status: Joi.string().valid('ACTIVE', 'INACTIVE').default('ACTIVE').required(),
+  created_by_uuid: Joi.string().guid().allow('', null),
+});
+
+exports.getBillingDispatchAddressSchema = Joi.object({
+  customer_dispatch_address_uuid: Joi.string().guid(),
+  customer_uuid: Joi.string().guid(),
+  customer_name: Joi.string(),
+  pageNo: Joi.number().integer().min(1),
+  itemPerPage: Joi.number().integer().min(1),
+  from_date: Joi.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  to_date: Joi.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  status: Joi.string(),
+  columns: Joi.string(),
+  value: Joi.string(),
+});
+
+exports.upsertCustomerAttachmentSchema = Joi.object({
+  customer_attachment_uuid: Joi.string().max(50).guid().allow('', null),
+  customer_attachment_name: Joi.string().max(50).allow('', null),
+  customer_uuid: Joi.string().max(50).guid().required(),
+  customer_name: Joi.string().required(),
+  is_vendor: Joi.string().required().valid('YES', 'NO'),
+  link: Joi.string().max(100).required(),
+  status: Joi.string().valid('ACTIVE', 'INACTIVE').default('ACTIVE').required(),
+  created_by_uuid: Joi.string().guid().allow('', null),
+});
+
+exports.getCustomerAttachmentSchema = Joi.object({
+  customer_attachment_uuid: Joi.string().guid(),
+  customer_attachment_name: Joi.string(),
+  customer_uuid: Joi.string().guid(),
+  customer_name: Joi.string(),
+  is_vendor: Joi.string(),
+  pageNo: Joi.number().integer().min(1),
+  itemPerPage: Joi.number().integer().min(1),
+  from_date: Joi.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  to_date: Joi.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  status: Joi.string(),
+  columns: Joi.string(),
+  value: Joi.string(),
+});

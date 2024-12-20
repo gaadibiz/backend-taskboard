@@ -41,6 +41,10 @@ module.exports = {
         type: Sequelize.CHAR(36),
         allowNull: true,
       },
+      manager_name: {
+        type: Sequelize.STRING(50),
+        allowNull: true,
+      },
       hierarchy_uuids: {
         type: Sequelize.STRING(500),
         allowNull: true,
@@ -140,6 +144,57 @@ module.exports = {
       branch_uuid: {
         type: Sequelize.CHAR(36),
         allowNull: false,
+      },
+      father_name: {
+        type: Sequelize.STRING(50),
+        allowNull: true,
+      },
+      mother_name: {
+        type: Sequelize.STRING(50),
+        allowNull: true,
+      },
+      spouse_name: {
+        type: Sequelize.STRING(50),
+        allowNull: true,
+      },
+      father_contact_no: {
+        type: Sequelize.STRING(50),
+        allowNull: true,
+      },
+      mother_contact_no: {
+        type: Sequelize.STRING(50),
+        allowNull: true,
+      },
+      spouse_contact_no: {
+        type: Sequelize.STRING(50),
+        allowNull: true,
+      },
+      marital_status: {
+        type: Sequelize.STRING(50),
+        allowNull: true,
+      },
+      attachment: {
+        type: Sequelize.JSON,
+        allowNull: true,
+      },
+      bank_name: {
+        type: Sequelize.STRING(50),
+        allowNull: true,
+      },
+      bank_account_number: {
+        type: Sequelize.STRING(50),
+        allowNull: true,
+        validate: {
+          is: /^\d{10,15}$/,
+        },
+      },
+      bank_ifsc_code: {
+        type: Sequelize.STRING(10),
+        allowNull: true,
+      },
+      bank_branch: {
+        type: Sequelize.STRING(10),
+        allowNull: true,
       },
       status: {
         type: Sequelize.STRING(20),

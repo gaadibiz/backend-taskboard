@@ -108,11 +108,16 @@ exports.getProject = async (req, res) => {
     value,
   );
   filter = await roleFilterService(filter, 'latest_project', req.user);
+
   let pageFilter = pagination(pageNo, itemPerPage);
+
   let totalRecords = await getCountRecord(tableName, filter);
   let result = await getRecords(tableName, filter, pageFilter);
 
-  return res.json(responser('Project: ', result, result.length, totalRecords));
+  // let sql = `SELECT * FROM latest_project WHERE project_uuid IN (SELECT project_uuid FROM latest_project_team ${filter} )  ${pageFilter}`;
+  // let result = await dbRequest(sql);
+
+  return res.json(responser('Project: ', result, result.length));
 };
 
 exports.upsertProjectTeam = async (req, res) => {
@@ -136,6 +141,7 @@ exports.upsertProjectTeam = async (req, res) => {
     req.body.project_team_uuid = uuid();
   }
   const insertProject = await insertRecords('project_team', req.body);
+
   res.json(
     responser('Project team created or updated successfully.', req.body),
   );

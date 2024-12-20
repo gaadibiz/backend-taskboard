@@ -13,6 +13,30 @@ module.exports = {
         type: Sequelize.CHAR(36),
         allowNull: false,
       },
+      expense_type: {
+        type: Sequelize.STRING(50),
+        allowNull: true,
+      },
+      user_uuid: {
+        type: Sequelize.CHAR(36),
+        allowNull: true,
+      },
+      user_name: {
+        type: Sequelize.STRING(100),
+        allowNull: true,
+      },
+      job_uuid: {
+        type: Sequelize.CHAR(36),
+        allowNull: true,
+      },
+      job_name: {
+        type: Sequelize.STRING(100),
+        allowNull: true,
+      },
+      job_order_no: {
+        type: Sequelize.STRING(100),
+        allowNull: true,
+      },
       project_uuid: {
         type: Sequelize.CHAR(36),
         allowNull: true,
@@ -77,8 +101,20 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: true,
       },
+      requested_advance_amount: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+      },
       reimbursed_amount: {
         type: Sequelize.INTEGER,
+        allowNull: true,
+      },
+      eligible_reimbursement_amount: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+      },
+      is_deduct_from_advance: {
+        type: Sequelize.BOOLEAN,
         allowNull: true,
       },
       description: {

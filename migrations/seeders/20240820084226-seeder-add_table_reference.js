@@ -44,6 +44,28 @@ module.exports = {
         create_ts: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
     ]);
+    await queryInterface.bulkInsert('table_reference', [
+      {
+        table_reference_uuid: uuidv4(),
+        module_name: 'Job Board',
+        submodule_name: 'Job',
+        table_name: 'latest_job',
+        table_status:
+          '["INACTIVE", "JOB_REQUESTED", "JOB_APPROVAL_REQUESTED", "JOB", "REJECTED", "ROLLBACK"]',
+        create_ts: Sequelize.literal('CURRENT_TIMESTAMP'),
+      },
+    ]);
+    await queryInterface.bulkInsert('table_reference', [
+      {
+        table_reference_uuid: uuidv4(),
+        module_name: 'Job Board',
+        submodule_name: 'Purchase Order',
+        table_name: 'latest_purchase_order',
+        table_status:
+          '["INACTIVE", "PURCHASE_ORDER_REQUESTED", "PURCHASE_ORDER_APPROVAL_REQUESTED", "PURCHASE_ORDER", "REJECTED", "ROLLBACK"]',
+        create_ts: Sequelize.literal('CURRENT_TIMESTAMP'),
+      },
+    ]);
   },
 
   async down(queryInterface, Sequelize) {

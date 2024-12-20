@@ -1,0 +1,203 @@
+{
+  "paths": {
+    "/api/v1/job/upsert-job": {
+      "post": {
+        "tags": ["job board - job"],
+        "summary": "Post",
+        "description": "Endpoint to create or update",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "job_uuid": {
+                  "type": "string",
+                  "default": null
+                },
+                "job_order_no": {
+                  "type": "string",
+                  "default": ""
+                },
+                "job_order_date": {
+                  "type": "string",
+                  "default": "YYYY-MM-DD"
+                },
+                "job_name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "project_uuid": {
+                  "type": "string",
+                  "default": ""
+                },
+                "project_name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "project_manager_uuid": {
+                  "type": "string",
+                  "default": ""
+                },
+                "project_manager_name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "finance_manager_uuid": {
+                  "type": "string",
+                  "default": ""
+                },
+                "finance_manager_name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "vendor_uuid": {
+                  "type": "string",
+                  "default": null
+                },
+                "vendor_name": {
+                  "type": "string",
+                  "default": null
+                },
+                "attachment": {
+                  "type": "array",
+                  "default": []
+                },
+                "status": {
+                  "type": "string",
+                  "default": "ACTIVE | INACTIVE"
+                }
+              }
+            }
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+
+    "/api/v1/job/get-job": {
+      "get": {
+        "tags": ["job board - job"],
+        "summary": "Get ",
+        "description": "Endpoint to retrieve ",
+        "produces": ["application/json"],
+
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "job_uuid",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "job_order_no",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "project_uuid",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "columns",
+            "description": "",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "value",
+            "description": "",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "description": "",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "from_date",
+            "description": "Format will be YYYY-MM-DD.",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "to_date",
+            "description": "Format will be YYYY-MM-DD.",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "pageNo",
+            "description": "",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "in": "query",
+            "name": "itemPerPage",
+            "description": "",
+            "required": true,
+            "type": "number"
+          }
+        ],
+
+        "responses": {
+          "200": { "description": "successful operation" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    }
+  }
+}

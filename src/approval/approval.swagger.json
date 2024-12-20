@@ -1,6 +1,6 @@
 {
   "paths": {
-    "/approval/insert-approval": {
+    "/api/v1/approval/insert-approval": {
       "post": {
         "tags": ["Approval"],
         "summary": "Create or insert Approval",
@@ -32,7 +32,7 @@
         }
       }
     },
-    "/approval/handle-approval": {
+    "/api/v1/approval/handle-approval": {
       "post": {
         "tags": ["Approval"],
         "summary": "Create or update Approval",
@@ -68,7 +68,7 @@
         }
       }
     },
-    "/approval/get-approval": {
+    "/api/v1/approval/get-approval": {
       "get": {
         "tags": ["Approval"],
         "summary": "Get Approvals",
@@ -140,7 +140,7 @@
         }
       }
     },
-    "/approval/insert-approval-count": {
+    "/api/v1/approval/insert-approval-count": {
       "post": {
         "tags": ["Approval"],
         "summary": "Create or update expense",
@@ -193,7 +193,7 @@
         }
       }
     },
-    "/approval/get-approval-count": {
+    "/api/v1/approval/get-approval-count": {
       "get": {
         "tags": ["Approval"],
         "summary": "Get Approvals",

@@ -20,6 +20,8 @@ select
     up.department_uuid,
     up.job_title,
     up.manager_uuid,
+    up.manager_name,
+    up.hierarchy_uuids,
     up.user_type,
     up.assigned_phone_number,
     up.shared_email,
@@ -43,7 +45,19 @@ select
     up.languages_known,
     up.documents,
     up.branch_name,
-    up.branch_uuid
+    up.branch_uuid,
+    up.father_name,
+    up.mother_name,
+    up.spouse_name,
+    up.father_contact_no,
+    up.mother_contact_no,
+    up.spouse_contact_no,
+    up.bank_name,
+    up.bank_account_number,
+    up.bank_ifsc_code,
+    up.bank_branch,
+    up.marital_status,
+    up.attachment
 from
     user_fact uf
     INNER JOIN (
@@ -68,3 +82,6 @@ from
             ) as up2 on up.user_profile_id = up2.user_profile_id
     ) as up on uf.user_uuid = up.user_uuid
 ORDER BY insert_ts DESC;
+
+
+
