@@ -53,11 +53,12 @@ exports.upsertExpense = async (req, res) => {
   //<------------ handle costing sheet approval modal properly ----------->
   const bodyData = {
     table_name: 'latest_expense',
+    dynamic_uuid: req.body.category_manager_uuid,
     record_uuid: req.body.expense_uuid,
     record_column_name: 'expense_uuid',
   };
   await getData(
-    base_url + '/api/v1/approval/insert-approval',
+    base_url + '/api/v1/dynamicApproval/insert-approval',
     null,
     'json',
     bodyData,
@@ -163,11 +164,12 @@ exports.getExpense = async (req, res) => {
   if (result.length > 0) {
     // // merge approval record logic
     mergeExpense = await getData(
-      base_url + '/api/v1/approval/merge-approval-record',
+      base_url + '/api/v1/dynamicApproval/merge-approval-record',
       null,
       'json',
       {
         record_uuid: result[0].expense_uuid,
+        dynamic_uuid: result[0].category_manager_uuid,
         table_name: tableName,
         data: {},
       },

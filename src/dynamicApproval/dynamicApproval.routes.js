@@ -24,7 +24,13 @@ router
   );
 router
   .route('/get-approval')
-  .get(checkAuth, requestErrorHandlingDecorator(null, controller.getApprovals));
+  .get(
+    checkAuth,
+    requestErrorHandlingDecorator(
+      Schema.getApprovalSchema,
+      controller.getApprovals,
+    ),
+  );
 router
   .route('/insert-approval-count')
   .post(
@@ -38,7 +44,10 @@ router
   .route('/get-approval-count')
   .get(
     checkAuth,
-    requestErrorHandlingDecorator(null, controller.getApprovalCount),
+    requestErrorHandlingDecorator(
+      Schema.getApprovalCountSchema,
+      controller.getApprovalCount,
+    ),
   );
 router
   .route('/merge-approval-record')

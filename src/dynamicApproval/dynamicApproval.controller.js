@@ -46,7 +46,7 @@ exports.insertApproval = async (req, res) => {
 
   const approvalCount = (
     await getRecords(
-      'latest_approval_count',
+      'latest_dynamic_approval_count',
       `where table_name="${req.body.table_name}" AND dynamic_uuid = ${dynamic_uuid}  and approval_raise_status="${approvalRecordInfo.status}"
       and status="ACTIVE"`,
     )
@@ -60,7 +60,7 @@ exports.insertApproval = async (req, res) => {
 
   req.body = {
     ...req.body,
-    approval_uuid: uuidv4(),
+    dynamic_approval_uuid: uuidv4(),
     requested_by_uuid: req.user.user_uuid,
     current_level: 1,
     approval_uuids: approvalCount.approval_hierarchy[0],
@@ -69,11 +69,11 @@ exports.insertApproval = async (req, res) => {
     next_status: approvalCount.next_status,
     create_ts: setDateTimeFormat('timestemp'),
   };
-  await insertRecords('approval', req.body);
+  await insertRecords('dynamic_approval', req.body);
   res.status(200).json(responser('Approval inserted successfully', req.body));
 
   // <------------ Send Email On Action ------------->
-  // approvalEmails(req.body.approval_uuid, req.user);
+  // approvalEmails(req.body.dynamic_approval_uuid, req.user);
 };
 
 exports.handleApproval = async (req, res) => {
@@ -81,8 +81,8 @@ exports.handleApproval = async (req, res) => {
   let recordStatus = '';
   let approved_flag = 'NO';
   let approval = await getRecords(
-    'latest_approval',
-    `where approval_uuid = '${req.body.approval_uuid}'`,
+    'latest_dynamic_approval',
+    `where dynamic_approval_uuid = '${req.body.dynamic_approval_uuid}'`,
   );
   if (!approval.length) throwError('Approval not found', 404);
   if (
@@ -111,7 +111,7 @@ exports.handleApproval = async (req, res) => {
   if (!record.length) throwError('Record not found', 404);
   let approvalCount = (
     await getRecords(
-      'latest_approval_count',
+      'latest_dynamic_approval_count',
       `where table_name="${approval[0].table_name}"
       AND dynamic_uuid = ${approval[0].dynamic_uuid}
       and approval_raise_status="${record[0].status}" and status="ACTIVE"`,
@@ -173,7 +173,7 @@ exports.handleApproval = async (req, res) => {
     );
   }
   req.body = { ...approval[0], ...req.body };
-  await insertRecords('approval', req.body);
+  await insertRecords('dynamic_approval', req.body);
   if (
     approvalCount.level !== approval[0].current_level &&
     req.body.status === 'APPROVED'
@@ -183,7 +183,7 @@ exports.handleApproval = async (req, res) => {
     approval[0].current_level += 1;
     approval[0].status = 'REQUESTED';
     approval[0].created_by_uuid = req.user.user_uuid;
-    await insertRecords('approval', approval[0]);
+    await insertRecords('dynamic_approval', approval[0]);
   } else {
     const bodyData = {
       table_name: approval[0].table_name,
@@ -226,7 +226,7 @@ exports.handleApproval = async (req, res) => {
       }
       const bodyData = {
         parent_module_no: parent_module_no,
-        module_uuid: req.body.approval_uuid,
+        module_uuid: req.body.dynamic_approval_uuid,
         module_name: 'APPROVAL',
         comment_remark: req.body.remark,
         status: 'ACTIVE',
@@ -246,7 +246,7 @@ exports.handleApproval = async (req, res) => {
   })();
 
   // <------------ Send Email On Action ------------->
-  // approvalEmails(req.body.approval_uuid, req.user);
+  // approvalEmails(req.body.dynamic_approval_uuid, req.user);
 };
 
 exports.getApprovals = async (req, res) => {
@@ -262,7 +262,7 @@ exports.getApprovals = async (req, res) => {
     value,
   } = req.query;
 
-  let tableName = 'latest_approval';
+  let tableName = 'latest_dynamic_approval';
   let filter = filterFunctionality(
     {
       table_name,
@@ -287,7 +287,7 @@ exports.getApprovals = async (req, res) => {
   console.log('filter after filter', filter);
   let pageFilter = pagination(pageNo, itemPerPage);
   let result = (
-    await dbRequest(`select record_column_name from latest_approval 
+    await dbRequest(`select record_column_name from latest_dynamic_approval 
                   where table_name='${table_name}'AND dynamic_uuid=${dynamic_uuid}  limit 1;`)
   )[0];
   let resultJoined = [];
@@ -304,12 +304,12 @@ exports.getApprovals = async (req, res) => {
     console.log('role filter', filter);
     console.log('role2 ');
     resultJoined =
-      await dbRequest(`SELECT at.*, la.approval_uuid, la.requested_by_uuid, la.status as approval_status FROM latest_approval la
+      await dbRequest(`SELECT at.*, la.dynamic_approval_uuid, la.requested_by_uuid, la.status as approval_status FROM latest_dynamic_approval la
     INNER JOIN ${tableMap[table_name] || table_name} at ON record_uuid = ${
       result.record_column_name
     } and at.status LIKE "%_APPROVAL_REQUESTED" ${filter} ${pageFilter}`);
     // resultJoined =
-    //   await dbRequest(`SELECT at.*, la.approval_uuid, la.requested_by_uuid, la.status as approval_status FROM latest_approval la
+    //   await dbRequest(`SELECT at.*, la.dynamic_approval_uuid, la.requested_by_uuid, la.status as approval_status FROM latest_dynamic_approval la
     // INNER JOIN ${tableMap[table_name] || table_name} at ON record_uuid = ${
     //   result.record_column_name
     // } and at.status = "${table_name
@@ -325,7 +325,7 @@ exports.insertApprovalCount = async (req, res) => {
     table_name,
     dynamic_uuid,
     approval_hierarchy,
-    approval_count_uuid,
+    dynamic_approval_count_uuid,
     link_table,
     link_column,
   } = req.body;
@@ -369,25 +369,25 @@ exports.insertApprovalCount = async (req, res) => {
     }
   }
   req.body.level = approval_hierarchy.length;
-  if (approval_count_uuid) {
+  if (dynamic_approval_count_uuid) {
     let approvalCount = (
       await getRecords(
-        'latest_approval_count',
-        `where approval_count_uuid="${approval_count_uuid}"`,
+        'latest_dynamic_approval_count',
+        `where dynamic_approval_count_uuid="${dynamic_approval_count_uuid}"`,
       )
     )[0];
     if (!approvalCount) throwError(400, 'Invalid Approval count for update');
     req.body = { ...approvalCount, ...req.body };
   } else {
-    req.body.approval_count_uuid = uuidv4();
+    req.body.dynamic_approval_count_uuid = uuidv4();
     req.body.create_ts = setDateTimeFormat('timestamp');
   }
-  await insertRecords('approval_count', req.body);
+  await insertRecords('dynamic_approval_count', req.body);
   // <----------- Insert in Approval immediately too for reflection --------------------->
 
   let updateApproval = [];
   let currentApprovals = await getRecords(
-    'latest_approval',
+    'latest_dynamic_approval',
     `where table_name='${table_name}' and dynamic_uuid='${dynamic_uuid}' and status='REQUESTED'`,
   );
   if (currentApprovals.length) {
@@ -398,7 +398,8 @@ exports.insertApprovalCount = async (req, res) => {
         updateApproval.push(currentApprovals[i]);
       }
     }
-    if (updateApproval.length) await insertRecords('approval', updateApproval);
+    if (updateApproval.length)
+      await insertRecords('dynamic_approval', updateApproval);
   }
 
   res.json(
@@ -408,7 +409,7 @@ exports.insertApprovalCount = async (req, res) => {
 
 exports.getApprovalCount = async (req, res) => {
   const {
-    approval_count_uuid,
+    dynamic_approval_count_uuid,
     table_name,
     pageNo,
     itemPerPage,
@@ -419,10 +420,10 @@ exports.getApprovalCount = async (req, res) => {
     value,
   } = req.query;
 
-  let tableName = 'latest_approval_count';
+  let tableName = 'latest_dynamic_approval_count';
   let filter = filterFunctionality(
     {
-      approval_count_uuid,
+      dynamic_approval_count_uuid,
       table_name,
     },
     status,
@@ -445,17 +446,17 @@ exports.getApprovalCount = async (req, res) => {
 exports.mergeApprovalWithRecord = async (req, res) => {
   let { record_uuid, table_name, dynamic_uuid, data } = req.body;
   let approvalCount = await getRecords(
-    'latest_approval_count',
+    'latest_dynamic_approval_count',
     `where table_name = "${table_name}" AND dynamic_uuid = ${dynamic_uuid}  and status = "ACTIVE"`,
   );
   if (!approvalCount.length) {
     res.json(data);
   }
   let approvalRecord = await getRecords(
-    'latest_approval',
+    'latest_dynamic_approval',
     `where status='REQUESTED' and table_name='${table_name}' AND dynamic_uuid = ${dynamic_uuid} and record_uuid='${record_uuid}'`,
     null,
-    ['approval_uuid', 'requested_by_uuid', 'approval_uuids'],
+    ['dynamic_approval_uuid', 'requested_by_uuid', 'approval_uuids'],
   );
 
   if (approvalRecord.length) {
@@ -469,7 +470,7 @@ exports.mergeApprovalWithRecord = async (req, res) => {
     data = { ...data, ...approvalRecord[0], is_user_approver };
   } else {
     let nonApprovalRecord = await getRecords(
-      'latest_approval',
+      'latest_dynamic_approval',
       `where (status='REJECTED' OR status='APPROVED') and table_name='${table_name}' AND dynamic_uuid = ${dynamic_uuid}  and record_uuid='${record_uuid}'`,
       null,
       ['remark'],

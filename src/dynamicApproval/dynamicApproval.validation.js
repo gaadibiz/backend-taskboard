@@ -1,7 +1,7 @@
 const Joi = require('joi');
 
 exports.insertApprovalSchema = Joi.object({
-  approval_uuid: Joi.string().guid().allow(null),
+  dynamic_approval_uuid: Joi.string().guid().allow(null),
   table_name: Joi.string().required(),
   dynamic_uuid: Joi.string().guid().required(),
   record_uuid: Joi.string().guid().required(),
@@ -22,7 +22,7 @@ exports.insertApprovalSchema = Joi.object({
 });
 
 exports.handleApprovalSchema = Joi.object({
-  approval_uuid: Joi.string().guid().required(),
+  dynamic_approval_uuid: Joi.string().guid().required(),
   remark: Joi.string().max(300).allow('', null),
   fields: Joi.object().allow(null),
   status: Joi.string().valid('APPROVED', 'REJECTED', 'ROLLBACK').required(),
@@ -33,7 +33,7 @@ exports.handleApprovalSchema = Joi.object({
 });
 
 exports.insertApprovalCountSchema = Joi.object({
-  approval_count_uuid: Joi.string().guid().allow(null),
+  dynamic_approval_count_uuid: Joi.string().guid().allow(null),
   table_name: Joi.string().required(),
   dynamic_uuid: Joi.string().guid().required(),
   dynamic_table_name: Joi.string().required(),
@@ -68,7 +68,7 @@ exports.insertApprovalCountSchema = Joi.object({
 });
 
 exports.getApprovalCountSchema = Joi.object({
-  approval_count_uuid: Joi.string().guid().allow(null),
+  dynamic_approval_count_uuid: Joi.string().guid().allow(null),
   table_name: Joi.string().required(),
   dynamic_table_name: Joi.string().required(),
   pageNo: Joi.number().integer().min(1).default(1),
