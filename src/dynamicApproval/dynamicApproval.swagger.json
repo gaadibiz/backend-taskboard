@@ -1,0 +1,283 @@
+{
+  "paths": {
+    "/api/vi/dynamicApproval/insert-approval": {
+      "post": {
+        "tags": ["Dynamic Approval"],
+        "summary": "Create or insert Approval",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "table_name": { "type": "string", "default": "" },
+                "dynamic_uuid": { "type": "string", "default": "" },
+                "record_uuid": { "type": "string", "default": "" },
+                "record_column_name": { "type": "string", "default": "" }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": { "description": "successful operation" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/api/vi/dynamicApproval/handle-approval": {
+      "post": {
+        "tags": ["Dynamic Approval"],
+        "summary": "Create or update Approval",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "approval_uuid": { "type": "string", "default": "" },
+                "remark": { "type": "string", "default": "" },
+                "fields": { "type": "object" },
+                "status": {
+                  "type": "string",
+                  "enum": ["APPROVED", "REJECTED", "ROLLBACK"]
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": { "description": "successful operation" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/api/vi/dynamicApproval/get-approval": {
+      "get": {
+        "tags": ["Dynamic Approval"],
+        "summary": "Get Approvals",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "table_name",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "dynamic_uuid",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "columns",
+            "type": "array",
+            "items": { "type": "string" },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "value",
+            "type": "string",
+            "default": "",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "type": "string",
+            "enum": ["REQUESTED", "ROLLBACK", "APPROVED"],
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "from_date",
+            "type": "string",
+            "format": "date",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "to_date",
+            "type": "string",
+            "format": "date",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "pageNo",
+            "type": "integer",
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "itemPerPage",
+            "type": "integer",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": { "description": "successful operation" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/api/vi/dynamicApproval/insert-approval-count": {
+      "post": {
+        "tags": ["Dynamic Approval"],
+        "summary": "Create or update expense",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "approval_count_uuid": { "type": "string", "default": null },
+                "table_name": { "type": "string", "default": "" },
+                "dynamic_uuid": { "type": "string", "default": "" },
+                "link_table": { "type": "string", "default": "" },
+                "link_column": { "type": "string", "default": "" },
+                "approval_hierarchy": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": { "type": "string", "default": "" },
+                        "uuid": { "type": "string", "default": "" }
+                      }
+                    }
+                  }
+                },
+                "approval_raise_status": { "type": "string", "default": "" },
+                "previous_status": { "type": "string", "default": "" },
+                "next_status": { "type": "string", "default": "" },
+                "status": {
+                  "type": "string",
+                  "enum": ["ACTIVE", "INACTIVE"]
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": { "description": "successful operation" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/api/vi/dynamicApproval/get-approval-count": {
+      "get": {
+        "tags": ["Dynamic Approval"],
+        "summary": "Get Approvals",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "approval_count_uuid",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "table_name",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "columns",
+            "type": "array",
+            "items": { "type": "string" },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "value",
+            "type": "string",
+            "default": "",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "type": "string",
+            "enum": ["REQUESTED", "ROLLBACK", "APPROVED"],
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "from_date",
+            "type": "string",
+            "format": "date",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "to_date",
+            "type": "string",
+            "format": "date",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "pageNo",
+            "type": "integer",
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "itemPerPage",
+            "type": "integer",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": { "description": "successful operation" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    }
+  }
+}
