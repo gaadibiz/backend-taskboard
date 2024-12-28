@@ -410,7 +410,7 @@ exports.insertApprovalCount = async (req, res) => {
 exports.getApprovalCount = async (req, res) => {
   const {
     dynamic_approval_count_uuid,
-    table_name,
+    dynamic_table_name,
     dynamic_uuid,
     pageNo,
     itemPerPage,
@@ -425,7 +425,7 @@ exports.getApprovalCount = async (req, res) => {
   let filter = filterFunctionality(
     {
       dynamic_approval_count_uuid,
-      table_name,
+      dynamic_table_name,
       dynamic_uuid,
     },
     status,
