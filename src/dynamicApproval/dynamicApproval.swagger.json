@@ -230,6 +230,12 @@
           },
           {
             "in": "query",
+            "name": "dynamic_uuid",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "query",
             "name": "columns",
             "type": "array",
             "items": { "type": "string" },

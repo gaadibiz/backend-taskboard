@@ -411,6 +411,7 @@ exports.getApprovalCount = async (req, res) => {
   const {
     dynamic_approval_count_uuid,
     table_name,
+    dynamic_uuid,
     pageNo,
     itemPerPage,
     from_date,
@@ -425,6 +426,7 @@ exports.getApprovalCount = async (req, res) => {
     {
       dynamic_approval_count_uuid,
       table_name,
+      dynamic_uuid,
     },
     status,
     to_date,

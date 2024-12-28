@@ -71,6 +71,7 @@ exports.getApprovalCountSchema = Joi.object({
   dynamic_approval_count_uuid: Joi.string().guid().allow(null),
   table_name: Joi.string().required(),
   dynamic_table_name: Joi.string().required(),
+  dynamic_uuid: Joi.string().guid().allow('', null),
   pageNo: Joi.number().integer().min(1).default(1),
   itemPerPage: Joi.number().integer().min(1).max(100).default(10),
   from_date: Joi.date().allow(null),
