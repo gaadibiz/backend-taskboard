@@ -63,6 +63,14 @@
                   "type": "string",
                   "default": ""
                 },
+                "billing_company_uuid": {
+                  "type": "string",
+                  "default": null
+                },
+                "billing_company_name": {
+                  "type": "string",
+                  "default": null
+                },
                 "status": {
                   "type": "string",
                   "default": "ACTIVE"

@@ -25,6 +25,14 @@ module.exports = {
         type: Sequelize.STRING(100),
         allowNull: true,
       },
+      billing_company_uuid: {
+        type: Sequelize.CHAR(50),
+        allowNull: true,
+      },
+      billing_company_name: {
+        type: Sequelize.STRING(50),
+        allowNull: true,
+      },
       job_uuid: {
         type: Sequelize.CHAR(36),
         allowNull: true,

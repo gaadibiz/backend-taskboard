@@ -5,6 +5,9 @@ exports.upsertJobSchema = Joi.object({
   job_order_no: Joi.string().max(100).required().allow('', null),
   job_order_date: Joi.string().required(),
   job_name: Joi.string().max(100).required(),
+
+  billing_company_uuid: Joi.string().guid().allow('', null),
+  billing_company_name: Joi.string().max(100).allow('', null),
   project_uuid: Joi.string().guid().max(50).required(),
   project_name: Joi.string().max(100).required(),
   project_manager_uuid: Joi.string().guid().max(50).required(),

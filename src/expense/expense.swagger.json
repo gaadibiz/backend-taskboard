@@ -138,6 +138,14 @@
                   "type": "string",
                   "default": null
                 },
+                "billing_company_uuid": {
+                  "type": "string",
+                  "default": null
+                },
+                "billing_company_name": {
+                  "type": "string",
+                  "default": null
+                },
                 "status": {
                   "type": "string",
                   "default": "INACTIVE | EXPENSE_REQUESTED | EXPENSE_APPROVAL_REQUESTED | FINANCE_APPROVAL_REQUESTED | FINANCE"
@@ -334,7 +342,14 @@
                   "type": "string",
                   "default": null
                 },
-
+                "billing_company_uuid": {
+                  "type": "string",
+                  "default": null
+                },
+                "billing_company_name": {
+                  "type": "string",
+                  "default": null
+                },
                 "status": {
                   "type": "string",
                   "default": "ACTIVE"

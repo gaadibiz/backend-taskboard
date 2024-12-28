@@ -13,6 +13,14 @@ module.exports = {
         type: Sequelize.CHAR(36),
         allowNull: false,
       },
+      billing_company_uuid: {
+        type: Sequelize.CHAR(50),
+        allowNull: true,
+      },
+      billing_company_name: {
+        type: Sequelize.STRING(50),
+        allowNull: true,
+      },
       type: {
         type: Sequelize.STRING(20),
         allowNull: false,

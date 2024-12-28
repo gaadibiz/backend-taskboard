@@ -86,7 +86,7 @@ module.exports = {
         allowNull: true,
       },
       billing_company_uuid: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.CHAR(50),
         allowNull: true,
       },
       billing_company_name: {
@@ -94,7 +94,7 @@ module.exports = {
         allowNull: true,
       },
       billing_company_branch_uuid: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.CHAR(50),
         allowNull: true,
       },
       billing_company_branch_name: {

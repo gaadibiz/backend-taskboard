@@ -5,6 +5,8 @@ exports.upsertTaskSchema = Joi.object({
   type: Joi.string().valid('Project').required(),
   type_name: Joi.string().max(255).required(),
   type_uuid: Joi.string().guid().required(),
+  billing_company_uuid: Joi.string().guid().allow('', null),
+  billing_company_name: Joi.string().max(100).allow('', null),
   title: Joi.string().max(255).required(),
   description: Joi.string().allow(null),
   due_date: Joi.date().iso().allow(null),
