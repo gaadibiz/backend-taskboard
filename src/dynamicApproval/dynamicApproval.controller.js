@@ -47,7 +47,7 @@ exports.insertApproval = async (req, res) => {
   const approvalCount = (
     await getRecords(
       'latest_dynamic_approval_count',
-      `where table_name="${req.body.table_name}" AND dynamic_uuid = ${dynamic_uuid}  and approval_raise_status="${approvalRecordInfo.status}"
+      `where table_name="${req.body.table_name}" AND dynamic_uuid = "${req.body.dynamic_uuid}"  and approval_raise_status="${approvalRecordInfo.status}"
       and status="ACTIVE"`,
     )
   )[0];
@@ -113,7 +113,7 @@ exports.handleApproval = async (req, res) => {
     await getRecords(
       'latest_dynamic_approval_count',
       `where table_name="${approval[0].table_name}"
-      AND dynamic_uuid = ${approval[0].dynamic_uuid}
+      AND dynamic_uuid = "${approval[0].dynamic_uuid}"
       and approval_raise_status="${record[0].status}" and status="ACTIVE"`,
     )
   )[0];
@@ -288,7 +288,7 @@ exports.getApprovals = async (req, res) => {
   let pageFilter = pagination(pageNo, itemPerPage);
   let result = (
     await dbRequest(`select record_column_name from latest_dynamic_approval 
-                  where table_name='${table_name}'AND dynamic_uuid=${dynamic_uuid}  limit 1;`)
+                  where table_name='${table_name}'AND dynamic_uuid = '${dynamic_uuid}'  limit 1;`)
   )[0];
   let resultJoined = [];
   if (result) {
@@ -449,14 +449,14 @@ exports.mergeApprovalWithRecord = async (req, res) => {
   let { record_uuid, table_name, dynamic_uuid, data } = req.body;
   let approvalCount = await getRecords(
     'latest_dynamic_approval_count',
-    `where table_name = "${table_name}" AND dynamic_uuid = ${dynamic_uuid}  and status = "ACTIVE"`,
+    `where table_name = "${table_name}" AND dynamic_uuid = "${dynamic_uuid}"  and status = "ACTIVE"`,
   );
   if (!approvalCount.length) {
     res.json(data);
   }
   let approvalRecord = await getRecords(
     'latest_dynamic_approval',
-    `where status='REQUESTED' and table_name='${table_name}' AND dynamic_uuid = ${dynamic_uuid} and record_uuid='${record_uuid}'`,
+    `where status='REQUESTED' and table_name='${table_name}' AND dynamic_uuid = "${dynamic_uuid}" and record_uuid='${record_uuid}'`,
     null,
     ['dynamic_approval_uuid', 'requested_by_uuid', 'approval_uuids'],
   );
@@ -473,7 +473,7 @@ exports.mergeApprovalWithRecord = async (req, res) => {
   } else {
     let nonApprovalRecord = await getRecords(
       'latest_dynamic_approval',
-      `where (status='REJECTED' OR status='APPROVED') and table_name='${table_name}' AND dynamic_uuid = ${dynamic_uuid}  and record_uuid='${record_uuid}'`,
+      `where (status='REJECTED' OR status='APPROVED') and table_name='${table_name}' AND dynamic_uuid = "${dynamic_uuid}"  and record_uuid='${record_uuid}'`,
       null,
       ['remark'],
     );
