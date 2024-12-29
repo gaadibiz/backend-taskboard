@@ -38,6 +38,7 @@ exports.insertApprovalCountSchema = Joi.object({
   dynamic_uuid: Joi.string().guid().required(),
   dynamic_table_name: Joi.string().required(),
   link_table: Joi.string().allow(null, ''),
+
   link_column: Joi.when('link_table', {
     is: Joi.string().required(),
     then: Joi.string().required(),

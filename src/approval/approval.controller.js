@@ -443,7 +443,7 @@ exports.mergeApprovalWithRecord = async (req, res) => {
     `where table_name = "${table_name}" and status = "ACTIVE"`,
   );
   if (!approvalCount.length) {
-    res.json(data);
+    return res.json(data);
   }
   let approvalRecord = await getRecords(
     'latest_approval',
@@ -472,7 +472,7 @@ exports.mergeApprovalWithRecord = async (req, res) => {
       data = { ...data, ...nonApprovalRecord[0] };
     }
   }
-  res.json(data);
+  return res.json(data);
 };
 
 exports.getTableStatus = async (req, res) => {
