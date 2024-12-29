@@ -47,12 +47,18 @@ exports.insertApproval = async (req, res) => {
   const approvalCount = (
     await getRecords(
       'latest_dynamic_approval_count',
-      `where table_name="${req.body.table_name}" AND dynamic_uuid = "${req.body.dynamic_uuid}"  and approval_raise_status="${approvalRecordInfo.status}"
+      `where table_name="${req.body.table_name}" AND dynamic_uuid = "${req.body.dynamic_uuid}"  AND approval_raise_status="${approvalRecordInfo.status}"
       and status="ACTIVE"`,
     )
   )[0];
 
   if (!approvalCount) {
+    console.log(
+      'approvalCount...........................',
+      approvalCount,
+      `where table_name="${req.body.table_name}" AND dynamic_uuid = "${req.body.dynamic_uuid}"  AND approval_raise_status="${approvalRecordInfo.status}"
+      and status="ACTIVE"`,
+    );
     return res
       .status(200)
       .json(responser(`No approval for this status : ${req.body.status}`));

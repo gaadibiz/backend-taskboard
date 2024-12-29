@@ -53,7 +53,7 @@ exports.upsertExpense = async (req, res) => {
   //<------------ handle costing sheet approval modal properly ----------->
   const bodyData = {
     table_name: 'latest_expense',
-    dynamic_uuid: req.body.category_manager_uuid,
+    dynamic_uuid: req.body.expense_category_uuid,
     record_uuid: req.body.expense_uuid,
     record_column_name: 'expense_uuid',
   };
@@ -169,7 +169,7 @@ exports.getExpense = async (req, res) => {
       'json',
       {
         record_uuid: result[0].expense_uuid,
-        dynamic_uuid: result[0].category_manager_uuid,
+        dynamic_uuid: result[0].expense_category_uuid,
         table_name: tableName,
         data: {},
       },
