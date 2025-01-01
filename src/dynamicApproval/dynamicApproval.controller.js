@@ -205,9 +205,9 @@ exports.handleApproval = async (req, res) => {
       req.headers,
     );
   }
-  res.status(200).json(responser(msg, req.body));
+  let msg = '';
+
   (async () => {
-    let msg = '';
     switch (req.body.status) {
       case 'APPROVED':
         msg = 'Approved successfully';
@@ -250,6 +250,8 @@ exports.handleApproval = async (req, res) => {
       );
     }
   })();
+
+  res.status(200).json(responser(msg, req.body));
 
   // <------------ Send Email On Action ------------->
   // approvalEmails(req.body.dynamic_approval_uuid, req.user);
