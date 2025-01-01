@@ -180,10 +180,10 @@ exports.getExpense = async (req, res) => {
     console.log('MERGER ------>', mergeExpense);
     // Update the first order with response data
     if (mergeExpense) {
-      const { approval_uuid, requested_by_uuid, is_user_approver } =
+      const { dynamic_approval_uuid, requested_by_uuid, is_user_approver } =
         mergeExpense; // Destructure for direct assignments
       Object.assign(result[0], {
-        approval_uuid,
+        dynamic_approval_uuid,
         requested_by_uuid,
         is_user_approver,
       });
