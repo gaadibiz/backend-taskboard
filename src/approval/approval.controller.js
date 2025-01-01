@@ -200,7 +200,8 @@ exports.handleApproval = async (req, res) => {
   }
   let msg = '';
   res.status(200).json(responser(msg, req.body));
-  (async () => {
+
+  async () => {
     switch (req.body.status) {
       case 'APPROVED':
         msg = 'Approved successfully';
@@ -242,7 +243,7 @@ exports.handleApproval = async (req, res) => {
         req.headers,
       );
     }
-  })();
+  }; //();
 
   // <------------ Send Email On Action ------------->
   // approvalEmails(req.body.approval_uuid, req.user);

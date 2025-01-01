@@ -15,6 +15,7 @@ select
     up.user_profile_id,
     up.first_name,
     up.last_name,
+    TRIM(CONCAT(up.first_name, ' ', IFNULL(up.last_name, ''))) AS full_name,
     up.personal_email,
     up.department_name,
     up.department_uuid,

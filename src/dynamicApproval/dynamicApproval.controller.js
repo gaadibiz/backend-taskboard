@@ -207,7 +207,7 @@ exports.handleApproval = async (req, res) => {
   }
   let msg = '';
 
-  (async () => {
+  async () => {
     switch (req.body.status) {
       case 'APPROVED':
         msg = 'Approved successfully';
@@ -249,7 +249,7 @@ exports.handleApproval = async (req, res) => {
         req.headers,
       );
     }
-  })();
+  }; //();
 
   res.status(200).json(responser(msg, req.body));
 
