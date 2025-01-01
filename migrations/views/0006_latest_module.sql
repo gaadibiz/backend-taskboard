@@ -1,7 +1,7 @@
 DROP VIEW IF EXISTS latest_module;
 CREATE VIEW latest_module
 AS
-SELECT pccp.*, module_name, submodule_name, table_name , UPPER(CONCAT(TRIM(module_name), '_', TRIM(submodule_name), '_', TRIM(table_name))) AS module_key
+SELECT DISTINCT  pccp.*, module_name, submodule_name, table_name , UPPER(CONCAT(TRIM(module_name), '_', TRIM(submodule_name), '_', TRIM(table_name))) AS module_key
 
 FROM role_module AS pccp
 JOIN (
