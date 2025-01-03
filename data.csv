@@ -1,0 +1,4 @@
+expense_uuid,job_order_no,job_uuid,job_name,user_uuid,user_name,billing_company_uuid,billing_company_name,project_name
+"123e4567-e89b-12d3-a456-426614174000","JO-001","123e4567-e89b-12d3-a456-426614174001","Web Development","123e4567-e89b-12d3-a456-426614174002","John Doe","123e4567-e89b-12d3-a456-426614174003","TechCorp Solutions","E-Commerce Website"
+"223e4567-e89b-12d3-a456-426614174004","JO-002","223e4567-e89b-12d3-a456-426614174005","Mobile App Design","223e4567-e89b-12d3-a456-426614174006","Jane Smith","223e4567-e89b-12d3-a456-426614174007","Creative Studios","Fitness Tracker App"
+"323e4567-e89b-12d3-a456-426614174008","JO-003","323e4567-e89b-12d3-a456-426614174009","Database Optimization","323e4567-e89b-12d3-a456-426614174010","Alice Johnson","323e4567-e89b-12d3-a456-426614174011","Data Experts","Inventory Management System"

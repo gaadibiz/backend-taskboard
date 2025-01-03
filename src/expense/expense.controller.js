@@ -1,4 +1,6 @@
 const { v4: uuid } = require('uuid');
+const fs = require('fs');
+
 const {
   pagination,
   filterFunctionality,
@@ -313,4 +315,110 @@ exports.convertFinanceToCleared = async (req, res) => {
   expense = expense.map((item) => ({ ...item, status: 'CLEARED' }));
   await insertRecords('expense', expense);
   return res.json(responser('Expense converted to cleared', expense));
+};
+
+// Convert JSON to CSV
+function jsonToCSV(jsonArray) {
+  const headers = Object.keys(jsonArray[0]).join(','); // Extract headers
+  const rows = jsonArray.map((obj) =>
+    Object.values(obj)
+      .map((value) => `"${value}"`)
+      .join(','),
+  );
+  return [headers, ...rows].join('\n');
+}
+
+exports.exportFinanceExpense = async (req, res) => {
+  let { expense_uuids } = req.body;
+
+  // let expense = await getRecords(
+  //   'latest_expense',
+  //   `where expense_uuid in ('${expense_uuids.join("','")}') `,
+  // );
+
+  const expense = [
+    {
+      expense_uuid: '123e4567-e89b-12d3-a456-426614174000',
+      job_order_no: 'JO-001',
+      job_uuid: '123e4567-e89b-12d3-a456-426614174001',
+      job_name: 'Web Development',
+      user_uuid: '123e4567-e89b-12d3-a456-426614174002',
+      user_name: 'John Doe',
+      billing_company_uuid: '123e4567-e89b-12d3-a456-426614174003',
+      billing_company_name: 'TechCorp Solutions',
+      project_name: 'E-Commerce Website',
+      expense_type: 'JOB',
+    },
+    {
+      expense_uuid: '223e4567-e89b-12d3-a456-426614174004',
+      job_order_no: 'JO-002',
+      job_uuid: '223e4567-e89b-12d3-a456-426614174005',
+      job_name: 'Mobile App Design',
+      user_uuid: '223e4567-e89b-12d3-a456-426614174006',
+      user_name: 'Jane Smith',
+      billing_company_uuid: '223e4567-e89b-12d3-a456-426614174007',
+      billing_company_name: 'Creative Studios',
+      project_name: 'Fitness Tracker App',
+      expense_type: 'JOB',
+    },
+    {
+      expense_uuid: '323e4567-e89b-12d3-a456-426614174008',
+      job_order_no: 'JO-003',
+      job_uuid: '323e4567-e89b-12d3-a456-426614174009',
+      job_name: 'Database Optimization',
+      user_uuid: '323e4567-e89b-12d3-a456-426614174010',
+      user_name: 'Alice Johnson',
+      billing_company_uuid: '323e4567-e89b-12d3-a456-426614174011',
+      billing_company_name: 'Data Experts',
+      project_name: 'Inventory Management System',
+      expense_type: 'JOB',
+    },
+  ];
+
+  const expenseData = expense
+    .map((item) => {
+      if (item.expense_type === 'EXPENSE') {
+        return {
+          expense_uuid: item.expense_uuid,
+          job_order_no: item.job_order_no,
+          job_uuid: item.job_uuid,
+          job_name: item.job_name,
+          user_uuid: item.user_uuid,
+          user_name: item.user_name,
+          billing_company_uuid: item.billing_company_uuid,
+          billing_company_name: item.billing_company_name,
+          project_name: item.project_name,
+        };
+      } else if (item.expense_type === 'JOB') {
+        return {
+          expense_uuid: item.expense_uuid,
+          job_order_no: item.job_order_no,
+          job_uuid: item.job_uuid,
+          job_name: item.job_name,
+          user_uuid: item.user_uuid,
+          user_name: item.user_name,
+          billing_company_uuid: item.billing_company_uuid,
+          billing_company_name: item.billing_company_name,
+          project_name: item.project_name,
+        };
+      } else {
+        return null;
+      }
+    })
+    .filter((item) => item !== null);
+
+  // Generate CSV content
+  const csvContent = jsonToCSV(expenseData);
+  console.log(csvContent);
+
+  // Save CSV to a file (Node.js example)
+  fs.writeFileSync('data.csv', csvContent);
+  console.log('CSV file saved as data.csv');
+
+  res.status(200).json(
+    responser('Exported successfully', {
+      csv: jsonToCSV(expenseData),
+      json: expenseData,
+    }),
+  );
 };

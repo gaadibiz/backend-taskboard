@@ -100,3 +100,8 @@ exports.convertFinanceToCleared = Joi.object({
   created_by_uuid: Joi.string().guid().max(50).allow(null),
   modified_by_uuid: Joi.string().guid().allow('', null),
 });
+exports.exportFinanceExpense = Joi.object({
+  expense_uuids: Joi.array().items(Joi.string().uuid()),
+  created_by_uuid: Joi.string().guid().max(50).allow(null),
+  modified_by_uuid: Joi.string().guid().allow('', null),
+});

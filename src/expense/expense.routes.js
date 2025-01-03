@@ -61,5 +61,13 @@ router.post(
     controller.convertFinanceToCleared,
   ),
 );
+router.post(
+  '/export-finance-expense',
+  checkAuth,
+  requestErrorHandlingDecorator(
+    Schema.exportFinanceExpense,
+    controller.exportFinanceExpense,
+  ),
+);
 
 module.exports = router;
