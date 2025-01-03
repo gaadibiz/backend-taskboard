@@ -21,6 +21,7 @@ const {
 } = require('../../utils/helperFunction');
 const { base_url } = require('../../config/server.config');
 const { responser, removeNullValueKey } = require('../../utils/helperFunction');
+const e = require('express');
 
 function toBoolean(value) {
   if (value === 'true' || value === true || value === 1) return true;
@@ -285,4 +286,31 @@ GROUP BY user_uuid;`);
   } else {
     res.json(responser('advance_amount', advance_amount));
   }
+};
+
+exports.convertFinanceToCleared = async (req, res) => {
+  let { expense_uuids } = req.body;
+  // TODO:only finace manager allowed to call this api
+
+  let allowedRole = ['FINANCE_MANAGER', 'ADMIN'];
+
+  if (!allowedRole.includes(req.user.role_value)) {
+    throwError(400, 'Only finace manager allowed to call this api');
+  }
+
+  if (!expense_uuids.length) {
+    throwError(400, 'Expense uuids is required');
+  }
+
+  let expense = await getRecords(
+    'latest_expense',
+    `where expense_uuid in ('${expense_uuids.join("','")}') AND status = 'FINANCE'`,
+  );
+
+  if (!expense.length) {
+    return res.json(responser('No expense found', expense));
+  }
+  expense = expense.map((item) => ({ ...item, status: 'CLEARED' }));
+  await insertRecords('expense', expense);
+  return res.json(responser('Expense converted to cleared', expense));
 };

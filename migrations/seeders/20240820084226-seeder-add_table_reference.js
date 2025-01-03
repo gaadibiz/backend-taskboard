@@ -40,7 +40,7 @@ module.exports = {
         submodule_name: 'Expense',
         table_name: 'latest_expense',
         table_status:
-          '["INACTIVE", "EXPENSE_REQUESTED", "EXPENSE_APPROVAL_REQUESTED", "FINANCE_APPROVAL_REQUESTED", "FINANCE", "REJECTED", "ROLLBACK"]',
+          '["INACTIVE", "EXPENSE_REQUESTED", "EXPENSE_APPROVAL_REQUESTED", "FINANCE_APPROVAL_REQUESTED", "FINANCE", "CLEARED", "REJECTED", "ROLLBACK"]',
         create_ts: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
     ]);

@@ -53,4 +53,13 @@ router.get(
   ),
 );
 
+router.post(
+  '/convert-finance-to-cleared',
+  checkAuth,
+  requestErrorHandlingDecorator(
+    Schema.convertFinanceToCleared,
+    controller.convertFinanceToCleared,
+  ),
+);
+
 module.exports = router;
