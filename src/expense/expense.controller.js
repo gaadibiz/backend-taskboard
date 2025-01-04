@@ -318,49 +318,132 @@ exports.convertFinanceToCleared = async (req, res) => {
 };
 
 exports.exportFinanceExpense = async (req, res) => {
-  let { expense_uuids } = req.body;
+  const { expense_uuids, billing_company_uuid } = req.body;
 
-  let expense = await getRecords(
+  const expense = await getRecords(
     'latest_expense',
-    `where expense_uuid in ('${expense_uuids.join("','")}') `,
+    `where expense_uuid in ('${expense_uuids.join("','")}')`,
   );
 
-  const expenseData = expense
-    .map((item) => {
-      if (item.expense_type === 'EXPENSE') {
-        return {
-          expense_uuid: item.expense_uuid,
-          job_order_no: item.job_order_no,
-          job_uuid: item.job_uuid,
-          job_name: item.job_name,
-          user_uuid: item.user_uuid,
-          user_name: item.user_name,
-          billing_company_uuid: item.billing_company_uuid,
-          billing_company_name: item.billing_company_name,
-          project_name: item.project_name,
-        };
-      } else if (item.expense_type === 'JOB') {
-        return {
-          expense_uuid: item.expense_uuid,
-          job_order_no: item.job_order_no,
-          job_uuid: item.job_uuid,
-          job_name: item.job_name,
-          user_uuid: item.user_uuid,
-          user_name: item.user_name,
-          billing_company_uuid: item.billing_company_uuid,
-          billing_company_name: item.billing_company_name,
-          project_name: item.project_name,
-        };
-      } else {
-        return null;
-      }
-    })
-    .filter((item) => item !== null);
-
-  res.status(200).json(
-    responser('Exported successfully', {
-      csv: jsonToCSV(expenseData),
-      json: expenseData,
-    }),
+  const [company] = await getRecords(
+    'latest_bank_details',
+    `where customer_uuid='${billing_company_uuid}'`,
   );
+
+  if (!company) return throwError(404, 'Company not found.');
+
+  const companyDetails = {
+    bank_name: company.ifsc_code?.slice(0, 4).toUpperCase(),
+    account: company.account_no,
+    ifsc_code: company.ifsc_code,
+  };
+
+  const processExpense = async (item) => {
+    const userTable =
+      item.expense_type === 'JOB' ? 'latest_vendors' : 'latest_user';
+    const userField = item.expense_type === 'JOB' ? 'vendor_uuid' : 'user_uuid';
+
+    const [user] = await getRecords(
+      userTable,
+      `where ${userField}='${item[userField]}'`,
+    );
+    if (!user) return throwError(404, `${item.expense_type} user not found.`);
+
+    const userDetails = {
+      bank_name: user.bank_ifsc_code?.slice(0, 4).toUpperCase(),
+      ifsc_code: user.bank_ifsc_code,
+      account_number: user.bank_account_number,
+      full_name: user.full_name,
+      address: [
+        user.unit_or_suite,
+        user.street_address,
+        user.city,
+        user.province_or_state,
+        user.postal_code,
+        user.country,
+      ]
+        .filter(Boolean)
+        .join(', '),
+    };
+
+    const amountField =
+      item.expense_type === 'ADVANCE'
+        ? 'requested_advance_amount'
+        : 'eligible_reimbursement_amount';
+    const amount = item[amountField];
+
+    return {
+      selfBank:
+        companyDetails.bank_name === userDetails.bank_name
+          ? {
+              'EXPESNE TYPE': item.expense_type,
+              'ACCOUNT NUMBER': userDetails.account_number,
+              'SERVICE OUTLET': companyDetails.account?.slice(0, 4),
+              'CURRENCY CODE OF ACCOUNT NUMBER': 'INR',
+              'PART TRAN TYPE': 'C',
+              'TRANSACTION AMOUNT': amount,
+              'TRANSACTION PARTICULAR': `Expense ${item.expense_date} ${userDetails.full_name}`,
+              'REFERENCE NUMBER': '',
+              'RATE CODE': '',
+              'ACCOUNT REPORT CODE': '',
+              'REFERENCE AMOUNT': '',
+              'INSTRUMENT TYPE': '',
+              'REFERENCE CURRENCY CODE': '',
+              'VALUE DATE': '',
+              'PARTICULARS 1': '',
+            }
+          : null,
+      otherBank:
+        companyDetails.bank_name !== userDetails.bank_name
+          ? {
+              'EXPESNE TYPE': item.expense_type,
+              Amount: amount,
+              'Debit Account': companyDetails.account,
+              IFSC: userDetails.ifsc_code,
+              'Beneficiary Account': userDetails.account_number,
+              'Beneficiary name': userDetails.full_name,
+              Address: userDetails.address || '',
+              'Tran particular': `Expense ${item.expense_date}, ${userDetails.full_name}`,
+            }
+          : null,
+    };
+  };
+
+  const processedData = await Promise.all(
+    expense.map((item) => processExpense(item)),
+  );
+
+  const selfBankData = processedData
+    .map((data) => data.selfBank)
+    .filter(Boolean);
+
+  // unshift fist value to self bank data
+  selfBankData.unshift({
+    'EXPESNE TYPE': null,
+    'ACCOUNT NUMBER': companyDetails.account,
+    'SERVICE OUTLET': companyDetails.account?.slice(0, 4),
+    'CURRENCY CODE OF ACCOUNT NUMBER': 'INR',
+    'PART TRAN TYPE': 'D',
+    'TRANSACTION AMOUNT': selfBankData.reduce(
+      (acc, item) => acc + item['TRANSACTION AMOUNT'],
+      0,
+    ),
+    'TRANSACTION PARTICULAR': `Expense`,
+    'REFERENCE NUMBER': '',
+    'RATE CODE': '',
+    'ACCOUNT REPORT CODE': '',
+    'REFERENCE AMOUNT': '',
+    'INSTRUMENT TYPE': '',
+    'REFERENCE CURRENCY CODE': '',
+    'VALUE DATE': '',
+    'PARTICULARS 1': '',
+  });
+
+  const otherBankData = processedData
+    .map((data) => data.otherBank)
+    .filter(Boolean);
+
+  res
+    .status(200)
+    .json(responser('Exported successfully', { selfBankData, otherBankData }));
 };

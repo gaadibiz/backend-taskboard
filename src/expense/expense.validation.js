@@ -106,6 +106,7 @@ exports.convertFinanceToCleared = Joi.object({
 });
 exports.exportFinanceExpense = Joi.object({
   expense_uuids: Joi.array().items(Joi.string().uuid()),
+  billing_company_uuid: Joi.string().guid().max(50).required(),
   created_by_uuid: Joi.string().guid().max(50).allow(null),
   modified_by_uuid: Joi.string().guid().allow('', null),
 });

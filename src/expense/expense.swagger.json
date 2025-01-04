@@ -589,6 +589,10 @@
                   "items": {
                     "type": "string"
                   }
+                },
+                "billing_company_uuid": {
+                  "type": "string",
+                  "default": ""
                 }
               }
             }
