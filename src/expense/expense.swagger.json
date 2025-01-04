@@ -146,6 +146,14 @@
                   "type": "string",
                   "default": null
                 },
+                "billing_company_branch_uuid": {
+                  "type": "string",
+                  "default": null
+                },
+                "billing_company_branch_name": {
+                  "type": "string",
+                  "default": null
+                },
                 "status": {
                   "type": "string",
                   "default": "INACTIVE | EXPENSE_REQUESTED | EXPENSE_APPROVAL_REQUESTED | FINANCE_APPROVAL_REQUESTED | FINANCE"
@@ -347,6 +355,14 @@
                   "default": null
                 },
                 "billing_company_name": {
+                  "type": "string",
+                  "default": null
+                },
+                "billing_company_branch_uuid": {
+                  "type": "string",
+                  "default": null
+                },
+                "billing_company_branch_name": {
                   "type": "string",
                   "default": null
                 },

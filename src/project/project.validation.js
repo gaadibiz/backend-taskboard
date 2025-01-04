@@ -7,9 +7,10 @@ exports.upsertProjectSchema = Joi.object({
   remarks: Joi.string().max(100).allow(null),
   start_date: Joi.string().max(100).allow(null),
   end_date: Joi.string().max(100).allow(null),
-
-  billing_company_uuid: Joi.string().guid().allow('', null),
-  billing_company_name: Joi.string().max(100).allow('', null),
+  billing_company_uuid: Joi.string().guid().max(100).allow('', null),
+  billing_company_name: Joi.string().max(255).allow('', null),
+  billing_company_branch_uuid: Joi.string().guid().max(100).allow('', null),
+  billing_company_branch_name: Joi.string().max(255).allow('', null),
   project_manager_name: Joi.string().required(),
   project_manager_uuid: Joi.string().guid().required(),
   finance_manager_name: Joi.string().required(),

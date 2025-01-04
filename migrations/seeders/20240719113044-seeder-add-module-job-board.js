@@ -7,8 +7,8 @@ module.exports = {
       const modules = [
         {
           module_uuid: uuidv4(),
-          module_name: 'Job Board',
-          submodule_name: 'Customers',
+          module_name: 'Company',
+          submodule_name: 'Company',
           table_name: 'latest_customer',
           map_column_user_uuid: JSON.stringify([]),
           column_relation_options: JSON.stringify([]),
@@ -25,8 +25,8 @@ module.exports = {
         },
         {
           module_uuid: uuidv4(),
-          module_name: 'Job Board',
-          submodule_name: 'Customers Branch',
+          module_name: 'Company',
+          submodule_name: 'Company Branch',
           table_name: 'latest_customer_branch',
           map_column_user_uuid: JSON.stringify([]),
           column_relation_options: JSON.stringify([]),

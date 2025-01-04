@@ -83,6 +83,14 @@
                   "type": "string",
                   "default": null
                 },
+                "billing_company_branch_uuid": {
+                  "type": "string",
+                  "default": null
+                },
+                "billing_company_branch_name": {
+                  "type": "string",
+                  "default": null
+                },
                 "status": {
                   "type": "string",
                   "default": "ACTIVE | INACTIVE"
