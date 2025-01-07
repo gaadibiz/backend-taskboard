@@ -27,7 +27,7 @@ exports.upsertUserSchema = Joi.object({
   role_uuid: Joi.string().guid().max(50).required(),
   role_value: Joi.string().allow('', null),
   manager_uuid: Joi.string().guid().max(50).allow('', null),
-  manager_name: Joi.string().max(50).allow(null),
+  manager_name: Joi.string().max(50).allow(null, ''),
   hierarchy_uuids: Joi.array().items(Joi.string().guid()).allow(null),
   status: Joi.string().valid('ACTIVE', 'INACTIVE').default('ACTIVE').required(),
   created_by_uuid: Joi.string().guid().max(50).allow(null),
