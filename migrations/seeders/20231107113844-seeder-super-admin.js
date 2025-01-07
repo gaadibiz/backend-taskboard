@@ -33,6 +33,15 @@ module.exports = {
         role_uuid: admin.role_uuid,
       },
     ]);
+    await queryInterface.bulkInsert('user_profile', [
+      {
+        user_uuid: uuid,
+        first_name: 'super',
+        last_name: 'admin',
+        personal_email: SUPERADMIN_EMAIL,
+        status: 'ACTIVE',
+      },
+    ]);
   },
 
   async down(queryInterface, Sequelize) {},

@@ -2,6 +2,7 @@ const shell = require('shelljs');
 const { readFileContent, readDirectory } = require('./utils/helperFunction');
 const { squilizeInit } = require('./utils/dbFunctions');
 const colors = require('colors');
+const prompt = require('prompt');
 
 const arguments = process.argv.slice(2);
 const errorMessage = () => {
@@ -118,7 +119,50 @@ const executeMigration = async (args) => {
         1. node migration.js --generate:<table | alter | seeder>-{expectated file name} [create migration file]
         2. node migration.js --migrate [migrate all files/folders]
         3. node migration.js --migrate:<tables|alters|views|procs|seeders> [migrate given specific folder]
+        4. node migration --remigration [drop and create database and migrate all files]
+        5. node migration --clean [clean all alter files and database alters]
         `);
+  } else if (args.startsWith('--remigration')) {
+    let message = 'Are you sure you want to remigrate the database?';
+    let yesNo = '(yes/no)';
+    prompt.start({ message });
+    prompt.get([yesNo], async (err, result) => {
+      if (err) {
+        return reject(err);
+      }
+      if (result[yesNo] === 'yes') {
+        let sequilize = squilizeInit();
+        await sequilize.query(
+          `DROP DATABASE IF EXISTS ${process.env.DB_DATABASE}`,
+        );
+        console.log('Database Dropped'.green.bold);
+        await sequilize.query(
+          `CREATE DATABASE IF NOT EXISTS ${process.env.DB_DATABASE}`,
+        );
+        console.log('Database Created'.green.bold);
+        await sequilize.close();
+        shell.exec(`node migration.js --migrate`);
+      }
+    });
+  } else if (args.startsWith('--clean')) {
+    let message = 'Are you sure you want to clean alters?';
+    let yesNo = '(yes/no)';
+    prompt.start({ message });
+    prompt.get([yesNo], async (err, result) => {
+      if (err) {
+        return reject(err);
+      }
+      if (result[yesNo] === 'yes') {
+        let sequilize = squilizeInit();
+        await sequilize.query(
+          `DELETE FROM SequelizeMeta WHERE name LIKE '%-alter-%'`,
+        );
+        console.log('Alters Cleaned'.green.bold);
+        await sequilize.close();
+        fs.rmSync('./migrations/alters', { recursive: true });
+        fs.mkdirSync('./migrations/alters');
+      }
+    });
   } else {
     errorMessage();
   }

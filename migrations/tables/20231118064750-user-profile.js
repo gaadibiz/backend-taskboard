@@ -27,7 +27,7 @@ module.exports = {
       },
       department_name: {
         type: Sequelize.STRING(500),
-        allowNull: false,
+        allowNull: true,
       },
       department_uuid: {
         type: Sequelize.CHAR(36),
@@ -139,11 +139,11 @@ module.exports = {
       },
       branch_name: {
         type: Sequelize.STRING(100),
-        allowNull: false,
+        allowNull: true,
       },
       branch_uuid: {
         type: Sequelize.CHAR(36),
-        allowNull: false,
+        allowNull: true,
       },
       father_name: {
         type: Sequelize.STRING(50),
