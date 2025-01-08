@@ -131,7 +131,14 @@ module.exports = {
                 "value": "user_uuid",
                 "column_key": "user_uuid",
                 "column_label": "User"
-            }]' WHERE module_name = "Job Board" ;
+            },
+            {
+            "api": "/user/get-branch", 
+            "field": "branch_name", 
+            "value": "branch_uuid",
+            "column_key": "branch_uuid",
+            "column_label": "Branch"
+            }]' WHERE module_name = "Company" OR module_name="Job Board" ;
       `);
     } catch (error) {
       console.error('Error during migration:', error);
