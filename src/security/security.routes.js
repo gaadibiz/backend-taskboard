@@ -20,14 +20,15 @@ router
     requestErrorHandlingDecorator(Schema.getRoleSchema, controller.getRoles),
   );
 
-router.route('/upsert-role-module-content-access-permission').post(
-  checkAuth,
-  requestErrorHandlingDecorator(
-    // Schema.upsertSecurityRoleModuleSchema,
-    null,
-    controller.upsertRoleModuleContentAccessPermission,
-  ),
-);
+router
+  .route('/upsert-role-module-content-access-permission')
+  .post(
+    checkAuth,
+    requestErrorHandlingDecorator(
+      Schema.upsertSecurityRoleModuleSchema,
+      controller.upsertRoleModuleContentAccessPermission,
+    ),
+  );
 
 router.route('/get-role-module-content-access-permission').get(
   checkAuth,
