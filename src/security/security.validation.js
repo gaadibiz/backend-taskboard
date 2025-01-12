@@ -50,25 +50,28 @@ exports.upsertSecurityRoleModuleSchema = Joi.array().items(
     send_whatsapp: Joi.number().valid(0, 1).required(),
     send_call: Joi.number().valid(0, 1).required(),
     bulk_import: Joi.number().valid(0, 1).required(),
-    filter_values: Joi.object({
-      or: Joi.object({
-        user_uuid: Joi.array().items(Joi.string()).min(1).optional(),
-        branch_uuid: Joi.array().items(Joi.string()).min(1).optional(),
-      }).optional(),
-      and: Joi.object({
-        user_uuid: Joi.array().items(Joi.string()).min(1).optional(),
-        branch_uuid: Joi.array().items(Joi.string()).min(1).optional(),
-      }).optional(),
-      OR: Joi.object({
-        user_uuid: Joi.array().items(Joi.string()).min(1).optional(),
-        branch_uuid: Joi.array().items(Joi.string()).min(1).optional(),
-      }).optional(),
-      AND: Joi.object({
-        user_uuid: Joi.array().items(Joi.string()).min(1).optional(),
-        branch_uuid: Joi.array().items(Joi.string()).min(1).optional(),
-      }).optional(),
-    })
-      .xor('or', 'and', 'OR', 'AND')
+    filter_values: Joi.alternatives()
+      .try(
+        Joi.object().keys({}),
+        Joi.object({
+          or: Joi.object({
+            user_uuid: Joi.array().items(Joi.string()).min(1).optional(),
+            branch_uuid: Joi.array().items(Joi.string()).min(1).optional(),
+          }).optional(),
+          and: Joi.object({
+            user_uuid: Joi.array().items(Joi.string()).min(1).optional(),
+            branch_uuid: Joi.array().items(Joi.string()).min(1).optional(),
+          }).optional(),
+          OR: Joi.object({
+            user_uuid: Joi.array().items(Joi.string()).min(1).optional(),
+            branch_uuid: Joi.array().items(Joi.string()).min(1).optional(),
+          }).optional(),
+          AND: Joi.object({
+            user_uuid: Joi.array().items(Joi.string()).min(1).optional(),
+            branch_uuid: Joi.array().items(Joi.string()).min(1).optional(),
+          }).optional(),
+        }).xor('or', 'and', 'OR', 'AND'),
+      )
       .optional(),
     status: Joi.string().valid('ACTIVE', 'INACTIVE').required(),
     created_by_uuid: Joi.string().guid().allow(null),
