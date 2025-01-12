@@ -73,7 +73,7 @@ exports.upsertSecurityRoleModuleSchema = Joi.array().items(
         }).xor('or', 'and', 'OR', 'AND'),
       )
       .optional(),
-    status: Joi.string().valid('ACTIVE', 'INACTIVE').required(),
+    status: Joi.string().valid('ACTIVE', 'INACTIVE').allow(null),
     created_by_uuid: Joi.string().guid().allow(null),
     created_by_name: Joi.string().allow(null),
     modified_by_uuid: Joi.string().guid().allow(null),
