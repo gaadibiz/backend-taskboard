@@ -48,6 +48,7 @@ exports.upsertSecurityRoleModuleSchema = Joi.array().items(
     send_mail: Joi.number().valid(0, 1),
     send_whatsapp: Joi.number().valid(0, 1),
     send_call: Joi.number().valid(0, 1),
+    bulk_import: Joi.number().valid(0, 1),
     filter_values: Joi.object({
       or: Joi.object({
         user_uuid: Joi.array().items(Joi.string()).min(1).optional(),
