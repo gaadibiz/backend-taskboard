@@ -67,7 +67,9 @@ exports.upsertSecurityRoleModuleSchema = Joi.array().items(
         user_uuid: Joi.array().items(Joi.string()).min(1).optional(),
         branch_uuid: Joi.array().items(Joi.string()).min(1).optional(),
       }).optional(),
-    }).xor('or', 'and', 'OR', 'AND'),
+    })
+      .xor('or', 'and', 'OR', 'AND')
+      .optional(),
     status: Joi.string().valid('ACTIVE', 'INACTIVE').required(),
     created_by_uuid: Joi.string().guid().allow(null),
     created_by_name: Joi.string().allow(null),
