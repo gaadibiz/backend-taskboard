@@ -189,7 +189,7 @@ module.exports = {
         },
       },
       bank_ifsc_code: {
-        type: Sequelize.STRING(10),
+        type: Sequelize.STRING(50),
         allowNull: true,
       },
       bank_branch: {

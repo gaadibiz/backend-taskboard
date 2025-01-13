@@ -193,11 +193,12 @@ exports.handleApproval = async (req, res) => {
   } else {
     const bodyData = {
       table_name: approval[0].table_name,
+      dynamic_uuid: approval[0].dynamic_uuid,
       record_uuid: approval[0].record_uuid,
       record_column_name: approval[0].record_column_name,
     };
     await getData(
-      base_url + '/api/v1/approval/insert-approval',
+      base_url + '/api/v1/dynamicApproval/insert-approval',
       null,
       'json',
       bodyData,
