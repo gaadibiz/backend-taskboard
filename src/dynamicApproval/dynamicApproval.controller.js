@@ -296,7 +296,7 @@ exports.getApprovals = async (req, res) => {
   let pageFilter = pagination(pageNo, itemPerPage);
   let result = (
     await dbRequest(`select record_column_name from latest_dynamic_approval 
-                  where table_name='${table_name}'AND dynamic_uuid = '${dynamic_uuid}'  limit 1;`)
+                  where table_name='${table_name}' ${dynamic_uuid ? `AND dynamic_uuid = '${dynamic_uuid}'` : ''}  limit 1;`)
   )[0];
   let resultJoined = [];
   if (result) {
