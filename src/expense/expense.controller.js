@@ -418,26 +418,28 @@ exports.exportFinanceExpense = async (req, res) => {
     .filter(Boolean);
 
   // unshift fist value to self bank data
-  selfBankData.unshift({
-    'EXPESNE TYPE': null,
-    'ACCOUNT NUMBER': companyDetails.account,
-    'SERVICE OUTLET': companyDetails.account?.slice(0, 4),
-    'CURRENCY CODE OF ACCOUNT NUMBER': 'INR',
-    'PART TRAN TYPE': 'D',
-    'TRANSACTION AMOUNT': selfBankData.reduce(
-      (acc, item) => acc + item['TRANSACTION AMOUNT'],
-      0,
-    ),
-    'TRANSACTION PARTICULAR': `Expense`,
-    'REFERENCE NUMBER': '',
-    'RATE CODE': '',
-    'ACCOUNT REPORT CODE': '',
-    'REFERENCE AMOUNT': '',
-    'INSTRUMENT TYPE': '',
-    'REFERENCE CURRENCY CODE': '',
-    'VALUE DATE': '',
-    'PARTICULARS 1': '',
-  });
+  if (selfBankData.length > 0) {
+    selfBankData.unshift({
+      'EXPESNE TYPE': null,
+      'ACCOUNT NUMBER': companyDetails.account,
+      'SERVICE OUTLET': companyDetails.account?.slice(0, 4),
+      'CURRENCY CODE OF ACCOUNT NUMBER': 'INR',
+      'PART TRAN TYPE': 'D',
+      'TRANSACTION AMOUNT': selfBankData.reduce(
+        (acc, item) => acc + item['TRANSACTION AMOUNT'],
+        0,
+      ),
+      'TRANSACTION PARTICULAR': `Expense`,
+      'REFERENCE NUMBER': '',
+      'RATE CODE': '',
+      'ACCOUNT REPORT CODE': '',
+      'REFERENCE AMOUNT': '',
+      'INSTRUMENT TYPE': '',
+      'REFERENCE CURRENCY CODE': '',
+      'VALUE DATE': '',
+      'PARTICULARS 1': '',
+    });
+  }
 
   const otherBankData = processedData
     .map((data) => data.otherBank)
