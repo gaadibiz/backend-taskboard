@@ -166,7 +166,7 @@ exports.getPurchaseOrder = async (req, res) => {
       req.headers,
     );
 
-    console.log(mergeExpense);
+    // console.log(mergeExpense);
 
     // Update the first order with response data
     if (mergeExpense) {

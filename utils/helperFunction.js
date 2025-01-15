@@ -5,7 +5,8 @@ const moment = require('moment');
 const { asIs } = require('sequelize');
 const { ToWords } = require('to-words');
 require('dotenv').config();
-
+const { Readable } = require('stream');
+const FormData = require('form-data');
 exports.throwError = (status, message) => {
   throw new Error(JSON.stringify({ status, message }));
 };
@@ -74,6 +75,100 @@ exports.getData = async (
   if (req.status >= 400) {
     throw new Error(
       JSON.stringify({ status: req.status, message: res?.message }),
+    );
+  }
+  return res;
+};
+
+/**
+ * Sends a request to the specified API endpoint.
+ * @param {string} url - The URL of the API endpoint.
+ * @param {Array<string>|object} paramOrQuery - eg. param ["<uuid>","<id>"] or query {<key>:<value>}.
+ * @param {"GET"|"POST"|"PUT"|"DELETE"} method - The HTTP method to be used for the request.
+ * @param {{
+ * "Content-Type":"application/json"|"multipart/form-data"
+ * }} headers - The default header is application/json.
+ * @param {object|Array<{files:{name:string,data:Buffer}[],options}>} body - The body of the request.
+ * @return {object} The response from the API endpoint.
+ */
+exports.requestApi = async (url, paramOrQuery, method, headers, body) => {
+  let requestPayload = {
+    method: method || 'GET',
+    headers: null,
+  };
+  if (!headers) headers = {};
+  let Url = new URL(url);
+  if (typeof paramOrQuery === 'object') {
+    if (Array.isArray(paramOrQuery)) {
+      for (let k of paramOrQuery) {
+        Url.pathname += '/' + k;
+      }
+    } else {
+      for (let k in paramOrQuery) {
+        Url.searchParams.append(k, paramOrQuery[k]);
+      }
+    }
+  } else if (paramOrQuery) {
+    this.throwError(400, 'paramOrQuery must be an Array of string or object.');
+  }
+  if (headers['Content-Type'] == 'multipart/form-data') {
+    console.log(body);
+    const form = new FormData();
+
+    console.log(Object.keys(body));
+    Object.keys(body).forEach((key) => {
+      if (body[key]) {
+        if (key === 'files') {
+          // Handle files separately
+          body.files.forEach((file) => {
+            const stream = Readable.from(file.data);
+            form.append('files', stream, {
+              filename: file.name,
+            });
+          });
+        } else {
+          // Append other properties to the form
+          form.append(key, body[key]);
+        }
+      }
+    });
+
+    requestPayload.headers = { ...form.getHeaders(), ...headers };
+    requestPayload.body = form;
+  } else {
+    requestPayload.headers = {
+      'Content-Type': 'application/json; charset=UTF-8',
+      ...headers,
+    };
+    requestPayload.body = JSON.stringify(body);
+  }
+  this.deleteKeyValuePair(requestPayload.headers, ['content-length']);
+  console.group('Request API');
+  console.log('url:', Url.href);
+  console.log('method:', method);
+  console.log('headers:', requestPayload.headers);
+  console.log('body:', requestPayload.body);
+  console.groupEnd('Request API');
+  // let req = await fetch(SERVICES_URL.streamUploading, requestPayload);
+  let req = await fetch(Url.href, requestPayload);
+  let res = undefined;
+  switch (req.headers.get('content-type').split(';')[0]) {
+    case 'application/json':
+      res = await req.json();
+      break;
+    case 'text/html':
+      res = await req.text();
+      break;
+    case 'text/plain':
+      res = await req.text();
+      break;
+    case 'application/pdf':
+      res = await req.arrayBuffer();
+      break;
+  }
+  if (req.status >= 400) {
+    throw new Error(
+      JSON.stringify({ status: req.status, message: res.message }),
     );
   }
   return res;

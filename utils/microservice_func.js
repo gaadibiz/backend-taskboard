@@ -1,5 +1,10 @@
 const { SERVICES_URL } = require('./microservices_url');
-const { getData, throwError, responser } = require('./helperFunction');
+const {
+  getData,
+  throwError,
+  responser,
+  requestApi,
+} = require('./helperFunction');
 const { getRecords } = require('./dbFunctions');
 const moment = require('moment');
 
@@ -95,15 +100,17 @@ exports.uploadService = async (data) => {
   } catch (_) {}
   let getfilePath = await getRecords(
     'attachments_structure',
-    `where module_name = "${data.module_name}"`,
+    `where module_name= "${data.module_name}"`,
   );
   if (!getfilePath.length) return throwError(404, 'Module name is not valid');
   getfilePath = getfilePath[0].file_path;
   const pattern = /\${as_payload\.([^}]+)}/g;
   data.files = data.files.map((file) => {
     let splitName = file.name.split('.');
-    as_payload.file_name = splitName[0];
-    as_payload.file_ext = splitName[1];
+    as_payload.file_ext = splitName.at(-1);
+    as_payload.file_name = file.name
+      .replace(`.${as_payload.file_ext}`, '')
+      .replace(/[^\w]/g, '_');
     let match;
     while ((match = pattern.exec(getfilePath)) !== null) {
       const payloadKey = match[1];
@@ -111,21 +118,23 @@ exports.uploadService = async (data) => {
         return throwError(422, `'${payloadKey}' is need to be in as_payload`);
       }
     }
-    file.path = eval('`' + getfilePath + '`');
+    file.name = eval('`' + getfilePath + '`');
+    file.name = file.name.replace(/\//g, '|');
     return file;
   });
-  let fileNames = data.files.map((file) => file.path);
-  await getData(
+  let resp = await requestApi(
     SERVICES_URL.s3UploadFiles,
     null,
-    'json',
-    {
-      fileNames,
-      bufferArray: data.files.map((file) => file.data),
-    },
     'POST',
+    { 'Content-Type': 'multipart/form-data' },
+    {
+      files: data.files,
+    },
   );
-  return fileNames;
+  if (!resp) throwError(400, 'File is not uploaded.');
+
+  console.log(resp);
+  return resp.filePath;
 };
 /**
  * Download File from S3
