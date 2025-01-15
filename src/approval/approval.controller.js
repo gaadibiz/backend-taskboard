@@ -314,9 +314,7 @@ exports.getApprovals = async (req, res) => {
     //   .replace('latest_', '')
     //   .toUpperCase()}_APPROVAL_REQUESTED" ${filter} ${pageFilter}`);
   }
-  return res.json(
-    responser('Approvals ', resultJoined, resultJoined.length, totalRecords),
-  );
+  return res.json(responser('Approvals ', resultJoined, resultJoined.length));
 };
 
 exports.insertApprovalCount = async (req, res) => {

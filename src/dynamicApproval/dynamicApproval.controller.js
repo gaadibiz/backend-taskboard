@@ -359,9 +359,7 @@ exports.getApprovals = async (req, res) => {
     );
   }
 
-  return res.json(
-    responser('Approvals ', Finalresponse, Finalresponse.length, totalRecords),
-  );
+  return res.json(responser('Approvals ', Finalresponse, Finalresponse.length));
 };
 
 exports.insertApprovalCount = async (req, res) => {
