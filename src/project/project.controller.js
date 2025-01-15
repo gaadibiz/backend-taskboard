@@ -23,7 +23,7 @@ const { base_url } = require('../../config/server.config');
 const { responser, removeNullValueKey } = require('../../utils/helperFunction');
 
 exports.upsertProject = async (req, res) => {
-  // isEditAccess('latest_leads_with_project', req.user);
+  isEditAccess('latest_project_team', req.user);
   removeNullValueKey(req.body);
   let isUpadtion = false;
   if (req.body.project_uuid) {
@@ -107,17 +107,19 @@ exports.getProject = async (req, res) => {
     Array.isArray(columns) ? columns : [columns],
     value,
   );
+
+  let totalRecords = await getCountRecord(tableName, filter);
+
   filter = await roleFilterService(filter, 'latest_project_team', req.user);
 
   let pageFilter = pagination(pageNo, itemPerPage);
 
-  let totalRecords = await getCountRecord(tableName, filter);
   // let result = await getRecords(tableName, filter, pageFilter);
 
   let sql = `SELECT * FROM latest_project WHERE project_uuid IN (SELECT project_uuid FROM latest_project_team ${filter} )  ${pageFilter}`;
   let result = await dbRequest(sql);
 
-  return res.json(responser('Project: ', result, result.length));
+  return res.json(responser('Project: ', result, result.length, totalRecords));
 };
 
 exports.upsertProjectTeam = async (req, res) => {
