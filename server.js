@@ -61,7 +61,7 @@ const appendRoutes = async (folder) => {
   }
   app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swagger));
   app.get('/', async (req, res) => {
-    res.status(200).json(responser('Welcome to Server. (Test)'));
+    res.status(200).json(responser('Welcome to Server'));
   });
 };
 appendRoutes('src');
