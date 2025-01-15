@@ -287,6 +287,8 @@ exports.getApprovals = async (req, res) => {
     },
   );
 
+  let totalRecords = await getCountRecord(tableName, filter);
+
   if (req.user.role_value !== 'ADMIN') {
     filter =
       (filter ? `${filter} AND ` : 'WHERE ') +
@@ -300,6 +302,7 @@ exports.getApprovals = async (req, res) => {
                   where table_name='${table_name}' ${dynamic_uuid ? `AND dynamic_uuid = '${dynamic_uuid}'` : ''}  limit 1;`)
   )[0];
   let resultJoined = [];
+  let Finalresponse = [];
   if (result) {
     filter = await roleFilterService(
       filter,
@@ -324,8 +327,43 @@ exports.getApprovals = async (req, res) => {
     // } and at.status = "${table_name
     //   .replace('latest_', '')
     //   .toUpperCase()}_APPROVAL_REQUESTED" ${filter} ${pageFilter}`);
+
+    Finalresponse = await Promise.all(
+      resultJoined?.map(async (ele) => {
+        mergeApproval = await getData(
+          base_url + '/api/v1/dynamicApproval/merge-approval-record',
+          null,
+          'json',
+          {
+            // TODO: change hardcode expense to dynmaic one
+            record_uuid: ele.expense_uuid,
+            dynamic_uuid: ele.expense_category_uuid,
+            table_name: table_name,
+            data: {},
+          },
+          'POST',
+          req.headers,
+        );
+
+        if (mergeApproval) {
+          const { dynamic_approval_uuid, requested_by_uuid, is_user_approver } =
+            mergeExpense; // Destructure for direct assignments
+          return {
+            ...ele,
+            dynamic_approval_uuid,
+            requested_by_uuid,
+            is_user_approver,
+          };
+        } else {
+          return ele;
+        }
+      }),
+    );
   }
-  return res.json(responser('Approvals ', resultJoined, resultJoined.length));
+
+  return res.json(
+    responser('Approvals ', Finalresponse, Finalresponse.length, totalRecords),
+  );
 };
 
 exports.insertApprovalCount = async (req, res) => {

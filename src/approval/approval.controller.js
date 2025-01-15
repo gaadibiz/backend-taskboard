@@ -276,6 +276,8 @@ exports.getApprovals = async (req, res) => {
     },
   );
 
+  let totalRecords = await getCountRecord(tableName, filter);
+
   if (req.user.role_value !== 'ADMIN') {
     filter =
       (filter ? `${filter} AND ` : 'WHERE ') +
@@ -314,7 +316,9 @@ exports.getApprovals = async (req, res) => {
     //   .replace('latest_', '')
     //   .toUpperCase()}_APPROVAL_REQUESTED" ${filter} ${pageFilter}`);
   }
-  return res.json(responser('Approvals ', resultJoined, resultJoined.length));
+  return res.json(
+    responser('Approvals ', resultJoined, resultJoined.length, totalRecords),
+  );
 };
 
 exports.insertApprovalCount = async (req, res) => {

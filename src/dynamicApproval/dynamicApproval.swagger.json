@@ -90,7 +90,7 @@
             "in": "query",
             "name": "dynamic_uuid",
             "type": "string",
-            "required": true
+            "required": false
           },
           {
             "in": "query",
