@@ -345,7 +345,7 @@ exports.getApprovals = async (req, res) => {
 
         if (mergeApproval) {
           const { dynamic_approval_uuid, requested_by_uuid, is_user_approver } =
-            mergeExpense; // Destructure for direct assignments
+            mergeApproval; // Destructure for direct assignments
           return {
             ...ele,
             dynamic_approval_uuid,
