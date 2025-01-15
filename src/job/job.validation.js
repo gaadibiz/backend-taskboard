@@ -20,9 +20,9 @@ exports.upsertJobSchema = Joi.object({
   attachment: Joi.array(),
   status: Joi.string()
     .max(255)
-    .valid('INACTIVE', 'JOB_REQUESTED', 'JOB_APPROVAL_REQUESTED')
+    .valid('INACTIVE', 'DRAFT', 'JOB_APPROVAL_REQUESTED')
     .required()
-    .default('JOB_REQUESTED'),
+    .default('DRAFT'),
   created_by_uuid: Joi.string().guid().max(50).allow('', null),
   modified_by_uuid: Joi.string().guid().max(50).allow('', null),
 });

@@ -57,13 +57,9 @@ exports.upsertPurchaseOrderSchema = Joi.object({
   total_amount_after_tax: Joi.number().precision(2).allow(null),
   status: Joi.string()
     .max(255)
-    .valid(
-      'PURCHASE_ORDER_REQUESTED',
-      'PURCHASE_ORDER_APPROVAL_REQUESTED',
-      'INACTIVE',
-    )
+    .valid('DARFT', 'PURCHASE_ORDER_APPROVAL_REQUESTED', 'INACTIVE')
     .required()
-    .default('PURCHASE_ORDER_REQUESTED'),
+    .default('DRAFT'),
   created_by_uuid: Joi.string().guid().max(50).allow('', null),
 });
 

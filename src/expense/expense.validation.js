@@ -40,7 +40,7 @@ exports.upsertExpenseSchema = Joi.object({
   status: Joi.string()
     .valid(
       'INACTIVE',
-      'EXPENSE_REQUESTED',
+      'DRAFT',
       'EXPENSE_APPROVAL_REQUESTED',
       'FINANCE_APPROVAL_REQUESTED',
       'FINANCE',
