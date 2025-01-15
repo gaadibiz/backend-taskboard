@@ -287,8 +287,6 @@ exports.getApprovals = async (req, res) => {
     },
   );
 
-  let totalRecords = await getCountRecord(tableName, filter);
-
   if (req.user.role_value !== 'ADMIN') {
     filter =
       (filter ? `${filter} AND ` : 'WHERE ') +
