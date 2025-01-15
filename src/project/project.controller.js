@@ -107,15 +107,15 @@ exports.getProject = async (req, res) => {
     Array.isArray(columns) ? columns : [columns],
     value,
   );
-  filter = await roleFilterService(filter, 'latest_project', req.user);
+  filter = await roleFilterService(filter, 'latest_project_team', req.user);
 
   let pageFilter = pagination(pageNo, itemPerPage);
 
   let totalRecords = await getCountRecord(tableName, filter);
-  let result = await getRecords(tableName, filter, pageFilter);
+  // let result = await getRecords(tableName, filter, pageFilter);
 
-  // let sql = `SELECT * FROM latest_project WHERE project_uuid IN (SELECT project_uuid FROM latest_project_team ${filter} )  ${pageFilter}`;
-  // let result = await dbRequest(sql);
+  let sql = `SELECT * FROM latest_project WHERE project_uuid IN (SELECT project_uuid FROM latest_project_team ${filter} )  ${pageFilter}`;
+  let result = await dbRequest(sql);
 
   return res.json(responser('Project: ', result, result.length));
 };
