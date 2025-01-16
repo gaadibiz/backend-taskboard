@@ -102,6 +102,10 @@
                     "type": "string"
                   }
                 },
+                "vendor_uuid": {
+                  "type": "string",
+                  "default": null
+                },
                 "merchant": {
                   "type": "string",
                   "default": null

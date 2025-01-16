@@ -105,6 +105,10 @@ module.exports = {
         type: Sequelize.JSON,
         allowNull: true,
       },
+      vendor_uuid: {
+        type: Sequelize.CHAR(36),
+        allowNull: true,
+      },
       merchant: {
         type: Sequelize.STRING(100),
         allowNull: true,

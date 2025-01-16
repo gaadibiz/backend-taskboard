@@ -28,6 +28,7 @@ exports.upsertExpenseSchema = Joi.object({
   category_manager_name: Joi.string().max(100).required(),
   category_manager_uuid: Joi.string().guid().required(),
   receipt: Joi.array(),
+  vendor_uuid: Joi.string().guid().max(500).allow('', null),
   merchant: Joi.string().max(100).allow('', null),
   expense_date: Joi.string().allow('', null),
   business_purpose: Joi.string().max(100).allow('', null),

@@ -343,6 +343,7 @@ exports.exportFinanceExpense = async (req, res) => {
       item.expense_type === 'JOB' ? 'latest_vendors' : 'latest_user';
     const userField = item.expense_type === 'JOB' ? 'vendor_uuid' : 'user_uuid';
 
+    console.log(item, '...........................');
     const [user] = await getRecords(
       userTable,
       `where ${userField}='${item[userField]}'`,
