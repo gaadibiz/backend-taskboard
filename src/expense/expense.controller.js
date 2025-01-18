@@ -354,7 +354,7 @@ exports.exportFinanceExpense = async (req, res) => {
       bank_name: user.bank_ifsc_code?.slice(0, 4).toUpperCase(),
       ifsc_code: user.bank_ifsc_code,
       account_number: user.bank_account_number,
-      full_name: user.full_name,
+      full_name: user?.full_name || user?.vendor_name,
       address: [
         user.unit_or_suite,
         user.street_address,
