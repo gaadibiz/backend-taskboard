@@ -22,6 +22,7 @@ exports.upsertVendorSchema = Joi.object({
   bank_branch_name: Joi.string().allow(null),
   note: Joi.string().allow(null),
   pan_no: Joi.string().allow(null),
+  modified_by_uuid: Joi.string().guid().max(50).allow(null),
   created_by_uuid: Joi.string().guid().max(50).allow(null),
 });
 
