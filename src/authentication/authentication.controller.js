@@ -17,7 +17,7 @@ const {
 const { otpConst } = require('../../utils/constants/otp');
 const { sendEmailService } = require('../../utils/microservice_func');
 const { userSessionService } = require('./authentication.service');
-const bycrpt = require('bcrypt');
+const bycrpt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('../../config/server.config');
 

@@ -20,7 +20,7 @@ const {
 } = require('../../utils/helperFunction');
 const { base_url } = require('../../config/server.config');
 const { v4: uuidv4 } = require('uuid');
-const bycrpt = require('bcrypt');
+const bycrpt = require('bcryptjs');
 
 // const path  = require('path');
 const multer = require('multer');
