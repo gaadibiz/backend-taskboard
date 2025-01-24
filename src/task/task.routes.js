@@ -64,4 +64,14 @@ router
     ),
   );
 
+router
+  .route('/assign-task-with-ai')
+  .get(
+    checkAuth,
+    requestErrorHandlingDecorator(
+      Schema.assignTaskWithAISchema,
+      controller.assignTaskWithAi,
+    ),
+  );
+
 module.exports = router;

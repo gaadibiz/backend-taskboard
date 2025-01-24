@@ -21,7 +21,4 @@ module.exports = {
   appConfig: {
     OTP: process.env.OTP,
   },
-  genai: {
-    GOOGLE_API_KEY: process.env.GOOGLE_API_KEY,
-  },
 };

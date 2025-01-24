@@ -597,6 +597,43 @@
           "500": { "description": "Internal Server Error" }
         }
       }
+    },
+    "/api/v1/task/assign-task-with-ai": {
+      "get": {
+        "tags": ["Task"],
+        "summary": "Insert Task with AI",
+        "description": "Give instructions to the AI to assign a task to a user.",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "project_uuid",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "prompt",
+            "description": "Give prompt to the AI",
+            "required": true,
+            "type": "string"
+          }
+        ],
+
+        "responses": {
+          "200": { "description": "successful operation" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
     }
   }
 }

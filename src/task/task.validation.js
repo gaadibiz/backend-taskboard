@@ -106,3 +106,7 @@ exports.getTaskDefinitionSchema = Joi.object({
   columns: Joi.string(),
   value: Joi.string(),
 });
+exports.assignTaskWithAISchema = Joi.object({
+  prompt: Joi.string().required(),
+  project_uuid: Joi.string().required(),
+});

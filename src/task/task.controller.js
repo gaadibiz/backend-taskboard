@@ -16,9 +16,10 @@ const {
   throwError,
   getData,
 } = require('../../utils/helperFunction');
-const { v4: uuid } = require('uuid');
+const { v4: uuid, v4 } = require('uuid');
 const { base_url } = require('../../config/server.config');
 const { CronJob } = require('cron');
+const { generateGenAiTaskObject } = require('../../utils/GenAiFunction');
 
 exports.upsertTask = async (req, res) => {
   await isEditAccess('latest_tasks', req.user);
@@ -745,3 +746,54 @@ function generateCronSchedule(taskDefinition) {
 
   return cronSchedule;
 }
+
+exports.assignTaskWithAi = async (req, res) => {
+  const project = await getRecords(
+    'latest_project',
+    `where project_uuid='${req.body.project_uuid}'`,
+  );
+  const projectTeam = await getRecords(
+    'latest_project_team',
+    `where project_uuid='${req.body.project_uuid}'`,
+  );
+
+  let output = {
+    billing_company_uuid: '',
+    billing_company_name: '',
+    billing_company_branch_uuid: '',
+    billing_company_branch_name: '',
+    type: 'Task',
+    type_name: 'Task',
+    type_uuid: 'f0e9d8c7-b6a5-4321-9876-543210fedcba',
+    priority: `'LOW'| 'MEDIUM'| 'HIGH'`,
+    title: '',
+    description: '',
+    due_date: '',
+    project_manager: '',
+    project_manager_uuid: '',
+    assigned_to_name: '',
+    assigned_to_uuid: '',
+    status: `'TODO'| 'PROGRESS'| 'HOLD'| 'COMPLETED'| 'ARCHIVE'`,
+  };
+
+  const result = await generateGenAiTaskObject(
+    req.body.prompt,
+    project,
+    projectTeam,
+    output,
+  );
+  console.log('result from AI', result);
+  if (!result && Object.keys(result).length === 0) {
+    throwError(400, 'Please try with a different prompt !.');
+  }
+
+  const data = {
+    ...result,
+    create_ts: setDateTimeFormat('timestemp'),
+    task_uuid: v4(),
+  };
+  console.log('Final Task Object:', data);
+
+  await insertRecords('tasks', data);
+  res.json(responser('Tasks assigned successfully.', data));
+};
