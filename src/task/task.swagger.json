@@ -157,6 +157,22 @@
           },
           {
             "in": "query",
+            "name": "billing_company_uuid",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+
+          {
+            "in": "query",
+            "name": "billing_branch_uuid",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+
+          {
+            "in": "query",
             "name": "columns",
             "description": "",
             "required": false,
@@ -234,6 +250,21 @@
             "description": "",
             "required": true,
             "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "billing_company_uuid",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+
+          {
+            "in": "query",
+            "name": "billing_branch_uuid",
+            "description": "",
+            "required": false,
+            "type": "string"
           }
         ],
 
@@ -273,6 +304,22 @@
             "required": false,
             "type": "string"
           },
+          {
+            "in": "query",
+            "name": "billing_company_uuid",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+
+          {
+            "in": "query",
+            "name": "billing_branch_uuid",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+
           {
             "in": "query",
             "name": "columns",

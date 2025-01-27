@@ -115,6 +115,10 @@ exports.getPurchaseOrder = async (req, res) => {
   const {
     combined_purchase_order_no,
     purchase_order_uuid,
+    billing_company_uuid,
+    billing_company_name,
+    billing_company_branch_uuid,
+    billing_company_branch_name,
     pageNo,
     itemPerPage,
     from_date,
@@ -129,6 +133,10 @@ exports.getPurchaseOrder = async (req, res) => {
     {
       combined_purchase_order_no,
       purchase_order_uuid,
+      billing_company_uuid,
+      billing_company_name,
+      billing_company_branch_uuid,
+      billing_company_branch_name,
     },
     status,
     to_date,

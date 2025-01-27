@@ -27,9 +27,11 @@ exports.upsertJobSchema = Joi.object({
   modified_by_uuid: Joi.string().guid().max(50).allow('', null),
 });
 
-exports.getQuotationSchema = Joi.object({
+exports.getJobSchema = Joi.object({
   job_order_no: Joi.string(),
   job_uuid: Joi.string(),
+  billing_company_uuid: Joi.string().guid(),
+  billing_company_branch_uuid: Joi.string().guid(),
   project_uuid: Joi.string().guid(),
   pageNo: Joi.number().integer().min(1),
   itemPerPage: Joi.number().integer().min(1),

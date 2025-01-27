@@ -115,6 +115,10 @@ exports.getExpense = async (req, res) => {
     expense_uuid,
     project_uuid,
     expense_category_uuid,
+    billing_company_uuid,
+    billing_company_name,
+    billing_company_branch_uuid,
+    billing_company_branch_name,
     pageNo,
     itemPerPage,
     from_date,
@@ -135,6 +139,10 @@ exports.getExpense = async (req, res) => {
       expense_uuid,
       project_uuid,
       expense_category_uuid,
+      billing_company_uuid,
+      billing_company_name,
+      billing_company_branch_uuid,
+      billing_company_branch_name,
     },
     status,
     to_date,
@@ -227,6 +235,10 @@ exports.upsertExpenseCategory = async (req, res) => {
 exports.getExpenseCategory = async (req, res) => {
   const {
     expense_category_uuid,
+    billing_company_uuid,
+    billing_company_name,
+    billing_company_branch_uuid,
+    billing_company_branch_name,
     pageNo,
     itemPerPage,
     from_date,
@@ -240,6 +252,10 @@ exports.getExpenseCategory = async (req, res) => {
   let filter = filterFunctionality(
     {
       expense_category_uuid,
+      billing_company_uuid,
+      billing_company_name,
+      billing_company_branch_uuid,
+      billing_company_branch_name,
     },
     status,
     to_date,

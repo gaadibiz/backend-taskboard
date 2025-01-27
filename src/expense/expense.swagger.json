@@ -220,6 +220,22 @@
           },
           {
             "in": "query",
+            "name": "billing_company_uuid",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+
+          {
+            "in": "query",
+            "name": "billing_branch_uuid",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+
+          {
+            "in": "query",
             "name": "is_type_expense",
             "description": "Boolean",
             "required": false,
@@ -413,6 +429,22 @@
             "required": false,
             "type": "string"
           },
+          {
+            "in": "query",
+            "name": "billing_company_uuid",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+
+          {
+            "in": "query",
+            "name": "billing_branch_uuid",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+
           {
             "in": "query",
             "name": "columns",

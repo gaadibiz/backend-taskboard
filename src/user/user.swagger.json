@@ -63,6 +63,22 @@
                   "type": "string",
                   "default": null
                 },
+                "billing_company_uuid": {
+                  "type": "string",
+                  "default": ""
+                },
+                "billing_company_name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "billing_company_branch_uuid": {
+                  "type": "string",
+                  "default": null
+                },
+                "billing_company_branch_name": {
+                  "type": "string",
+                  "default": null
+                },
                 "hierarchy_uuids": {
                   "type": "string",
                   "default": null
@@ -160,7 +176,22 @@
                   "type": "string",
                   "default": null
                 },
-
+                "billing_company_uuid": {
+                  "type": "string",
+                  "default": ""
+                },
+                "billing_company_name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "billing_company_branch_uuid": {
+                  "type": "string",
+                  "default": null
+                },
+                "billing_company_branch_name": {
+                  "type": "string",
+                  "default": null
+                },
                 "hierarchy_uuids": {
                   "type": "string",
                   "default": null
@@ -369,6 +400,22 @@
             "required": false,
             "type": "string"
           },
+          {
+            "in": "query",
+            "name": "billing_company_uuid",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+
+          {
+            "in": "query",
+            "name": "billing_company_branch_uuid",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+
           {
             "in": "query",
             "name": "columns",

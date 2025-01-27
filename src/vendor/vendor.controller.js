@@ -59,6 +59,10 @@ exports.upsertVendor = async (req, res) => {
 exports.getVendor = async (req, res) => {
   const {
     vendor_uuid,
+    billing_company_uuid,
+    billing_company_name,
+    billing_company_branch_uuid,
+    billing_company_branch_name,
     pageNo,
     itemPerPage,
     from_date,
@@ -72,6 +76,10 @@ exports.getVendor = async (req, res) => {
   let filter = filterFunctionality(
     {
       vendor_uuid,
+      billing_company_branch_name,
+      billing_company_branch_uuid,
+      billing_company_name,
+      billing_company_uuid,
     },
     status,
     to_date,

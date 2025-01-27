@@ -172,6 +172,10 @@ exports.getTask = async (req, res) => {
   const {
     task_user_taskboard_id,
     task_uuid,
+    billing_company_uuid,
+    billing_company_name,
+    billing_company_branch_uuid,
+    billing_company_branch_name,
     pageNo,
     itemPerPage,
     from_date,
@@ -185,6 +189,10 @@ exports.getTask = async (req, res) => {
     {
       task_user_taskboard_id,
       task_uuid,
+      billing_company_uuid,
+      billing_company_name,
+      billing_company_branch_uuid,
+      billing_company_branch_name,
     },
     status,
     to_date,
@@ -236,6 +244,10 @@ FROM
 LEFT JOIN 
   (SELECT 
      status,
+      billing_company_uuid,
+      billing_company_name,
+      billing_company_branch_uuid,
+      billing_company_branch_name,
      COUNT(*) as count
    FROM 
      ${tableName}
@@ -261,6 +273,10 @@ exports.getTaskList = async (req, res) => {
   const {
     task_user_taskboard_id,
     task_uuid,
+    billing_company_uuid,
+    billing_company_name,
+    billing_company_branch_uuid,
+    billing_company_branch_name,
     pageNo,
     itemPerPage,
     from_date,
@@ -275,6 +291,10 @@ exports.getTaskList = async (req, res) => {
     {
       task_user_taskboard_id,
       task_uuid,
+      billing_company_uuid,
+      billing_company_name,
+      billing_company_branch_uuid,
+      billing_company_branch_name,
     },
     status,
     to_date,

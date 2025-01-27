@@ -194,6 +194,10 @@ exports.getUser = async (req, res) => {
   const {
     user_uuid,
     role_uuid,
+    billing_company_uuid,
+    billing_company_name,
+    billing_company_branch_uuid,
+    billing_company_branch_name,
     role_group,
     role_value,
     pageNo,
@@ -210,6 +214,10 @@ exports.getUser = async (req, res) => {
     {
       user_uuid,
       role_uuid,
+      billing_company_uuid,
+      billing_company_name,
+      billing_company_branch_uuid,
+      billing_company_branch_name,
       role_group,
       role_value,
     },

@@ -58,6 +58,8 @@ exports.getExpenseSchema = Joi.object({
   report_uuid: Joi.string().guid(),
   expense_category_uuid: Joi.string().guid(),
   project_uuid: Joi.string().guid(),
+  billing_company_uuid: Joi.string().guid(),
+  billing_company_branch_uuid: Joi.string().guid(),
   is_type_expense: Joi.boolean().allow(null),
   is_type_advance: Joi.boolean().allow(null),
   is_type_job: Joi.boolean(),
@@ -87,6 +89,8 @@ exports.upsertExpenseCategory = Joi.object({
 
 exports.getExpenseCategory = Joi.object({
   expense_category_uuid: Joi.string().guid(),
+  billing_company_uuid: Joi.string().guid().max(100),
+  billing_company_branch_uuid: Joi.string().guid().max(100).allow('', null),
   pageNo: Joi.number().integer().min(1),
   itemPerPage: Joi.number().integer().min(1),
   from_date: Joi.string().isoDate(),
