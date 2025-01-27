@@ -783,7 +783,7 @@ exports.assignTaskWithAi = async (req, res) => {
     output,
   );
   console.log('result from AI', result);
-  if (!result && Object.keys(result).length === 0) {
+  if (!result || Object.keys(result).length === 0) {
     throwError(400, 'Please try with a different prompt !.');
   }
 

@@ -36,9 +36,7 @@ exports.generateGenAiTaskObject = async (
         2. Populate the task fields using:
           - Project context for details such as billing_company_uuid, project_manager, etc.
           - User input for task title, description, priority, and due date.
-        3. Mandatory fields: Ensure all fields in the JSON task object are included, even if some values are empty.
-        4. **If a field value cannot be determined, remove that field from the output JSON object.**
-        5. Output format: Only return the JSON object in the specified structure, without any additional comments or explanations.
+          - Ensure date fields are correctly formatted and strictly use the current date or future dates only. Do not allow past dates. Convert phrases like "tomorrow," "next week," or "next month" into accurate future dates.        5. Output format: Only return the JSON object in the specified structure, without any additional comments or explanations.
         `,
       ],
       [
