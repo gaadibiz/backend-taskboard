@@ -87,6 +87,8 @@ exports.upsertDepartment = async (req, res) => {
 exports.getDepartment = async (req, res) => {
   const {
     department_uuid,
+    billing_company_uuid,
+    billing_company_branch_uuid,
     pageNo,
     itemPerPage,
     from_date,
@@ -100,6 +102,8 @@ exports.getDepartment = async (req, res) => {
   let filter = filterFunctionality(
     {
       department_uuid,
+      billing_company_uuid,
+      billing_company_branch_uuid,
     },
     status,
     to_date,

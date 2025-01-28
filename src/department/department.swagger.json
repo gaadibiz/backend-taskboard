@@ -41,6 +41,22 @@
                   "type": "string",
                   "default": null
                 },
+                "billing_company_uuid": {
+                  "type": "string",
+                  "default": null
+                },
+                "billing_company_name": {
+                  "type": "string",
+                  "default": null
+                },
+                "billing_company_branch_uuid": {
+                  "type": "string",
+                  "default": null
+                },
+                "billing_company_branch_name": {
+                  "type": "string",
+                  "default": null
+                },
                 "category": {
                   "type": "string",
                   "default": null
@@ -90,6 +106,21 @@
           {
             "in": "query",
             "name": "department_uuid",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "billing_company_uuid",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+
+          {
+            "in": "query",
+            "name": "billing_company_branch_uuid",
             "description": "",
             "required": false,
             "type": "string"
