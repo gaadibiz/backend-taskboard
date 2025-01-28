@@ -593,13 +593,19 @@ exports.roleFilterService = async (
     if (!Array.isArray(roleFiletrData[0].map_column_user_uuid))
       throwError(400, 'Invalid map_column_user_uuid as array!');
     let mapColumnIdQuery = roleFiletrData[0].map_column_user_uuid
-      .map(
-        (ele) =>
-          `${
+      .map((ele) => {
+        console.log(ele, '............ options');
+
+        if (ele === 'special_approval_uuids') {
+          return `JSON_CONTAINS(at.special_approval_uuids, CONCAT('"', (select user_uuid from latest_user where ${roleFiletrQuery}), '"'))`;
+        } else {
+          return `${
             options.alias + ele
-          } IN ( select user_uuid from latest_user where ${roleFiletrQuery} )`,
-      )
+          } IN ( select user_uuid from latest_user where ${roleFiletrQuery} )`;
+        }
+      })
       .join(' OR ');
+
     filterSql = filterSql
       ? filterSql + ' AND ( ' + mapColumnIdQuery + ' )'
       : 'WHERE ' + mapColumnIdQuery;

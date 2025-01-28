@@ -6,7 +6,6 @@ exports.insertApprovalSchema = Joi.object({
   dynamic_uuid: Joi.string().guid().required(),
   record_uuid: Joi.string().guid().required(),
   record_column_name: Joi.string().required(),
-
   approval_uuids: Joi.array()
     .min(1)
     .items(

@@ -150,6 +150,10 @@ module.exports = {
         allowNull: false,
         defaultValue: 'ACTIVE',
       },
+      special_approval_uuids: {
+        type: Sequelize.JSON,
+        allowNull: true,
+      },
       created_by_uuid: {
         type: Sequelize.CHAR(36),
         allowNull: false,

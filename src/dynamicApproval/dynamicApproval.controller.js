@@ -53,15 +53,35 @@ exports.insertApproval = async (req, res) => {
   )[0];
 
   if (!approvalCount) {
-    console.log(
-      'approvalCount...........................',
-      approvalCount,
-      `where table_name="${req.body.table_name}" AND dynamic_uuid = "${req.body.dynamic_uuid}"  AND approval_raise_status="${approvalRecordInfo.status}"
-      and status="ACTIVE"`,
+    return res.status(200).json(responser(`No approval for current status : `));
+  }
+
+  // handle special approval
+
+  let special_approval_uuids = Array.isArray(
+    approvalRecordInfo.special_approval_uuids,
+  )
+    ? approvalRecordInfo.special_approval_uuids
+    : [];
+
+  approvalCount?.approval_hierarchy[0]?.map((item) => {
+    // dont push if uuid already present in array
+    if (item.type === 'USER' && !special_approval_uuids.includes(item.uuid)) {
+      special_approval_uuids.push(item.uuid);
+    }
+  });
+
+  if (special_approval_uuids.length) {
+    await insertRecords(
+      (tableMap[req.body.table_name] || req.body.table_name).replace(
+        'latest_',
+        '',
+      ),
+      {
+        ...approvalRecordInfo,
+        special_approval_uuids: special_approval_uuids,
+      },
     );
-    return res
-      .status(200)
-      .json(responser(`No approval for this status : ${req.body.status}`));
   }
 
   req.body = {
@@ -91,12 +111,14 @@ exports.handleApproval = async (req, res) => {
     `where dynamic_approval_uuid = '${req.body.dynamic_approval_uuid}'`,
   );
   if (!approval.length) throwError('Approval not found', 404);
+  console.log(req.user, '............');
   if (
     !approval[0].approval_uuids.some(
       (ele) =>
         ele.uuid === req.user.user_uuid ||
         ele.uuid === req.user.role_uuid ||
-        req.user.role_value === 'ADMIN',
+        req.user.role_value === 'ADMIN' ||
+        req.user.role_value === 'SUPERADMIN',
     ) &&
     req.body.status !== 'ROLLBACK'
   )
@@ -184,11 +206,40 @@ exports.handleApproval = async (req, res) => {
     approvalCount.level !== approval[0].current_level &&
     req.body.status === 'APPROVED'
   ) {
+    // handle special approval
+
+    let special_approval_uuids = Array.isArray(
+      record[0]?.special_approval_uuids,
+    )
+      ? record[0]?.special_approval_uuids
+      : [];
+
+    approvalCount.approval_hierarchy[approval[0].current_level]?.map((item) => {
+      // dont push if uuid already present in array
+      if (item.type === 'USER' && !special_approval_uuids.includes(item.uuid)) {
+        special_approval_uuids.push(item.uuid);
+      }
+    });
+
+    if (special_approval_uuids.length) {
+      await insertRecords(
+        (tableMap[approval[0].table_name] || approval[0].table_name).replace(
+          'latest_',
+          '',
+        ),
+        {
+          ...record[0],
+          special_approval_uuids: special_approval_uuids,
+        },
+      );
+    }
+
     approval[0].approval_uuids =
       approvalCount.approval_hierarchy[approval[0].current_level];
     approval[0].current_level += 1;
     approval[0].status = 'REQUESTED';
     approval[0].created_by_uuid = req.user.user_uuid;
+
     await insertRecords('dynamic_approval', approval[0]);
   } else {
     const bodyData = {

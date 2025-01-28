@@ -275,7 +275,7 @@ module.exports = {
       `UPDATE \`module\` SET map_column_user_uuid = '["created_by_uuid","modified_by_uuid","assigned_to_uuid","project_manager_uuid"]' where table_name="latest_tasks" AND submodule_name="Taskboard" AND module_name="Tasks";`,
     );
     await queryInterface.sequelize.query(
-      `UPDATE \`module\` SET map_column_user_uuid = '["created_by_uuid", "project_manager_uuid","category_manager_uuid", "finance_manager_uuid","modified_by_uuid"]' where table_name="latest_expense" AND submodule_name="Expense" AND module_name="Expense";`,
+      `UPDATE \`module\` SET map_column_user_uuid = '["created_by_uuid", "project_manager_uuid","category_manager_uuid", "finance_manager_uuid","modified_by_uuid","special_approval_uuids"]' where table_name="latest_expense" AND submodule_name="Expense" AND module_name="Expense";`,
     );
     await queryInterface.sequelize.query(
       `UPDATE \`module\` SET map_column_user_uuid = '["created_by_uuid","modified_by_uuid","department_head_uuid"]' where table_name="latest_department" AND submodule_name="Department" AND module_name="Department";`,

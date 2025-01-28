@@ -58,6 +58,34 @@ exports.insertApproval = async (req, res) => {
       .json(responser(`No approval for this status : ${req.body.status}`));
   }
 
+  // handle special approval
+
+  let special_approval_uuids = Array.isArray(
+    approvalRecordInfo.special_approval_uuids,
+  )
+    ? approvalRecordInfo.special_approval_uuids
+    : [];
+
+  approvalCount?.approval_hierarchy[0]?.map((item) => {
+    // dont push if uuid already present in array
+    if (item.type === 'USER' && !special_approval_uuids.includes(item.uuid)) {
+      special_approval_uuids.push(item.uuid);
+    }
+  });
+
+  if (special_approval_uuids.length) {
+    await insertRecords(
+      (tableMap[req.body.table_name] || req.body.table_name).replace(
+        'latest_',
+        '',
+      ),
+      {
+        ...approvalRecordInfo,
+        special_approval_uuids: special_approval_uuids,
+      },
+    );
+  }
+
   req.body = {
     ...req.body,
     approval_uuid: uuidv4(),
@@ -177,6 +205,34 @@ exports.handleApproval = async (req, res) => {
     approvalCount.level !== approval[0].current_level &&
     req.body.status === 'APPROVED'
   ) {
+    // handle special approval
+
+    let special_approval_uuids = Array.isArray(
+      record[0]?.special_approval_uuids,
+    )
+      ? record[0]?.special_approval_uuids
+      : [];
+
+    approvalCount.approval_hierarchy[approval[0].current_level]?.map((item) => {
+      // dont push if uuid already present in array
+      if (item.type === 'USER' && !special_approval_uuids.includes(item.uuid)) {
+        special_approval_uuids.push(item.uuid);
+      }
+    });
+
+    if (special_approval_uuids.length) {
+      await insertRecords(
+        (tableMap[approval[0].table_name] || approval[0].table_name).replace(
+          'latest_',
+          '',
+        ),
+        {
+          ...record[0],
+          special_approval_uuids: special_approval_uuids,
+        },
+      );
+    }
+
     approval[0].approval_uuids =
       approvalCount.approval_hierarchy[approval[0].current_level];
     approval[0].current_level += 1;
