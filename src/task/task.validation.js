@@ -45,6 +45,13 @@ exports.getTaskSchema = Joi.object({
 exports.getTaskCountSchema = Joi.object({
   billing_company_uuid: Joi.string().guid(),
   billing_company_branch_uuid: Joi.string().guid(),
+  pageNo: Joi.number().integer().min(1),
+  itemPerPage: Joi.number().integer().min(1),
+  from_date: Joi.string().isoDate(),
+  to_date: Joi.string().isoDate(),
+  status: Joi.string(),
+  columns: Joi.string(),
+  value: Joi.string(),
 });
 
 exports.getTaskListSchema = Joi.object({

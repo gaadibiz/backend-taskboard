@@ -224,9 +224,30 @@ exports.getTask = async (req, res) => {
 };
 
 exports.getTaskCount = async (req, res) => {
-  let tableName = 'latest_tasks';
+  const {
+    billing_company_uuid,
+    billing_company_branch_uuid,
+    status,
+    to_date,
+    from_date,
+    columns,
+    value,
+  } = req.query;
 
-  let filter = await roleFilterService('', tableName, req.user);
+  let tableName = 'latest_tasks';
+  let filter = filterFunctionality(
+    {
+      billing_company_uuid,
+      billing_company_branch_uuid,
+    },
+    status,
+    to_date,
+    from_date,
+    Array.isArray(columns) ? columns : [columns],
+    value,
+  );
+
+  filter = await roleFilterService('', tableName, req.user);
 
   let sql = `SELECT 
   s.status,
@@ -244,10 +265,6 @@ FROM
 LEFT JOIN 
   (SELECT 
      status,
-      billing_company_uuid,
-      billing_company_name,
-      billing_company_branch_uuid,
-      billing_company_branch_name,
      COUNT(*) as count
    FROM 
      ${tableName}
@@ -256,6 +273,8 @@ LEFT JOIN
      status) t
 ON 
   s.status = t.status
+
+  
 `;
 
   const result = await dbRequest(sql);
