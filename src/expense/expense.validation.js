@@ -47,6 +47,7 @@ exports.upsertExpenseSchema = Joi.object({
       'FINANCE',
     )
     .required(),
+  special_approval_uuids: Joi.array().items(Joi.string().guid()),
   created_by_name: Joi.string().allow('', null),
   created_by_uuid: Joi.string().guid().allow('', null),
   modified_by_uuid: Joi.string().guid().allow('', null),
