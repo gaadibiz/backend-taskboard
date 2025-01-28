@@ -22,7 +22,7 @@ exports.upsertProjectSchema = Joi.object({
 
 exports.getProjectSchema = Joi.object({
   project_uuid: Joi.string().guid(),
-  billing_company_uuid: Joi.string().guid().required(),
+  billing_company_uuid: Joi.string().guid(),
   billing_company_branch_uuid: Joi.string().guid(),
   pageNo: Joi.number().integer().min(1),
   itemPerPage: Joi.number().integer().min(1),
