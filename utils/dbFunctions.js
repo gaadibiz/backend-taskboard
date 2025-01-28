@@ -597,7 +597,7 @@ exports.roleFilterService = async (
         console.log(ele, '............ options');
 
         if (ele === 'special_approval_uuids') {
-          return `JSON_CONTAINS(at.special_approval_uuids, CONCAT('"', (select user_uuid from latest_user where ${roleFiletrQuery}), '"'))`;
+          return `JSON_CONTAINS(${options.alias + ele}, CONCAT('"', (select user_uuid from latest_user where ${roleFiletrQuery}), '"'))`;
         } else {
           return `${
             options.alias + ele
