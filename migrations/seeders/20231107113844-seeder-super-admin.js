@@ -2,7 +2,7 @@
 
 const { throwError } = require('../../utils/helperFunction');
 const { v4 } = require('uuid');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 require('dotenv').config();
 
@@ -23,9 +23,10 @@ module.exports = {
     ]);
     const admin = (
       await queryInterface.sequelize.query(
-        `SELECT * FROM latest_roles WHERE role_name = 'SUPERADMIN'`,
+        `SELECT * FROM latest_roles WHERE role_value = 'SUPERADMIN'`,
       )
     )[0][0];
+
     await queryInterface.bulkInsert('user_dim', [
       {
         user_uuid: uuid,
@@ -33,15 +34,17 @@ module.exports = {
         role_uuid: admin.role_uuid,
       },
     ]);
-    await queryInterface.bulkInsert('user_profile', [
-      {
-        user_uuid: uuid,
-        first_name: 'super',
-        last_name: 'admin',
-        personal_email: SUPERADMIN_EMAIL,
-        status: 'ACTIVE',
-      },
-    ]);
+    // await queryInterface.bulkInsert('user_profile', [
+    //   {
+    //     user_profile_unique_id: 1,
+    //     user_uuid: uuid,
+    //     first_name: 'super',
+    //     last_name: 'admin',
+    //     personal_email: SUPERADMIN_EMAIL,
+    //     create_ts: new Date(),
+    //     status: 'ACTIVE',
+    //   },
+    // ]);
   },
 
   async down(queryInterface, Sequelize) {},

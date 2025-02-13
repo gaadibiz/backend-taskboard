@@ -57,7 +57,7 @@ exports.loginUser = async (req, res, next) => {
     'latest_user',
     `where email='${req.body.email}' AND (status='ACTIVE')`,
   );
-
+  console.log(userDetail);
   if (!userDetail.length) throwError(404, 'Email or password invalid.');
   let bol = bycrpt.compareSync(req.body.password, userDetail[0].user_password);
   if (!bol) throwError(404, 'Email or password invalid.');

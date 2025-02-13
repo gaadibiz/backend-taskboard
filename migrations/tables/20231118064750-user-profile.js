@@ -47,7 +47,7 @@ module.exports = {
       },
       billing_company_uuid: {
         type: Sequelize.CHAR(36),
-        allowNull: false,
+        allowNull: true,
       },
       billing_company_name: {
         type: Sequelize.STRING(255),
