@@ -332,7 +332,7 @@ exports.getApprovals = async (req, res) => {
     },
   );
 
-  if (req.user.role_value !== 'ADMIN') {
+  if (req.user.role_value !== 'ADMIN' && req.user.role_value !== 'SUPERADMIN') {
     filter =
       (filter ? `${filter} AND ` : 'WHERE ') +
       `(JSON_CONTAINS(approval_uuids, '{"type": "USER", "uuid": "${req.user.user_uuid}"}')

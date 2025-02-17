@@ -338,7 +338,7 @@ exports.exportFinanceExpense = async (req, res) => {
     `where customer_uuid='${billing_company_uuid}'`,
   );
 
-  if (!company) return throwError(404, 'Company not found.');
+  if (!company) return throwError(404, 'Company Bank Details not found.');
 
   const companyDetails = {
     bank_name: company.ifsc_code?.slice(0, 4).toUpperCase(),
