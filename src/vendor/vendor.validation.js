@@ -31,8 +31,8 @@ exports.upsertVendorSchema = Joi.object({
 exports.getVendorSchema = Joi.object({
   vendor_id: Joi.number().integer(),
   vendor_uuid: Joi.string().guid(),
-  billing_company_uuid: Joi.string().guid(),
-  billing_company_branch_uuid: Joi.string().guid(),
+  billing_company_uuid: Joi.string().guid().allow('', null),
+  billing_company_branch_uuid: Joi.string().guid().allow('', null),
   pageNo: Joi.number().integer().min(1),
   itemPerPage: Joi.number().integer().min(1),
   from_date: Joi.string().regex(/^\d{4}-\d{2}-\d{2}$/),
