@@ -145,6 +145,10 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: true,
       },
+      additional_fields: {
+        type: Sequelize.JSON,
+        allowNull: true,
+      },
       status: {
         type: Sequelize.STRING(50),
         allowNull: false,

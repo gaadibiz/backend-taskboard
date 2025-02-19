@@ -12,6 +12,7 @@ exports.upsertVendorSchema = Joi.object({
   vendor_address_state: Joi.string().max(255).allow(null),
   vendor_address_pincode: Joi.string().max(255).allow(null),
   vendor_address_country: Joi.string().max(255).allow(null),
+  additional_fields: Joi.array().allow('', null),
   contact_name: Joi.string().allow(null),
   mobile: Joi.string().max(255).allow(null),
   phone_number: Joi.string().max(255).allow(null),
@@ -24,6 +25,7 @@ exports.upsertVendorSchema = Joi.object({
   bank_branch_name: Joi.string().allow(null),
   note: Joi.string().allow(null),
   pan_no: Joi.string().allow(null),
+  status: Joi.string().max(255).allow(null, ''),
   modified_by_uuid: Joi.string().guid().max(50).allow(null),
   created_by_uuid: Joi.string().guid().max(50).allow(null),
 });

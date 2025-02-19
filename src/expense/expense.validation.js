@@ -38,6 +38,7 @@ exports.upsertExpenseSchema = Joi.object({
   eligible_reimbursement_amount: Joi.number().allow('', null),
   is_deduct_from_advance: Joi.boolean().allow(0, 1, null),
   description: Joi.string().min(30).max(10000).allow(null),
+  additional_fields: Joi.array().allow('', null),
   status: Joi.string()
     .valid(
       'INACTIVE',

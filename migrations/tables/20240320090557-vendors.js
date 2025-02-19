@@ -109,6 +109,15 @@ module.exports = {
         type: Sequelize.STRING(100),
         allowNull: true,
       },
+      additional_fields: {
+        type: Sequelize.JSON,
+        allowNull: true,
+      },
+      status: {
+        type: Sequelize.STRING(100),
+        allowNull: false,
+        defaultValue: 'ACTIVE',
+      },
       created_by_uuid: {
         type: Sequelize.STRING(100),
         allowNull: true,

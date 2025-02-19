@@ -209,10 +209,13 @@ module.exports = {
         type: Sequelize.FLOAT,
         allowNull: true,
       },
-
+      additional_fields: {
+        type: Sequelize.JSON,
+        allowNull: true,
+      },
       status: {
-        type: Sequelize.STRING(100),
-        allowNull: false,
+        type: Sequelize.STRING(20),
+        allowNull: true,
       },
       created_by_uuid: {
         type: Sequelize.CHAR(36),
