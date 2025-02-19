@@ -18,6 +18,7 @@ exports.SERVICES_URL = {
   sendVoiceCall: serverUrl + process.env.SEND_VOICE_CALL,
   ejsPreview: serverUrl + '/ejs/preview-ejs',
   uploadOnS3: serverUrl + '/s3/upload-files',
+  getSignedUrl: serverUrl + '/s3/get-signed-url',
   microsoftGraphGenerateToken: serverUrl + '/microsoftgraph/generate-token',
   microsoftGraphGetInbox: serverUrl + '/microsoftgraph/get-inbox',
   microsoftGraphSearch: serverUrl + '/microsoftgraph/search',

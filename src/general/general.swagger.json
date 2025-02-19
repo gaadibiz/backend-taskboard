@@ -167,6 +167,29 @@
         }
       }
     },
+    "/api/v1/general/get-signed-url": {
+      "get": {
+        "tags": ["General"],
+        "summary": "Get an image by key",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "key",
+            "description": "",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "500": {
+            "description": "server error"
+          }
+        }
+      }
+    },
     "/api/v1/general/download-files": {
       "post": {
         "tags": ["General"],

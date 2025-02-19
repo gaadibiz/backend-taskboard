@@ -11,11 +11,11 @@ module.exports = {
       },
       task_uuid: {
         type: Sequelize.CHAR(36),
-        allowNull: false,
+        allowNull: true,
       },
       billing_company_uuid: {
         type: Sequelize.CHAR(50),
-        allowNull: false,
+        allowNull: true,
       },
       billing_company_name: {
         type: Sequelize.STRING(50),
@@ -31,19 +31,19 @@ module.exports = {
       },
       type: {
         type: Sequelize.STRING(20),
-        allowNull: false,
+        allowNull: true,
       },
       type_name: {
         type: Sequelize.STRING(255),
-        allowNull: false,
+        allowNull: true,
       },
       type_uuid: {
         type: Sequelize.CHAR(36),
-        allowNull: false,
+        allowNull: true,
       },
       title: {
         type: Sequelize.STRING(255),
-        allowNull: false,
+        allowNull: true,
       },
       description: {
         type: Sequelize.TEXT,
@@ -83,15 +83,15 @@ module.exports = {
       },
       assigned_to_name: {
         type: Sequelize.STRING(255),
-        allowNull: false,
+        allowNull: true,
       },
       assigned_to_uuid: {
         type: Sequelize.CHAR(36),
-        allowNull: false,
+        allowNull: true,
       },
       status: {
         type: Sequelize.STRING(20),
-        allowNull: false,
+        allowNull: true,
       },
       created_by_uuid: {
         type: Sequelize.CHAR(36),
@@ -103,12 +103,12 @@ module.exports = {
       },
       create_ts: {
         type: Sequelize.DATE,
-        allowNull: false,
+        allowNull: true,
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
       insert_ts: {
         type: Sequelize.DATE,
-        allowNull: false,
+        allowNull: true,
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
     });

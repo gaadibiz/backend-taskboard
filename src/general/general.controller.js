@@ -155,6 +155,12 @@ exports.uploadFiles = async (req, res) => {
   })();
 };
 
+exports.getSignedUrl = async (req, res) => {
+  const { key } = req.query;
+  const imgdata = await ms.getS3SignedUrl(key);
+  res.redirect(imgdata.data);
+};
+
 exports.downloadFiles = async (req, res) => {
   const { type, keys } = req.body;
   let jsonArray = await ms.downloadFileS3(keys);

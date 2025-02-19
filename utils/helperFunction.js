@@ -175,6 +175,51 @@ exports.requestApi = async (url, paramOrQuery, method, headers, body) => {
 };
 
 /**
+ * Request API
+ * @param {string} url
+ * @param {object} params
+ * @param {("json"|"text"|"buffer"|"html")} response_type
+ * @param {object} bodyData
+ * @param {("GET"|"POST"|"PUT"|"DELETE")} method
+ * @param {object} header
+ * @returns
+ */
+exports.apiRequest = async (
+  url,
+  params = null,
+  response_type = 'json',
+  bodyData = null,
+  method = 'POST',
+  header = null,
+) => {
+  let Url = new URL(url);
+  for (let k in params) {
+    Url.searchParams.append(k, params[k]);
+  }
+  console.log('hitting url:', url);
+  let req = await fetch(bodyData ? url : Url, {
+    method: bodyData ? method : 'GET',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      ...header,
+    },
+    [bodyData ? 'body' : null]: JSON.stringify(bodyData),
+  });
+  console.log('req', req);
+  let res = undefined;
+  if (response_type === 'json') res = await req.json();
+  if (response_type === 'text') res = await req.text();
+  if (response_type === 'buffer') res = await req.arrayBuffer();
+  if (response_type === 'html') res = await req.html();
+  if (req.status >= 400) {
+    throw new Error(
+      JSON.stringify({ status: req.status, message: res?.message }),
+    );
+  }
+  return res;
+};
+
+/**
  * Give All the files within Directory.
  * @param {string} endPath Path of the file from base directory.
  * @param {string} msg Any message you want to show.

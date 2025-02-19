@@ -20,6 +20,8 @@ exports.sendGridEmailBodySchema = Joi.object({
   created_by_uuid: Joi.string().allow('', null),
 });
 
+exports.getSignedUrlschema = Joi.object({ key: Joi.string().required() });
+
 exports.uploadFiles = Joi.object({
   files: Joi.array(),
   module_name: Joi.string(),

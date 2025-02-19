@@ -4,6 +4,7 @@ const {
   throwError,
   responser,
   requestApi,
+  apiRequest,
 } = require('./helperFunction');
 const { getRecords } = require('./dbFunctions');
 const moment = require('moment');
@@ -46,6 +47,17 @@ exports.sendEmailService = async (
     reply_to,
     attachments,
   });
+};
+
+exports.getS3SignedUrl = async (key) => {
+  const url = await apiRequest(
+    SERVICES_URL.getSignedUrl,
+    { key },
+    'json',
+    null,
+    'GET',
+  );
+  return url;
 };
 
 /**

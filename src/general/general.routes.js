@@ -17,6 +17,15 @@ router
 // Export the router
 
 router
+  .route('/get-signed-url')
+  .get(
+    requestErrorHandlingDecorator(
+      Schema.getSignedUrlschema,
+      controller.getSignedUrl,
+    ),
+  );
+
+router
   .route('/upload-files')
   .post(
     checkAuth,
