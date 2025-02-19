@@ -45,6 +45,7 @@ exports.upsertExpense = async (req, res) => {
     expense_info = expense_info[0];
     req.body.modified_by_uuid = req.body.created_by_uuid;
     req.body.created_by_uuid = expense_info.created_by_uuid;
+    req.body.created_by_name = expense_info.created_by_name;
     req.body = { ...expense_info, ...req.body };
     console.log('req.body in update: ', req.body);
   } else {

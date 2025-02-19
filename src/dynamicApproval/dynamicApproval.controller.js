@@ -84,22 +84,38 @@ exports.insertApproval = async (req, res) => {
     );
   }
 
-  req.body = {
-    ...req.body,
-    dynamic_approval_uuid: uuidv4(),
-    requested_by_uuid: req.user.user_uuid,
-    current_level: 1,
-    approval_uuids: approvalCount.approval_hierarchy[0],
-    previous_status: approvalCount.previous_status,
-    status: 'REQUESTED',
-    next_status: approvalCount.next_status,
-    create_ts: setDateTimeFormat('timestemp'),
-  };
-  await insertRecords('dynamic_approval', req.body);
-  res.status(200).json(responser('Approval inserted successfully', req.body));
+  let [exist_approval] = await getRecords(
+    'latest_dynamic_approval',
+    `where 
+     table_name='${req.body.table_name}'
+     AND record_uuid = '${req.body.record_uuid}'
+     AND current_level=1 
+     AND previous_status='${approvalCount.previous_status}' 
+     AND next_status ='${approvalCount.next_status}'
+     AND status='REQUESTED'`,
+  );
 
-  // <------------ Send Email On Action ------------->
-  // approvalEmails(req.body.dynamic_approval_uuid, req.user);
+  if (exist_approval) {
+    return res
+      .status(200)
+      .json(responser('Approval Already Raised successfully', req.body));
+  } else {
+    req.body = {
+      ...req.body,
+      dynamic_approval_uuid: uuidv4(),
+      requested_by_uuid: req.user.user_uuid,
+      current_level: 1,
+      approval_uuids: approvalCount.approval_hierarchy[0],
+      previous_status: approvalCount.previous_status,
+      status: 'REQUESTED',
+      next_status: approvalCount.next_status,
+      create_ts: setDateTimeFormat('timestemp'),
+    };
+    await insertRecords('dynamic_approval', req.body);
+    res.status(200).json(responser('Approval inserted successfully', req.body));
+    // <------------ Send Email On Action ------------->
+    // approvalEmails(req.body.dynamic_approval_uuid, req.user);
+  }
 };
 
 exports.handleApproval = async (req, res) => {
