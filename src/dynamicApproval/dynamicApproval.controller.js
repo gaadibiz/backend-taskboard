@@ -23,7 +23,10 @@ const {
 const { v4: uuidv4 } = require('uuid');
 const { base_url } = require('../../config/server.config');
 const tableMap = require('./tablemapping.json');
-const { approvalEmails } = require('../../utils/microservice_func');
+const {
+  approvalEmails,
+  saveHistory,
+} = require('../../utils/microservice_func');
 
 exports.insertApproval = async (req, res) => {
   removeNullValueKey(req.body);
@@ -605,5 +608,138 @@ exports.getTableStatus = async (req, res) => {
   );
   return res.json(
     responser('All status for the table : ', result, result.length),
+  );
+};
+
+exports.insertDynamicApprovalAttachment = async (req, res) => {
+  // await isEditAccess('latest_approval_attachment', req.user);
+  let { dynamic_approval_uuid, dynamic_approval_attachment_uuid } = req.body;
+  isupdation = false;
+
+  let approval = await getRecords(
+    'latest_dynamic_approval',
+    `where dynamic_approval_uuid = '${dynamic_approval_uuid}'`,
+  );
+
+  if (!approval.length) throwError('Approval not found', 404);
+
+  let [approvalAttachment] = await getRecords(
+    'latest_dynamic_approval_attachment',
+    `where dynamic_approval_attachment_uuid = '${dynamic_approval_attachment_uuid}'`,
+  );
+
+  if (dynamic_approval_attachment_uuid) {
+    isupdation = true;
+
+    req.body = { ...req.body, dynamic_approval_attachment_uuid };
+    // console.log('body', req.body);
+  }
+
+  let attachment = req.body.attachment;
+
+  if (!attachment) throwError('Attachment not found', 404);
+
+  const insertResp = await insertRecords('dynamic_approval_attachment', {
+    ...req.body,
+    dynamic_approval_status: approval[0].status,
+    dynamic_approval_next_status: approval[0].next_status,
+    record_uuid: approval[0].record_uuid,
+    dynamic_approval_attachment_uuid: uuidv4(),
+  });
+
+  saveHistory(
+    {
+      oldRecord: approvalAttachment,
+      newRecord: req.body,
+    },
+    'latest_dynamic_approval_attachment',
+    'dynamic_approval_attachment_uuid',
+    'Dynamic Approval Attachment',
+    insertResp.insertId,
+    req.user,
+  );
+
+  return res.json(
+    responser('Dynamic Approval Attachment inserted successfully', req.body),
+  );
+};
+
+exports.getDynamicApprovalAttachment = async (req, res) => {
+  const {
+    dynamic_approval_attachment_uuid,
+    dynamic_approval_uuid,
+    pageNo,
+    itemPerPage,
+    from_date,
+    to_date,
+    status,
+    columns,
+    value,
+  } = req.query;
+
+  let tableName = 'latest_dynamic_approval_attachment';
+  let filter = filterFunctionality(
+    {
+      dynamic_approval_attachment_uuid,
+      dynamic_approval_uuid,
+    },
+    status,
+    to_date,
+    from_date,
+    Array.isArray(columns) ? columns : [columns],
+    value,
+  );
+
+  let pageFilter = pagination(pageNo, itemPerPage);
+  let totalRecords = await getCountRecord(tableName, filter);
+  let result = await getRecords(tableName, filter, pageFilter);
+  return res.json(
+    responser(
+      'All Dynamic Approval Attachment',
+      result,
+      result.length,
+      totalRecords,
+    ),
+  );
+};
+
+exports.getDynamicApprovalHistory = async (req, res) => {
+  const {
+    dynamic_approval_uuid,
+    record_uuid,
+    requested_by_uuid,
+    pageNo,
+    itemPerPage,
+    from_date,
+    to_date,
+    status,
+    columns,
+    value,
+  } = req.query;
+
+  let tableName = 'dynamic_approval';
+  let filter = filterFunctionality(
+    {
+      dynamic_approval_uuid,
+      record_uuid,
+      requested_by_uuid,
+    },
+    status,
+    to_date,
+    from_date,
+    Array.isArray(columns) ? columns : [columns],
+    value,
+  );
+
+  let pageFilter = pagination(pageNo, itemPerPage);
+  let totalRecords = await getCountRecord(tableName, filter);
+  let result = await getRecords(tableName, filter, pageFilter);
+  return res.json(
+    responser(
+      'All dynamic approval history',
+      result,
+      result.length,
+      totalRecords,
+    ),
   );
 };

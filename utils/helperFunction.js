@@ -679,3 +679,29 @@ exports.formatInternationalStyle = (number) => {
   const formattedAmount = number.toLocaleString('en-US');
   return formattedAmount;
 };
+
+exports.compareObjects = (obj1, obj2) => {
+  let changes = {};
+  function isEqual(value1, value2) {
+    if (Array.isArray(value1) && Array.isArray(value2)) {
+      // Compare arrays by converting them to strings or use a deep equality check
+      return (
+        value1.length === value2.length &&
+        value1.every((item, index) => item === value2[index])
+      );
+    }
+    if (!value1 && !value2) return true;
+    return value1 === value2;
+  }
+  // Combine keys from both objects to ensure all keys are checked
+  const allKeys = new Set([...Object.keys(obj1), ...Object.keys(obj2)]);
+  allKeys.forEach((key) => {
+    if (!isEqual(obj1[key], obj2[key])) {
+      changes[key] = {
+        old_value: obj1[key],
+        new_value: obj2[key],
+      };
+    }
+  });
+  return changes;
+};

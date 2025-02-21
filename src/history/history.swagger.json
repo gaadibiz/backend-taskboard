@@ -42,6 +42,10 @@
                 "message": {
                   "type": "string",
                   "default": null
+                },
+                "payload": {
+                  "type": "object",
+                  "default": {}
                 }
               }
             }

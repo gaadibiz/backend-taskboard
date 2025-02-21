@@ -17,15 +17,18 @@ const {
 } = require('../../utils/helperFunction');
 const { v4 } = require('uuid');
 const { base_url } = require('../../config/server.config');
+const { saveHistory } = require('../../utils/microservice_func');
 
 exports.upsertVendor = async (req, res) => {
   await isEditAccess('latest_vendors', req.user);
   removeNullValueKey(req.body);
+
+  let vendor_info = await getRecords(
+    'latest_vendors',
+    `where vendor_uuid='${req.body.vendor_uuid}'`,
+  );
+
   if (req.body.vendor_uuid) {
-    let vendor_info = await getRecords(
-      'latest_vendors',
-      `where vendor_uuid='${req.body.vendor_uuid}'`,
-    );
     if (!vendor_info.length) throwError(404, 'Vendor not found.');
     vendor_info = vendor_info[0];
     vendor_info.create_ts = setDateTimeFormat(
@@ -37,7 +40,20 @@ exports.upsertVendor = async (req, res) => {
     req.body.create_ts = setDateTimeFormat('timestemp');
     req.body.vendor_uuid = v4();
   }
-  await insertRecords('vendors', req.body);
+  const insertResp = await insertRecords('vendors', req.body);
+
+  saveHistory(
+    {
+      oldRecord: vendor_info,
+      newRecord: req.body,
+    },
+    'vendors',
+    'vendor_uuid',
+    'vendor',
+    insertResp.insertId,
+    req.user,
+  );
+
   res.json(responser('Vendor created or updated successfully.', req.body));
 
   //<------------ handle vendor approval module properly ----------->

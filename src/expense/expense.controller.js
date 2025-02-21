@@ -24,6 +24,7 @@ const {
 const { base_url } = require('../../config/server.config');
 const { responser, removeNullValueKey } = require('../../utils/helperFunction');
 const e = require('express');
+const saveHistory = require('../../utils/microservice_func');
 
 function toBoolean(value) {
   if (value === 'true' || value === true || value === 1) return true;
@@ -35,12 +36,14 @@ exports.upsertExpense = async (req, res) => {
   isEditAccess('latest_expense', req.user);
   removeNullValueKey(req.body);
   let isUpadtion = false;
+
+  let expense_info = await getRecords(
+    'latest_expense',
+    `where expense_uuid='${req.body.expense_uuid}'`,
+  );
   if (req.body.expense_uuid) {
     isUpadtion = true;
-    let expense_info = await getRecords(
-      'latest_expense',
-      `where expense_uuid='${req.body.expense_uuid}'`,
-    );
+
     if (!expense_info.length) throwError(404, 'expense_info not found.');
     expense_info = expense_info[0];
     req.body.modified_by_uuid = req.body.created_by_uuid;
@@ -53,6 +56,18 @@ exports.upsertExpense = async (req, res) => {
     req.body.expense_uuid = uuid();
   }
   const insertexpense = await insertRecords('expense', req.body);
+
+  saveHistory(
+    {
+      oldRecord: expense_info,
+      newRecord: req.body,
+    },
+    'expense',
+    'expense_uuid',
+    'expense',
+    insertexpense.insertId,
+    req.user,
+  );
 
   //<------------ handle costing sheet approval modal properly ----------->
   const bodyData = {
@@ -97,6 +112,7 @@ exports.upsertExpense = async (req, res) => {
         message: historyMessage,
         module_column_name: 'expense_uuid',
         created_by_uuid: req.body.created_by_uuid,
+        modified_by_uuid: req.body.modified_by_uuid,
       };
       await getData(
         base_url + '/api/v1/history/upsert-history',
@@ -209,10 +225,12 @@ exports.upsertExpenseCategory = async (req, res) => {
   removeNullValueKey(req.body);
   req.body.expense_category_name = req.body.expense_category_name.toUpperCase();
   let isUpadtion = false;
+
+  let isExist = await isValidRecord('latest_expense_category', {
+    expense_category_uuid: req.body.expense_category_uuid,
+  });
+
   if (req.body.expense_category_uuid) {
-    let isExist = await isValidRecord('latest_expense_category', {
-      expense_category_uuid: req.body.expense_category_uuid,
-    });
     if (!isExist) throwError(404, 'expense_category not found.');
     isUpadtion = true;
   } else {
@@ -226,6 +244,19 @@ exports.upsertExpenseCategory = async (req, res) => {
     req.body.expense_category_uuid = uuid();
   }
   let expense_category = await insertRecords('expense_category', req.body);
+
+  saveHistory(
+    {
+      oldRecord: isExist,
+      newRecord: req.body,
+    },
+    'expense_category',
+    'expense_category_uuid',
+    'Expense Category',
+    expense_category.insertId,
+    req.user,
+  );
+
   res.json(responser('expense_category created  successfully.', req.body));
 };
 

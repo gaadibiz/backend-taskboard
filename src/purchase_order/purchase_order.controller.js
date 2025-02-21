@@ -26,7 +26,11 @@ const {
   convertIsoUTCToLocalDate,
   convertISOToDate,
 } = require('../../utils/helperFunction');
-const { ejsPreview, pdfMaker } = require('../../utils/microservice_func');
+const {
+  ejsPreview,
+  pdfMaker,
+  saveHistory,
+} = require('../../utils/microservice_func');
 
 const { base_url } = require('../../config/server.config');
 
@@ -45,12 +49,15 @@ exports.upsertPurchaseOrder = async (req, res) => {
   const purchase_order_no = incrementStringWithReset(
     highest_purchase_order_no.highestValue,
   );
+
+  let purchase_order_info = await getRecords(
+    'latest_purchase_order',
+    `where purchase_order_uuid='${req.body.purchase_order_uuid}'`,
+  );
+
   if (req.body.purchase_order_uuid) {
     isUpadtion = true;
-    let purchase_order_info = await getRecords(
-      'latest_purchase_order',
-      `where purchase_order_uuid='${req.body.purchase_order_uuid}'`,
-    );
+
     if (!purchase_order_info.length)
       throwError(404, 'Purchase Order not found.');
     purchase_order_info = purchase_order_info[0];
@@ -70,7 +77,19 @@ exports.upsertPurchaseOrder = async (req, res) => {
 
   req.body.purchase_order_date = convertISOToDate(req.body.purchase_order_date);
 
-  await insertRecords('purchase_order', req.body);
+  const insertResp = await insertRecords('purchase_order', req.body);
+
+  saveHistory(
+    {
+      oldRecord: purchase_order_info,
+      newRecord: req.body,
+    },
+    'purchase_order',
+    'purchase_order_uuid',
+    'Purchase Order',
+    insertResp.insertId,
+    req.user,
+  );
 
   //<------------ update analytics data for updates ------------>
   // if (isUpadtion) {

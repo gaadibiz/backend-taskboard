@@ -91,3 +91,44 @@ exports.getApprovalSchema = Joi.object({
   columns: Joi.array().items(Joi.string().required()).allow(null),
   value: Joi.string().allow(null),
 });
+
+exports.insertDynamicApprovalAttachmentSchema = Joi.object({
+  dynamic_approval_attachment_uuid: Joi.string().guid().allow(null, ''),
+  dynamic_approval_uuid: Joi.string().guid().required(),
+  dynamic_approval_status: Joi.string().allow(null, ''),
+  dynamic_approval_next_status: Joi.string().allow(null, ''),
+  dynamic_approval_comment: Joi.string().allow(null, ''),
+  user_comment: Joi.string().allow(null, ''),
+  record_uuid: Joi.string().guid().allow(null, ''),
+  attachment: Joi.array().allow(null, ''),
+  status: Joi.string().valid('REQUESTED', 'FULFILLED').required(),
+  created_by_uuid: Joi.string().guid().allow(null),
+  created_by_name: Joi.string().allow(null),
+  modified_by_uuid: Joi.string().guid().allow(null),
+  modified_by_name: Joi.string().allow(null),
+});
+
+exports.getDynamicApprovalAttachmentSchema = Joi.object({
+  dynamic_approval_attachment_uuid: Joi.string().guid().allow(null),
+  dynamic_approval_uuid: Joi.string().guid().allow(null),
+  pageNo: Joi.number().integer().min(1).allow(null),
+  itemPerPage: Joi.number().integer().min(1).allow(null),
+  from_date: Joi.date().allow(null),
+  to_date: Joi.date().allow(null),
+  status: Joi.string().allow(null),
+  columns: Joi.array().allow(null),
+  value: Joi.string().allow(null),
+});
+
+exports.getDynamicApprovalHistorySchema = Joi.object({
+  dynamic_approval_uuid: Joi.string().guid().allow(null),
+  record_uuid: Joi.string().guid().allow(null),
+  requested_by_uuid: Joi.string().guid().allow(null),
+  pageNo: Joi.number().integer().min(1).allow(null),
+  itemPerPage: Joi.number().integer().min(1).allow(null),
+  from_date: Joi.date().allow(null),
+  to_date: Joi.date().allow(null),
+  status: Joi.string().allow(null),
+  columns: Joi.array().allow(null),
+  value: Joi.string().allow(null),
+});

@@ -11,6 +11,7 @@ const {
   isTableOrViewExist,
   getCountRecord,
   isColumnExistInTable,
+  isEditAccess,
 } = require('../../utils/dbFunctions');
 const {
   removeNullValueKey,
@@ -23,7 +24,11 @@ const {
 const { v4: uuidv4 } = require('uuid');
 const { base_url } = require('../../config/server.config');
 const tableMap = require('./tablemapping.json');
-const { approvalEmails } = require('../../utils/microservice_func');
+const {
+  approvalEmails,
+  saveHistory,
+} = require('../../utils/microservice_func');
+const { get } = require('prompt');
 
 exports.insertApproval = async (req, res) => {
   removeNullValueKey(req.body);
@@ -548,5 +553,127 @@ exports.getTableStatus = async (req, res) => {
   );
   return res.json(
     responser('All status for the table : ', result, result.length),
+  );
+};
+
+exports.insertApprovalAttachment = async (req, res) => {
+  // await isEditAccess('latest_approval_attachment', req.user);
+  let { approval_uuid, approval_attachment_uuid } = req.body;
+  isupdation = false;
+
+  let approval = await getRecords(
+    'latest_approval',
+    `where approval_uuid = '${approval_uuid}'`,
+  );
+
+  if (!approval.length) throwError('Approval not found', 404);
+
+  let [approvalAttachment] = await getRecords(
+    'latest_approval_attachment',
+    `where approval_attachment_uuid = '${approval_attachment_uuid}'`,
+  );
+
+  if (approval_attachment_uuid) {
+    isupdation = true;
+
+    req.body = { ...req.body, approval_attachment_uuid };
+    // console.log('body', req.body);
+  }
+
+  let attachment = req.body.attachment;
+
+  if (!attachment) throwError('Attachment not found', 404);
+
+  let insertResp = await insertRecords('approval_attachment', {
+    ...req.body,
+    approval_status: approval[0].status,
+    approval_next_status: approval[0].next_status,
+    record_uuid: approval[0].record_uuid,
+    approval_attachment_uuid: uuidv4(),
+  });
+
+  // <---------------------------History Entry------------------------>
+  saveHistory(
+    {
+      oldRecord: approvalAttachment,
+      newRecord: req.body,
+    },
+    'latest_approval_attachment',
+    'approval_attachment_uuid',
+    'Approval Attachment',
+    insertResp.insertId,
+    req.user,
+  );
+
+  return res.json(responser('Attachment inserted successfully', req.body));
+};
+
+exports.getApprovalAttachment = async (req, res) => {
+  const {
+    approval_attachment_uuid,
+    approval_uuid,
+    pageNo,
+    itemPerPage,
+    from_date,
+    to_date,
+    status,
+    columns,
+    value,
+  } = req.query;
+
+  let tableName = 'latest_approval_attachment';
+  let filter = filterFunctionality(
+    {
+      approval_uuid,
+      approval_attachment_uuid,
+    },
+    status,
+    to_date,
+    from_date,
+    Array.isArray(columns) ? columns : [columns],
+    value,
+  );
+
+  let pageFilter = pagination(pageNo, itemPerPage);
+  let totalRecords = await getCountRecord(tableName, filter);
+  let result = await getRecords(tableName, filter, pageFilter);
+  return res.json(
+    responser('All approval Attachment', result, result.length, totalRecords),
+  );
+};
+
+exports.getApprovalHistory = async (req, res) => {
+  const {
+    approval_uuid,
+    record_uuid,
+    requested_by_uuid,
+    pageNo,
+    itemPerPage,
+    from_date,
+    to_date,
+    status,
+    columns,
+    value,
+  } = req.query;
+
+  let tableName = 'approval';
+  let filter = filterFunctionality(
+    {
+      approval_uuid,
+      record_uuid,
+      requested_by_uuid,
+    },
+    status,
+    to_date,
+    from_date,
+    Array.isArray(columns) ? columns : [columns],
+    value,
+  );
+
+  let pageFilter = pagination(pageNo, itemPerPage);
+  let totalRecords = await getCountRecord(tableName, filter);
+  let result = await getRecords(tableName, filter, pageFilter);
+  return res.json(
+    responser('All approval history', result, result.length, totalRecords),
   );
 };

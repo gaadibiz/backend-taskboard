@@ -46,4 +46,31 @@ router
     checkAuth,
     requestErrorHandlingDecorator(null, controller.mergeApprovalWithRecord),
   );
+router
+  .route('/insert-approval-attachment')
+  .post(
+    checkAuth,
+    requestErrorHandlingDecorator(
+      Schema.insertApprovalAttachmentSchema,
+      controller.insertApprovalAttachment,
+    ),
+  );
+router
+  .route('/get-approval-attachment')
+  .get(
+    checkAuth,
+    requestErrorHandlingDecorator(
+      Schema.getApprovalAttachmentSchema,
+      controller.getApprovalAttachment,
+    ),
+  );
+router
+  .route('/get-approval-history')
+  .get(
+    checkAuth,
+    requestErrorHandlingDecorator(
+      Schema.getApprovalHistorySchema,
+      controller.getApprovalHistory,
+    ),
+  );
 module.exports = router;

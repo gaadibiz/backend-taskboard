@@ -5,9 +5,12 @@ const {
   responser,
   requestApi,
   apiRequest,
+  deleteKeyValuePair,
+  compareObjects,
 } = require('./helperFunction');
 const { getRecords } = require('./dbFunctions');
 const moment = require('moment');
+const config = require('../config/server.config');
 
 /**
  * Send Normal Email or email with template
@@ -298,4 +301,87 @@ exports.approvalEmails = async (approvalUuid, user) => {
       approvalInfo.remark ? `<br> Remark: <b>${approvalInfo.remark}</b>` : ''
     } <br><br>Regards<br>Rockworth IT`,
   });
+};
+
+/**
+ * Saves the history of changes for a given record in a specified table.
+ *
+ * @param {{oldRecord: Object, newRecord: Object}} payload - The data containing old and new record states.
+ * @param {string} tableName - The name of the table where the record exists.
+ * @param {Object} referenceColumn - An object with a reference column name and value for identifying the record.
+ * @param {string} moduleName - The name of the module related to the history being saved.
+ * @param {number} insertRecordID - The ID of the record that was inserted or updated.
+ * @param {Object} selfUser - The user object representing the user who is making the request.
+ *
+ * This function compares the old and new records to determine if an update occurred,
+ * constructs a history message, and sends the history data to the specified API endpoint.
+ * It logs any errors encountered during the process.
+ */
+
+exports.saveHistory = async (
+  payload,
+  tableName,
+  referenceColumn,
+  moduleName,
+  insertRecordID,
+  selfUser,
+) => {
+  try {
+    if (!payload.oldRecord) payload.oldRecord = {};
+    let payloadChanges = {};
+    let isUpadtion =
+      payload?.oldRecord && Object.keys(payload.oldRecord).length;
+    deleteKeyValuePair(payload.oldRecord, [
+      `${tableName}_id`,
+      'insert_ts',
+      'create_ts',
+    ]);
+    deleteKeyValuePair(payload.newRecord, [
+      `${tableName}_id`,
+      'insert_ts',
+      'create_ts',
+    ]);
+    if (isUpadtion) {
+      payloadChanges = {
+        identifier: {
+          column_name: referenceColumn,
+          column_value: payload.newRecord[referenceColumn],
+        },
+        changed_column: compareObjects(payload.oldRecord, payload.newRecord),
+      };
+    } else {
+      payloadChanges = {
+        identifier: {
+          column_name: referenceColumn,
+          column_value: payload.newRecord[referenceColumn],
+        },
+        no_changed_column: payload.newRecord,
+      };
+    }
+    let historyMessage = `${selfUser.first_name} has ${isUpadtion ? 'updated' : 'created'} this ${moduleName.toLowerCase()}`;
+    const bodyData = {
+      module_name: moduleName,
+      module_uuid: payload.newRecord[referenceColumn],
+      module_id: insertRecordID,
+      message: historyMessage,
+      module_column_name: referenceColumn,
+      payload: payloadChanges,
+      modified_by_uuid: payload.newRecord.modified_by_uuid,
+      modified_by_name: payload.newRecord.modified_by_name,
+      status: isUpadtion ? 'UPDATE' : 'CREATE',
+    };
+
+    await requestApi(
+      config.base_url + '/api/v1/history/upsert-history',
+      null,
+      'POST',
+      {
+        'Content-Type': 'application/json',
+        'auth-Token': selfUser?.access_token,
+      },
+      bodyData,
+    );
+  } catch (error) {
+    console.log(error);
+  }
 };

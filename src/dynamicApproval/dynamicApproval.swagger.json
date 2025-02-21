@@ -288,6 +288,241 @@
           "500": { "description": "Internal Server Error" }
         }
       }
+    },
+    "/api/v1/dynamicApproval/insert-dynamic-approval-attachment": {
+      "post": {
+        "tags": ["Dynamic Approval"],
+        "summary": "add attachment to dynamic approval",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "dynamic_approval_attachment_uuid": {
+                  "type": "string",
+                  "default": null
+                },
+                "dynamic_approval_uuid": {
+                  "type": "string",
+                  "default": ""
+                },
+                "dynamic_approval_status": {
+                  "type": "string",
+                  "default": null
+                },
+                "dynamic_approval_next_status": {
+                  "type": "string",
+                  "default": null
+                },
+                "dynamic_approval_comment": {
+                  "type": "string",
+                  "default": null
+                },
+                "user_comment": {
+                  "type": "string",
+                  "default": null
+                },
+                "record_uuid": {
+                  "type": "string",
+                  "default": null
+                },
+                "attachment": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "default": null
+                      }
+                    }
+                  }
+                },
+                "status": {
+                  "type": "string",
+                  "enum": ["REQUESTED", "FULFILLED"]
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": { "description": "successful operation" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/api/v1/dynamicApproval/get-dynamic-approval-attachment": {
+      "get": {
+        "tags": ["Dynamic Approval"],
+        "summary": "get attachment of dynamic approval",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "dynamic_approval_attachment_uuid",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "dynamic_approval_uuid",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "pageNo",
+            "type": "integer",
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "itemPerPage",
+            "type": "integer",
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "from_date",
+            "type": "string",
+            "format": "date",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "to_date",
+            "type": "string",
+            "format": "date",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "type": "string",
+            "enum": ["REQUESTED", "FULFILLED"],
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "columns",
+            "type": "array",
+            "items": { "type": "string" },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "value",
+            "type": "string",
+            "default": "",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": { "description": "successful operation" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/api/v1/dynamicApproval/get-dynamic-approval-history": {
+      "get": {
+        "tags": ["Dynamic Approval"],
+        "summary": "get history of approval",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "dynamic_approval_uuid",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "record_uuid",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "requested_by_uuid",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "pageNo",
+            "type": "integer",
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "itemPerPage",
+            "type": "integer",
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "from_date",
+            "type": "string",
+            "format": "date",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "to_date",
+            "type": "string",
+            "format": "date",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "type": "string",
+            "enum": ["REQUESTED", "FULFILLED"],
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "columns",
+            "type": "array",
+            "items": { "type": "string" },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "value",
+            "type": "string",
+            "default": "",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": { "description": "successful operation" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
     }
   }
 }

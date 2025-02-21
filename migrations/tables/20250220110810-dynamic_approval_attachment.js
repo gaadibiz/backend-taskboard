@@ -3,46 +3,55 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('history', {
-      history_id: {
+    await queryInterface.createTable('dynamic_approval_attachment', {
+      dynamic_approval_attachment_id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
       },
-      history_uuid: {
+      dynamic_approval_attachment_uuid: {
         type: Sequelize.CHAR(36),
         allowNull: false,
       },
-      module_name: {
-        type: Sequelize.STRING(100),
+      dynamic_approval_uuid: {
+        type: Sequelize.CHAR(36),
         allowNull: false,
       },
-      module_uuid: {
-        type: Sequelize.CHAR(36),
-        allowNull: true,
-      },
-      module_id: {
-        type: Sequelize.INTEGER,
-        allowNull: true,
-      },
-      module_column_name: {
+      dynamic_approval_status: {
         type: Sequelize.STRING(50),
-        allowNull: true,
+        allowNull: false,
       },
-      message: {
+      dynamic_approval_next_status: {
+        type: Sequelize.STRING(50),
+        allowNull: false,
+      },
+      dynamic_approval_comment: {
         type: Sequelize.TEXT,
         allowNull: true,
       },
-      payload: {
+      user_comment: {
+        type: Sequelize.TEXT,
+        allowNull: true,
+      },
+      record_uuid: {
+        type: Sequelize.CHAR(36),
+        allowNull: false,
+      },
+      attachment: {
         type: Sequelize.JSON,
         allowNull: true,
       },
       status: {
-        type: Sequelize.STRING(20),
-        allowNull: true,
+        type: Sequelize.STRING(50),
+        allowNull: false,
+        defaultValue: 'ACTIVE',
       },
       created_by_uuid: {
         type: Sequelize.CHAR(36),
+        allowNull: false,
+      },
+      created_by_name: {
+        type: Sequelize.STRING(100),
         allowNull: true,
       },
       modified_by_uuid: {
@@ -51,8 +60,7 @@ module.exports = {
       },
       create_ts: {
         type: Sequelize.DATE,
-        allowNull: false,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+        allowNull: true,
       },
       insert_ts: {
         type: Sequelize.DATE,
@@ -62,12 +70,5 @@ module.exports = {
     });
   },
 
-  async down(queryInterface, Sequelize) {
-    /**
-     * Add reverting commands here.
-     *
-     * Example:
-     * await queryInterface.dropTable('users');
-     */
-  },
+  async down(queryInterface, Sequelize) {},
 };

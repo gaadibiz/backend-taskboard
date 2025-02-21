@@ -8,6 +8,9 @@ exports.postHistorySchema = Joi.object({
   module_column_name: Joi.string().max(100).allow(null, ''),
   message: Joi.string().allow('').optional().allow(null),
   created_by_uuid: Joi.string().guid().max(100).allow(null),
+  modified_by_uuid: Joi.string().guid().max(100).allow(null),
+  payload: Joi.object().allow(null),
+  status: Joi.string().allow(null),
 });
 
 exports.getHistorySchema = Joi.object({
