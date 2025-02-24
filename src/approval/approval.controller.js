@@ -576,21 +576,23 @@ exports.insertApprovalAttachment = async (req, res) => {
   if (approval_attachment_uuid) {
     isupdation = true;
 
-    req.body = { ...req.body, approval_attachment_uuid };
+    req.body = {
+      ...approvalAttachment,
+      ...req.body,
+    };
     // console.log('body', req.body);
+  } else {
+    req.body = {
+      ...req.body,
+      approval_attachment_uuid: uuidv4(),
+      create_ts: setDateTimeFormat('timestamp'),
+      approval_status: approval[0].status,
+      approval_next_status: approval[0].next_status,
+      record_uuid: approval[0].record_uuid,
+    };
   }
 
-  let attachment = req.body.attachment;
-
-  if (!attachment) throwError('Attachment not found', 404);
-
-  let insertResp = await insertRecords('approval_attachment', {
-    ...req.body,
-    approval_status: approval[0].status,
-    approval_next_status: approval[0].next_status,
-    record_uuid: approval[0].record_uuid,
-    approval_attachment_uuid: uuidv4(),
-  });
+  let insertResp = await insertRecords('approval_attachment', req.body);
 
   // <---------------------------History Entry------------------------>
   saveHistory(
@@ -612,6 +614,7 @@ exports.getApprovalAttachment = async (req, res) => {
   const {
     approval_attachment_uuid,
     approval_uuid,
+    record_uuid,
     pageNo,
     itemPerPage,
     from_date,
@@ -624,6 +627,7 @@ exports.getApprovalAttachment = async (req, res) => {
   let tableName = 'latest_approval_attachment';
   let filter = filterFunctionality(
     {
+      record_uuid,
       approval_uuid,
       approval_attachment_uuid,
     },

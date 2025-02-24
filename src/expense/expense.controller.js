@@ -24,7 +24,7 @@ const {
 const { base_url } = require('../../config/server.config');
 const { responser, removeNullValueKey } = require('../../utils/helperFunction');
 const e = require('express');
-const {saveHistory} = require('../../utils/microservice_func');
+const { saveHistory } = require('../../utils/microservice_func');
 
 function toBoolean(value) {
   if (value === 'true' || value === true || value === 1) return true;

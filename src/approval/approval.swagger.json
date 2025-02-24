@@ -325,7 +325,8 @@
                 },
                 "status": {
                   "type": "string",
-                  "enum": ["REQUESTED", "FULFILLED"]
+                  "enum": ["REQUESTED", "FULFILLED"],
+                  "default": "REQUESTED | FULFILLED"
                 }
               }
             }
@@ -358,6 +359,12 @@
           {
             "in": "query",
             "name": "approval_uuid",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "record_uuid",
             "type": "string",
             "required": false
           },

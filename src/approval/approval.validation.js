@@ -85,6 +85,7 @@ exports.getApprovalAttachmentSchema = Joi.object({
   approval_uuid: Joi.string().guid().allow(null),
   pageNo: Joi.number().integer().min(1).allow(null),
   itemPerPage: Joi.number().integer().min(1).allow(null),
+  record_uuid: Joi.string().guid().allow(null, ''),
   from_date: Joi.date().allow(null),
   to_date: Joi.date().allow(null),
   status: Joi.string().allow(null),
