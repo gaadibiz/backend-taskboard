@@ -83,6 +83,7 @@ exports.insertApprovalAttachmentSchema = Joi.object({
 exports.getApprovalAttachmentSchema = Joi.object({
   approval_attachment_uuid: Joi.string().guid().allow(null),
   approval_uuid: Joi.string().guid().allow(null),
+  record_uuid: Joi.string().guid().allow(null),
   pageNo: Joi.number().integer().min(1).allow(null),
   itemPerPage: Joi.number().integer().min(1).allow(null),
   record_uuid: Joi.string().guid().allow(null, ''),

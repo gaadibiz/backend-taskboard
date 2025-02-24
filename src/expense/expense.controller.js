@@ -490,3 +490,51 @@ exports.exportFinanceExpense = async (req, res) => {
     .status(200)
     .json(responser('Exported successfully', { selfBankData, otherBankData }));
 };
+exports.upsertDocuments = async (req, res) => {
+  removeNullValueKey(req.body);
+  if (req.body.documents_uuid) {
+    let document = await getRecords(
+      'latest_documents',
+      `where documents_uuid='${req.body.documents_uuid}'`,
+    );
+    if (!document.length) throwError(404, 'Documents not found.');
+    document = document[0];
+    document.create_ts = setDateTimeFormat('timestemp', document.create_ts);
+    req.body = { ...document, ...req.body };
+  } else {
+    req.body.create_ts = setDateTimeFormat('timestemp');
+    req.body.documents_uuid = uuid();
+  }
+  await insertRecords('documents', req.body);
+  res.json(responser('Document created successfully.', req.body));
+};
+
+exports.getDocuments = async (req, res) => {
+  const {
+    documents_uuid,
+    pageNo,
+    itemPerPage,
+    from_date,
+    to_date,
+    status,
+    columns,
+    value,
+  } = req.query;
+
+  let tableName = 'latest_documents';
+  let filter = filterFunctionality(
+    {
+      documents_uuid,
+    },
+    status,
+    to_date,
+    from_date,
+    Array.isArray(columns) ? columns : [columns],
+    value,
+  );
+
+  let pageFilter = pagination(pageNo, itemPerPage);
+  let totalRecords = await getCountRecord(tableName, filter);
+  let result = await getRecords(tableName, filter, pageFilter);
+  return res.json(responser('Document ', result, result.length, totalRecords));
+};

@@ -97,7 +97,7 @@ exports.insertDynamicApprovalAttachmentSchema = Joi.object({
   dynamic_approval_uuid: Joi.string().guid().required(),
   dynamic_approval_status: Joi.string().allow(null, ''),
   dynamic_approval_next_status: Joi.string().allow(null, ''),
-  dynamic_approval_comment: Joi.string().allow(null, ''),
+  approval_comment: Joi.string().allow(null, ''),
   user_comment: Joi.string().allow(null, ''),
   record_uuid: Joi.string().guid().allow(null, ''),
   attachment: Joi.array().allow(null, ''),
@@ -111,6 +111,7 @@ exports.insertDynamicApprovalAttachmentSchema = Joi.object({
 exports.getDynamicApprovalAttachmentSchema = Joi.object({
   dynamic_approval_attachment_uuid: Joi.string().guid().allow(null),
   dynamic_approval_uuid: Joi.string().guid().allow(null),
+  record_uuid: Joi.string().guid().allow(null),
   pageNo: Joi.number().integer().min(1).allow(null),
   itemPerPage: Joi.number().integer().min(1).allow(null),
   from_date: Joi.date().allow(null),

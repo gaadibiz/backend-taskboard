@@ -23,7 +23,7 @@ module.exports = {
       },
       approval_next_status: {
         type: Sequelize.STRING(50),
-        allowNull: false,
+        allowNull: true,
       },
       approval_comment: {
         type: Sequelize.TEXT,

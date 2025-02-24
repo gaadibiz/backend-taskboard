@@ -119,3 +119,24 @@ exports.exportFinanceExpense = Joi.object({
   created_by_uuid: Joi.string().guid().max(50).allow(null),
   modified_by_uuid: Joi.string().guid().allow('', null),
 });
+exports.upsertDocumentsSchema = Joi.object({
+  documents_uuid: Joi.string().guid().allow('', null),
+  document_name: Joi.string().allow('', null),
+  file_path: Joi.string().allow('', null),
+  description: Joi.string().allow('', null),
+  record_uuid: Joi.string().guid().allow('', null),
+  table_name: Joi.string().allow(null, ''),
+  status: Joi.string().allow('', null),
+  created_by_uuid: Joi.string().guid().max(50).allow(null),
+  modified_by_uuid: Joi.string().guid().allow('', null),
+});
+exports.getDocumentsSchema = Joi.object({
+  documents_uuid: Joi.string().guid().allow('', null),
+  pageNo: Joi.number().integer().min(1),
+  itemPerPage: Joi.number().integer().min(1),
+  from_date: Joi.string().isoDate(),
+  to_date: Joi.string().isoDate(),
+  status: Joi.string(),
+  columns: Joi.string(),
+  value: Joi.string(),
+});

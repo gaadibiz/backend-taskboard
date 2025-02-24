@@ -323,7 +323,7 @@
                   "type": "string",
                   "default": null
                 },
-                "dynamic_approval_comment": {
+                "approval_comment": {
                   "type": "string",
                   "default": null
                 },

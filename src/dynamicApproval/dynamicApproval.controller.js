@@ -631,21 +631,23 @@ exports.insertDynamicApprovalAttachment = async (req, res) => {
   if (dynamic_approval_attachment_uuid) {
     isupdation = true;
 
-    req.body = { ...req.body, dynamic_approval_attachment_uuid };
-    // console.log('body', req.body);
+    req.body = { ...approvalAttachment, ...req.body };
+    console.log('body', req.body);
+  } else {
+    req.body = {
+      ...req.body,
+      dynamic_approval_status: approval[0].status,
+      dynamic_approval_next_status: approval[0].next_status,
+      record_uuid: approval[0].record_uuid,
+      dynamic_approval_attachment_uuid: uuidv4(),
+      create_ts: setDateTimeFormat('timestemp'),
+    };
   }
 
-  let attachment = req.body.attachment;
-
-  if (!attachment) throwError('Attachment not found', 404);
-
-  const insertResp = await insertRecords('dynamic_approval_attachment', {
-    ...req.body,
-    dynamic_approval_status: approval[0].status,
-    dynamic_approval_next_status: approval[0].next_status,
-    record_uuid: approval[0].record_uuid,
-    dynamic_approval_attachment_uuid: uuidv4(),
-  });
+  const insertResp = await insertRecords(
+    'dynamic_approval_attachment',
+    req.body,
+  );
 
   saveHistory(
     {
@@ -668,6 +670,7 @@ exports.getDynamicApprovalAttachment = async (req, res) => {
   const {
     dynamic_approval_attachment_uuid,
     dynamic_approval_uuid,
+    record_uuid,
     pageNo,
     itemPerPage,
     from_date,
@@ -682,6 +685,7 @@ exports.getDynamicApprovalAttachment = async (req, res) => {
     {
       dynamic_approval_attachment_uuid,
       dynamic_approval_uuid,
+      record_uuid,
     },
     status,
     to_date,
