@@ -27,13 +27,17 @@
                   "type": "string",
                   "default": null
                 },
-                "module_uuid": {
+                "record_uuid": {
                   "type": "string",
                   "default": ""
                 },
-                "module_name": {
+                "table_name": {
                   "type": "string",
                   "default": ""
+                },
+                "attachment": {
+                  "type": "array",
+                  "default": []
                 },
                 "comment_remark": {
                   "type": "string",
@@ -95,16 +99,10 @@
             "required": false,
             "type": "string"
           },
+
           {
             "in": "query",
-            "name": "parent_module_no",
-            "description": "",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "in": "query",
-            "name": "module_uuid",
+            "name": "record_uuid",
             "description": "",
             "required": false,
             "type": "string"
