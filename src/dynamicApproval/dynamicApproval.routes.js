@@ -55,24 +55,7 @@ router
     checkAuth,
     requestErrorHandlingDecorator(null, controller.mergeApprovalWithRecord),
   );
-router
-  .route('/insert-dynamic-approval-attachment')
-  .post(
-    checkAuth,
-    requestErrorHandlingDecorator(
-      Schema.insertDynamicApprovalAttachmentSchema,
-      controller.insertDynamicApprovalAttachment,
-    ),
-  );
-router
-  .route('/get-dynamic-approval-attachment')
-  .get(
-    checkAuth,
-    requestErrorHandlingDecorator(
-      Schema.getDynamicApprovalAttachmentSchema,
-      controller.getDynamicApprovalAttachment,
-    ),
-  );
+
 router
   .route('/get-dynamic-approval-history')
   .get(

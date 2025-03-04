@@ -92,5 +92,24 @@ router
     checkAuth,
     requestErrorHandlingDecorator(null, controller.getTableDescription),
   );
+router
+  .route('/upsert-documents')
+  .post(
+    checkAuth,
+    requestErrorHandlingDecorator(
+      Schema.upsertDocumentsSchema,
+      controller.upsertDocuments,
+    ),
+  );
+
+router
+  .route('/get-documents')
+  .get(
+    checkAuth,
+    requestErrorHandlingDecorator(
+      Schema.getDocumentsSchema,
+      controller.getDocuments,
+    ),
+  );
 
 module.exports = router;

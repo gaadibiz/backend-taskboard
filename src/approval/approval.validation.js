@@ -65,34 +65,6 @@ exports.insertApprovalCountSchema = Joi.object({
   modified_by_name: Joi.string().allow(null),
 });
 
-exports.insertApprovalAttachmentSchema = Joi.object({
-  approval_attachment_uuid: Joi.string().guid().allow(null, ''),
-  approval_uuid: Joi.string().guid().required(),
-  approval_status: Joi.string().allow(null, ''),
-  approval_next_status: Joi.string().allow(null, ''),
-  approval_comment: Joi.string().allow(null, ''),
-  user_comment: Joi.string().allow(null, ''),
-  record_uuid: Joi.string().guid().allow(null, ''),
-  attachment: Joi.array().allow(null, ''),
-  status: Joi.string().valid('REQUESTED', 'FULFILLED').required(),
-  created_by_uuid: Joi.string().guid().allow(null),
-  created_by_name: Joi.string().allow(null),
-  modified_by_uuid: Joi.string().guid().allow(null),
-  modified_by_name: Joi.string().allow(null),
-});
-exports.getApprovalAttachmentSchema = Joi.object({
-  approval_attachment_uuid: Joi.string().guid().allow(null),
-  approval_uuid: Joi.string().guid().allow(null),
-  pageNo: Joi.number().integer().min(1).allow(null),
-  itemPerPage: Joi.number().integer().min(1).allow(null),
-  record_uuid: Joi.string().guid().allow(null, ''),
-  from_date: Joi.date().allow(null),
-  to_date: Joi.date().allow(null),
-  status: Joi.string().allow(null),
-  columns: Joi.array().allow(null),
-  value: Joi.string().allow(null),
-});
-
 exports.getApprovalHistorySchema = Joi.object({
   approval_uuid: Joi.string().guid().allow(null),
   record_uuid: Joi.string().guid().allow(null),

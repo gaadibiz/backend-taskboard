@@ -3,33 +3,25 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('approval_attachment', {
-      approval_attachment_id: {
+    await queryInterface.createTable('documents', {
+      documents_id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
       },
-      approval_attachment_uuid: {
+      documents_uuid: {
         type: Sequelize.CHAR(36),
         allowNull: false,
       },
-      approval_uuid: {
-        type: Sequelize.CHAR(36),
+      document_name: {
+        type: Sequelize.STRING(100),
         allowNull: false,
       },
-      approval_status: {
-        type: Sequelize.STRING(50),
+      file_path: {
+        type: Sequelize.STRING(500),
         allowNull: false,
       },
-      approval_next_status: {
-        type: Sequelize.STRING(50),
-        allowNull: false,
-      },
-      approval_comment: {
-        type: Sequelize.TEXT,
-        allowNull: true,
-      },
-      user_comment: {
+      description: {
         type: Sequelize.TEXT,
         allowNull: true,
       },
@@ -37,9 +29,9 @@ module.exports = {
         type: Sequelize.CHAR(36),
         allowNull: false,
       },
-      attachment: {
-        type: Sequelize.JSON,
-        allowNull: true,
+      table_name: {
+        type: Sequelize.STRING(50),
+        allowNull: false,
       },
       status: {
         type: Sequelize.STRING(50),

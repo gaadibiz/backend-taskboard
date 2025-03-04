@@ -43,8 +43,7 @@ exports.getComment = async (req, res) => {
   const {
     comment_t_id,
     comment_t_uuid,
-    parent_module_no,
-    module_uuid,
+    record_uuid,
     pageNo,
     itemPerPage,
     from_date,
@@ -59,8 +58,7 @@ exports.getComment = async (req, res) => {
     {
       comment_t_id,
       comment_t_uuid,
-      parent_module_no,
-      module_uuid,
+      record_uuid,
     },
     status,
     to_date,

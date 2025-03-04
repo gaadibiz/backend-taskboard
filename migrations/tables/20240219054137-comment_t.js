@@ -13,13 +13,17 @@ module.exports = {
         type: Sequelize.CHAR(36),
         allowNull: false,
       },
-      module_uuid: {
+      record_uuid: {
         type: Sequelize.CHAR(36),
         allowNull: false,
       },
-      module_name: {
+      table_name: {
         type: Sequelize.STRING(100),
         allowNull: false,
+      },
+      attachment: {
+        type: Sequelize.JSON,
+        allowNull: true,
       },
       comment_remark: {
         type: Sequelize.TEXT,
