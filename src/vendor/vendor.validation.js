@@ -5,6 +5,8 @@ exports.upsertVendorSchema = Joi.object({
   vendor_name: Joi.string().required().max(100),
   billing_company_uuid: Joi.string().guid().allow(null, ''),
   billing_company_name: Joi.string().allow(null, ''),
+  billing_company_branch_uuid: Joi.string().guid().max(100).allow('', null),
+  billing_company_branch_name: Joi.string().max(255).allow('', null),
   registration_type: Joi.string().required().max(100),
   vendor_address_line1: Joi.string().max(500).allow(null),
   vendor_address_line2: Joi.string().max(500).allow(null),
