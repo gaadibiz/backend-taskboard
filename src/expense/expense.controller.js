@@ -233,15 +233,25 @@ exports.upsertExpenseCategory = async (req, res) => {
   if (req.body.expense_category_uuid) {
     if (!isExist) throwError(404, 'expense_category not found.');
     isUpadtion = true;
+    let expense_category_info = await getRecords(
+      'latest_expense_category',
+      `where expense_category_uuid='${req.body.expense_category_uuid}'`,
+    );
+    expense_category_info = expense_category_info[0];
+    req.body.created_by_uuid = expense_category_info.created_by_uuid;
+    req.body.created_by_name = expense_category_info.created_by_name;
+    req.body = { ...expense_category_info, ...req.body };
   } else {
     let isExist = await isValidRecord('latest_expense_category', {
       expense_category_name: req.body.expense_category_name,
     });
 
-    console.log(isExist);
-
     if (isExist) throwError(404, 'expense_category is already exists.');
     req.body.expense_category_uuid = uuid();
+    req.body.create_ts = setDateTimeFormat('timestemp');
+    // add defult approval
+
+    const defultapproval = [{}, {}];
   }
   let expense_category = await insertRecords('expense_category', req.body);
 
