@@ -45,6 +45,7 @@ exports.upsertExpenseSchema = Joi.object({
       'DRAFT',
       'EXPENSE_APPROVAL_REQUESTED',
       'FINANCE_APPROVAL_REQUESTED',
+      'EXPENSE_REQUESTED',
       'FINANCE',
     )
     .required(),
