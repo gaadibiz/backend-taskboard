@@ -885,6 +885,69 @@
           }
         }
       }
+    },
+    "/api/v1/general/get-record-counts": {
+      "get": {
+        "tags": ["General"],
+        "summary": "It will show the count of total records per column.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "table_name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+
+          {
+            "in": "query",
+            "name": "to_date",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Format will be YYYY-MM-DD."
+          },
+          {
+            "in": "query",
+            "name": "from_date",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Format will be YYYY-MM-DD."
+          },
+          {
+            "in": "query",
+            "name": "pageNo",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "itemPerPage",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
     }
   }
 }

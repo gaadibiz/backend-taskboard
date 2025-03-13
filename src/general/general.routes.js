@@ -112,4 +112,11 @@ router
     ),
   );
 
+router
+  .route('/get-record-counts')
+  .get(
+    checkAuth,
+    requestErrorHandlingDecorator(null, controller.getRecordCount),
+  );
+
 module.exports = router;

@@ -11,6 +11,7 @@ const {
   isTableOrViewExist,
   getCountRecord,
   isColumnExistInTable,
+  advanceFiltering,
 } = require('../../utils/dbFunctions');
 const {
   removeNullValueKey,
@@ -339,6 +340,7 @@ exports.getApprovals = async (req, res) => {
     status,
     columns,
     value,
+    advanceFilter,
   } = req.query;
 
   let tableName = 'latest_dynamic_approval';
@@ -355,6 +357,7 @@ exports.getApprovals = async (req, res) => {
     {
       alias: 'la',
     },
+    advanceFilter,
   );
 
   if (req.user.role_value !== 'ADMIN' && req.user.role_value !== 'SUPERADMIN') {
@@ -364,6 +367,8 @@ exports.getApprovals = async (req, res) => {
     or JSON_CONTAINS(approval_uuids, '{"type": "ROLE", "uuid": "${req.user.role_uuid}"}'))`;
   }
   console.log('filter after filter', filter);
+  if (advanceFilter) filter = advanceFiltering(filter, advanceFilter);
+
   let pageFilter = pagination(pageNo, itemPerPage);
   let result = (
     await dbRequest(`select record_column_name from latest_dynamic_approval 

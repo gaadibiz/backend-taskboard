@@ -75,6 +75,32 @@ exports.getExpenseSchema = Joi.object({
   status: Joi.string(),
   columns: Joi.string(),
   value: Joi.string(),
+  advanceFilter: Joi.alternatives()
+    .try(
+      Joi.string(),
+      Joi.array().items(
+        Joi.object({
+          column: Joi.array().items(Joi.string()).required(),
+          operator: Joi.string()
+            .valid(
+              'EQUAL',
+              'NOT_EQUAL',
+              'GREATER',
+              'LESSER',
+              'GREATER_THAN_EQUAL',
+              'LESSER_THAN_EQUAL',
+              'CONTAINS',
+              'STARTS_WITH',
+              'ENDS_WITH',
+              'DATE_RANGE',
+            )
+            .required(),
+          value: Joi.string().allow(null),
+          logicalOperator: Joi.string().valid('AND', 'OR').required(),
+        }),
+      ),
+    )
+    .allow(null),
 });
 
 exports.upsertExpenseCategory = Joi.object({

@@ -722,3 +722,108 @@ exports.getHighestParameterValue = async (
     return { highestValue: 0 }; // Still return default value in case of errors
   }
 };
+
+/**
+ *
+ * @param {SqlFilter} payload
+ */
+exports.createConditionExpression = (payload) => {
+  let tempSql = '';
+  switch (payload.operator) {
+    case 'EQUAL':
+      tempSql = `(${payload.column.map((column) => `${column} = ?`).join(' OR ')})`;
+      payload.value = payload.column.map((e) => payload.value);
+      break;
+    case 'NOT_EQUAL':
+      tempSql = `(${payload.column.map((column) => `${column} <> ?`).join(' OR ')})`;
+      payload.value = payload.column.map((e) => payload.value);
+      break;
+    case 'GREATER':
+      tempSql = `(${payload.column.map((column) => `${column} > ?`).join(' OR ')})`;
+      payload.value = payload.column.map((e) => payload.value);
+      break;
+    case 'LESSER':
+      tempSql = `(${payload.column.map((column) => `${column} < ?`).join(' OR ')})`;
+      payload.value = payload.column.map((e) => payload.value);
+      break;
+    case 'GREATER_THAN_EQUAL':
+      tempSql = `(${payload.column.map((column) => `${column} >= ?`).join(' OR ')})`;
+      payload.value = payload.column.map((e) => payload.value);
+      break;
+    case 'LESSER_THAN_EQUAL':
+      tempSql = `(${payload.column.map((column) => `${column} <= ?`).join(' OR ')})`;
+      payload.value = payload.column.map((e) => payload.value);
+      break;
+    case 'CONTAINS':
+      tempSql = `(${payload.column.map((column) => `${column} LIKE ?`).join(' OR ')})`;
+      payload.value = payload.column.map((e) => `%${payload.value}%`);
+      break;
+    case 'ENDS_WITH':
+      tempSql = `(${payload.column.map((column) => `${column} LIKE ?`).join(' OR ')})`;
+      payload.value = payload.column.map((e) => `${payload.value}%`);
+      break;
+    case 'STARTS_WITH':
+      tempSql = `(${payload.column.map((column) => `${column} LIKE ?`).join(' OR ')})`;
+      payload.value = payload.column.map((e) => `%${payload.value}`);
+      break;
+    case 'DATE_RANGE':
+      if (payload.value.includes(',')) {
+        payload.value = payload.value.split(',');
+        console.log(payload.value);
+        if (payload.value[0]) {
+          payload.value[0] += ' 00:00:00';
+          tempSql = `${payload.column} >= ?`;
+        }
+        if (payload.value[1]) {
+          payload.value[1] += ' 23:59:59';
+          if (!tempSql) payload.value.shift();
+          tempSql += tempSql
+            ? ` AND ${payload.column} <= ?`
+            : `${payload.column} <= ?`;
+        }
+      } else {
+        payload.value += ' 00:00:00';
+        tempSql = `${payload.column} >= ?`;
+      }
+      break;
+  }
+  return mysql.format(tempSql, payload.value);
+};
+
+/**
+ *
+ * @param {Array<{
+ * column: Array<string>,
+ * operator: Operators,
+ * value: string,
+ * logicalOperator: "AND" | "OR"
+ * }>| SqlFilter} filterPayload
+ */
+exports.advanceFiltering = (filter, filterPayload) => {
+  if (typeof filterPayload === 'string') {
+    if (filterPayload.startsWith('[') && filterPayload.endsWith(']')) {
+      filterPayload = JSON.parse(filterPayload);
+    } else {
+      filterPayload = JSON.parse(`[${filterPayload}]`);
+    }
+  }
+
+  filterPayload = Array.isArray(filterPayload)
+    ? filterPayload
+    : [filterPayload];
+
+  let conditionArr = filterPayload.map((payload, index) => {
+    if (typeof payload === 'string') {
+      try {
+        payload = JSON.parse(payload);
+      } catch (_) {
+        throwError(400, 'Invalid filter payload');
+      }
+    }
+    return `${index ? payload.logicalOperator || 'AND' : ''} ${this.createConditionExpression(
+      payload,
+    )}`;
+  });
+  filter += (filter ? ' AND ' : 'WHERE ') + conditionArr.join(' ');
+  return filter;
+};

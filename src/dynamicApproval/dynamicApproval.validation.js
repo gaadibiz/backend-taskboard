@@ -90,6 +90,32 @@ exports.getApprovalSchema = Joi.object({
   status: Joi.string().valid('REQUESTED', 'ROLLBACK', 'APPROVED').allow(null),
   columns: Joi.array().items(Joi.string().required()).allow(null),
   value: Joi.string().allow(null),
+  advanceFilter: Joi.alternatives()
+    .try(
+      Joi.string(),
+      Joi.array().items(
+        Joi.object({
+          column: Joi.array().items(Joi.string()).required(),
+          operator: Joi.string()
+            .valid(
+              'EQUAL',
+              'NOT_EQUAL',
+              'GREATER',
+              'LESSER',
+              'GREATER_THAN_EQUAL',
+              'LESSER_THAN_EQUAL',
+              'CONTAINS',
+              'STARTS_WITH',
+              'ENDS_WITH',
+              'DATE_RANGE',
+            )
+            .required(),
+          value: Joi.string().allow(null),
+          logicalOperator: Joi.string().valid('AND', 'OR').required(),
+        }),
+      ),
+    )
+    .allow(null),
 });
 
 exports.getDynamicApprovalHistorySchema = Joi.object({

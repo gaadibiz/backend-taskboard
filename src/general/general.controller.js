@@ -670,3 +670,21 @@ exports.getDocuments = async (req, res) => {
   let result = await getRecords(tableName, filter, pageFilter);
   return res.json(responser('Document ', result, result.length, totalRecords));
 };
+
+exports.getRecordCount = async (req, res) => {
+  let { table_name, to_date, from_date } = req.query;
+  let filter = filterFunctionality({}, null, to_date, from_date, []);
+  // filter = await roleFilterService(filter, table_name, req.user);
+
+  const query = `
+      SELECT status, COUNT(*) AS count
+       FROM ${table_name} 
+       ${filter}
+       GROUP BY status;
+
+      `;
+
+  let totalRecords = await dbRequest(query);
+  console.log(totalRecords);
+  return res.json(responser('Total records', totalRecords));
+};

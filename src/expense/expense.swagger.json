@@ -311,6 +311,46 @@
             "description": "",
             "required": true,
             "type": "number"
+          },
+          {
+            "in": "query",
+            "name": "advanceFilter",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "column": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "operator": {
+                  "type": "string",
+                  "enum": [
+                    "EQUAL",
+                    "NOT_EQUAL",
+                    "GREATER",
+                    "LESSER",
+                    "GREATER_THAN_EQUAL",
+                    "LESSER_THAN_EQUAL",
+                    "CONTAINS",
+                    "STARTS_WITH",
+                    "ENDS_WITH",
+                    "DATE_RANGE"
+                  ]
+                },
+                "value": {
+                  "type": "string"
+                },
+                "logicalOperator": {
+                  "type": "string",
+                  "enum": ["AND", "OR"]
+                }
+              }
+            },
+            "description": "Advanced filters for complex leads queries."
           }
         ],
         "responses": {

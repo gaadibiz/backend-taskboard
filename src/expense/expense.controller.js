@@ -10,6 +10,7 @@ const {
   isValidRecord,
   roleFilterService,
   isEditAccess,
+  advanceFiltering,
   countTypesInColumn,
   insertRecordHandleIncremental,
   dbRequest,
@@ -141,6 +142,7 @@ exports.getExpense = async (req, res) => {
     status,
     columns,
     value,
+    advanceFilter,
     is_type_expense,
     is_type_advance,
     is_type_job,
@@ -162,6 +164,7 @@ exports.getExpense = async (req, res) => {
     from_date,
     Array.isArray(columns) ? columns : [columns],
     value,
+    advanceFilter,
   );
 
   let condition = '';
@@ -179,6 +182,8 @@ exports.getExpense = async (req, res) => {
   if (condition) {
     filter += (filter ? ' AND ' : ' WHERE ') + `(${condition})`;
   }
+  if (advanceFilter) filter = advanceFiltering(filter, advanceFilter);
+  console.log('filter', filter);
 
   filter = await roleFilterService(filter, 'latest_expense', req.user);
   let pageFilter = pagination(pageNo, itemPerPage);
