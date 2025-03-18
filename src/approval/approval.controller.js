@@ -337,6 +337,7 @@ exports.getApprovals = async (req, res) => {
     status,
     columns,
     value,
+    pageLimit,
     advanceFilter,
   } = req.query;
 
@@ -364,7 +365,7 @@ exports.getApprovals = async (req, res) => {
   }
   console.log('filter after filter', filter);
   if (advanceFilter) filter = advanceFiltering(filter, advanceFilter);
-  let pageFilter = pagination(pageNo, itemPerPage);
+  let pageFilter = pagination(pageNo, itemPerPage, pageLimit);
   let result = (
     await dbRequest(`select record_column_name from latest_approval 
                   where table_name='${table_name}' limit 1;`)
@@ -494,6 +495,8 @@ exports.getApprovalCount = async (req, res) => {
     status,
     columns,
     value,
+    pageLimit,
+    advanceFilter,
   } = req.query;
 
   let tableName = 'latest_approval_count';
@@ -507,8 +510,10 @@ exports.getApprovalCount = async (req, res) => {
     Array.isArray(columns) ? columns : [columns],
     value,
   );
-  // filter = await roleFilterService(filter, 'latest_customer', req.user);
-  let pageFilter = pagination(pageNo, itemPerPage);
+  filter = await roleFilterService(filter, 'latest_customer', req.user);
+  if (advanceFilter) filter = advanceFiltering(filter, advanceFilter);
+
+  let pageFilter = pagination(pageNo, itemPerPage, pageLimit);
   let totalRecords = await getCountRecord(tableName, filter);
   let result = await getRecords(tableName, filter, pageFilter, null, {
     includeUniqueId: false,

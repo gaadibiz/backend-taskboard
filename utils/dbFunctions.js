@@ -449,13 +449,23 @@ exports.filterFunctionality = (
  * @param {number} itemPerPage Item per page.
  * @returns {string} String of SQL.
  */
-exports.pagination = (pageNo, itemPerPage, options = { alias: '' }) => {
-  const aliases = options.alias ? options.alias + '.' : '';
-  return `ORDER BY ${aliases}insert_ts DESC ${
+exports.pagination = (
+  pageNo,
+  itemPerPage,
+  pageLimit,
+  options = { preventOrderBy: false },
+) => {
+  // return `ORDER BY insert_ts DESC ${
+  if (pageLimit) {
+    return pageNo && itemPerPage
+      ? `${!options.preventOrderBy ? 'ORDER BY 1 DESC' : ''} limit ${pageLimit} OFFSET ${(pageNo - 1) * itemPerPage}`
+      : `${!options.preventOrderBy ? 'ORDER BY 1 DESC' : ''} limit 0, 100`;
+  }
+  return `${
     pageNo && itemPerPage
-      ? `limit ${(pageNo - 1) * itemPerPage},${itemPerPage}`
-      : ' limit 0,100'
-  };`;
+      ? `${!options.preventOrderBy ? 'ORDER BY 1 DESC' : ''} limit ${(pageNo - 1) * itemPerPage},${itemPerPage}`
+      : `${!options.preventOrderBy ? 'ORDER BY 1 DESC' : ''} limit 0,100`
+  }`;
 };
 
 exports.dataStringForSQL = (formValue = []) => {

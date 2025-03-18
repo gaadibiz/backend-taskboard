@@ -69,10 +69,41 @@ exports.insertApprovalCountSchema = Joi.object({
 
 exports.getApprovalCountSchema = Joi.object({
   dynamic_approval_count_uuid: Joi.string().guid().allow(null),
-  dynamic_table_name: Joi.string().required(),
+  table_name: Joi.string().required(),
   dynamic_uuid: Joi.string().guid().allow('', null),
   pageNo: Joi.number().integer().min(1).default(1),
   itemPerPage: Joi.number().integer().min(1).max(100).default(10),
+  pageLimit: Joi.number()
+    .integer()
+    .min(1)
+    .default(1)
+    .description('The maximum number of pages allowed.'),
+  advanceFilter: Joi.alternatives()
+    .try(
+      Joi.string(),
+      Joi.array().items(
+        Joi.object({
+          column: Joi.array().items(Joi.string()).required(),
+          operator: Joi.string()
+            .valid(
+              'EQUAL',
+              'NOT_EQUAL',
+              'GREATER',
+              'LESSER',
+              'GREATER_THAN_EQUAL',
+              'LESSER_THAN_EQUAL',
+              'CONTAINS',
+              'STARTS_WITH',
+              'ENDS_WITH',
+              'DATE_RANGE',
+            )
+            .required(),
+          value: Joi.string().allow(null),
+          logicalOperator: Joi.string().valid('AND', 'OR').required(),
+        }),
+      ),
+    )
+    .allow(null),
   from_date: Joi.date().allow(null),
   to_date: Joi.date().allow(null),
   status: Joi.string().valid('REQUESTED', 'ROLLBACK', 'APPROVED').allow(null),
@@ -90,6 +121,11 @@ exports.getApprovalSchema = Joi.object({
   status: Joi.string().valid('REQUESTED', 'ROLLBACK', 'APPROVED').allow(null),
   columns: Joi.array().items(Joi.string().required()).allow(null),
   value: Joi.string().allow(null),
+  pageLimit: Joi.number()
+    .integer()
+    .min(1)
+    .default(1)
+    .description('The maximum number of pages allowed.'),
   advanceFilter: Joi.alternatives()
     .try(
       Joi.string(),

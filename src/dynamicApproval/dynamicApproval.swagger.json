@@ -141,6 +141,15 @@
           },
           {
             "in": "query",
+            "name": "pageLimit",
+            "schema": {
+              "type": "string"
+            },
+            "description": "",
+            "required": true
+          },
+          {
+            "in": "query",
             "name": "advanceFilter",
             "type": "array",
             "items": {
@@ -320,6 +329,55 @@
             "name": "itemPerPage",
             "type": "integer",
             "required": true
+          },
+          {
+            "in": "query",
+            "name": "pageLimit",
+            "schema": {
+              "type": "string"
+            },
+            "description": "",
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "advanceFilter",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "column": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "operator": {
+                  "type": "string",
+                  "enum": [
+                    "EQUAL",
+                    "NOT_EQUAL",
+                    "GREATER",
+                    "LESSER",
+                    "GREATER_THAN_EQUAL",
+                    "LESSER_THAN_EQUAL",
+                    "CONTAINS",
+                    "STARTS_WITH",
+                    "ENDS_WITH",
+                    "DATE_RANGE"
+                  ]
+                },
+                "value": {
+                  "type": "string"
+                },
+                "logicalOperator": {
+                  "type": "string",
+                  "enum": ["AND", "OR"]
+                }
+              }
+            },
+
+            "description": "Advanced filters for complex leads queries."
           }
         ],
         "responses": {

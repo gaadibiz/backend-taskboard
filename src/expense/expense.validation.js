@@ -70,6 +70,11 @@ exports.getExpenseSchema = Joi.object({
   is_type_job: Joi.boolean(),
   pageNo: Joi.number().integer().min(1),
   itemPerPage: Joi.number().integer().min(1),
+  pageLimit: Joi.number()
+    .integer()
+    .min(1)
+    .default(1)
+    .description('The maximum number of pages allowed.'),
   from_date: Joi.string().regex(/^\d{4}-\d{2}-\d{2}$/),
   to_date: Joi.string().regex(/^\d{4}-\d{2}-\d{2}$/),
   status: Joi.string(),

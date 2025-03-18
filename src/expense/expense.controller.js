@@ -142,6 +142,7 @@ exports.getExpense = async (req, res) => {
     status,
     columns,
     value,
+    pageLimit,
     advanceFilter,
     is_type_expense,
     is_type_advance,
@@ -186,7 +187,7 @@ exports.getExpense = async (req, res) => {
   console.log('filter', filter);
 
   filter = await roleFilterService(filter, 'latest_expense', req.user);
-  let pageFilter = pagination(pageNo, itemPerPage);
+  let pageFilter = pagination(pageNo, itemPerPage, pageLimit);
   let totalRecords = await getCountRecord(tableName, filter);
   let result = await getRecords(tableName, filter, pageFilter);
 

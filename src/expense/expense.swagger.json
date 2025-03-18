@@ -314,6 +314,14 @@
           },
           {
             "in": "query",
+            "name": "pageLimit",
+            "description": "",
+            "required": true,
+            "type": "number"
+          },
+
+          {
+            "in": "query",
             "name": "advanceFilter",
             "required": false,
             "type": "array",
