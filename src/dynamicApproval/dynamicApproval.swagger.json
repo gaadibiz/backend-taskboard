@@ -275,6 +275,12 @@
             "in": "query",
             "name": "table_name",
             "type": "string",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "dynamic_table_name",
+            "type": "string",
             "required": true
           },
           {
