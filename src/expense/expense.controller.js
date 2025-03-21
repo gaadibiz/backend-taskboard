@@ -256,8 +256,68 @@ exports.upsertExpenseCategory = async (req, res) => {
     req.body.expense_category_uuid = uuid();
     req.body.create_ts = setDateTimeFormat('timestemp');
     // add defult approval
+    let [role_info_project_manager] = await getRecords(
+      'latest_roles',
+      `where role_value='PROJECT_MANAGER'`,
+    );
+    console.log('role_info_project_manager: ', role_info_project_manager);
+    // role_info_project_manager = role_info_project_manager[0];
 
-    const defultapproval = [{}, {}];
+    let [role_info_category_manager] = await getRecords(
+      'latest_roles',
+      `where role_value='CATEGORY_MANAGER'`,
+    );
+    console.log('role_info_category_manager: ', role_info_category_manager);
+    // role_info_category_manager = role_info_category_manager[0];
+
+    let [role_info_finance_manager] = await getRecords(
+      'latest_roles',
+      `where role_value='FINANCE_MANAGER'`,
+    );
+    console.log('role_info_finance_manager: ', role_info_finance_manager);
+    // role_info_finance_manager = role_info_finance_manager[0];
+
+    // const defultapproval = [{}, {}];
+    const data1 = {
+      dynamic_approval_count_uuid: uuid(),
+      table_name: 'expense_category',
+      dynamic_uuid: req.body.expense_category_uuid,
+      dynamic_table_name: 'latest_expense_category',
+      level: 1,
+      approval_hierarchy: [
+        [{ type: 'ROLE', uuid: `${role_info_finance_manager.role_uuid}}` }],
+      ],
+      approval_raise_status: 'FINANCE_APPROVAL_REQUESTED',
+      previous_status: 'EXPENSE_REQUESTED',
+      next_status: 'FINANCE',
+      status: 'ACTIVE',
+      created_by_uuid: req.body.created_by_uuid,
+    };
+
+    // let insert_dynamic_approval1 = await insertRecords('dynamic_approval_count', data1);
+
+    const data2 = {
+      dynamic_approval_count_uuid: uuid(),
+      table_name: 'expense_category',
+      dynamic_uuid: req.body.expense_category_uuid,
+      dynamic_table_name: 'latest_expense_category',
+      level: 2,
+      approval_hierarchy: [
+        [{ type: 'ROLE', uuid: `${role_info_project_manager.role_uuid}}` }],
+        [{ type: 'ROLE', uuid: `${role_info_category_manager.role_uuid}}` }],
+      ],
+      approval_raise_status: 'EXPENSE_APPROVAL_REQUESTED',
+      previous_status: 'EXPENSE_REQUESTED',
+      next_status: 'FINANCE_APPROVAL_REQUESTED',
+      status: 'ACTIVE',
+      created_by_uuid: req.body.created_by_uuid,
+    };
+    const insertapproval = [data1, data2];
+
+    let insert_dynamic_approval2 = await insertRecords(
+      'dynamic_approval_count',
+      insertapproval,
+    );
   }
   let expense_category = await insertRecords('expense_category', req.body);
 
