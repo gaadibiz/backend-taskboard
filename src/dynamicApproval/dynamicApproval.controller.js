@@ -655,6 +655,7 @@ exports.getDynamicApprovalHistory = async (req, res) => {
   let pageFilter = pagination(pageNo, itemPerPage, pageLimit);
   let totalRecords = await getCountRecord(tableName, filter);
   let result = await getRecords(tableName, filter, pageFilter);
+
   return res.json(
     responser(
       'All dynamic approval history',
