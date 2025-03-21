@@ -674,7 +674,7 @@ exports.getDocuments = async (req, res) => {
 exports.getRecordCount = async (req, res) => {
   let { table_name, to_date, from_date } = req.query;
   let filter = filterFunctionality({}, null, to_date, from_date, []);
-  // filter = await roleFilterService(filter, table_name, req.user);
+  filter = await roleFilterService(filter, table_name, req.user);
 
   const query = `
       SELECT status, COUNT(*) AS count
