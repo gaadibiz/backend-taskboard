@@ -118,7 +118,7 @@ exports.getJob = async (req, res) => {
   );
 
   filter = await roleFilterService(filter, tableName, req.user);
-  let pageFilter = pagination(pageNo, itemPerPage, 'create_ts');
+  let pageFilter = pagination(pageNo, itemPerPage);
   let totalRecords = await getCountRecord(tableName, filter);
   let result = await getRecords(tableName, filter, pageFilter);
 
