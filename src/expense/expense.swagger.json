@@ -126,6 +126,10 @@
                   "type": "number",
                   "default": null
                 },
+                "actual_reimbursed_amount": {
+                  "type": "number",
+                  "default": null
+                },
                 "reimbursed_amount": {
                   "type": "number",
                   "default": null
