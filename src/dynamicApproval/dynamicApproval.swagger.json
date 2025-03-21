@@ -468,6 +468,13 @@
             "type": "string",
             "default": "",
             "required": false
+          },
+          {
+            "in": "query",
+            "name": "pageLimit",
+            "schema": { "type": "string" },
+            "description": "",
+            "required": true
           }
         ],
         "responses": {

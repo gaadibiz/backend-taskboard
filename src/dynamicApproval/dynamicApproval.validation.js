@@ -160,6 +160,11 @@ exports.getDynamicApprovalHistorySchema = Joi.object({
   record_uuid: Joi.string().guid().allow(null),
   requested_by_uuid: Joi.string().guid().allow(null),
   pageNo: Joi.number().integer().min(1).allow(null),
+  pageLimit: Joi.number()
+    .integer()
+    .min(1)
+    .default(1)
+    .description('The maximum number of pages allowed.'),
   itemPerPage: Joi.number().integer().min(1).allow(null),
   from_date: Joi.date().allow(null),
   to_date: Joi.date().allow(null),

@@ -630,6 +630,7 @@ exports.getDynamicApprovalHistory = async (req, res) => {
     requested_by_uuid,
     pageNo,
     itemPerPage,
+    pageLimit,
     from_date,
     to_date,
     status,
@@ -651,7 +652,7 @@ exports.getDynamicApprovalHistory = async (req, res) => {
     value,
   );
 
-  let pageFilter = pagination(pageNo, itemPerPage);
+  let pageFilter = pagination(pageNo, itemPerPage, pageLimit);
   let totalRecords = await getCountRecord(tableName, filter);
   let result = await getRecords(tableName, filter, pageFilter);
   return res.json(
