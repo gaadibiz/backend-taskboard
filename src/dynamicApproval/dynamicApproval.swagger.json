@@ -146,7 +146,7 @@
               "type": "string"
             },
             "description": "",
-            "required": true
+            "required": false
           },
           {
             "in": "query",

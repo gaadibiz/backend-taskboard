@@ -375,6 +375,7 @@ exports.getApprovals = async (req, res) => {
     await dbRequest(`select record_column_name from latest_dynamic_approval 
                   where table_name='${table_name}' ${dynamic_uuid ? `AND dynamic_uuid = '${dynamic_uuid}'` : ''}  limit 1;`)
   )[0];
+  console.log('result: ', result);
   let resultJoined = [];
   let Finalresponse = [];
   if (result) {
@@ -401,6 +402,7 @@ exports.getApprovals = async (req, res) => {
     // } and at.status = "${table_name
     //   .replace('latest_', '')
     //   .toUpperCase()}_APPROVAL_REQUESTED" ${filter} ${pageFilter}`);
+    console.log('resultJoined: ', resultJoined);
 
     Finalresponse = await Promise.all(
       resultJoined?.map(async (ele) => {
@@ -434,6 +436,7 @@ exports.getApprovals = async (req, res) => {
       }),
     );
   }
+  console.log('Finalresponse: ', Finalresponse);
 
   return res.json(responser('Approvals ', Finalresponse, Finalresponse.length));
 };
