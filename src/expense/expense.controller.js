@@ -76,6 +76,7 @@ exports.upsertExpense = async (req, res) => {
     dynamic_uuid: req.body.expense_category_uuid,
     record_uuid: req.body.expense_uuid,
     record_column_name: 'expense_uuid',
+    reimbursed_amount: req.body.reimbursed_amount,
   };
   await getData(
     base_url + '/api/v1/dynamicApproval/insert-approval',
@@ -85,6 +86,10 @@ exports.upsertExpense = async (req, res) => {
     'POST',
     req.headers,
   );
+
+  if (req.body.reimbursed_amount > 10000) {
+    console.log('approval for the admin');
+  }
 
   res.json(responser('expense created or updated successfully.', req.body));
 
