@@ -43,6 +43,12 @@ module.exports = {
         role_uuid: uuidv4(),
         role_group: 'USER',
       },
+      {
+        role_name: 'CEO',
+        role_value: 'CEO',
+        role_uuid: uuidv4(),
+        role_group: 'USER',
+      },
     ]);
   },
 

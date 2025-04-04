@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const { join } = require('path');
 
 exports.insertApprovalSchema = Joi.object({
   dynamic_approval_uuid: Joi.string().guid().allow(null),
@@ -51,6 +52,28 @@ exports.insertApprovalCountSchema = Joi.object({
           Joi.object({
             type: Joi.string().valid('USER', 'ROLE').required(),
             uuid: Joi.string().guid().required(),
+            is_conditional: Joi.boolean().required(),
+            filter: Joi.array()
+              .items(
+                Joi.object({
+                  column: Joi.string().allow(''), // Allows empty string
+                  operator: Joi.string().valid(
+                    'EQUAL',
+                    'NOT_EQUAL',
+                    'GREATER',
+                    'LESSER',
+                    'GREATER_THAN_EQUAL',
+                    'LESSER_THAN_EQUAL',
+                    'CONTAINS',
+                    'ENDS_WITH',
+                    'STARTS_WITH',
+                    'DATE_RANGE',
+                  ), // Define allowed operators
+                  value: Joi.string().required(),
+                  logicalOperator: Joi.string().valid('AND', 'OR').optional(),
+                }),
+              )
+              .optional(),
           }),
         ),
     )

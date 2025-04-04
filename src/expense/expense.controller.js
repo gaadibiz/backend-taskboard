@@ -265,7 +265,12 @@ exports.upsertExpenseCategory = async (req, res) => {
       'latest_roles',
       `where role_value='PROJECT_MANAGER'`,
     );
-    console.log('role_info_project_manager: ', role_info_project_manager);
+
+    let [role_info_ceo] = await getRecords(
+      'latest_roles',
+      `where role_value='CEO'`,
+    );
+    // console.log('role_info_project_manager: ', role_info_project_manager);
     // role_info_project_manager = role_info_project_manager[0];
 
     let [role_info_category_manager] = await getRecords(
@@ -306,10 +311,36 @@ exports.upsertExpenseCategory = async (req, res) => {
       table_name: 'latest_expense',
       dynamic_uuid: req.body.expense_category_uuid,
       dynamic_table_name: 'latest_expense_category',
-      level: 2,
+      level: 3,
       approval_hierarchy: [
-        [{ type: 'ROLE', uuid: `${role_info_project_manager.role_uuid}}` }],
-        [{ type: 'ROLE', uuid: `${role_info_category_manager.role_uuid}}` }],
+        [
+          {
+            type: 'ROLE',
+            uuid: `${role_info_ceo.role_uuid}}`,
+            is_conditional: true,
+            filter: [
+              {
+                column: 'reimbursed_amount',
+                operator: 'GREATER_THAN_EQUAL',
+                value: '10000',
+              },
+            ],
+          },
+        ],
+        [
+          {
+            type: 'ROLE',
+            uuid: `${role_info_project_manager.role_uuid}}`,
+            is_conditional: false,
+          },
+        ],
+        [
+          {
+            type: 'ROLE',
+            uuid: `${role_info_category_manager.role_uuid}}`,
+            is_conditional: false,
+          },
+        ],
       ],
       approval_raise_status: 'EXPENSE_APPROVAL_REQUESTED',
       previous_status: 'EXPENSE_REQUESTED',
