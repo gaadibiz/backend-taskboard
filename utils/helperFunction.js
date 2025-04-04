@@ -737,7 +737,7 @@ function evaluateCondition(actualValue, filterValue, operator) {
   }
 }
 
-exports.checkFilterConditionsWithLogic = (dataObj, filters) => {
+const checkFilterConditionsWithLogic = (dataObj, filters) => {
   if (!filters.length) return true;
 
   let result = null;
@@ -773,7 +773,7 @@ exports.checkFilterConditionsWithLogic = (dataObj, filters) => {
   return result;
 };
 
-exports.conditionApproval = (approvalCount, index = 0) => {
+exports.conditionApproval = (approvalCount, index = 0, record) => {
   let implemented_approval_hierarchy = [];
   let i = index; // skip the current level
   while (
@@ -785,10 +785,7 @@ exports.conditionApproval = (approvalCount, index = 0) => {
     if (element[0].is_conditional) {
       // Do nothing or some logic here if needed
 
-      const filter = checkFilterConditionsWithLogic(
-        record[0],
-        element[0].filter,
-      );
+      const filter = checkFilterConditionsWithLogic(record, element[0].filter);
 
       if (filter) {
         implemented_approval_hierarchy.push({

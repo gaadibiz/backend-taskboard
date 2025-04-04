@@ -92,7 +92,7 @@ exports.insertApproval = async (req, res) => {
     );
   }
 
-  let [record] = await getRecords(
+  let record = await getRecords(
     (tableMap[req.body.table_name] || req.body.table_name).replace(
       'latest_',
       '',
@@ -100,11 +100,15 @@ exports.insertApproval = async (req, res) => {
     `where ${req.body.record_column_name}='${req.body.record_uuid}'`,
   );
 
-  if (!record) {
+  if (!record.length) {
     return throwError(400, 'Record not found');
   }
 
-  let implemented_approval_hierarchy = conditionApproval(approvalCount, 0);
+  let implemented_approval_hierarchy = conditionApproval(
+    approvalCount,
+    0,
+    record[0],
+  );
 
   let [exist_approval] = await getRecords(
     'latest_approval',
@@ -276,6 +280,7 @@ exports.handleApproval = async (req, res) => {
     let implemented_approval_hierarchy = conditionApproval(
       approvalCount,
       approval[0].current_level,
+      record[0],
     );
 
     approval[0].approval_uuids = implemented_approval_hierarchy[0].approval;
