@@ -182,7 +182,8 @@ exports.handleApproval = async (req, res) => {
         ele.uuid === req.user.user_uuid ||
         ele.uuid === req.user.role_uuid ||
         req.user.role_value === 'ADMIN' ||
-        req.user.role_value === 'SUPERADMIN',
+        req.user.role_value === 'SUPERADMIN' ||
+        req.user.role_value === 'CEO',
     ) &&
     req.body.status !== 'ROLLBACK'
   )
