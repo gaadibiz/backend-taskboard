@@ -129,7 +129,9 @@ exports.insertApproval = async (req, res) => {
       dynamic_approval_uuid: uuidv4(),
       requested_by_uuid: req.user.user_uuid,
       current_level: implemented_approval_hierarchy[0].condition.level,
-      approval_uuids: implemented_approval_hierarchy[0].approval,
+      approval_uuids: JSON.stringify(
+        implemented_approval_hierarchy[0].approval,
+      ),
       previous_status: approvalCount.previous_status,
       status: 'REQUESTED',
       next_status: approvalCount.next_status,
@@ -285,7 +287,9 @@ exports.handleApproval = async (req, res) => {
       record[0],
     );
 
-    approval[0].approval_uuids = implemented_approval_hierarchy[0].approval;
+    approval[0].approval_uuids = JSON.stringify(
+      implemented_approval_hierarchy[0].approval,
+    );
     approval[0].current_level =
       implemented_approval_hierarchy[0].condition.level;
     approval[0].status = 'REQUESTED';
@@ -371,8 +375,6 @@ exports.getApprovals = async (req, res) => {
     status,
     columns,
     value,
-    pageLimit,
-    advanceFilter,
   } = req.query;
 
   let tableName = 'latest_dynamic_approval';
@@ -389,28 +391,20 @@ exports.getApprovals = async (req, res) => {
     {
       alias: 'la',
     },
-    advanceFilter,
   );
 
-  if (
-    req.user.role_value !== 'ADMIN' &&
-    req.user.role_value !== 'SUPERADMIN' &&
-    req.user.role_value !== 'CEO'
-  ) {
+  if (req.user.role_value !== 'ADMIN' && req.user.role_value !== 'SUPERADMIN') {
     filter =
       (filter ? `${filter} AND ` : 'WHERE ') +
       `(JSON_CONTAINS(approval_uuids, '{"type": "USER", "uuid": "${req.user.user_uuid}"}')
     or JSON_CONTAINS(approval_uuids, '{"type": "ROLE", "uuid": "${req.user.role_uuid}"}'))`;
   }
   console.log('filter after filter', filter);
-  if (advanceFilter) filter = advanceFiltering(filter, advanceFilter);
-
-  let pageFilter = pagination(pageNo, itemPerPage, pageLimit);
+  let pageFilter = pagination(pageNo, itemPerPage);
   let result = (
     await dbRequest(`select record_column_name from latest_dynamic_approval 
                   where table_name='${table_name}' ${dynamic_uuid ? `AND dynamic_uuid = '${dynamic_uuid}'` : ''}  limit 1;`)
   )[0];
-  console.log('result: ', result);
   let resultJoined = [];
   let Finalresponse = [];
   if (result) {
@@ -437,7 +431,6 @@ exports.getApprovals = async (req, res) => {
     // } and at.status = "${table_name
     //   .replace('latest_', '')
     //   .toUpperCase()}_APPROVAL_REQUESTED" ${filter} ${pageFilter}`);
-    console.log('resultJoined: ', resultJoined);
 
     Finalresponse = await Promise.all(
       resultJoined?.map(async (ele) => {
@@ -471,11 +464,9 @@ exports.getApprovals = async (req, res) => {
       }),
     );
   }
-  console.log('Finalresponse: ', Finalresponse);
 
   return res.json(responser('Approvals ', Finalresponse, Finalresponse.length));
 };
-
 exports.insertApprovalCount = async (req, res) => {
   removeNullValueKey(req.body);
   const {
