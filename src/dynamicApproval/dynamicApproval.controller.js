@@ -264,8 +264,8 @@ exports.handleApproval = async (req, res) => {
       },
     );
   }
-  req.body = { ...approval[0], ...req.body };
-  await insertRecords('dynamic_approval', req.body);
+  // req.body = { ...approval[0], ...req.body };
+  // await insertRecords('dynamic_approval', req.body);
 
   if (
     approvalCount.level !== approval[0].current_level &&
