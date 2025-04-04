@@ -295,7 +295,13 @@ exports.upsertExpenseCategory = async (req, res) => {
       dynamic_table_name: 'latest_expense_category',
       level: 1,
       approval_hierarchy: [
-        [{ type: 'ROLE', uuid: `${role_info_finance_manager.role_uuid}}` }],
+        [
+          {
+            type: 'ROLE',
+            uuid: `${role_info_finance_manager.role_uuid}}`,
+            is_conditional: false,
+          },
+        ],
       ],
       approval_raise_status: 'FINANCE_APPROVAL_REQUESTED',
       previous_status: 'EXPENSE_REQUESTED',

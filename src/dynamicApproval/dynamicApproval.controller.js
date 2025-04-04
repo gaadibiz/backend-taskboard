@@ -361,7 +361,11 @@ exports.getApprovals = async (req, res) => {
     advanceFilter,
   );
 
-  if (req.user.role_value !== 'ADMIN' && req.user.role_value !== 'SUPERADMIN') {
+  if (
+    req.user.role_value !== 'ADMIN' &&
+    req.user.role_value !== 'SUPERADMIN' &&
+    req.user.role_value !== 'CEO'
+  ) {
     filter =
       (filter ? `${filter} AND ` : 'WHERE ') +
       `(JSON_CONTAINS(approval_uuids, '{"type": "USER", "uuid": "${req.user.user_uuid}"}')
