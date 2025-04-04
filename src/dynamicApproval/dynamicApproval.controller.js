@@ -20,6 +20,7 @@ const {
   getData,
   setDateTimeFormat,
   deleteKeyValuePair,
+  checkFilterConditionsWithLogic,
 } = require('../../utils/helperFunction');
 const { v4: uuidv4 } = require('uuid');
 const { base_url } = require('../../config/server.config');
@@ -88,12 +89,54 @@ exports.insertApproval = async (req, res) => {
     );
   }
 
+  let [record] = await getRecords(
+    (tableMap[req.body.table_name] || req.body.table_name).replace(
+      'latest_',
+      '',
+    ),
+    `where ${req.body.record_column_name}='${req.body.record_uuid}'`,
+  );
+
+  if (!record) {
+    return throwError(400, 'Record not found');
+  }
+
+  let implemented_approval_hierarchy = [];
+  let i = 0;
+
+  while (
+    i < approvalCount?.approval_hierarchy.length &&
+    implemented_approval_hierarchy.length === 0
+  ) {
+    const element = approvalCount.approval_hierarchy[i];
+
+    if (element[0].is_conditional) {
+      // Do nothing or some logic here if needed
+
+      const filter = checkFilterConditionsWithLogic(record, element[0].filter);
+
+      if (filter) {
+        implemented_approval_hierarchy.push({
+          ...element[0],
+          level: i + 1,
+        });
+      }
+    } else {
+      implemented_approval_hierarchy.push({
+        ...element[0],
+        level: i + 1,
+      });
+    }
+
+    i++;
+  }
+
   let [exist_approval] = await getRecords(
     'latest_dynamic_approval',
     `where 
      table_name='${req.body.table_name}'
      AND record_uuid = '${req.body.record_uuid}'
-     AND current_level=1 
+     AND current_level=${implemented_approval_hierarchy[0].level}
      AND previous_status='${approvalCount.previous_status}' 
      AND next_status ='${approvalCount.next_status}'
      AND status='REQUESTED'`,
@@ -108,14 +151,15 @@ exports.insertApproval = async (req, res) => {
       ...req.body,
       dynamic_approval_uuid: uuidv4(),
       requested_by_uuid: req.user.user_uuid,
-      current_level: 1,
-      approval_uuids: approvalCount.approval_hierarchy[0],
+      current_level: implemented_approval_hierarchy[0].level,
+      approval_uuids: implemented_approval_hierarchy[0],
       previous_status: approvalCount.previous_status,
       status: 'REQUESTED',
       next_status: approvalCount.next_status,
       create_ts: setDateTimeFormat('timestemp'),
     };
     await insertRecords('dynamic_approval', req.body);
+
     res.status(200).json(responser('Approval inserted successfully', req.body));
     // <------------ Send Email On Action ------------->
     // approvalEmails(req.body.dynamic_approval_uuid, req.user);
@@ -222,6 +266,7 @@ exports.handleApproval = async (req, res) => {
   }
   req.body = { ...approval[0], ...req.body };
   await insertRecords('dynamic_approval', req.body);
+
   if (
     approvalCount.level !== approval[0].current_level &&
     req.body.status === 'APPROVED'

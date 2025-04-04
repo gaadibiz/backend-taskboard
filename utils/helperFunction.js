@@ -705,3 +705,70 @@ exports.compareObjects = (obj1, obj2) => {
   });
   return changes;
 };
+
+function evaluateCondition(actualValue, filterValue, operator) {
+  switch (operator) {
+    case 'EQUAL':
+      return actualValue == filterValue;
+    case 'NOT_EQUAL':
+      return actualValue != filterValue;
+    case 'GREATER':
+      return actualValue > filterValue;
+    case 'LESSER':
+      return actualValue < filterValue;
+    case 'GREATER_THAN_EQUAL':
+      return actualValue >= filterValue;
+    case 'LESSER_THAN_EQUAL':
+      return actualValue <= filterValue;
+    case 'CONTAINS':
+      return (
+        typeof actualValue === 'string' && actualValue.includes(filterValue)
+      );
+    case 'STARTS_WITH':
+      return (
+        typeof actualValue === 'string' && actualValue.startsWith(filterValue)
+      );
+    case 'ENDS_WITH':
+      return (
+        typeof actualValue === 'string' && actualValue.endsWith(filterValue)
+      );
+    default:
+      return false;
+  }
+}
+
+exports.checkFilterConditionsWithLogic = (dataObj, filters) => {
+  if (!filters.length) return true;
+
+  let result = null;
+
+  for (let i = 0; i < filters.length; i++) {
+    const { column, operator, value, logicalOperator } = filters[i];
+    const actual = dataObj[column];
+    const actualVal = isNaN(actual) ? actual : parseFloat(actual);
+    const filterVal = isNaN(value) ? value : parseFloat(value);
+
+    console.log(
+      actualVal,
+      filterVal,
+      operator,
+      '........................... actualVal, filterVal, operator',
+    );
+
+    const currentResult = evaluateCondition(actualVal, filterVal, operator);
+
+    console.log(currentResult, '........................... currentResult');
+    if (result === null) {
+      result = currentResult;
+    } else {
+      const logic = filters[i - 1].logicalOperator || 'AND';
+      if (logic === 'AND') {
+        result = result && currentResult;
+      } else if (logic === 'OR') {
+        result = result || currentResult;
+      }
+    }
+  }
+
+  return result;
+};
