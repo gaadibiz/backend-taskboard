@@ -260,31 +260,20 @@ exports.upsertExpenseCategory = async (req, res) => {
     req.body.expense_category_uuid = uuid();
     req.body.create_ts = setDateTimeFormat('timestemp');
     // add defult approval
-    let [role_info_project_manager] = await getRecords(
+    let roles = await getRecords(
       'latest_roles',
-      `where role_value='PROJECT_MANAGER'`,
+      `where role_value IN ('PROJECT_MANAGER', 'CEO', 'CATEGORY_MANAGER', 'FINANCE_MANAGER')`,
     );
-
-    let [role_info_ceo] = await getRecords(
-      'latest_roles',
-      `where role_value='CEO'`,
+    let role_info_project_manager = roles.find(
+      (role) => role.role_value === 'PROJECT_MANAGER',
     );
-    // console.log('role_info_project_manager: ', role_info_project_manager);
-    // role_info_project_manager = role_info_project_manager[0];
-
-    let [role_info_category_manager] = await getRecords(
-      'latest_roles',
-      `where role_value='CATEGORY_MANAGER'`,
+    let role_info_ceo = roles.find((role) => role.role_value === 'CEO');
+    let role_info_category_manager = roles.find(
+      (role) => role.role_value === 'CATEGORY_MANAGER',
     );
-    console.log('role_info_category_manager: ', role_info_category_manager);
-    // role_info_category_manager = role_info_category_manager[0];
-
-    let [role_info_finance_manager] = await getRecords(
-      'latest_roles',
-      `where role_value='FINANCE_MANAGER'`,
+    let role_info_finance_manager = roles.find(
+      (role) => role.role_value === 'FINANCE_MANAGER',
     );
-    console.log('role_info_finance_manager: ', role_info_finance_manager);
-    // role_info_finance_manager = role_info_finance_manager[0];
 
     // const defultapproval = [{}, {}];
     const data1 = {
@@ -337,6 +326,20 @@ exports.upsertExpenseCategory = async (req, res) => {
             type: 'ROLE',
             uuid: `${role_info_project_manager.role_uuid}}`,
             is_conditional: false,
+          },
+        ],
+        [
+          {
+            type: 'ROLE',
+            uuid: `${role_info_ceo.role_uuid}}`,
+            is_conditional: true,
+            filter: [
+              {
+                column: 'merchant',
+                operator: 'EQUAL',
+                value: 'KHUSHI',
+              },
+            ],
           },
         ],
         [

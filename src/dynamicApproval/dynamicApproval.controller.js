@@ -265,8 +265,8 @@ exports.handleApproval = async (req, res) => {
       },
     );
   }
-  // req.body = { ...approval[0], ...req.body };
-  // await insertRecords('dynamic_approval', req.body);
+  req.body = { ...approval[0], ...req.body };
+  await insertRecords('dynamic_approval', req.body);
 
   if (
     approvalCount.level !== approval[0].current_level &&
@@ -300,9 +300,42 @@ exports.handleApproval = async (req, res) => {
       );
     }
 
-    approval[0].approval_uuids =
-      approvalCount.approval_hierarchy[approval[0].current_level];
-    approval[0].current_level += 1;
+    // conditional logic
+    let implemented_approval_hierarchy = [];
+    let i = approval[0].current_level; // skip the current level
+
+    while (
+      i < approvalCount?.approval_hierarchy.length &&
+      implemented_approval_hierarchy.length === 0
+    ) {
+      const element = approvalCount.approval_hierarchy[i];
+
+      if (element[0].is_conditional) {
+        // Do nothing or some logic here if needed
+
+        const filter = checkFilterConditionsWithLogic(
+          record[0],
+          element[0].filter,
+        );
+
+        if (filter) {
+          implemented_approval_hierarchy.push({
+            ...element[0],
+            level: i + 1,
+          });
+        }
+      } else {
+        implemented_approval_hierarchy.push({
+          ...element[0],
+          level: i + 1,
+        });
+      }
+
+      i++;
+    }
+
+    approval[0].approval_uuids = implemented_approval_hierarchy[0];
+    approval[0].current_level = implemented_approval_hierarchy[0].level;
     approval[0].status = 'REQUESTED';
     approval[0].created_by_uuid = req.user.user_uuid;
 

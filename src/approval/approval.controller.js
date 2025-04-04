@@ -181,7 +181,9 @@ exports.handleApproval = async (req, res) => {
       (ele) =>
         ele.uuid === req.user.user_uuid ||
         ele.uuid === req.user.role_uuid ||
-        req.user.role_value === 'ADMIN',
+        req.user.role_value === 'ADMIN' ||
+        req.user.role_value === 'SUPERADMIN' ||
+        req.user.role_value === 'CEO',
     ) &&
     req.body.status !== 'ROLLBACK'
   )
@@ -296,9 +298,42 @@ exports.handleApproval = async (req, res) => {
       );
     }
 
-    approval[0].approval_uuids =
-      approvalCount.approval_hierarchy[approval[0].current_level];
-    approval[0].current_level += 1;
+    // conditional logic
+    let implemented_approval_hierarchy = [];
+    let i = approval[0].current_level; // skip the current level
+
+    while (
+      i < approvalCount?.approval_hierarchy.length &&
+      implemented_approval_hierarchy.length === 0
+    ) {
+      const element = approvalCount.approval_hierarchy[i];
+
+      if (element[0].is_conditional) {
+        // Do nothing or some logic here if needed
+
+        const filter = checkFilterConditionsWithLogic(
+          record[0],
+          element[0].filter,
+        );
+
+        if (filter) {
+          implemented_approval_hierarchy.push({
+            ...element[0],
+            level: i + 1,
+          });
+        }
+      } else {
+        implemented_approval_hierarchy.push({
+          ...element[0],
+          level: i + 1,
+        });
+      }
+
+      i++;
+    }
+
+    approval[0].approval_uuids = implemented_approval_hierarchy[0];
+    approval[0].current_level = implemented_approval_hierarchy[0].level;
     approval[0].status = 'REQUESTED';
     approval[0].created_by_uuid = req.user.user_uuid;
     await insertRecords('approval', approval[0]);
@@ -589,7 +624,9 @@ exports.mergeApprovalWithRecord = async (req, res) => {
       (ele) =>
         ele.uuid === req.user.user_uuid ||
         ele.uuid === req.user.role_uuid ||
-        req.user.role_value === 'ADMIN',
+        req.user.role_value === 'ADMIN' ||
+        req.user.role_value === 'SUPERADMIN' ||
+        req.user.role_value === 'CEO',
     );
     deleteKeyValuePair(approvalRecord[0], ['approval_uuids']);
     data = { ...data, ...approvalRecord[0], is_user_approver };
