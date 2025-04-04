@@ -154,7 +154,7 @@ exports.insertApproval = async (req, res) => {
       approval_uuid: uuidv4(),
       requested_by_uuid: req.user.user_uuid,
       current_level: implemented_approval_hierarchy[0].level,
-      approval_uuids: implemented_approval_hierarchy[0],
+      approval_uuids: implemented_approval_hierarchy,
       previous_status: approvalCount.previous_status,
       status: 'REQUESTED',
       next_status: approvalCount.next_status,
@@ -332,7 +332,7 @@ exports.handleApproval = async (req, res) => {
       i++;
     }
 
-    approval[0].approval_uuids = implemented_approval_hierarchy[0];
+    approval[0].approval_uuids = implemented_approval_hierarchy;
     approval[0].current_level = implemented_approval_hierarchy[0].level;
     approval[0].status = 'REQUESTED';
     approval[0].created_by_uuid = req.user.user_uuid;
