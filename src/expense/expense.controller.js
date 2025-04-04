@@ -285,7 +285,7 @@ exports.upsertExpenseCategory = async (req, res) => {
     // const defultapproval = [{}, {}];
     const data1 = {
       dynamic_approval_count_uuid: uuid(),
-      table_name: 'expense_category',
+      table_name: 'latest_expense',
       dynamic_uuid: req.body.expense_category_uuid,
       dynamic_table_name: 'latest_expense_category',
       level: 1,
@@ -303,7 +303,7 @@ exports.upsertExpenseCategory = async (req, res) => {
 
     const data2 = {
       dynamic_approval_count_uuid: uuid(),
-      table_name: 'expense_category',
+      table_name: 'latest_expense',
       dynamic_uuid: req.body.expense_category_uuid,
       dynamic_table_name: 'latest_expense_category',
       level: 2,

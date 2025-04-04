@@ -7,10 +7,13 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
     "dev": "nodemon server.js",
-    "format": "prettier --write .",
-    "precommit": "npm run format",
-    "prepare": "husky install",
-    "postinstall": "husky install && husky add .husky/pre-commit \"npm run precommit \" && husky add .husky/pre-commit \"git add . \""
+    "format": "",
+    "precommit": "lint-staged",
+    "postinstall": "husky init && echo npm run precommit > .husky/pre-commit >> .husky/pre-commit",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.js": "prettier --write"
   },
   "keywords": [],
   "author": "",
@@ -48,6 +51,7 @@
     "husky": "^8.0.3",
     "nodemon": "^3.0.1",
     "prettier": "^3.0.3",
+    "lint-staged": "^15.5.0",
     "sequelize-cli": "^6.6.1"
   }
 }
