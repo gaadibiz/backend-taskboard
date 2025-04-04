@@ -21,6 +21,7 @@ const {
   setDateTimeFormat,
   deleteKeyValuePair,
   checkFilterConditionsWithLogic,
+  conditionApproval,
 } = require('../../utils/helperFunction');
 const { v4: uuidv4 } = require('uuid');
 const { base_url } = require('../../config/server.config');
@@ -101,42 +102,14 @@ exports.insertApproval = async (req, res) => {
     return throwError(400, 'Record not found');
   }
 
-  let implemented_approval_hierarchy = [];
-  let i = 0;
-
-  while (
-    i < approvalCount?.approval_hierarchy.length &&
-    implemented_approval_hierarchy.length === 0
-  ) {
-    const element = approvalCount.approval_hierarchy[i];
-
-    if (element[0].is_conditional) {
-      // Do nothing or some logic here if needed
-
-      const filter = checkFilterConditionsWithLogic(record, element[0].filter);
-
-      if (filter) {
-        implemented_approval_hierarchy.push({
-          ...element[0],
-          level: i + 1,
-        });
-      }
-    } else {
-      implemented_approval_hierarchy.push({
-        ...element[0],
-        level: i + 1,
-      });
-    }
-
-    i++;
-  }
+  let implemented_approval_hierarchy = conditionApproval(approvalCount, 0);
 
   let [exist_approval] = await getRecords(
     'latest_dynamic_approval',
     `where 
      table_name='${req.body.table_name}'
      AND record_uuid = '${req.body.record_uuid}'
-     AND current_level=${implemented_approval_hierarchy[0].level}
+     AND current_level=${implemented_approval_hierarchy[0].condition.level}
      AND previous_status='${approvalCount.previous_status}' 
      AND next_status ='${approvalCount.next_status}'
      AND status='REQUESTED'`,
@@ -151,8 +124,8 @@ exports.insertApproval = async (req, res) => {
       ...req.body,
       dynamic_approval_uuid: uuidv4(),
       requested_by_uuid: req.user.user_uuid,
-      current_level: implemented_approval_hierarchy[0].level,
-      approval_uuids: implemented_approval_hierarchy,
+      current_level: implemented_approval_hierarchy[0].condition.level,
+      approval_uuids: implemented_approval_hierarchy[0].approval,
       previous_status: approvalCount.previous_status,
       status: 'REQUESTED',
       next_status: approvalCount.next_status,
@@ -301,41 +274,15 @@ exports.handleApproval = async (req, res) => {
     }
 
     // conditional logic
-    let implemented_approval_hierarchy = [];
-    let i = approval[0].current_level; // skip the current level
 
-    while (
-      i < approvalCount?.approval_hierarchy.length &&
-      implemented_approval_hierarchy.length === 0
-    ) {
-      const element = approvalCount.approval_hierarchy[i];
+    let implemented_approval_hierarchy = conditionApproval(
+      approvalCount,
+      approval[0].current_level,
+    );
 
-      if (element[0].is_conditional) {
-        // Do nothing or some logic here if needed
-
-        const filter = checkFilterConditionsWithLogic(
-          record[0],
-          element[0].filter,
-        );
-
-        if (filter) {
-          implemented_approval_hierarchy.push({
-            ...element[0],
-            level: i + 1,
-          });
-        }
-      } else {
-        implemented_approval_hierarchy.push({
-          ...element[0],
-          level: i + 1,
-        });
-      }
-
-      i++;
-    }
-
-    approval[0].approval_uuids = implemented_approval_hierarchy;
-    approval[0].current_level = implemented_approval_hierarchy[0].level;
+    approval[0].approval_uuids = implemented_approval_hierarchy[0].approval;
+    approval[0].current_level =
+      implemented_approval_hierarchy[0].condition.level;
     approval[0].status = 'REQUESTED';
     approval[0].created_by_uuid = req.user.user_uuid;
 

@@ -772,3 +772,51 @@ exports.checkFilterConditionsWithLogic = (dataObj, filters) => {
 
   return result;
 };
+
+exports.conditionApproval = (approvalCount, index = 0) => {
+  let implemented_approval_hierarchy = [];
+  let i = index; // skip the current level
+  while (
+    i < approvalCount?.approval_hierarchy.length &&
+    implemented_approval_hierarchy.length === 0
+  ) {
+    const element = approvalCount.approval_hierarchy[i];
+
+    if (element[0].is_conditional) {
+      // Do nothing or some logic here if needed
+
+      const filter = checkFilterConditionsWithLogic(
+        record[0],
+        element[0].filter,
+      );
+
+      if (filter) {
+        implemented_approval_hierarchy.push({
+          approval: element.map((item) => ({
+            type: item.type,
+            uuid: item.uuid,
+          })),
+          condition: {
+            level: i + 1,
+            filter: element[0].filter,
+          },
+        });
+      }
+    } else {
+      implemented_approval_hierarchy.push({
+        approval: element.map((item) => ({
+          type: item.type,
+          uuid: item.uuid,
+        })),
+        condition: {
+          level: i + 1,
+          filter: element[0].filter,
+        },
+      });
+    }
+
+    i++;
+  }
+
+  return implemented_approval_hierarchy;
+};
