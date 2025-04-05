@@ -139,6 +139,8 @@ exports.insertApproval = async (req, res) => {
       create_ts: setDateTimeFormat('timestemp'),
     };
 
+    await insertRecords('dynamic_approval', req.body);
+
     const isCreatorOwnsCurrentApprovalStep =
       await creatorOwnsCurrentApprovalStep(
         implemented_approval_hierarchy,
@@ -160,8 +162,6 @@ exports.insertApproval = async (req, res) => {
         req.headers,
       );
     }
-
-    // await insertRecords('dynamic_approval', req.body);
 
     res.status(200).json(responser('Approval inserted successfully', req.body));
     // <------------ Send Email On Action ------------->
