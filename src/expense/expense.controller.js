@@ -24,7 +24,7 @@ const {
 } = require('../../utils/helperFunction');
 const { base_url } = require('../../config/server.config');
 const { responser, removeNullValueKey } = require('../../utils/helperFunction');
-const e = require('express');
+
 const { saveHistory } = require('../../utils/microservice_func');
 
 function toBoolean(value) {
@@ -286,7 +286,7 @@ exports.upsertExpenseCategory = async (req, res) => {
         [
           {
             type: 'ROLE',
-            uuid: `${role_info_finance_manager.role_uuid}}`,
+            uuid: `${role_info_finance_manager.role_uuid}`,
             is_conditional: false,
           },
         ],
@@ -310,7 +310,7 @@ exports.upsertExpenseCategory = async (req, res) => {
         [
           {
             type: 'ROLE',
-            uuid: `${role_info_ceo.role_uuid}}`,
+            uuid: `${role_info_ceo.role_uuid}`,
             is_conditional: true,
             filter: [
               {
@@ -324,14 +324,14 @@ exports.upsertExpenseCategory = async (req, res) => {
         [
           {
             type: 'ROLE',
-            uuid: `${role_info_project_manager.role_uuid}}`,
+            uuid: `${role_info_project_manager.role_uuid}`,
             is_conditional: false,
           },
         ],
         [
           {
             type: 'ROLE',
-            uuid: `${role_info_ceo.role_uuid}}`,
+            uuid: `${role_info_ceo.role_uuid}`,
             is_conditional: true,
             filter: [
               {
@@ -345,7 +345,7 @@ exports.upsertExpenseCategory = async (req, res) => {
         [
           {
             type: 'ROLE',
-            uuid: `${role_info_category_manager.role_uuid}}`,
+            uuid: `${role_info_category_manager.role_uuid}`,
             is_conditional: false,
           },
         ],
