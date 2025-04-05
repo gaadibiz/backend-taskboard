@@ -331,20 +331,6 @@ exports.upsertExpenseCategory = async (req, res) => {
         [
           {
             type: 'ROLE',
-            uuid: `${role_info_ceo.role_uuid}`,
-            is_conditional: true,
-            filter: [
-              {
-                column: 'merchant',
-                operator: 'EQUAL',
-                value: 'KHUSHI',
-              },
-            ],
-          },
-        ],
-        [
-          {
-            type: 'ROLE',
             uuid: `${role_info_category_manager.role_uuid}`,
             is_conditional: false,
           },

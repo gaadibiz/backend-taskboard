@@ -152,7 +152,7 @@ exports.handleApproval = async (req, res) => {
     `where dynamic_approval_uuid = '${req.body.dynamic_approval_uuid}'`,
   );
   if (!approval.length) throwError('Approval not found', 404);
-  console.log(req.user, '............');
+
   if (
     !approval[0].approval_uuids.some(
       (ele) =>
@@ -290,6 +290,8 @@ exports.handleApproval = async (req, res) => {
       implemented_approval_hierarchy[0].condition.level;
     approval[0].status = 'REQUESTED';
     approval[0].created_by_uuid = req.user.user_uuid;
+
+    console.log(approval[0], 'approval');
 
     await insertRecords('dynamic_approval', approval[0]);
   } else {

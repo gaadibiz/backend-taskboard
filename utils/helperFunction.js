@@ -782,6 +782,8 @@ exports.conditionApproval = (approvalCount, index = 0, record) => {
   ) {
     const element = approvalCount.approval_hierarchy[i];
 
+    console.log(element, '.......................element.');
+
     if (element[0].is_conditional) {
       // Do nothing or some logic here if needed
 
