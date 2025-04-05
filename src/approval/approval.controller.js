@@ -30,6 +30,9 @@ const {
   approvalEmails,
   saveHistory,
 } = require('../../utils/microservice_func');
+const {
+  creatorOwnsCurrentApprovalStep,
+} = require('../dynamicApproval/dynamicApproval.service');
 
 exports.insertApproval = async (req, res) => {
   removeNullValueKey(req.body);
@@ -138,6 +141,29 @@ exports.insertApproval = async (req, res) => {
       create_ts: setDateTimeFormat('timestemp'),
     };
     await insertRecords('approval', req.body);
+
+    const isCreatorOwnsCurrentApprovalStep =
+      await creatorOwnsCurrentApprovalStep(
+        implemented_approval_hierarchy,
+        record[0],
+      );
+    if (isCreatorOwnsCurrentApprovalStep) {
+      // handle self approval
+      const bodyData = {
+        approval_uuid: req.body.approval_uuid,
+        status: 'APPROVED',
+      };
+
+      await getData(
+        `${base_url}/api/v1/approval/handle-approval`,
+        null,
+        'json',
+        bodyData,
+        'POST',
+        req.headers,
+      );
+    }
+
     res.status(200).json(responser('Approval inserted successfully', req.body));
     // <------------ Send Email On Action ------------->
     // approvalEmails(req.body.dynamic_approval_uuid, req.user);
@@ -289,6 +315,28 @@ exports.handleApproval = async (req, res) => {
     approval[0].status = 'REQUESTED';
     approval[0].created_by_uuid = req.user.user_uuid;
     await insertRecords('approval', approval[0]);
+
+    const isCreatorOwnsCurrentApprovalStep =
+      await creatorOwnsCurrentApprovalStep(
+        implemented_approval_hierarchy,
+        record[0],
+      );
+    if (isCreatorOwnsCurrentApprovalStep) {
+      // handle self approval
+      const bodyData = {
+        approval_uuid: req.body.approval_uuid,
+        status: 'APPROVED',
+      };
+
+      await getData(
+        `${base_url}/api/v1/approval/handle-approval`,
+        null,
+        'json',
+        bodyData,
+        'POST',
+        req.headers,
+      );
+    }
   } else {
     const bodyData = {
       table_name: approval[0].table_name,
