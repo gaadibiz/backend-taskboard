@@ -389,10 +389,11 @@ exports.getApprovals = async (req, res) => {
     },
   );
 
+  console.log(req.user);
   if (
     req.user.role_value !== 'ADMIN' &&
     req.user.role_value !== 'SUPERADMIN' &&
-    req.user.value !== 'CEO'
+    req.user.role_value !== 'CEO'
   ) {
     filter =
       (filter ? `${filter} AND ` : 'WHERE ') +
