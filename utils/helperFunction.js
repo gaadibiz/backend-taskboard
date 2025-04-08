@@ -7,6 +7,7 @@ const { ToWords } = require('to-words');
 require('dotenv').config();
 const { Readable } = require('stream');
 const FormData = require('form-data');
+const { base_url } = require('../config/server.config');
 exports.throwError = (status, message) => {
   throw new Error(JSON.stringify({ status, message }));
 };
@@ -63,6 +64,7 @@ exports.getData = async (
     method: bodyData ? method : 'GET',
     headers: {
       'Content-Type': 'application/json; charset=UTF-8',
+      Origin: base_url,
       ...header,
     },
     [bodyData ? 'body' : null]: JSON.stringify(bodyData),
@@ -138,6 +140,7 @@ exports.requestApi = async (url, paramOrQuery, method, headers, body) => {
   } else {
     requestPayload.headers = {
       'Content-Type': 'application/json; charset=UTF-8',
+      Origin: base_url,
       ...headers,
     };
     requestPayload.body = JSON.stringify(body);
@@ -201,6 +204,7 @@ exports.apiRequest = async (
     method: bodyData ? method : 'GET',
     headers: {
       'Content-Type': 'application/json; charset=UTF-8',
+      Origin: base_url,
       ...header,
     },
     [bodyData ? 'body' : null]: JSON.stringify(bodyData),

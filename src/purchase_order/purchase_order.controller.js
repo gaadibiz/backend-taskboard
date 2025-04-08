@@ -166,7 +166,7 @@ exports.getPurchaseOrder = async (req, res) => {
       status_array[0] + "status='CANCELLED' OR status=" + status_array[1];
   }
   filter = await roleFilterService(filter, tableName, req.user);
-  let pageFilter = pagination(pageNo, itemPerPage, 'create_ts');
+  let pageFilter = pagination(pageNo, itemPerPage);
   let totalRecords = await getCountRecord(tableName, filter);
   let result = await getRecords(tableName, filter, pageFilter);
   if (purchase_order_uuid) {
