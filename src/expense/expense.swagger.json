@@ -698,6 +698,51 @@
           }
         }
       }
+    },
+    "/api/v1/expense/get-preview-expense": {
+      "get": {
+        "tags": ["expense"],
+        "summary": "Get all expense",
+        "description": "",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "expense_uuid",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+
+          {
+            "in": "query",
+            "name": "isPreview",
+            "description": "",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful logout. The user has been logged out."
+          },
+          "404": {
+            "description": "Not Found. The provided user identifier was not found."
+          },
+          "500": {
+            "description": "Internal Server Error. An unexpected error occurred on the server."
+          }
+        }
+      }
     }
   }
 }

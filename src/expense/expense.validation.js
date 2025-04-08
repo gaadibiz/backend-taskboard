@@ -152,3 +152,8 @@ exports.exportFinanceExpense = Joi.object({
   created_by_uuid: Joi.string().guid().max(50).allow(null),
   modified_by_uuid: Joi.string().guid().allow('', null),
 });
+
+exports.getPreviewExpense = Joi.object({
+  expense_uuid: Joi.string().uuid().required(),
+  isPreview: Joi.boolean().allow(null),
+});
