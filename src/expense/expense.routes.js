@@ -70,4 +70,13 @@ router.post(
   ),
 );
 
+router.get(
+  '/get-preview-expense',
+  checkAuth,
+  requestErrorHandlingDecorator(
+    Schema.getPreviewExpense,
+    controller.getPreviewExpense,
+  ),
+);
+
 module.exports = router;
