@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Booking Confirmation</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #f4f4f4;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        max-width: 90%;
+        background: #fff;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        margin: 20px auto;
+      }
+      .header {
+        background: rgb(156, 201, 90);
+        color: #fff;
+        padding: 15px;
+        text-align: center;
+        font-size: 18px;
+        font-weight: bold;
+        border-radius: 8px 8px 0 0;
+        position: relative;
+        margin-bottom: 10px;
+      }
+
+      .info-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .info-box {
+        background: #f9f9f9;
+        padding: 8px;
+        border-radius: 5px;
+        flex: 1;
+        min-width: 45%;
+      }
+      .section-title {
+        font-size: 14px;
+        margin: 10px 0;
+        color: #2c3e50;
+        font-weight: normal;
+      }
+      p {
+        font-size: 14px;
+        margin: 5px 0;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+      }
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 6px;
+        font-size: 14px;
+        text-align: left;
+      }
+      th {
+        background: #f1f1f1;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">Booking Confirmed</div>
+      <p>
+        Your booking has been successfully confirmed. Below are your reservation
+        details.
+      </p>
+
+      <h2 class="section-title">Property Details</h2>
+      <div class="info-grid">
+        <div class="info-box">
+          <p><strong>Property:</strong> <%= propertyName %></p>
+          <p><strong>Room:</strong> <%= roomName %></p>
+          <p>
+            <strong>Total Price:</strong> <%= totalPrice.toLocaleString('en-US')
+            %> <%=currency %>
+          </p>
+        </div>
+      </div>
+
+      <h2 class="section-title">Booking Details</h2>
+      <div class="info-grid">
+        <div class="info-box">
+          <p><strong>Check-in:</strong> <%= checkInDate %></p>
+        </div>
+        <div class="info-box">
+          <p><strong>Check-out:</strong> <%= checkoutDate %></p>
+        </div>
+      </div>
+
+      <h2 class="section-title">Guest Details</h2>
+      <div class="info-grid">
+        <div class="info-box">
+          <p><strong>Name:</strong> <%= customerName %></p>
+          <p><strong>Email:</strong> <%= email %></p>
+        </div>
+        <div class="info-box">
+          <p><strong>Mobile:</strong> <%= mobile %></p>
+        </div>
+      </div>
+
+      <h2 class="section-title">Location</h2>
+      <p>
+        <%= street_address %>, <%= city %>, <%= state %>, <%= postalCode %>, <%=
+        country %>
+      </p>
+
+      <% if (guest_details && guest_details.length > 0) { %>
+      <h2 class="section-title">Additional Guest Details</h2>
+      <table>
+        <tr>
+          <% Object.keys(guest_details[0]).forEach(function(key) { %>
+          <th><%= key %></th>
+          <% }) %>
+        </tr>
+        <% guest_details.forEach(function(guest) { %>
+        <tr>
+          <% Object.values(guest).forEach(function(value) { %>
+          <td><%= value %></td>
+          <% }) %>
+        </tr>
+        <% }) %>
+      </table>
+      <% } %> <% if (Object.keys(price_breakup).length > 0) { %>
+      <h2 class="section-title">Price Breakdown</h2>
+      <table>
+        <tr>
+          <th>Charge Type</th>
+          <th>Amount</th>
+        </tr>
+        <% Object.entries(price_breakup).forEach(function([key, value]) { %>
+        <tr>
+          <td><%= key %></td>
+          <td>
+            <%= parseFloat(value).toLocaleString('en-US') %> <%=currency %>
+          </td>
+        </tr>
+        <% }) %>
+      </table>
+      <% } %>
+    </div>
+  </body>
+</html>

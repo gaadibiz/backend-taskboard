@@ -22,6 +22,7 @@ const {
   deleteKeyValuePair,
 
   conditionApproval,
+  is_true,
 } = require('../../utils/helperFunction');
 const { v4: uuidv4 } = require('uuid');
 const { base_url } = require('../../config/server.config');
@@ -105,7 +106,7 @@ exports.insertApproval = async (req, res) => {
 
   let implemented_approval_hierarchy = conditionApproval(
     approvalCount,
-    0,
+    0, // level
     record[0],
   );
 
@@ -439,11 +440,23 @@ exports.getApprovals = async (req, res) => {
     },
   );
 
-  console.log(req.user);
+  console.log(
+    req.user.role_value !== 'ADMIN',
+    req.user.role_value !== 'SUPERADMIN',
+    req.user.role_value !== 'CEO',
+    is_true(req.body.is_user_approver),
+  );
+  console.log(
+    req.user.role_value !== 'ADMIN' &&
+      req.user.role_value !== 'SUPERADMIN' &&
+      req.user.role_value !== 'CEO',
+    //  || is_true(req.body.is_user_approver),
+  );
   if (
     req.user.role_value !== 'ADMIN' &&
     req.user.role_value !== 'SUPERADMIN' &&
     req.user.role_value !== 'CEO'
+    // || is_true(req.body.is_user_approver)
   ) {
     filter =
       (filter ? `${filter} AND ` : 'WHERE ') +

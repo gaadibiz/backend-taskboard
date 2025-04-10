@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order Confirmation</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f9f9f9;
+      }
+
+      .email-container {
+        max-width: 600px;
+        margin: 20px auto;
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .logo {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .logo img {
+        max-width: 150px;
+      }
+
+      .email-header {
+        font-size: 20px;
+        font-weight: bold;
+        color: #333;
+        text-align: center;
+      }
+
+      .email-body {
+        margin-top: 20px;
+      }
+
+      .order-details {
+        margin-top: 20px;
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      .order-details th,
+      .order-details td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+      }
+
+      .order-details th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+      }
+
+      .item-image {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        border-radius: 4px;
+      }
+
+      .footer {
+        margin-top: 20px;
+        font-size: 12px;
+        text-align: center;
+        color: #777;
+      }
+
+      .button {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 10px 20px;
+        font-size: 16px;
+
+        color: #ffffff;
+        background-color: #0d1721;
+        text-decoration: none;
+        border-radius: 5px;
+        text-align: center;
+      }
+
+      .btn-show-more {
+        background-color: #28a745;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+      }
+
+      .btn-show-more:hover {
+        background-color: #218838;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="email-container">
+      <div class="logo">
+        <img
+          src="https://ota-test-edgenroots.s3.ap-south-1.amazonaws.com/product/source/easysupply_logosource2024-12-27_12-09-53.png"
+          alt="Tool Logo"
+        />
+      </div>
+      <div class="email-header"><%= status %></div>
+
+      <div class="email-body">
+        <p>Dear <strong><%= supplier_name %></strong>,</p>
+        <p>We are pleased to confirm your order with the following details:</p>
+
+        <table class="order-details">
+          <tr>
+            <th>Order No</th>
+            <td><%= order_no %></td>
+          </tr>
+          <tr>
+            <th>Supplier No</th>
+            <td><%= supplier_email %></td>
+          </tr>
+          <tr>
+            <th>Order Status</th>
+            <td><%= status %></td>
+          </tr>
+          <tr>
+            <th>Total Amount</th>
+            <td><%= total_amount %></td>
+          </tr>
+          <tr>
+            <th>Created By</th>
+            <td><%= created_by_name %></td>
+          </tr>
+        </table>
+
+        <h3 style="margin-top: 30px">Order Items</h3>
+        <table class="order-details">
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Product VPN</th>
+              <th>Category</th>
+              <th>Quantity</th>
+              <th>Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% order_item_list.slice(0, 2).forEach(function(item) { %>
+            <tr>
+              <td>
+                <img
+                  src="<%= item.primary_image_url %>"
+                  alt="Product Image"
+                  class="item-image"
+                />
+              </td>
+              <td><%= item.product_vpn %></td>
+              <td><%= item.category %></td>
+              <td><%= item.quantity_ordered %></td>
+              <td><%= item.currency %> <%= item.purchase_price %></td>
+            </tr>
+            <% }); %>
+          </tbody>
+        </table>
+
+        <% if (order_item_list.length > 2) { %>
+        <div class="more-items-section">
+          <p class="more-items-text">
+            <%= order_item_list.length - 2 %> more item<%=
+            order_item_list.length - 2 > 1 ? 's' : '' %>
+          </p>
+        </div>
+        <% } %>
+
+        <a class="button" href="<%= orderLink %>" > 
+          View Order
+        </a>
+
+        <p>
+          We look forward to serving you further. Please reach out if you have
+          any questions or require assistance.
+        </p>
+      </div>
+
+      <div class="footer">&copy; 2025 Easy Supply. All Rights Reserved.</div>
+    </div>
+  </body>
+</html>
