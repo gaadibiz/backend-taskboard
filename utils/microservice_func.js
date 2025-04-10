@@ -12,6 +12,7 @@ const {
 const { getRecords } = require('./dbFunctions');
 const moment = require('moment');
 const config = require('../config/server.config');
+const fs = require('fs');
 
 /**
  * Send Normal Email or email with template
