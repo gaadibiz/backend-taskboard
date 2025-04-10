@@ -77,7 +77,6 @@ exports.pdfMaker = async (data = null, template, options) => {
   if (template) {
     template = await readFileContent('utils/templates/pdf', template);
   }
-  console.log('data: ', data, template, title, options);
 
   let title = null;
   if (fs.existsSync('utils/templates/pdf/title.ejs', 'utf8')) {
