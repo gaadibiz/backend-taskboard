@@ -77,10 +77,13 @@ exports.pdfMaker = async (data = null, template, options) => {
   if (template) {
     template = await readFileContent('utils/templates/pdf', template);
   }
+  console.log('data: ', data, template, title, options);
+
   let title = null;
   if (fs.existsSync('utils/templates/pdf/title.ejs', 'utf8')) {
     title = await readFileContent('utils/templates/pdf', 'title.ejs');
   }
+
   let pdfBufffer = await getData(SERVICES_URL.pdfGenerator, null, 'buffer', {
     data,
     template,
@@ -182,6 +185,10 @@ exports.voiceCallService = async (data) => {
 };
 
 exports.ejsPreview = async (data, templateName) => {
+  if (templateName) {
+    templateName = await readFileContent('utils/templates', templateName);
+  }
+
   let ejsText = await getData(SERVICES_URL.ejsPreview, null, 'text', {
     data,
     templateName,
