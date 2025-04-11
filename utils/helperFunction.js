@@ -7,6 +7,7 @@ const { ToWords } = require('to-words');
 require('dotenv').config();
 const { Readable } = require('stream');
 const FormData = require('form-data');
+const { base_url } = require('../config/server.config');
 exports.throwError = (status, message) => {
   throw new Error(JSON.stringify({ status, message }));
 };
@@ -63,6 +64,7 @@ exports.getData = async (
     method: bodyData ? method : 'GET',
     headers: {
       'Content-Type': 'application/json; charset=UTF-8',
+      Origin: base_url,
       ...header,
     },
     [bodyData ? 'body' : null]: JSON.stringify(bodyData),
@@ -138,6 +140,7 @@ exports.requestApi = async (url, paramOrQuery, method, headers, body) => {
   } else {
     requestPayload.headers = {
       'Content-Type': 'application/json; charset=UTF-8',
+      Origin: base_url,
       ...headers,
     };
     requestPayload.body = JSON.stringify(body);
@@ -201,6 +204,7 @@ exports.apiRequest = async (
     method: bodyData ? method : 'GET',
     headers: {
       'Content-Type': 'application/json; charset=UTF-8',
+      Origin: base_url,
       ...header,
     },
     [bodyData ? 'body' : null]: JSON.stringify(bodyData),
@@ -773,9 +777,9 @@ const checkFilterConditionsWithLogic = (dataObj, filters) => {
   return result;
 };
 
-exports.conditionApproval = (approvalCount, index = 0, record) => {
+exports.conditionApproval = (approvalCount, level = 0, record) => {
   let implemented_approval_hierarchy = [];
-  let i = index; // skip the current level
+  let i = level; // skip the current level
   while (
     i < approvalCount?.approval_hierarchy.length &&
     implemented_approval_hierarchy.length === 0
@@ -796,7 +800,7 @@ exports.conditionApproval = (approvalCount, index = 0, record) => {
             uuid: item.uuid,
           })),
           condition: {
-            level: i + 1,
+            level: level + 1,
             filter: element[0].filter,
           },
         });
@@ -818,4 +822,12 @@ exports.conditionApproval = (approvalCount, index = 0, record) => {
   }
 
   return implemented_approval_hierarchy;
+};
+
+exports.is_true = (value) => {
+  if (value === 'true' || value === true || value === '1' || value === 1) {
+    return true;
+  } else {
+    return false;
+  }
 };

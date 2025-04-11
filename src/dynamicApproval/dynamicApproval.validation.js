@@ -145,6 +145,7 @@ exports.getApprovalSchema = Joi.object({
   status: Joi.string().valid('REQUESTED', 'ROLLBACK', 'APPROVED').allow(null),
   columns: Joi.array().items(Joi.string().required()).allow(null),
   value: Joi.string().allow(null),
+  is_user_approver: Joi.boolean().allow(null),
   pageLimit: Joi.number()
     .integer()
     .min(1)

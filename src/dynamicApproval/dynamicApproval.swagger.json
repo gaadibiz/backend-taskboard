@@ -94,6 +94,16 @@
           },
           {
             "in": "query",
+            "name": "is_user_approver",
+            "type": "boolean",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "in": "query",
             "name": "columns",
             "type": "array",
             "items": { "type": "string" },

@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Form</title>
+    <style>
+      @page {
+        size: A4;
+        margin: 0;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Arial", sans-serif;
+        background-color: #fff;
+        color: #333;
+        margin: 0;
+        padding: 10mm;
+        width: 210mm;
+        height: 297mm;
+      }
+
+      .container {
+        width: 100%;
+        /* max-width: 1200px; */
+        background-color: #fff;
+        /* border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        display: flex;
+        flex-direction: column; */
+      }
+
+      h2 {
+        text-align: center;
+        font-size: 16pt;
+        margin-bottom: 5mm;
+        color: #2c3e50;
+      }
+
+      .section {
+        background-color: #fafafa;
+        margin-bottom: 2mm;
+        padding: 2mm;
+        border-radius: 2mm;
+        /* box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); */
+      }
+
+      .section h3 {
+        font-size: 12pt;
+        color: #010f18;
+        margin-bottom: 0 0 2mm 0;
+      }
+
+      .row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2mm;
+      }
+
+      .column {
+        flex: 1;
+        min-width: 45%;
+        /* max-width: 48%;
+        display: flex;
+        flex-direction: column;
+        gap: 15px; */
+      }
+
+      /* .info-item-student {
+      display: flex;
+      justify-content: start;
+      background-color: #ecf0f1;
+      padding: 8px;
+      border-radius: 4px;
+      font-size: 0.9em;
+    } */
+
+      .info-item {
+        display: flex;
+        justify-content: space-between;
+        background-color: #ecf0f1;
+        padding: 1mm;
+        border-radius: 1mm;
+        margin-bottom: 1mm;
+        font-size: 8pt;
+      }
+
+      .info-item .label {
+        font-weight: bold;
+        color: #34495e;
+      }
+
+      .info-item .value {
+        color: #7f8c8d;
+      }
+
+      .qualification-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 2mm;
+        font-size: 8pt;
+      }
+
+      .qualification-table th,
+      .qualification-table td {
+        padding: 1mm;
+        text-align: center;
+        border: 0.5pt solid #ddd;
+      }
+
+      .qualification-table th {
+        background-color: #3e3e3e;
+        color: #fff;
+      }
+
+      .qualification-table tr:nth-child(even) {
+        background-color: #f4f6f8;
+      }
+
+      .header {
+        display: flex;
+        align-items: center;
+      }
+
+      img {
+        max-width: 150px;
+        /* Optional: Adjust size of the logo */
+      }
+
+      h2 {
+        margin-left: 5.5rem;
+        /* Remove default margin from heading */
+      }
+
+      @media print {
+        body {
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+      }
+
+      /* .qualification-table td {
+      color: #7f8c8d;
+    } */
+    </style>
+  </head>
+
+  <body>
+    <!-- <% students.forEach(student=> { %> -->
+    <div class="container">
+      <div class="header">
+        <img
+          src="https://djdentalcollege.com/img/LogoDJ.webp"
+          alt="dj college logo"
+        />
+        <h2>STUDENT INFORMATION</h2>
+      </div>
+      <% students.forEach(student=> { %>
+      <div class="row">
+        <div class="column">
+          <div class="section">
+            <h3>Personal Information</h3>
+            <div class="info-item">
+              <span class="label">Name:</span>
+              <span class="value"> <%=student.student_name %> </span>
+            </div>
+            <div class="info-item">
+              <span class="label">Date of Birth:</span>
+              <span class="value"> <%= student.dateOfBirth %> </span>
+            </div>
+            <div class="info-item">
+              <span class="label">Gender:</span>
+              <span class="value"> <%= student.gender %> </span>
+            </div>
+            <div class="info-item">
+              <span class="label">Caste Category:</span>
+              <span class="value"> <%= student.castcategory %> </span>
+            </div>
+          </div>
+        </div>
+        <div class="column">
+          <div class="section">
+            <h3>Address</h3>
+            <div class="info-item">
+              <span class="label">City:</span>
+              <span class="value"> <%= student.city %> </span>
+            </div>
+            <div class="info-item">
+              <span class="label">State:</span>
+              <span class="value"> <%= student.state %> </span>
+            </div>
+            <div class="info-item">
+              <span class="label">Pincode:</span>
+              <span class="value"> <%= student.pincode %> </span>
+            </div>
+            <div class="info-item">
+              <span class="label">Permanent Address:</span>
+              <span class="value"> <%= student.address %> </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="column">
+          <div class="section">
+            <h3>Contact Information</h3>
+            <div class="info-item">
+              <span class="label">Contact No.:</span>
+              <span class="value"> <%= student.contact %> </span>
+            </div>
+            <div class="info-item">
+              <span class="label">Alternate Contact:</span>
+              <span class="value"> <%= student.alternateContact %> </span>
+            </div>
+            <div class="info-item">
+              <span class="label">Email:</span>
+              <span class="value"> <%= student.email %> </span>
+            </div>
+          </div>
+        </div>
+        <div class="column">
+          <div class="section">
+            <h3>Course Information</h3>
+            <div class="info-item">
+              <span class="label">Organization Name:</span>
+              <span class="value"> <%= student.organizations_name %> </span>
+            </div>
+            <div class="info-item">
+              <span class="label">Batch:</span>
+              <span class="value"> <%= student.batch %> </span>
+            </div>
+            <div class="info-item">
+              <span class="label">Course Name:</span>
+              <span class="value"> <%=student.courses_name %> </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h3>Family Information</h3>
+        <div class="row">
+          <div class="column">
+            <div class="info-item">
+              <span class="label">Father's Name:</span>
+              <span class="value"> <%= student.fatherName %> </span>
+            </div>
+            <div class="info-item">
+              <span class="label">Mother's Name:</span>
+              <span class="value"> <%= student.motherName %> </span>
+            </div>
+            <div class="info-item">
+              <span class="label">Annual Income:</span>
+              <span class="value"> <%= student.annual_income %> </span>
+            </div>
+          </div>
+          <div class="column">
+            <div class="info-item">
+              <span class="label">Father's Occupation:</span>
+              <span class="value"> <%= student.fatherOccupation %> </span>
+            </div>
+            <div class="info-item">
+              <span class="label">Mother's Occupation:</span>
+              <span class="value"> <%= student.motherOccupation %> </span>
+            </div>
+            <div class="info-item">
+              <span class="label">Parent's Contact:</span>
+              <span class="value"> <%= student.parentContact %> </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h3>Qualifications</h3>
+        <table class="qualification-table">
+          <thead>
+            <tr>
+              <th>Grade</th>
+              <th>Institute</th>
+              <th>Marks</th>
+              <th>Year</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (student?.qualifications && student?.qualifications.length> 0)
+            { %> <% student.qualifications.forEach((item)=> { %>
+            <tr>
+              <td><%= item.grade %></td>
+              <td><%= item.school %></td>
+              <td><%= item.marks %></td>
+              <td><%= item.year %></td>
+            </tr>
+            <% }); %> <% } else { %>
+            <tr>
+              <td colspan="4">No Qualifications available.</td>
+            </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div style="page-break-before: always"></div>
+    <% }); %>
+  </body>
+</html>

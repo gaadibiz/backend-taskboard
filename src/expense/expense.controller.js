@@ -626,7 +626,7 @@ exports.getPreviewExpense = async (req, res) => {
   if (isPreview === 'true') {
     result = await ejsPreview(
       {
-        status: expense.status,
+        status: expense.status.replace('_', ' ').toUpperCase(),
         expense_type: expense.expense_type,
         project_name: expense.project_name,
         reimbursed_amount: expense.reimbursed_amount,

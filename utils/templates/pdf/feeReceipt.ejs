@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Fee Receipt</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+      .receipt {
+        width: 80%;
+        margin: 40px auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      .receipt-header {
+        text-align: center;
+      }
+      .org-logo {
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 10px;
+      }
+      .org-logo img {
+        border-radius: 5px;
+        width: 90%;
+      }
+      .org-name {
+        font-size: 1.8em;
+        font-weight: bold;
+        margin: 15px 0;
+        color: rgba(136, 4, 4, 0.664);
+        display: inline-block;
+        vertical-align: middle;
+      }
+      .golden-line {
+        border-bottom: 3px solid #ffbb00;
+        margin-bottom: 20px;
+      }
+      .receipt-title {
+        font-size: 1.2em;
+        margin: 20px 0;
+        color: #555;
+        text-align: center;
+      }
+      .receipt-body {
+        padding: 15px;
+      }
+      .receipt-details {
+        margin-bottom: 20px;
+        line-height: 1.8;
+      }
+      .receipt-details .label {
+        font-weight: bold;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        border: 2px solid #ccc;
+        text-align: center;
+        background-color: #f9f9f9;
+      }
+      table th,
+      table td {
+        text-align: left;
+        padding: 10px;
+        border: 2px solid #ccc;
+      }
+      .receipt-footer {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 1.2em;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="receipt">
+      <div class="receipt-header">
+        <div class="org-logo">
+          <img
+            src="https://ota-test-edgenroots.s3.ap-south-1.amazonaws.com/product/source/dj_logosource2024-12-27_12-08-56.webp"
+            alt="Logo"
+          />
+        </div>
+        <div class="org-name"><%= organizations_name %></div>
+        <div class="golden-line"></div>
+      </div>
+      <div class="receipt-title">PAYMENT ACKNOWLEDGEMENT RECEIPT</div>
+      <div class="receipt-body">
+        <div class="receipt-details">
+          <p><span class="label">Student ID:</span> <%= leads_code %></p>
+          <p><span class="label">Student Name:</span> <%= student_name %></p>
+        </div>
+        <h3>All Fee Payment Transactions :</h3>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Course</th>
+              <th>Batch</th>
+              <th>Fee Amount</th>
+              <th>Payment Date&Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% transactions.forEach(function(transaction){ %>
+            <tr>
+              <td><%= transaction.courses_name %></td>
+              <td><%= transaction.session %></td>
+              <td>₹ <%= transaction.courses_fees.toLocaleString('en-US') %></td>
+              <td>
+                <%= transaction.date.toLocaleString('en-US', { dateStyle:
+                'short', timeStyle: 'short' }) %>
+              </td>
+            </tr>
+            <% }); %>
+          </tbody>
+          <tfoot>
+            <tr>
+              <th colspan="2">Total Fee:</th>
+              <th>
+                ₹ <%= transactions.reduce((acc, transaction) => acc +
+                parseFloat(transaction.courses_fees || 0),
+                0).toLocaleString('en-US') %>
+              </th>
+            </tr>
+          </tfoot>
+        </table>
+        <p>
+          Your payment is successful. Total amount paid is ₹ <%=
+          transactions.reduce((acc, transaction) => acc +
+          parseFloat(transaction.courses_fees || 0), 0).toLocaleString('en-US')
+          %>.
+        </p>
+      </div>
+      <div class="receipt-footer">
+        <p>Thank You!</p>
+      </div>
+    </div>
+  </body>
+</html>
