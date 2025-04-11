@@ -138,8 +138,8 @@ exports.insertApproval = async (req, res) => {
     req.body = {
       ...(exist_approval ? exist_approval : {}),
       ...req.body,
-      dynamic_approval_uuid: exist_approval.dynamic_approval_uuid
-        ? exist_approval.dynamic_approval_uuid
+      dynamic_approval_uuid: exist_approval?.dynamic_approval_uuid
+        ? exist_approval?.dynamic_approval_uuid
         : uuidv4(),
       requested_by_uuid: req.user.user_uuid,
       current_level: implemented_approval_hierarchy[0].condition.level,
