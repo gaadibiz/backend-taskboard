@@ -81,6 +81,7 @@ exports.upsertExpense = async (req, res) => {
     record_uuid: req.body.expense_uuid,
     record_column_name: 'expense_uuid',
   };
+  console.log('bodyData', bodyData);
   await getData(
     base_url + '/api/v1/dynamicApproval/insert-approval',
     null,
