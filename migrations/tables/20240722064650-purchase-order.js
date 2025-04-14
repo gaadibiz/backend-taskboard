@@ -189,6 +189,14 @@ module.exports = {
         type: Sequelize.TEXT,
         allowNull: true,
       },
+      due_date: {
+        type: Sequelize.DATE,
+        allowNull: true,
+      },
+      expected_delivery_date: {
+        type: Sequelize.DATE,
+        allowNull: true,
+      },
       invoice_items: {
         type: Sequelize.JSON,
         allowNull: true,
