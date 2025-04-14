@@ -27,6 +27,7 @@ exports.upsertPurchaseOrderSchema = Joi.object({
   billing_company_branch_address_state: Joi.string().max(255).allow('', null),
   vendor_uuid: Joi.string().guid().max(100).allow('', null),
   vendor_name: Joi.string().max(255).allow('', null),
+  priority: Joi.string().max(100).allow('', null),
   registration_type: Joi.string().max(255).allow('', null),
   vendor_gstin: Joi.string().max(255).allow('', null),
   vendor_address_line1: Joi.string().max(500).allow('', null),

@@ -450,6 +450,7 @@ exports.getApprovals = async (req, res) => {
     await dbRequest(`select record_column_name from latest_approval 
                   where table_name='${table_name}' limit 1;`)
   )[0];
+  console.log('result', result);
   let resultJoined = [];
   if (result) {
     filter = await roleFilterService(

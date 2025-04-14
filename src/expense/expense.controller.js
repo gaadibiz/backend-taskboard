@@ -81,6 +81,7 @@ exports.upsertExpense = async (req, res) => {
     record_uuid: req.body.expense_uuid,
     record_column_name: 'expense_uuid',
   };
+  console.log('bodyData', bodyData);
   await getData(
     base_url + '/api/v1/dynamicApproval/insert-approval',
     null,
@@ -314,20 +315,6 @@ exports.upsertExpenseCategory = async (req, res) => {
         [
           {
             type: 'ROLE',
-            uuid: `${role_info_ceo.role_uuid}`,
-            is_conditional: true,
-            filter: [
-              {
-                column: 'reimbursed_amount',
-                operator: 'GREATER_THAN_EQUAL',
-                value: '10000',
-              },
-            ],
-          },
-        ],
-        [
-          {
-            type: 'ROLE',
             uuid: `${role_info_project_manager.role_uuid}`,
             is_conditional: false,
           },
@@ -339,7 +326,22 @@ exports.upsertExpenseCategory = async (req, res) => {
             is_conditional: false,
           },
         ],
+        [
+          {
+            type: 'ROLE',
+            uuid: `${role_info_ceo.role_uuid}`,
+            is_conditional: true,
+            filter: [
+              {
+                column: 'reimbursed_amount',
+                operator: 'GREATER_THAN_EQUAL',
+                value: '10000',
+              },
+            ],
+          },
+        ],
       ],
+
       approval_raise_status: 'EXPENSE_APPROVAL_REQUESTED',
       previous_status: 'EXPENSE_REQUESTED',
       next_status: 'FINANCE_APPROVAL_REQUESTED',

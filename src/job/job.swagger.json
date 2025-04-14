@@ -71,6 +71,10 @@
                   "type": "string",
                   "default": null
                 },
+                "priority": {
+                  "type": "string",
+                  "default": null
+                },
                 "attachment": {
                   "type": "array",
                   "default": []
