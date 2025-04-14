@@ -768,11 +768,12 @@ const checkFilterConditionsWithLogic = (dataObj, filters) => {
     if (result === null) {
       result = currentResult;
     } else {
-      const logic = filters[i - 1].logicalOperator || 'AND';
-      if (logic === 'AND') {
-        result = result && currentResult;
-      } else if (logic === 'OR') {
-        result = result || currentResult;
+      if (logicalOperator) {
+        if (logicalOperator === 'AND') {
+          result = result && currentResult;
+        } else if (logicalOperator === 'OR') {
+          result = result || currentResult;
+        }
       }
     }
   }

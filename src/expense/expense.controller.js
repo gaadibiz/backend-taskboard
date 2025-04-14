@@ -337,6 +337,12 @@ exports.upsertExpenseCategory = async (req, res) => {
                 operator: 'GREATER_THAN_EQUAL',
                 value: '10000',
               },
+              {
+                column: 'requested_advance_amount',
+                operator: 'GREATER_THAN_EQUAL',
+                value: '10000',
+                logicalOperator: 'OR',
+              },
             ],
           },
         ],
