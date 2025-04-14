@@ -107,7 +107,9 @@ exports.requestApi = async (url, paramOrQuery, method, headers, body) => {
       }
     } else {
       for (let k in paramOrQuery) {
-        Url.searchParams.append(k, paramOrQuery[k]);
+        if (paramOrQuery[k]) {
+          Url.searchParams.append(k, paramOrQuery[k]);
+        }
       }
     }
   } else if (paramOrQuery) {
@@ -204,13 +206,14 @@ exports.apiRequest = async (
     method: bodyData ? method : 'GET',
     headers: {
       'Content-Type': 'application/json; charset=UTF-8',
-      Origin: base_url,
       ...header,
+      Origin: base_url,
     },
     [bodyData ? 'body' : null]: JSON.stringify(bodyData),
   });
   console.log('req', req);
   let res = undefined;
+
   if (response_type === 'json') res = await req.json();
   if (response_type === 'text') res = await req.text();
   if (response_type === 'buffer') res = await req.arrayBuffer();

@@ -33,7 +33,6 @@ exports.getTaskSchema = Joi.object({
   task_user_taskboard_id: Joi.number().integer(),
   task_uuid: Joi.string().guid(),
   billing_company_uuid: Joi.string().guid().allow('', null),
-
   billing_company_branch_uuid: Joi.string().guid().allow('', null),
   pageNo: Joi.number().integer().min(1),
   itemPerPage: Joi.number().integer().min(1),
