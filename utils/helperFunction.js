@@ -797,6 +797,7 @@ exports.conditionApproval = (approvalCount, level = 0, record) => {
 
       const filter = checkFilterConditionsWithLogic(record, element[0].filter);
 
+      console.log(filter, '.......................filter.');
       if (filter) {
         implemented_approval_hierarchy.push({
           approval: element.map((item) => ({
@@ -808,8 +809,20 @@ exports.conditionApproval = (approvalCount, level = 0, record) => {
             filter: element[0].filter,
           },
         });
+      } else {
+        // implemented_approval_hierarchy.push({
+        //   approval: element.map((item) => ({
+        //     type: item.type,
+        //     uuid: item.uuid,
+        //   })),
+        //   condition: {
+        //     level: i + 1,
+        //     filter: element[0].filter,
+        //   },
+        // });
       }
     } else {
+      console.log(element, '.......................element.');
       implemented_approval_hierarchy.push({
         approval: element.map((item) => ({
           type: item.type,

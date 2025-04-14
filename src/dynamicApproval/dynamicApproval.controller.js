@@ -110,7 +110,7 @@ exports.insertApproval = async (req, res) => {
     record[0],
   );
 
-  console.log(implemented_approval_hierarchy, '..................');
+  console.log(implemented_approval_hierarchy, '..................visi');
 
   const query = `
   table_name='${req.body.table_name}'
@@ -318,36 +318,70 @@ exports.handleApproval = async (req, res) => {
 
     // conditional logic
 
+    console.log(approvalCount, 'approvalCount', approval[0]);
+
     let implemented_approval_hierarchy = conditionApproval(
       approvalCount,
-      approval[0].current_level,
+      approval[0].current_level, // level
       record[0],
     );
 
-    approval[0].approval_uuids = implemented_approval_hierarchy[0].approval;
-    approval[0].current_level =
-      implemented_approval_hierarchy[0].condition.level;
-    approval[0].status = 'REQUESTED';
-    approval[0].created_by_uuid = req.user.user_uuid;
+    console.log(implemented_approval_hierarchy, '..................');
 
-    console.log(approval[0], 'approval');
+    if (implemented_approval_hierarchy.length) {
+      approval[0].approval_uuids = implemented_approval_hierarchy[0].approval;
+      approval[0].current_level =
+        implemented_approval_hierarchy[0].condition.level;
+      approval[0].status = 'REQUESTED';
+      approval[0].created_by_uuid = req.user.user_uuid;
 
-    await insertRecords('dynamic_approval', approval[0]);
+      console.log(approval[0], 'approval');
 
-    const isCreatorOwnsCurrentApprovalStep =
-      await creatorOwnsCurrentApprovalStep(
-        implemented_approval_hierarchy,
-        record[0],
+      await insertRecords('dynamic_approval', approval[0]);
+
+      const isCreatorOwnsCurrentApprovalStep =
+        await creatorOwnsCurrentApprovalStep(
+          implemented_approval_hierarchy,
+          record[0],
+        );
+      if (isCreatorOwnsCurrentApprovalStep) {
+        // handle self approval
+        const bodyData = {
+          dynamic_approval_uuid: req.body.dynamic_approval_uuid,
+          status: 'APPROVED',
+        };
+
+        await getData(
+          `${base_url}/api/v1/dynamicApproval/handle-approval`,
+          null,
+          'json',
+          bodyData,
+          'POST',
+          req.headers,
+        );
+      }
+    } else {
+      console.log('..................no approval hierarchy found.');
+
+      await insertRecords(
+        (tableMap[approval[0].table_name] || approval[0].table_name).replace(
+          'latest_',
+          '',
+        ),
+        {
+          ...record[0],
+          status: approval[0].next_status,
+        },
       );
-    if (isCreatorOwnsCurrentApprovalStep) {
-      // handle self approval
-      const bodyData = {
-        dynamic_approval_uuid: req.body.dynamic_approval_uuid,
-        status: 'APPROVED',
-      };
 
+      const bodyData = {
+        table_name: approval[0].table_name,
+        dynamic_uuid: approval[0].dynamic_uuid,
+        record_uuid: approval[0].record_uuid,
+        record_column_name: approval[0].record_column_name,
+      };
       await getData(
-        `${base_url}/api/v1/dynamicApproval/handle-approval`,
+        base_url + '/api/v1/dynamicApproval/insert-approval',
         null,
         'json',
         bodyData,
