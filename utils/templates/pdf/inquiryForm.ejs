@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Form</title>
+    <style>
+      @page {
+        size: A4;
+        margin: 0;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #fff;
+        color: #333;
+        margin: 0;
+        padding: 10mm;
+        width: 210mm;
+        height: 297mm;
+      }
+      .container {
+        width: 100%;
+        background-color: #fff;
+      }
+      h2 {
+        text-align: center;
+        font-size: 16pt;
+        margin-bottom: 5mm;
+        color: #2c3e50;
+      }
+      .section {
+        background-color: #fafafa;
+        margin-bottom: 2mm;
+        padding: 2mm;
+        border-radius: 2mm;
+      }
+      .section h3 {
+        font-size: 12pt;
+        color: #010f18;
+        margin: 0 0 2mm 0;
+      }
+      .row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2mm;
+      }
+      .column {
+        flex: 1;
+        min-width: 45%;
+      }
+      .info-item {
+        display: flex;
+        justify-content: space-between;
+        background-color: #ecf0f1;
+        padding: 1mm;
+        border-radius: 1mm;
+        margin-bottom: 1mm;
+        font-size: 8pt;
+      }
+      .info-item .label {
+        font-weight: bold;
+        color: #34495e;
+      }
+      .info-item .value {
+        color: #7f8c8d;
+      }
+      .qualification-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 2mm;
+        font-size: 8pt;
+      }
+      .qualification-table th,
+      .qualification-table td {
+        padding: 1mm;
+        text-align: center;
+        border: 0.5pt solid #ddd;
+      }
+      .qualification-table th {
+        background-color: #3e3e3e;
+        color: #fff;
+      }
+      .qualification-table tr:nth-child(even) {
+        background-color: #f4f6f8;
+      }
+
+      .header-container {
+        display: flex;
+        /* justify-content: space-around; */
+        align-items: center;
+      }
+
+      /* Ensure the image and heading have enough space */
+      img {
+        max-width: 150px; /* Optional: Adjust size of the logo */
+      }
+
+      h2 {
+        margin-left: 8rem; /* Remove default margin from heading */
+      }
+
+      @media print {
+        body {
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header-container">
+        <img
+          src="https://djdentalcollege.com/img/LogoDJ.webp"
+          alt="dj college logo"
+        />
+        <h2>INQUIRY FORM</h2>
+      </div>
+
+      <% students.forEach(student => { %>
+
+      <!-- Inquiry Information Section -->
+      <div class="section">
+        <h3>Inquiry Information</h3>
+        <div class="info-item">
+          <span class="label">Inquiry ID:</span>
+          <span class="value"><%= student.inquiryID %></span>
+        </div>
+        <div class="info-item">
+          <span class="label">Inquiry Date:</span>
+          <span class="value"><%= student.inquiryDate %></span>
+        </div>
+        <div class="info-item">
+          <span class="label">Inquiry Reference:</span>
+          <span class="value"><%= student.inquiryReference %></span>
+        </div>
+        <div class="info-item">
+          <span class="label">Follow-Up Date and Remark:</span>
+          <span class="value"><%= student.followUp_date_and_remark %></span>
+        </div>
+        <div class="info-item">
+          <span class="label">Hostel Required:</span>
+          <span class="value"><%= student.hostelRequired %></span>
+        </div>
+        <div class="info-item">
+          <span class="label">Remarks:</span>
+          <span class="value"><%= student.remarks %></span>
+        </div>
+      </div>
+
+      <!-- First Row: Personal and Contact Information -->
+      <div class="row">
+        <div class="column">
+          <div class="section">
+            <h3>Personal Information</h3>
+            <div class="info-item">
+              <span class="label">Name:</span>
+              <span class="value"><%= student.student_name %></span>
+            </div>
+            <div class="info-item">
+              <span class="label">Date of Birth:</span>
+              <span class="value"><%= student.dateOfBirth %></span>
+            </div>
+            <div class="info-item">
+              <span class="label">Gender:</span>
+              <span class="value"><%= student.gender %></span>
+            </div>
+            <div class="info-item">
+              <span class="label">Caste Category:</span>
+              <span class="value"><%= student.castcategory %></span>
+            </div>
+          </div>
+        </div>
+        <div class="column">
+          <div class="section">
+            <h3>Address</h3>
+            <div class="info-item">
+              <span class="label">City:</span>
+              <span class="value"><%= student.city %></span>
+            </div>
+            <div class="info-item">
+              <span class="label">State:</span>
+              <span class="value"><%= student.state %></span>
+            </div>
+            <div class="info-item">
+              <span class="label">Pincode:</span>
+              <span class="value"><%= student.pincode %></span>
+            </div>
+            <div class="info-item">
+              <span class="label">Permanent Address:</span>
+              <span class="value"><%= student.address %></span>
+            </div>
+            <div class="info-item">
+              <span class="label">Country:</span>
+              <span class="value"><%= student.country %></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Second Row: Contact and Course Information -->
+      <div class="row">
+        <div class="column">
+          <div class="section">
+            <h3>Contact Information</h3>
+            <div class="info-item">
+              <span class="label">Contact No.:</span>
+              <span class="value"><%= student.contact %></span>
+            </div>
+            <div class="info-item">
+              <span class="label">Alternate Contact:</span>
+              <span class="value"><%= student.alternateContact %></span>
+            </div>
+            <div class="info-item">
+              <span class="label">Email:</span>
+              <span class="value"><%= student.email %></span>
+            </div>
+          </div>
+        </div>
+        <div class="column">
+          <div class="section">
+            <h3>Course Information</h3>
+            <div class="info-item">
+              <span class="label">Organization Name:</span>
+              <span class="value"><%= student.organizations_name %></span>
+            </div>
+            <div class="info-item">
+              <span class="label">Batch:</span>
+              <span class="value"><%= student.batch %></span>
+            </div>
+            <div class="info-item">
+              <span class="label">Course Name:</span>
+              <span class="value"><%= student.courses_name %></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Family Information Section -->
+      <div class="section">
+        <h3>Family Information</h3>
+        <div class="info-item">
+          <span class="label">Father's Name:</span>
+          <span class="value"><%= student.fatherName %></span>
+        </div>
+        <div class="info-item">
+          <span class="label">Mother's Name:</span>
+          <span class="value"><%= student.motherName %></span>
+        </div>
+        <div class="info-item">
+          <span class="label">Annual Income:</span>
+          <span class="value"><%= student.annual_income %></span>
+        </div>
+        <div class="info-item">
+          <span class="label">Parent's Contact:</span>
+          <span class="value"><%= student.parentContact %></span>
+        </div>
+      </div>
+
+      <% }); %>
+    </div>
+  </body>
+</html>

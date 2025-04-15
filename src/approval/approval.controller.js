@@ -21,6 +21,7 @@ const {
   getData,
   setDateTimeFormat,
   deleteKeyValuePair,
+  conditionApproval,
 } = require('../../utils/helperFunction');
 const { v4: uuidv4 } = require('uuid');
 const { base_url } = require('../../config/server.config');
@@ -29,7 +30,9 @@ const {
   approvalEmails,
   saveHistory,
 } = require('../../utils/microservice_func');
-const { get } = require('prompt');
+const {
+  creatorOwnsCurrentApprovalStep,
+} = require('../dynamicApproval/dynamicApproval.service');
 
 exports.insertApproval = async (req, res) => {
   removeNullValueKey(req.body);
@@ -92,12 +95,30 @@ exports.insertApproval = async (req, res) => {
     );
   }
 
+  let record = await getRecords(
+    (tableMap[req.body.table_name] || req.body.table_name).replace(
+      'latest_',
+      '',
+    ),
+    `where ${req.body.record_column_name}='${req.body.record_uuid}'`,
+  );
+
+  if (!record.length) {
+    return throwError(400, 'Record not found');
+  }
+
+  let implemented_approval_hierarchy = conditionApproval(
+    approvalCount,
+    0,
+    record[0],
+  );
+
   let [exist_approval] = await getRecords(
     'latest_approval',
     `where 
      table_name='${req.body.table_name}'
      AND record_uuid = '${req.body.record_uuid}'
-     AND current_level=1 
+     AND current_level=${implemented_approval_hierarchy[0].condition.level}
      AND previous_status='${approvalCount.previous_status}' 
      AND next_status ='${approvalCount.next_status}'
      AND status='REQUESTED'`,
@@ -112,14 +133,37 @@ exports.insertApproval = async (req, res) => {
       ...req.body,
       approval_uuid: uuidv4(),
       requested_by_uuid: req.user.user_uuid,
-      current_level: 1,
-      approval_uuids: approvalCount.approval_hierarchy[0],
+      current_level: implemented_approval_hierarchy[0].condition.level,
+      approval_uuids: implemented_approval_hierarchy[0].approval,
       previous_status: approvalCount.previous_status,
       status: 'REQUESTED',
       next_status: approvalCount.next_status,
       create_ts: setDateTimeFormat('timestemp'),
     };
     await insertRecords('approval', req.body);
+
+    const isCreatorOwnsCurrentApprovalStep =
+      await creatorOwnsCurrentApprovalStep(
+        implemented_approval_hierarchy,
+        record[0],
+      );
+    if (isCreatorOwnsCurrentApprovalStep) {
+      // handle self approval
+      const bodyData = {
+        approval_uuid: req.body.approval_uuid,
+        status: 'APPROVED',
+      };
+
+      await getData(
+        `${base_url}/api/v1/approval/handle-approval`,
+        null,
+        'json',
+        bodyData,
+        'POST',
+        req.headers,
+      );
+    }
+
     res.status(200).json(responser('Approval inserted successfully', req.body));
     // <------------ Send Email On Action ------------->
     // approvalEmails(req.body.dynamic_approval_uuid, req.user);
@@ -140,7 +184,9 @@ exports.handleApproval = async (req, res) => {
       (ele) =>
         ele.uuid === req.user.user_uuid ||
         ele.uuid === req.user.role_uuid ||
-        req.user.role_value === 'ADMIN',
+        req.user.role_value === 'ADMIN' ||
+        req.user.role_value === 'SUPERADMIN' ||
+        req.user.role_value === 'CEO',
     ) &&
     req.body.status !== 'ROLLBACK'
   )
@@ -255,12 +301,42 @@ exports.handleApproval = async (req, res) => {
       );
     }
 
-    approval[0].approval_uuids =
-      approvalCount.approval_hierarchy[approval[0].current_level];
-    approval[0].current_level += 1;
+    // conditional logic
+
+    let implemented_approval_hierarchy = conditionApproval(
+      approvalCount,
+      approval[0].current_level,
+      record[0],
+    );
+
+    approval[0].approval_uuids = implemented_approval_hierarchy[0].approval;
+    approval[0].current_level =
+      implemented_approval_hierarchy[0].condition.level;
     approval[0].status = 'REQUESTED';
     approval[0].created_by_uuid = req.user.user_uuid;
     await insertRecords('approval', approval[0]);
+
+    const isCreatorOwnsCurrentApprovalStep =
+      await creatorOwnsCurrentApprovalStep(
+        implemented_approval_hierarchy,
+        record[0],
+      );
+    if (isCreatorOwnsCurrentApprovalStep) {
+      // handle self approval
+      const bodyData = {
+        approval_uuid: req.body.approval_uuid,
+        status: 'APPROVED',
+      };
+
+      await getData(
+        `${base_url}/api/v1/approval/handle-approval`,
+        null,
+        'json',
+        bodyData,
+        'POST',
+        req.headers,
+      );
+    }
   } else {
     const bodyData = {
       table_name: approval[0].table_name,
@@ -357,7 +433,11 @@ exports.getApprovals = async (req, res) => {
     advanceFilter,
   );
 
-  if (req.user.role_value !== 'ADMIN' && req.user.role_value !== 'SUPERADMIN') {
+  if (
+    req.user.role_value !== 'ADMIN' &&
+    req.user.role_value !== 'SUPERADMIN' &&
+    req.user.role_value !== 'CEO'
+  ) {
     filter =
       (filter ? `${filter} AND ` : 'WHERE ') +
       `(JSON_CONTAINS(approval_uuids, '{"type": "USER", "uuid": "${req.user.user_uuid}"}')
@@ -370,6 +450,7 @@ exports.getApprovals = async (req, res) => {
     await dbRequest(`select record_column_name from latest_approval 
                   where table_name='${table_name}' limit 1;`)
   )[0];
+  console.log('result', result);
   let resultJoined = [];
   if (result) {
     filter = await roleFilterService(
@@ -544,9 +625,13 @@ exports.mergeApprovalWithRecord = async (req, res) => {
       (ele) =>
         ele.uuid === req.user.user_uuid ||
         ele.uuid === req.user.role_uuid ||
-        req.user.role_value === 'ADMIN',
+        req.user.role_value === 'ADMIN' ||
+        req.user.role_value === 'SUPERADMIN' ||
+        req.user.role_value === 'CEO',
     );
     deleteKeyValuePair(approvalRecord[0], ['approval_uuids']);
+
+    console.log(is_user_approver, 'is_user_approver');
     data = { ...data, ...approvalRecord[0], is_user_approver };
   } else {
     let nonApprovalRecord = await getRecords(

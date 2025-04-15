@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const { join } = require('path');
 
 exports.insertApprovalSchema = Joi.object({
   dynamic_approval_uuid: Joi.string().guid().allow(null),
@@ -51,6 +52,28 @@ exports.insertApprovalCountSchema = Joi.object({
           Joi.object({
             type: Joi.string().valid('USER', 'ROLE').required(),
             uuid: Joi.string().guid().required(),
+            is_conditional: Joi.boolean().required(),
+            filter: Joi.array()
+              .items(
+                Joi.object({
+                  column: Joi.string().allow(''), // Allows empty string
+                  operator: Joi.string().valid(
+                    'EQUAL',
+                    'NOT_EQUAL',
+                    'GREATER',
+                    'LESSER',
+                    'GREATER_THAN_EQUAL',
+                    'LESSER_THAN_EQUAL',
+                    'CONTAINS',
+                    'ENDS_WITH',
+                    'STARTS_WITH',
+                    'DATE_RANGE',
+                  ), // Define allowed operators
+                  value: Joi.string().required(),
+                  logicalOperator: Joi.string().valid('AND', 'OR').optional(),
+                }),
+              )
+              .optional(),
           }),
         ),
     )
@@ -122,6 +145,7 @@ exports.getApprovalSchema = Joi.object({
   status: Joi.string().valid('REQUESTED', 'ROLLBACK', 'APPROVED').allow(null),
   columns: Joi.array().items(Joi.string().required()).allow(null),
   value: Joi.string().allow(null),
+  is_user_approver: Joi.boolean().allow(null),
   pageLimit: Joi.number()
     .integer()
     .min(1)
@@ -153,22 +177,4 @@ exports.getApprovalSchema = Joi.object({
       ),
     )
     .allow(null),
-});
-
-exports.getDynamicApprovalHistorySchema = Joi.object({
-  dynamic_approval_uuid: Joi.string().guid().allow(null),
-  record_uuid: Joi.string().guid().allow(null),
-  requested_by_uuid: Joi.string().guid().allow(null),
-  pageNo: Joi.number().integer().min(1).allow(null),
-  pageLimit: Joi.number()
-    .integer()
-    .min(1)
-    .default(1)
-    .description('The maximum number of pages allowed.'),
-  itemPerPage: Joi.number().integer().min(1).allow(null),
-  from_date: Joi.date().allow(null),
-  to_date: Joi.date().allow(null),
-  status: Joi.string().allow(null),
-  columns: Joi.array().allow(null),
-  value: Joi.string().allow(null),
 });

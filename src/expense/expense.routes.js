@@ -70,4 +70,23 @@ router.post(
   ),
 );
 
+router.get(
+  '/get-preview-expense',
+  checkAuth,
+  requestErrorHandlingDecorator(
+    Schema.getPreviewExpense,
+    controller.getPreviewExpense,
+  ),
+);
+
+router
+  .route('/get-expense-dynamic-approval-history')
+  .get(
+    checkAuth,
+    requestErrorHandlingDecorator(
+      Schema.getExpenseDynamicApprovalHistorySchema,
+      controller.getExpenseDynamicApprovalHistory,
+    ),
+  );
+
 module.exports = router;

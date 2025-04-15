@@ -1,5 +1,9 @@
 const express = require('express');
 
+const {
+  SSEServerTransport,
+} = require('@modelcontextprotocol/sdk/server/sse.js');
+
 const swaggerUI = require('swagger-ui-express');
 const fileUpload = require('express-fileupload');
 
@@ -11,10 +15,40 @@ const {
   responser,
   readFileContent,
 } = require('./utils/helperFunction');
+const McpServerInstance = require('./utils/mcpServer');
 
-app.use(express.json());
 app.use(cors());
 
+// mcp server
+
+const transports = {};
+
+app.get('/sse', async (req, res) => {
+  const transport = new SSEServerTransport('/messages', res);
+  transports[transport.sessionId] = transport;
+  //   Content-Type: text/event-stream
+  // Cache-Control: no-cache
+  // Connection: keep-alive
+  res.setHeader('Content-Type', 'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Connection', 'keep-alive');
+  res.on('close', () => {
+    delete transports[transport.sessionId];
+  });
+  await McpServerInstance.connect(transport);
+});
+
+app.post('/messages', async (req, res) => {
+  const sessionId = req.query.sessionId;
+  const transport = transports[sessionId];
+  if (transport) {
+    await transport.handlePostMessage(req, res);
+  } else {
+    res.status(400).send('No transport found for sessionId');
+  }
+});
+
+app.use(express.json());
 // Enable file uploads
 app.use(fileUpload({ limits: { fileSize: 50 * 1024 * 1024 } }));
 

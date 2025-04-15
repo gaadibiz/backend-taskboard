@@ -243,7 +243,7 @@ exports.getTaskCount = async (req, res) => {
     value,
   );
 
-  filter = await roleFilterService('', tableName, req.user);
+  filter = await roleFilterService(filter, tableName, req.user);
 
   let sql = `SELECT 
   s.status,
@@ -268,10 +268,7 @@ LEFT JOIN
    GROUP BY 
      status) t
 ON 
-  s.status = t.status
-
-  
-`;
+  s.status = t.status `;
 
   const result = await dbRequest(sql);
   console.log('result: ', result);

@@ -76,6 +76,10 @@ module.exports = {
         type: Sequelize.JSON,
         allowNull: true,
       },
+      expected_delivery_date: {
+        type: Sequelize.DATE,
+        allowNull: true,
+      },
       additional_fields: {
         type: Sequelize.JSON,
         allowNull: true,

@@ -129,6 +129,10 @@
                   "type": "string",
                   "default": ""
                 },
+                "priority": {
+                  "type": "string",
+                  "default": null
+                },
                 "registration_type": {
                   "type": "string",
                   "default": ""

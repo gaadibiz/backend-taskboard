@@ -7,10 +7,12 @@ const {
   apiRequest,
   deleteKeyValuePair,
   compareObjects,
+  readFileContent,
 } = require('./helperFunction');
 const { getRecords } = require('./dbFunctions');
 const moment = require('moment');
 const config = require('../config/server.config');
+const fs = require('fs');
 
 /**
  * Send Normal Email or email with template
@@ -39,7 +41,10 @@ exports.sendEmailService = async (
   reply_to,
   attachments,
 ) => {
-  return await getData(SERVICES_URL.sendEmail, null, 'json', {
+  if (template) {
+    template = await readFileContent('utils/templates/Email', template);
+  }
+  return await apiRequest(SERVICES_URL.sendEmail, null, 'json', {
     to,
     subject,
     body,
@@ -51,7 +56,6 @@ exports.sendEmailService = async (
     attachments,
   });
 };
-
 exports.getS3SignedUrl = async (key) => {
   const url = await apiRequest(
     SERVICES_URL.getSignedUrl,
@@ -71,9 +75,19 @@ exports.getS3SignedUrl = async (key) => {
  * @returns {Promise<Buffer>} Buffer format of the PDF file
  */
 exports.pdfMaker = async (data = null, template, options) => {
+  if (template) {
+    template = await readFileContent('utils/templates/pdf', template);
+  }
+
+  let title = null;
+  if (fs.existsSync('utils/templates/pdf/title.ejs', 'utf8')) {
+    title = await readFileContent('utils/templates/pdf', 'title.ejs');
+  }
+
   let pdfBufffer = await getData(SERVICES_URL.pdfGenerator, null, 'buffer', {
     data,
     template,
+    title,
     options,
   });
   return pdfBufffer;
@@ -171,6 +185,10 @@ exports.voiceCallService = async (data) => {
 };
 
 exports.ejsPreview = async (data, templateName) => {
+  if (templateName) {
+    templateName = await readFileContent('utils/templates', templateName);
+  }
+
   let ejsText = await getData(SERVICES_URL.ejsPreview, null, 'text', {
     data,
     templateName,

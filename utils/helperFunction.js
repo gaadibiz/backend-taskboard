@@ -7,6 +7,8 @@ const { ToWords } = require('to-words');
 require('dotenv').config();
 const { Readable } = require('stream');
 const FormData = require('form-data');
+const { base_url } = require('../config/server.config');
+const crypto = require('crypto');
 exports.throwError = (status, message) => {
   throw new Error(JSON.stringify({ status, message }));
 };
@@ -63,6 +65,7 @@ exports.getData = async (
     method: bodyData ? method : 'GET',
     headers: {
       'Content-Type': 'application/json; charset=UTF-8',
+      Origin: base_url,
       ...header,
     },
     [bodyData ? 'body' : null]: JSON.stringify(bodyData),
@@ -105,7 +108,9 @@ exports.requestApi = async (url, paramOrQuery, method, headers, body) => {
       }
     } else {
       for (let k in paramOrQuery) {
-        Url.searchParams.append(k, paramOrQuery[k]);
+        if (paramOrQuery[k]) {
+          Url.searchParams.append(k, paramOrQuery[k]);
+        }
       }
     }
   } else if (paramOrQuery) {
@@ -138,6 +143,7 @@ exports.requestApi = async (url, paramOrQuery, method, headers, body) => {
   } else {
     requestPayload.headers = {
       'Content-Type': 'application/json; charset=UTF-8',
+      Origin: base_url,
       ...headers,
     };
     requestPayload.body = JSON.stringify(body);
@@ -202,11 +208,13 @@ exports.apiRequest = async (
     headers: {
       'Content-Type': 'application/json; charset=UTF-8',
       ...header,
+      Origin: base_url,
     },
     [bodyData ? 'body' : null]: JSON.stringify(bodyData),
   });
   console.log('req', req);
   let res = undefined;
+
   if (response_type === 'json') res = await req.json();
   if (response_type === 'text') res = await req.text();
   if (response_type === 'buffer') res = await req.arrayBuffer();
@@ -704,4 +712,134 @@ exports.compareObjects = (obj1, obj2) => {
     }
   });
   return changes;
+};
+
+function evaluateCondition(actualValue, filterValue, operator) {
+  switch (operator) {
+    case 'EQUAL':
+      return actualValue == filterValue;
+    case 'NOT_EQUAL':
+      return actualValue != filterValue;
+    case 'GREATER':
+      return actualValue > filterValue;
+    case 'LESSER':
+      return actualValue < filterValue;
+    case 'GREATER_THAN_EQUAL':
+      return actualValue >= filterValue;
+    case 'LESSER_THAN_EQUAL':
+      return actualValue <= filterValue;
+    case 'CONTAINS':
+      return (
+        typeof actualValue === 'string' && actualValue.includes(filterValue)
+      );
+    case 'STARTS_WITH':
+      return (
+        typeof actualValue === 'string' && actualValue.startsWith(filterValue)
+      );
+    case 'ENDS_WITH':
+      return (
+        typeof actualValue === 'string' && actualValue.endsWith(filterValue)
+      );
+    default:
+      return false;
+  }
+}
+
+const checkFilterConditionsWithLogic = (dataObj, filters) => {
+  if (!filters.length) return true;
+
+  let result = null;
+
+  for (let i = 0; i < filters.length; i++) {
+    const { column, operator, value, logicalOperator } = filters[i];
+    const actual = dataObj[column];
+    const actualVal = isNaN(actual) ? actual : parseFloat(actual);
+    const filterVal = isNaN(value) ? value : parseFloat(value);
+
+    console.log(
+      actualVal,
+      filterVal,
+      operator,
+      '........................... actualVal, filterVal, operator',
+    );
+
+    const currentResult = evaluateCondition(actualVal, filterVal, operator);
+
+    console.log(currentResult, '........................... currentResult');
+    if (result === null) {
+      result = currentResult;
+    } else {
+      if (logicalOperator) {
+        if (logicalOperator === 'AND') {
+          result = result && currentResult;
+        } else if (logicalOperator === 'OR') {
+          result = result || currentResult;
+        }
+      }
+    }
+  }
+
+  return result;
+};
+
+exports.conditionApproval = (approvalCount, level = 0, record) => {
+  let implemented_approval_hierarchy = [];
+  let i = level; // skip the current level
+  while (
+    i < approvalCount?.approval_hierarchy.length &&
+    implemented_approval_hierarchy.length === 0
+  ) {
+    const element = approvalCount.approval_hierarchy[i];
+
+    console.log(element, '.......................element.');
+
+    if (element[0].is_conditional) {
+      // Do nothing or some logic here if needed
+
+      const filter = checkFilterConditionsWithLogic(record, element[0].filter);
+
+      if (filter) {
+        implemented_approval_hierarchy.push({
+          approval: element.map((item) => ({
+            type: item.type,
+            uuid: item.uuid,
+          })),
+          condition: {
+            level: level + 1,
+            filter: element[0].filter,
+          },
+        });
+      }
+    } else {
+      implemented_approval_hierarchy.push({
+        approval: element.map((item) => ({
+          type: item.type,
+          uuid: item.uuid,
+        })),
+        condition: {
+          level: i + 1,
+          filter: element[0].filter,
+        },
+      });
+    }
+
+    i++;
+  }
+
+  return implemented_approval_hierarchy;
+};
+
+exports.is_true = (value) => {
+  if (value === 'true' || value === true || value === '1' || value === 1) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+exports.hashObject = (obj) => {
+  return crypto
+    .createHash('sha256')
+    .update(JSON.stringify(obj, Object.keys(obj).sort()))
+    .digest('hex');
 };

@@ -24,8 +24,12 @@ const {
 } = require('../../utils/helperFunction');
 const { base_url } = require('../../config/server.config');
 const { responser, removeNullValueKey } = require('../../utils/helperFunction');
-const e = require('express');
-const { saveHistory } = require('../../utils/microservice_func');
+
+const {
+  saveHistory,
+  ejsPreview,
+  pdfMaker,
+} = require('../../utils/microservice_func');
 
 function toBoolean(value) {
   if (value === 'true' || value === true || value === 1) return true;
@@ -76,8 +80,8 @@ exports.upsertExpense = async (req, res) => {
     dynamic_uuid: req.body.expense_category_uuid,
     record_uuid: req.body.expense_uuid,
     record_column_name: 'expense_uuid',
-    reimbursed_amount: req.body.reimbursed_amount,
   };
+  console.log('bodyData', bodyData);
   await getData(
     base_url + '/api/v1/dynamicApproval/insert-approval',
     null,
@@ -261,36 +265,36 @@ exports.upsertExpenseCategory = async (req, res) => {
     req.body.expense_category_uuid = uuid();
     req.body.create_ts = setDateTimeFormat('timestemp');
     // add defult approval
-    let [role_info_project_manager] = await getRecords(
+    let roles = await getRecords(
       'latest_roles',
-      `where role_value='PROJECT_MANAGER'`,
+      `where role_value IN ('PROJECT_MANAGER', 'CEO', 'CATEGORY_MANAGER', 'FINANCE_MANAGER')`,
     );
-    console.log('role_info_project_manager: ', role_info_project_manager);
-    // role_info_project_manager = role_info_project_manager[0];
-
-    let [role_info_category_manager] = await getRecords(
-      'latest_roles',
-      `where role_value='CATEGORY_MANAGER'`,
+    let role_info_project_manager = roles.find(
+      (role) => role.role_value === 'PROJECT_MANAGER',
     );
-    console.log('role_info_category_manager: ', role_info_category_manager);
-    // role_info_category_manager = role_info_category_manager[0];
-
-    let [role_info_finance_manager] = await getRecords(
-      'latest_roles',
-      `where role_value='FINANCE_MANAGER'`,
+    let role_info_ceo = roles.find((role) => role.role_value === 'CEO');
+    let role_info_category_manager = roles.find(
+      (role) => role.role_value === 'CATEGORY_MANAGER',
     );
-    console.log('role_info_finance_manager: ', role_info_finance_manager);
-    // role_info_finance_manager = role_info_finance_manager[0];
+    let role_info_finance_manager = roles.find(
+      (role) => role.role_value === 'FINANCE_MANAGER',
+    );
 
     // const defultapproval = [{}, {}];
     const data1 = {
       dynamic_approval_count_uuid: uuid(),
-      table_name: 'expense_category',
+      table_name: 'latest_expense',
       dynamic_uuid: req.body.expense_category_uuid,
       dynamic_table_name: 'latest_expense_category',
       level: 1,
       approval_hierarchy: [
-        [{ type: 'ROLE', uuid: `${role_info_finance_manager.role_uuid}}` }],
+        [
+          {
+            type: 'ROLE',
+            uuid: `${role_info_finance_manager.role_uuid}`,
+            is_conditional: false,
+          },
+        ],
       ],
       approval_raise_status: 'FINANCE_APPROVAL_REQUESTED',
       previous_status: 'EXPENSE_REQUESTED',
@@ -303,14 +307,47 @@ exports.upsertExpenseCategory = async (req, res) => {
 
     const data2 = {
       dynamic_approval_count_uuid: uuid(),
-      table_name: 'expense_category',
+      table_name: 'latest_expense',
       dynamic_uuid: req.body.expense_category_uuid,
       dynamic_table_name: 'latest_expense_category',
-      level: 2,
+      level: 3,
       approval_hierarchy: [
-        [{ type: 'ROLE', uuid: `${role_info_project_manager.role_uuid}}` }],
-        [{ type: 'ROLE', uuid: `${role_info_category_manager.role_uuid}}` }],
+        [
+          {
+            type: 'ROLE',
+            uuid: `${role_info_project_manager.role_uuid}`,
+            is_conditional: false,
+          },
+        ],
+        [
+          {
+            type: 'ROLE',
+            uuid: `${role_info_category_manager.role_uuid}`,
+            is_conditional: false,
+          },
+        ],
+        [
+          {
+            type: 'ROLE',
+            uuid: `${role_info_ceo.role_uuid}`,
+            is_conditional: true,
+            filter: [
+              {
+                column: 'reimbursed_amount',
+                operator: 'GREATER_THAN_EQUAL',
+                value: '10000',
+              },
+              {
+                column: 'requested_advance_amount',
+                operator: 'GREATER_THAN_EQUAL',
+                value: '10000',
+                logicalOperator: 'OR',
+              },
+            ],
+          },
+        ],
       ],
+
       approval_raise_status: 'EXPENSE_APPROVAL_REQUESTED',
       previous_status: 'EXPENSE_REQUESTED',
       next_status: 'FINANCE_APPROVAL_REQUESTED',
@@ -570,4 +607,127 @@ exports.exportFinanceExpense = async (req, res) => {
   res
     .status(200)
     .json(responser('Exported successfully', { selfBankData, otherBankData }));
+};
+
+exports.getPreviewExpense = async (req, res) => {
+  const { expense_uuid, isPreview } = req.query;
+
+  const [expense] = await getRecords(
+    'latest_expense',
+    `where expense_uuid = '${expense_uuid}'`,
+  );
+
+  if (!expense) throwError(404, 'Expense not found.');
+
+  // let templateFile = '';
+  // console.log('expense', expense);
+  // if (expense.expense_type === 'EXPENSE' || expense.expense_type === 'JOB') {
+  //   templateFile = 'expense.ejs';
+  // } else if (expense.expense_type === 'ADVANCE') {
+  //   templateFile = 'advanceExpense.ejs';
+  // } else if (expense.expense_type === 'JOB') {
+  //   templateFile = 'job.ejs';
+  // } else {
+  //   return res.status(400).json(responser('Invalid expense type'));
+  // }
+  if (isPreview === 'true') {
+    result = await ejsPreview(
+      {
+        status: expense.status.replace('_', ' ').toUpperCase(),
+        expense_type: expense.expense_type,
+        project_name: expense.project_name,
+        reimbursed_amount: expense.reimbursed_amount,
+        created_by_name: expense.created_by_name,
+        user_name: expense.user_name,
+        expense_category_name: expense.expense_category_name,
+        expense_date: expense.expense_date,
+        requested_advance_amount: expense.requested_advance_amount,
+        job_order_no: expense.job_order_no,
+        job_name: expense.job_name,
+      },
+      `pdf/expense.ejs`,
+    );
+    return res.json(responser('PO EJS', result));
+  } else {
+    result = await pdfMaker(
+      {
+        status: expense.status,
+        expense_type: expense.expense_type,
+        project_name: expense.project_name,
+        reimbursed_amount: expense.reimbursed_amount,
+        created_by_name: expense.created_by_name,
+        user_name: expense.user_name,
+        expense_category_name: expense.expense_category_name,
+        expense_date: expense.expense_date,
+        requested_advance_amount: expense.requested_advance_amount,
+        job_order_no: expense.job_order_no,
+        job_name: expense.job_name,
+      },
+      `expense.ejs`,
+      {
+        isTitlePage: false,
+      },
+    );
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader(
+      'Content-Disposition',
+      'attachment; filename="expense_invoice.pdf"',
+    );
+    res.send(Buffer.from(result));
+  }
+};
+
+exports.getExpenseDynamicApprovalHistory = async (req, res) => {
+  const {
+    dynamic_approval_uuid,
+    requested_by_uuid,
+    expense_uuid,
+    user_uuid,
+    user_name,
+    table_name,
+    project_uuid,
+    project_name,
+    pageNo,
+    itemPerPage,
+    pageLimit,
+    from_date,
+    to_date,
+    status,
+    columns,
+    value,
+  } = req.query;
+
+  // let tableName = 'dynamic_approval';
+  let tableName = 'latest_dynamic_approval_history';
+
+  let filter = filterFunctionality(
+    {
+      dynamic_approval_uuid,
+      requested_by_uuid,
+      expense_uuid,
+      user_uuid,
+      user_name,
+      table_name,
+      project_uuid,
+      project_name,
+    },
+    status,
+    to_date,
+    from_date,
+    Array.isArray(columns) ? columns : [columns],
+    value,
+  );
+
+  let pageFilter = pagination(pageNo, itemPerPage, pageLimit);
+  let totalRecords = await getCountRecord(tableName, filter);
+  let result = await getRecords(tableName, filter, pageFilter);
+
+  return res.json(
+    responser(
+      'All dynamic approval history',
+      result,
+      result.length,
+      totalRecords,
+    ),
+  );
 };
