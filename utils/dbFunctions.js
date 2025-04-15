@@ -837,3 +837,37 @@ exports.advanceFiltering = (filter, filterPayload) => {
   filter += (filter ? ' AND ' : 'WHERE ') + conditionArr.join(' ');
   return filter;
 };
+
+/**
+ * Insert on updated Audit columns.
+ * @param {string} name Table name
+ * @param {object} data Request body
+ * @param {array} columns Columns name of the given table or view.
+ * @return {timestamp} Return timestamp in create ts.
+ */
+exports.handleAuditColumns = async (tableName, data, columns) => {
+  let whereCondition = 'WHERE ';
+  whereCondition += columns
+    .map((ele) => `${ele} = '${data[ele]}'`)
+    .join(` AND `);
+
+  const checkRecord = await this.getRecords(tableName, whereCondition);
+  if (checkRecord.length) {
+    data.create_ts = setDateTimeFormat('timestamp', checkRecord[0].create_ts);
+    data.created_by_uuid = checkRecord[0].created_by_uuid;
+    data.created_by_name = checkRecord[0].created_by_name;
+    return;
+  }
+  return (data.create_ts = setDateTimeFormat('timestemp'));
+};
+exports.handleAuditColumns = async (view, data, identifiers = []) => {
+  let whereCondition = 'WHERE ';
+  whereCondition += identifiers
+    .map((ele) => `${ele} = '${data[ele]}'`)
+    .join(` AND `);
+
+  let checkRecord = await this.getRecords(view, whereCondition);
+  checkRecord = checkRecord[0];
+
+  return checkRecord;
+};

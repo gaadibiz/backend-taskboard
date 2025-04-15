@@ -1,0 +1,266 @@
+{
+    "paths": {
+      "/api/v1/draft/upsert-draft": {
+        "post": {
+          "tags": ["Draft"],
+          "summary": "Create or update Draft",
+          "description": "End point to Create or Update Draft",
+          "consumes": ["application/json"],
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "header",
+              "name": "auth-Token",
+              "description": "",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "in": "body",
+              "name": "body",
+              "description": "",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "draft_code": {
+                    "type": "string",
+                    "default": null
+                  },
+                  "form_url": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "reference_data_uuid": {
+                    "type": "string",
+                    "default":""
+                  },
+                  "reference_data": {
+                    "type": "object",
+                    "default": null
+                  },
+                  "status": {
+                    "type": "string",
+                    "default": "ACTIVE || INACTIVE"
+                  }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "successful operation"
+            },
+            "404": {
+              "description": "Not Found"
+            },
+            "500": {
+              "description": "Internal Server Error"
+            }
+          }
+        }
+      },
+      "/api/v1/draft/delete-draft": {
+        "post": {
+          "tags": ["Draft"],
+          "summary": "Delete Draft",
+          "description": "End point to delete Draft",
+          "consumes": ["application/json"],
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "header",
+              "name": "auth-Token",
+              "description": "",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "in": "body",
+              "name": "body",
+              "description": "",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "form_url": {
+                    "type": "string",
+                    "default": null
+                  }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "successful operation"
+            },
+            "404": {
+              "description": "Not Found"
+            },
+            "500": {
+              "description": "Internal Server Error"
+            }
+          }
+        }
+      },
+      "/api/v1/draft/get-draft": {
+        "get": {
+          "tags": ["Draft"],
+          "summary": "Get all Draft with filter",
+          "description": "End point to get Draft",
+          "consumes": ["application/json"],
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "header",
+              "name": "auth-Token",
+              "description": "",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "in": "query",
+              "name": "draft_code",
+              "description": "",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "in": "query",
+              "name": "created_by_uuid",
+              "description": "",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "in": "query",
+              "name": "reference_data_uuid",
+              "description": "",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "in": "query",
+              "name": "columns",
+              "description": "",
+              "required": false,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "in": "query",
+              "name": "value",
+              "description": "",
+              "required": false,
+              "type": "string",
+              "default": ""
+            },
+            {
+              "in": "query",
+              "name": "status",
+              "description": "",
+              "required": false,
+              "type": "string",
+              "default": "ACTIVE"
+            },
+            {
+              "in": "query",
+              "name": "from_date",
+              "description": "Format will be YYYY-MM-DD.",
+              "required": false,
+              "type": "string",
+              "default": ""
+            },
+            {
+              "in": "query",
+              "name": "to_date",
+              "description": "Format will be YYYY-MM-DD.",
+              "required": false,
+              "type": "string",
+              "default": ""
+            },
+            {
+              "in": "query",
+              "name": "pageNo",
+              "description": "",
+              "required": true,
+              "type": "number"
+            },
+            {
+              "in": "query",
+              "name": "itemPerPage",
+              "description": "",
+              "required": true,
+              "type": "number"
+            },
+            {
+              "in": "query",
+              "name": "pageLimit",
+              "description": "",
+              "required": false,
+              "type": "number"
+            },
+            {
+              "name": "advanceFilter",
+              "in": "query",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "column": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "default": [""]
+                  },
+                  "operator": {
+                    "type": "string",
+                    "default": "EQUAL | NOT_EQUAL | GREATER | LESSER | GREATER_THAN_EQUAL | LESSER_THAN_EQUAL | CONTAINS | STARTS_WITH | ENDS_WITH | DATE_RANGE",
+                    "enum": [
+                      "EQUAL",
+                      "NOT_EQUAL",
+                      "GREATER",
+                      "LESSER",
+                      "GREATER_THAN_EQUAL",
+                      "LESSER_THAN_EQUAL",
+                      "CONTAINS",
+                      "STARTS_WITH",
+                      "ENDS_WITH",
+                      "DATE_RANGE"
+                    ]
+                  },
+                  "value": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "logicalOperator": {
+                    "type": "string",
+                    "default": "AND",
+                    "enum": ["AND", "OR"]
+                  }
+                }
+              },
+              "description": "Advanced filters for complex lead queries.",
+              "collectionFormat": "multi"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful logout. The user has been logged out."
+            },
+            "404": {
+              "description": "Not Found. The provided user identifier was not found."
+            },
+            "500": {
+              "description": "Internal Server Error. An unexpected error occurred on the server."
+            }
+          }
+        }
+      }
+    }
+  }
+  

@@ -770,8 +770,13 @@ exports.getTableStatus = async (req, res) => {
 exports.getDynamicApprovalHistory = async (req, res) => {
   const {
     dynamic_approval_uuid,
-    record_uuid,
     requested_by_uuid,
+    expense_uuid,
+    user_uuid,
+    user_name,
+    table_name,
+    project_uuid,
+    project_name,
     pageNo,
     itemPerPage,
     pageLimit,
@@ -782,12 +787,19 @@ exports.getDynamicApprovalHistory = async (req, res) => {
     value,
   } = req.query;
 
-  let tableName = 'dynamic_approval';
+  // let tableName = 'dynamic_approval';
+  let tableName = 'latest_dynamic_approval_history';
+
   let filter = filterFunctionality(
     {
       dynamic_approval_uuid,
-      record_uuid,
       requested_by_uuid,
+      expense_uuid,
+      user_uuid,
+      user_name,
+      table_name,
+      project_uuid,
+      project_name,
     },
     status,
     to_date,

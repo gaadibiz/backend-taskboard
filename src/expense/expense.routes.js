@@ -79,4 +79,14 @@ router.get(
   ),
 );
 
+router
+  .route('/get-expense-dynamic-approval-history')
+  .get(
+    checkAuth,
+    requestErrorHandlingDecorator(
+      Schema.getExpenseDynamicApprovalHistorySchema,
+      controller.getExpenseDynamicApprovalHistory,
+    ),
+  );
+
 module.exports = router;

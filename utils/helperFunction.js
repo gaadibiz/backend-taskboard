@@ -8,6 +8,7 @@ require('dotenv').config();
 const { Readable } = require('stream');
 const FormData = require('form-data');
 const { base_url } = require('../config/server.config');
+const crypto = require('crypto');
 exports.throwError = (status, message) => {
   throw new Error(JSON.stringify({ status, message }));
 };
@@ -847,4 +848,11 @@ exports.is_true = (value) => {
   } else {
     return false;
   }
+};
+
+exports.hashObject = (obj) => {
+  return crypto
+    .createHash('sha256')
+    .update(JSON.stringify(obj, Object.keys(obj).sort()))
+    .digest('hex');
 };

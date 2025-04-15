@@ -178,21 +178,3 @@ exports.getApprovalSchema = Joi.object({
     )
     .allow(null),
 });
-
-exports.getDynamicApprovalHistorySchema = Joi.object({
-  dynamic_approval_uuid: Joi.string().guid().allow(null),
-  record_uuid: Joi.string().guid().allow(null),
-  requested_by_uuid: Joi.string().guid().allow(null),
-  pageNo: Joi.number().integer().min(1).allow(null),
-  pageLimit: Joi.number()
-    .integer()
-    .min(1)
-    .default(1)
-    .description('The maximum number of pages allowed.'),
-  itemPerPage: Joi.number().integer().min(1).allow(null),
-  from_date: Joi.date().allow(null),
-  to_date: Joi.date().allow(null),
-  status: Joi.string().allow(null),
-  columns: Joi.array().allow(null),
-  value: Joi.string().allow(null),
-});

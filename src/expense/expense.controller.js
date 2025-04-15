@@ -688,3 +688,58 @@ exports.getPreviewExpense = async (req, res) => {
     res.send(Buffer.from(result));
   }
 };
+
+exports.getExpenseDynamicApprovalHistory = async (req, res) => {
+  const {
+    dynamic_approval_uuid,
+    requested_by_uuid,
+    expense_uuid,
+    user_uuid,
+    user_name,
+    table_name,
+    project_uuid,
+    project_name,
+    pageNo,
+    itemPerPage,
+    pageLimit,
+    from_date,
+    to_date,
+    status,
+    columns,
+    value,
+  } = req.query;
+
+  // let tableName = 'dynamic_approval';
+  let tableName = 'latest_dynamic_approval_history';
+
+  let filter = filterFunctionality(
+    {
+      dynamic_approval_uuid,
+      requested_by_uuid,
+      expense_uuid,
+      user_uuid,
+      user_name,
+      table_name,
+      project_uuid,
+      project_name,
+    },
+    status,
+    to_date,
+    from_date,
+    Array.isArray(columns) ? columns : [columns],
+    value,
+  );
+
+  let pageFilter = pagination(pageNo, itemPerPage, pageLimit);
+  let totalRecords = await getCountRecord(tableName, filter);
+  let result = await getRecords(tableName, filter, pageFilter);
+
+  return res.json(
+    responser(
+      'All dynamic approval history',
+      result,
+      result.length,
+      totalRecords,
+    ),
+  );
+};

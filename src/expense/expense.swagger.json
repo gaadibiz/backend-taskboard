@@ -743,6 +743,127 @@
           }
         }
       }
+    },
+    
+    "/api/v1/expense/get-expense-dynamic-approval-history": {
+      "get": {
+        "tags": ["expense"],
+        "summary": "get expense history of approval",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "dynamic_approval_uuid",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "requested_by_uuid",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "expense_uuid",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "user_uuid",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "user_name",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "project_uuid",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "project_name",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "table_name",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "pageNo",
+            "type": "integer",
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "itemPerPage",
+            "type": "integer",
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "from_date",
+            "type": "string",
+            "format": "date",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "to_date",
+            "type": "string",
+            "format": "date",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "columns",
+            "type": "array",
+            "items": { "type": "string" },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "value",
+            "type": "string",
+            "default": "",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "pageLimit",
+            "schema": { "type": "string" },
+            "description": "",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": { "description": "successful operation" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
     }
   }
 }

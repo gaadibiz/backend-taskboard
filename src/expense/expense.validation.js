@@ -157,3 +157,26 @@ exports.getPreviewExpense = Joi.object({
   expense_uuid: Joi.string().uuid().required(),
   isPreview: Joi.boolean().allow(null),
 });
+
+exports.getExpenseDynamicApprovalHistorySchema = Joi.object({
+  dynamic_approval_uuid: Joi.string().guid().allow(null),
+  requested_by_uuid: Joi.string().guid().allow(null),
+  expense_uuid: Joi.string().guid().allow(null),
+  user_uuid: Joi.string().guid().allow(null),
+  user_name: Joi.string().allow(null),
+  project_uuid: Joi.string().guid().allow(null),
+  project_name: Joi.string().allow(null),
+  table_name: Joi.string().allow(null),
+  pageNo: Joi.number().integer().min(1).allow(null),
+  pageLimit: Joi.number()
+    .integer()
+    .min(1)
+    .default(1)
+    .description('The maximum number of pages allowed.'),
+  itemPerPage: Joi.number().integer().min(1).allow(null),
+  from_date: Joi.date().allow(null),
+  to_date: Joi.date().allow(null),
+  status: Joi.string().allow(null),
+  columns: Joi.array().allow(null),
+  value: Joi.string().allow(null),
+});
