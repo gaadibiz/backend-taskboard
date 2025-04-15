@@ -49,6 +49,7 @@ exports.upsertPurchaseOrderSchema = Joi.object({
   remark: Joi.string().max(255).allow('', null),
   invoice_items: Joi.array(),
   due_date: Joi.string().allow(null, ''),
+  date_of_delivery: Joi.string().allow(null, ''),
   expected_delivery_date: Joi.string().allow(null, ''),
   additional_fields: Joi.array().allow('', null),
   total_amount: Joi.number().precision(2).allow(null),
