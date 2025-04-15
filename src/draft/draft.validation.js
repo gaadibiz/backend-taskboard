@@ -41,7 +41,7 @@ exports.getDraftSchema = Joi.object({
 exports.upsertDraftSchems = Joi.object({
   draft_code: Joi.string().allow(null),
   form_url: Joi.string().required(),
-  reference_data_uuid: Joi.string().guid().required(),
+  reference_data_uuid: Joi.string().guid().allow(null, ''),
   reference_data: Joi.object().allow(null),
   status: Joi.string().valid('ACTIVE', 'INACTIVE'),
   created_by_uuid: Joi.string().guid().allow(null),
