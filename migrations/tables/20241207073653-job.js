@@ -80,6 +80,10 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: true,
       },
+      due_date: {
+        type: Sequelize.DATE,
+        allowNull: true,
+      },
       additional_fields: {
         type: Sequelize.JSON,
         allowNull: true,

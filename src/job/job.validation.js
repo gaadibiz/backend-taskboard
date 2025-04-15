@@ -22,6 +22,9 @@ exports.upsertJobSchema = Joi.object({
   expected_delivery_date: Joi.string()
     .regex(/^\d{4}-\d{2}-\d{2}$/)
     .allow('', null),
+  due_date: Joi.string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/)
+    .allow('', null),
 
   attachment: Joi.array(),
   status: Joi.string()

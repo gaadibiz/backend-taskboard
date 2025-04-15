@@ -4,7 +4,7 @@ const { apiRequest } = require('./helperFunction');
 const billing_company_uuid = '4b7ecf35-611c-433a-82ec-3124833f29af';
 const billing_company_name = 'Sharma Sawhney and Co.';
 const auth_token =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmaXJzdF9uYW1lIjoiVmlzaGFsIiwidXNlcl91dWlkIjoiNTIyYmMwMGUtNjk1My00ODJjLThjYTItOTljMTYyYmM2YWRjIiwiZW1haWwiOiJ2aXNoYWxAZWRnZW5yb290cy5uZXQiLCJyb2xlX3V1aWQiOiJjNTBlYzc5OC03NDk1LTQ2YmEtYjc4ZC1jZTc2ZDBkNmI2ZjgiLCJyb2xlX25hbWUiOiJTdXBlcmFkbWluIiwicm9sZV92YWx1ZSI6IlNVUEVSQURNSU4iLCJicmFuY2hfdXVpZCI6ImNlOWM4ZWM2LTBlYzctNDY4Ny04NzhlLWMxYzEzNTllNGI4ZSIsImlhdCI6MTc0NDMxMDA0NX0.l7JLlhiBmSnDOguTkygKCBSKCG6sm0Sn24jwMK0lhIc';
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmaXJzdF9uYW1lIjoiVmlzaGFsIiwidXNlcl91dWlkIjoiNTIyYmMwMGUtNjk1My00ODJjLThjYTItOTljMTYyYmM2YWRjIiwiZW1haWwiOiJ2aXNoYWxAZWRnZW5yb290cy5uZXQiLCJyb2xlX3V1aWQiOiJjNTBlYzc5OC03NDk1LTQ2YmEtYjc4ZC1jZTc2ZDBkNmI2ZjgiLCJyb2xlX25hbWUiOiJTdXBlcmFkbWluIiwicm9sZV92YWx1ZSI6IlNVUEVSQURNSU4iLCJicmFuY2hfdXVpZCI6ImNlOWM4ZWM2LTBlYzctNDY4Ny04NzhlLWMxYzEzNTllNGI4ZSIsImlhdCI6MTc0NDY1NTc0NX0.ZJQzNfDv61giJJ3cCfovwP52ZPXI-yWzbHwRj8MkD-c';
 
 exports.getCurrentUserInformation = async (arg) => {
   const response = await apiRequest(
@@ -15,7 +15,7 @@ exports.getCurrentUserInformation = async (arg) => {
     null,
     'GET',
     {
-      'auth-token': `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmaXJzdF9uYW1lIjoiVmlzaGFsIiwidXNlcl91dWlkIjoiNTIyYmMwMGUtNjk1My00ODJjLThjYTItOTljMTYyYmM2YWRjIiwiZW1haWwiOiJ2aXNoYWxAZWRnZW5yb290cy5uZXQiLCJyb2xlX3V1aWQiOiJjNTBlYzc5OC03NDk1LTQ2YmEtYjc4ZC1jZTc2ZDBkNmI2ZjgiLCJyb2xlX25hbWUiOiJTdXBlcmFkbWluIiwicm9sZV92YWx1ZSI6IlNVUEVSQURNSU4iLCJicmFuY2hfdXVpZCI6ImNlOWM4ZWM2LTBlYzctNDY4Ny04NzhlLWMxYzEzNTllNGI4ZSIsImlhdCI6MTc0NDMxMDA0NX0.l7JLlhiBmSnDOguTkygKCBSKCG6sm0Sn24jwMK0lhIc`,
+      'auth-token': auth_token,
     },
   );
 
@@ -68,7 +68,7 @@ exports.getAllUser = async (arg) => {
     null,
     'GET',
     {
-      'auth-token': `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmaXJzdF9uYW1lIjoiVmlzaGFsIiwidXNlcl91dWlkIjoiNTIyYmMwMGUtNjk1My00ODJjLThjYTItOTljMTYyYmM2YWRjIiwiZW1haWwiOiJ2aXNoYWxAZWRnZW5yb290cy5uZXQiLCJyb2xlX3V1aWQiOiJjNTBlYzc5OC03NDk1LTQ2YmEtYjc4ZC1jZTc2ZDBkNmI2ZjgiLCJyb2xlX25hbWUiOiJTdXBlcmFkbWluIiwicm9sZV92YWx1ZSI6IlNVUEVSQURNSU4iLCJicmFuY2hfdXVpZCI6ImNlOWM4ZWM2LTBlYzctNDY4Ny04NzhlLWMxYzEzNTllNGI4ZSIsImlhdCI6MTc0NDMxMDA0NX0.l7JLlhiBmSnDOguTkygKCBSKCG6sm0Sn24jwMK0lhIc`,
+      'auth-token': auth_token,
     },
   );
 
@@ -120,7 +120,7 @@ exports.upsertProject = async (arg) => {
     'POST',
     {
       'content-type': 'application/json; charset=UTF-8',
-      'auth-token': `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmaXJzdF9uYW1lIjoiVmlzaGFsIiwidXNlcl91dWlkIjoiNTIyYmMwMGUtNjk1My00ODJjLThjYTItOTljMTYyYmM2YWRjIiwiZW1haWwiOiJ2aXNoYWxAZWRnZW5yb290cy5uZXQiLCJyb2xlX3V1aWQiOiJjNTBlYzc5OC03NDk1LTQ2YmEtYjc4ZC1jZTc2ZDBkNmI2ZjgiLCJyb2xlX25hbWUiOiJTdXBlcmFkbWluIiwicm9sZV92YWx1ZSI6IlNVUEVSQURNSU4iLCJicmFuY2hfdXVpZCI6ImNlOWM4ZWM2LTBlYzctNDY4Ny04NzhlLWMxYzEzNTllNGI4ZSIsImlhdCI6MTc0NDMxMDA0NX0.l7JLlhiBmSnDOguTkygKCBSKCG6sm0Sn24jwMK0lhIc`,
+      'auth-token': auth_token,
     },
   );
   console.log('response', response);
@@ -153,7 +153,7 @@ exports.getProject = async (arg) => {
     null,
     'GET',
     {
-      'auth-token': `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmaXJzdF9uYW1lIjoiVmlzaGFsIiwidXNlcl91dWlkIjoiNTIyYmMwMGUtNjk1My00ODJjLThjYTItOTljMTYyYmM2YWRjIiwiZW1haWwiOiJ2aXNoYWxAZWRnZW5yb290cy5uZXQiLCJyb2xlX3V1aWQiOiJjNTBlYzc5OC03NDk1LTQ2YmEtYjc4ZC1jZTc2ZDBkNmI2ZjgiLCJyb2xlX25hbWUiOiJTdXBlcmFkbWluIiwicm9sZV92YWx1ZSI6IlNVUEVSQURNSU4iLCJicmFuY2hfdXVpZCI6ImNlOWM4ZWM2LTBlYzctNDY4Ny04NzhlLWMxYzEzNTllNGI4ZSIsImlhdCI6MTc0NDMxMDA0NX0.l7JLlhiBmSnDOguTkygKCBSKCG6sm0Sn24jwMK0lhIc`,
+      'auth-token': auth_token,
     },
   );
 
@@ -187,7 +187,7 @@ exports.getProjectTeamMember = async (arg) => {
     null,
     'GET',
     {
-      'auth-token': `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmaXJzdF9uYW1lIjoiVmlzaGFsIiwidXNlcl91dWlkIjoiNTIyYmMwMGUtNjk1My00ODJjLThjYTItOTljMTYyYmM2YWRjIiwiZW1haWwiOiJ2aXNoYWxAZWRnZW5yb290cy5uZXQiLCJyb2xlX3V1aWQiOiJjNTBlYzc5OC03NDk1LTQ2YmEtYjc4ZC1jZTc2ZDBkNmI2ZjgiLCJyb2xlX25hbWUiOiJTdXBlcmFkbWluIiwicm9sZV92YWx1ZSI6IlNVUEVSQURNSU4iLCJicmFuY2hfdXVpZCI6ImNlOWM4ZWM2LTBlYzctNDY4Ny04NzhlLWMxYzEzNTllNGI4ZSIsImlhdCI6MTc0NDMxMDA0NX0.l7JLlhiBmSnDOguTkygKCBSKCG6sm0Sn24jwMK0lhIc`,
+      'auth-token': auth_token,
     },
   );
 
@@ -225,7 +225,7 @@ exports.upsertProjectTeamMember = async (arg) => {
     'POST',
     {
       'content-type': 'application/json; charset=UTF-8',
-      'auth-token': `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmaXJzdF9uYW1lIjoiVmlzaGFsIiwidXNlcl91dWlkIjoiNTIyYmMwMGUtNjk1My00ODJjLThjYTItOTljMTYyYmM2YWRjIiwiZW1haWwiOiJ2aXNoYWxAZWRnZW5yb290cy5uZXQiLCJyb2xlX3V1aWQiOiJjNTBlYzc5OC03NDk1LTQ2YmEtYjc4ZC1jZTc2ZDBkNmI2ZjgiLCJyb2xlX25hbWUiOiJTdXBlcmFkbWluIiwicm9sZV92YWx1ZSI6IlNVUEVSQURNSU4iLCJicmFuY2hfdXVpZCI6ImNlOWM4ZWM2LTBlYzctNDY4Ny04NzhlLWMxYzEzNTllNGI4ZSIsImlhdCI6MTc0NDMxMDA0NX0.l7JLlhiBmSnDOguTkygKCBSKCG6sm0Sn24jwMK0lhIc`,
+      'auth-token': auth_token,
     },
   );
   return {
@@ -257,7 +257,7 @@ exports.getTask = async (arg) => {
     null,
     'GET',
     {
-      'auth-token': `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmaXJzdF9uYW1lIjoiVmlzaGFsIiwidXNlcl91dWlkIjoiNTIyYmMwMGUtNjk1My00ODJjLThjYTItOTljMTYyYmM2YWRjIiwiZW1haWwiOiJ2aXNoYWxAZWRnZW5yb290cy5uZXQiLCJyb2xlX3V1aWQiOiJjNTBlYzc5OC03NDk1LTQ2YmEtYjc4ZC1jZTc2ZDBkNmI2ZjgiLCJyb2xlX25hbWUiOiJTdXBlcmFkbWluIiwicm9sZV92YWx1ZSI6IlNVUEVSQURNSU4iLCJicmFuY2hfdXVpZCI6ImNlOWM4ZWM2LTBlYzctNDY4Ny04NzhlLWMxYzEzNTllNGI4ZSIsImlhdCI6MTc0NDMxMDA0NX0.l7JLlhiBmSnDOguTkygKCBSKCG6sm0Sn24jwMK0lhIc`,
+      'auth-token': auth_token,
     },
   );
 
@@ -312,7 +312,7 @@ exports.upsertTask = async (arg) => {
     'POST',
     {
       'content-type': 'application/json; charset=UTF-8',
-      'auth-token': `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmaXJzdF9uYW1lIjoiVmlzaGFsIiwidXNlcl91dWlkIjoiNTIyYmMwMGUtNjk1My00ODJjLThjYTItOTljMTYyYmM2YWRjIiwiZW1haWwiOiJ2aXNoYWxAZWRnZW5yb290cy5uZXQiLCJyb2xlX3V1aWQiOiJjNTBlYzc5OC03NDk1LTQ2YmEtYjc4ZC1jZTc2ZDBkNmI2ZjgiLCJyb2xlX25hbWUiOiJTdXBlcmFkbWluIiwicm9sZV92YWx1ZSI6IlNVUEVSQURNSU4iLCJicmFuY2hfdXVpZCI6ImNlOWM4ZWM2LTBlYzctNDY4Ny04NzhlLWMxYzEzNTllNGI4ZSIsImlhdCI6MTc0NDMxMDA0NX0.l7JLlhiBmSnDOguTkygKCBSKCG6sm0Sn24jwMK0lhIc`,
+      'auth-token': auth_token,
     },
   );
   console.log('response', response);
