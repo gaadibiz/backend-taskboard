@@ -676,6 +676,18 @@ exports.getRecordCount = async (req, res) => {
   let filter = filterFunctionality({}, null, to_date, from_date, []);
   filter = await roleFilterService(filter, table_name, req.user);
 
+  if (table_name === 'latest_expense') {
+    filter +=
+      (filter ? ' AND ' : ' WHERE ') +
+      `(
+    status != 'expense_requested' OR (
+      status = 'expense_requested' AND (
+        created_by_uuid = '${req.user.user_uuid}' OR user_uuid = '${req.user.user_uuid}'
+      )
+    )
+  )`;
+  }
+
   const query = `
       SELECT status, COUNT(*) AS count
        FROM ${table_name} 

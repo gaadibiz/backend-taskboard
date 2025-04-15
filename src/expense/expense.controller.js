@@ -192,6 +192,18 @@ exports.getExpense = async (req, res) => {
   if (condition) {
     filter += (filter ? ' AND ' : ' WHERE ') + `(${condition})`;
   }
+
+  // self draft filter
+  filter +=
+    (filter ? ' AND ' : ' WHERE ') +
+    `(
+    status != 'expense_requested' OR (
+      status = 'expense_requested' AND (
+        created_by_uuid = '${req.user.user_uuid}' OR user_uuid = '${req.user.user_uuid}'
+      )
+    )
+  )`;
+
   if (advanceFilter) filter = advanceFiltering(filter, advanceFilter);
   console.log('filter', filter);
 
