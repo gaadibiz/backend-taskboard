@@ -132,7 +132,7 @@ exports.insertApproval = async (req, res) => {
   } else {
     let [exist_approval] = await getRecords(
       'latest_dynamic_approval',
-      `where ${query} )`,
+      `where ${query}`,
     );
     console.log('body', exist_approval);
     req.body = {
