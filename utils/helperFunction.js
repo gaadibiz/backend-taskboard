@@ -745,7 +745,7 @@ function evaluateCondition(actualValue, filterValue, operator) {
   }
 }
 
-const checkFilterConditionsWithLogic = (dataObj, filters) => {
+exports.checkFilterConditionsWithLogic = (dataObj, filters) => {
   if (!filters.length) return true;
 
   let result = null;
@@ -796,7 +796,10 @@ exports.conditionApproval = (approvalCount, level = 0, record) => {
     if (element[0].is_conditional) {
       // Do nothing or some logic here if needed
 
-      const filter = checkFilterConditionsWithLogic(record, element[0].filter);
+      const filter = this.checkFilterConditionsWithLogic(
+        record,
+        element[0].filter,
+      );
 
       console.log(filter, '.......................filter.');
       if (filter) {

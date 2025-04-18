@@ -407,6 +407,7 @@ exports.getApprovals = async (req, res) => {
   const {
     table_name,
     pageNo,
+    billing_company_uuid,
     itemPerPage,
     from_date,
     to_date,
@@ -468,7 +469,7 @@ exports.getApprovals = async (req, res) => {
       await dbRequest(`SELECT at.*, la.approval_uuid, la.requested_by_uuid, la.status as approval_status FROM latest_approval la
     INNER JOIN ${tableMap[table_name] || table_name} at ON record_uuid = ${
       result.record_column_name
-    } and at.status LIKE "%_APPROVAL_REQUESTED" ${filter} ${pageFilter}`);
+    } and at.status LIKE "%_APPROVAL_REQUESTED" AND at.billing_company_uuid = '${billing_company_uuid}' ${filter} ${pageFilter}`);
     // resultJoined =
     //   await dbRequest(`SELECT at.*, la.approval_uuid, la.requested_by_uuid, la.status as approval_status FROM latest_approval la
     // INNER JOIN ${tableMap[table_name] || table_name} at ON record_uuid = ${

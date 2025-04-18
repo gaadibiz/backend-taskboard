@@ -471,6 +471,7 @@ exports.getApprovals = async (req, res) => {
   const {
     table_name,
     dynamic_uuid,
+    billing_company_uuid,
     pageNo,
     itemPerPage,
     from_date,
@@ -496,18 +497,6 @@ exports.getApprovals = async (req, res) => {
     },
   );
 
-  console.log(
-    req.user.role_value !== 'ADMIN',
-    req.user.role_value !== 'SUPERADMIN',
-    req.user.role_value !== 'CEO',
-    is_true(req.body.is_user_approver),
-  );
-  console.log(
-    req.user.role_value !== 'ADMIN' &&
-      req.user.role_value !== 'SUPERADMIN' &&
-      req.user.role_value !== 'CEO',
-    //  || is_true(req.body.is_user_approver),
-  );
   if (
     req.user.role_value !== 'ADMIN' &&
     req.user.role_value !== 'SUPERADMIN' &&
@@ -544,7 +533,7 @@ exports.getApprovals = async (req, res) => {
       await dbRequest(`SELECT at.*, la.dynamic_approval_uuid, la.requested_by_uuid, la.status as approval_status FROM latest_dynamic_approval la
     INNER JOIN ${tableMap[table_name] || table_name} at ON record_uuid = ${
       result.record_column_name
-    } and at.status LIKE "%_APPROVAL_REQUESTED" ${filter} ${pageFilter}`);
+    } and at.status  LIKE "%_APPROVAL_REQUESTED" AND at.billing_company_uuid = '${billing_company_uuid}' ${filter} ${pageFilter}`);
     console.log('resultJoined', resultJoined.length);
     // resultJoined =
     //   await dbRequest(`SELECT at.*, la.dynamic_approval_uuid, la.requested_by_uuid, la.status as approval_status FROM latest_dynamic_approval la

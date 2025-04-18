@@ -146,6 +146,7 @@ exports.getApprovalSchema = Joi.object({
   columns: Joi.array().items(Joi.string().required()).allow(null),
   value: Joi.string().allow(null),
   is_user_approver: Joi.boolean().allow(null),
+  billing_company_uuid: Joi.string().guid().allow(null),
   pageLimit: Joi.number()
     .integer()
     .min(1)
