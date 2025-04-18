@@ -416,60 +416,85 @@
   <body>
     <!-- Document Header -->
     <div class="document-header">
-      <div class="company-name">EASYSUPPLY</div>
+      <div class="company-name">TASKBOARD</div>
       <div class="table-heading">PURCHASE ORDER</div>
     </div>
     
     <!-- Customer and Order Information -->
-    <div class="info-grid">
-      <div class="info-card">
-        <div class="info-heading">Customer Details</div>
-        <div class="info-row">
-          <div class="info-label">Proforma Invoice No:</div>
-          <div class="info-value"><%=invoiceInfo.combined_purchase_order_no %></div>
-        </div>
-        <div class="info-row">
-          <div class="info-label">M/S:</div>
-          <div class="info-value"><%= invoiceInfo.billing_company_branch_name %></div>
-        </div>
-      </div>
-      
-      <div class="info-card">
-        <div class="info-row">
-          <div class="info-label">Invoice Date:</div>
-          <div class="info-value"><%= invoiceInfo.create_ts%> %></div>
-        </div>
-        
-        <div class="info-row">
-          <div class="info-label">Status:</div>
-          <div class="info-value"><%= invoiceInfo?.status%></div>
-        </div>
-      </div>
-      
-      <div class="info-card">
-        <div class="info-heading"> Addresses:</div>
-        <div class="info-row">
-          <div class="info-label">Billing:</div>
-          <div class="info-value">
-            <%= invoiceInfo?.billing_company_name %> <%=
-                          invoiceInfo.billing_company_branch_name %> <%=
-                          invoiceInfo.billing_company_branch_address_state %>
-                          </div>
-        </div>
-        <div class="info-row">
-          <div class="info-label">Shipping:</div>
-          <div class="info-value">
-            <%= invoiceInfo?.delivery_address_name %> <%=
-            invoiceInfo?.delivery_address_line1 %> <%=
-            invoiceInfo?.delivery_address_line2 %> <%=
-            invoiceInfo?.delivery_address_city %> , <%=
-            invoiceInfo?.delivery_address_state %> <%=
-            invoiceInfo?.delivery_address_country %>- <%=
-            invoiceInfo?.delivery_address_pincode %>
-          </div>
-        </div>
+    <!-- Customer and Order Information -->
+<div class="info-grid">
+  <div class="info-card">
+    <div class="info-heading">Customer Details</div>
+    <div class="info-row">
+      <div class="info-label">Proforma Invoice No:</div>
+      <div class="info-value"><%=invoiceInfo.combined_purchase_order_no %></div>
+    </div>
+    <div class="info-row">
+      <div class="info-label">M/S:</div>
+      <div class="info-value"><%= invoiceInfo.billing_company_branch_name %></div>
+    </div>
+    <div class="info-row">
+      <div class="info-label">Vendor's name:</div>
+      <div class="info-value"><%= contactInfo?.vendor_name %></div>
+    </div>
+    <div class="info-row">
+      <div class="info-label">Vendor's Contact:</div>
+      <div class="info-value"><%= contactInfo?.phone_number %></div>
+    </div>
+    <div class="info-row">
+      <div class="info-label">Alternate Contact:</div>
+      <div class="info-value"><%= contactInfo?.mobile %></div>
+    </div>
+    <div class="info-row">
+      <div class="info-label">Vendor's Address:</div>
+      <div class="info-value"><%= contactInfo?.vendor_address_line1%> ,<br>
+        <%=contactInfo?.vendor_address_line2%> ,<br>
+        <%=contactInfo?.vendor_address_city%> ,<br>
+        <%=contactInfo?.vendor_address_state%> ,<br>
+        <%=contactInfo?.vendor_address_country%> ,<br>
+        <%=contactInfo?.vendor_address_pincode %>
       </div>
     </div>
+  </div>
+
+  <div class="info-card">
+    <div class="info-row">
+      <div class="info-label">Invoice Date:</div>
+      <div class="info-value"><%= invoiceInfo.create_ts%></div>
+    </div>
+    <div class="info-row">
+      <div class="info-label">Status:</div>
+      <div class="info-value">
+        <%= invoiceInfo?.status.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, c => c.toUpperCase()) %>
+      </div>
+    </div>
+  </div>
+
+  <div class="info-card">
+    <div class="info-heading">Addresses:</div>
+    <div class="info-row">
+      <div class="info-label">Billing:</div>
+      <div class="info-value">
+        <%= invoiceInfo?.billing_company_name %> <%=
+        invoiceInfo.billing_company_branch_name %> <%=
+        invoiceInfo.billing_company_branch_address_state %>
+      </div>
+    </div>
+    <div class="info-row">
+      <div class="info-label">Shipping:</div>
+      <div class="info-value">
+        <%= invoiceInfo?.delivery_address_name %> <%=
+        invoiceInfo?.delivery_address_line1 %> <%=
+        invoiceInfo?.delivery_address_line2 %> <%=
+        invoiceInfo?.delivery_address_city %> , <%=
+        invoiceInfo?.delivery_address_state %> <%=
+        invoiceInfo?.delivery_address_country %>- <%=
+        invoiceInfo?.delivery_address_pincode %>
+      </div>
+    </div>
+  </div>
+</div>
+
     
     <!-- Order Items -->
     <table class="order-items-table">
