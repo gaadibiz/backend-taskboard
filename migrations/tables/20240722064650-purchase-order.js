@@ -194,7 +194,7 @@ module.exports = {
         allowNull: true,
       },
       expected_delivery_date: {
-        type: Sequelize.DATE,
+        type: Sequelize.VARCHAR(255),
         allowNull: true,
       },
       invoice_items: {

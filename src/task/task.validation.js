@@ -2,7 +2,7 @@ const Joi = require('joi');
 
 exports.upsertTaskSchema = Joi.object({
   task_uuid: Joi.string().guid().allow('', null),
-  type: Joi.string().valid('Project').required(),
+  type: Joi.string().valid('project').required(),
   type_name: Joi.string().max(255).required(),
   type_uuid: Joi.string().guid().required(),
   billing_company_uuid: Joi.string().guid().max(100).allow('', null),
