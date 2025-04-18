@@ -907,7 +907,14 @@
             },
             "required": true
           },
-
+          {
+            "in": "query",
+            "name": "billing_company_uuid",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
           {
             "in": "query",
             "name": "to_date",

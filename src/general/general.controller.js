@@ -672,8 +672,14 @@ exports.getDocuments = async (req, res) => {
 };
 
 exports.getRecordCount = async (req, res) => {
-  let { table_name, to_date, from_date } = req.query;
-  let filter = filterFunctionality({}, null, to_date, from_date, []);
+  let { table_name, to_date, from_date, billing_company_uuid } = req.query;
+  let filter = filterFunctionality(
+    { billing_company_uuid },
+    null,
+    to_date,
+    from_date,
+    [],
+  );
   filter = await roleFilterService(filter, table_name, req.user);
 
   if (table_name === 'latest_expense') {
