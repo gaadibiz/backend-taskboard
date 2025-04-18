@@ -744,7 +744,7 @@
         }
       }
     },
-    
+
     "/api/v1/expense/get-expense-dynamic-approval-history": {
       "get": {
         "tags": ["expense"],
@@ -855,6 +855,34 @@
             "name": "pageLimit",
             "schema": { "type": "string" },
             "description": "",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": { "description": "successful operation" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/api/v1/expense/get-expense-approval-workflow": {
+      "get": {
+        "tags": ["expense"],
+        "summary": "Get expense approval workflow",
+        "description": "",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "expense_uuid",
+            "type": "string",
             "required": true
           }
         ],

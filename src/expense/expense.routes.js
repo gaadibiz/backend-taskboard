@@ -89,4 +89,12 @@ router
     ),
   );
 
+router.get(
+  '/get-expense-approval-workflow',
+  checkAuth,
+  requestErrorHandlingDecorator(
+    Schema.getExpenseApprovalWorkFlow,
+    controller.getExpenseApprovalWorkFlow,
+  ),
+);
 module.exports = router;

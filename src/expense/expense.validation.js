@@ -180,3 +180,7 @@ exports.getExpenseDynamicApprovalHistorySchema = Joi.object({
   columns: Joi.array().allow(null),
   value: Joi.string().allow(null),
 });
+
+exports.getExpenseApprovalWorkFlow = Joi.object({
+  expense_uuid: Joi.string().guid().required(),
+});
