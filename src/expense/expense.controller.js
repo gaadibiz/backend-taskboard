@@ -857,7 +857,7 @@ exports.getExpenseApprovalWorkFlow = async (req, res) => {
   }
 
   let approval_finance_level = 0;
-  for (const items of EXPENSE_APPROVAL_REQUESTED.approval_hierarchy) {
+  for (const items of FINANCE_APPROVAL_REQUESTED.approval_hierarchy) {
     approval_finance_level++;
     for (const item of items) {
       let user_name = '';
