@@ -42,13 +42,18 @@ exports.upsertPurchaseOrder = async (req, res) => {
   let highest_purchase_order_no = await getHighestParameterValue(
     'latest_purchase_order',
     'purchase_order_no',
-    `billing_company_branch_uuid='${req.body.billing_company_branch_uuid}'`,
+    `billing_company_uuid='${req.body.billing_company_uuid}'`,
+  );
+  console.log(
+    'highest_purchase_order_no---------------',
+    highest_purchase_order_no,
   );
   highest_purchase_order_no.highestValue =
     highest_purchase_order_no.highestValue || '0';
   const purchase_order_no = incrementStringWithReset(
     highest_purchase_order_no.highestValue,
   );
+  console.log('purchase_order_no---------------', purchase_order_no);
 
   let purchase_order_info = await getRecords(
     'latest_purchase_order',
