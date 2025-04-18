@@ -276,7 +276,7 @@ exports.getPOPreview = async (req, res) => {
 
   let result;
 
-  console.log('response Data' + JSON.stringify(responseData));
+  console.log('response Data-----------------', responseData);
 
   if (isPreview === 'true') {
     result = await ejsPreview(responseData, 'pdf/po_task_and_expense.ejs');

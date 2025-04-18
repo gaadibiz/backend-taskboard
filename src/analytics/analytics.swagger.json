@@ -9,6 +9,11 @@
             "in": "header",
             "name": "auth-Token",
             "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "billing_company_uuid",
+            "type": "string"
           }
         ],
         "responses": {

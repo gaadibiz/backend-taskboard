@@ -132,7 +132,8 @@ exports.insertApproval = async (req, res) => {
   } else {
     let [exist_approval] = await getRecords(
       'latest_dynamic_approval',
-      `where ${query} AND status='ROLLBACK'`,
+      `where  table_name='${req.body.table_name}'
+  AND record_uuid='${req.body.record_uuid}' AND (status='ROLLBACK' OR status='APPROVED')`,
     );
     console.log('body', exist_approval);
     req.body = {
@@ -191,11 +192,20 @@ exports.handleApproval = async (req, res) => {
     `where dynamic_approval_uuid = '${req.body.dynamic_approval_uuid}'`,
   );
   if (!approval.length) throwError('Approval not found', 404);
+  let [record] = await getRecords(
+    tableMap[approval[0].table_name] || approval[0].table_name,
+    `where ${approval[0].record_column_name} = '${approval[0].record_uuid}'`,
+  );
+  const [user] = await getRecords(
+    'latest_user',
+    `where user_uuid = '${record.created_by_uuid}'`,
+  );
 
   if (
     !approval[0].approval_uuids.some(
       (ele) =>
         ele.uuid === req.user.user_uuid ||
+        ele.uuid === user.role_uuid ||
         ele.uuid === req.user.role_uuid ||
         req.user.role_value === 'ADMIN' ||
         req.user.role_value === 'SUPERADMIN' ||
@@ -213,7 +223,7 @@ exports.handleApproval = async (req, res) => {
     )
   )[0];
   if (!userInfo) throwError(400, 'Invalid user');
-  let record = await getRecords(
+  record = await getRecords(
     tableMap[approval[0].table_name] || approval[0].table_name,
     `where ${approval[0].record_column_name} = '${approval[0].record_uuid}'`,
   );

@@ -62,7 +62,7 @@ module.exports = {
         allowNull: true,
       },
       end_date: {
-        type: Sequelize.DATE,
+        type: Sequelize.STRING(100),
         allowNull: true,
       },
       status: {

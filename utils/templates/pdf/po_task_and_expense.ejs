@@ -1,98 +1,134 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="css/Roboto.css?ver=1507202315072023" rel="stylesheet" />
-    <title>Document</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Purchase Order</title>
     <style>
-      /* common start*/
-      body {
-        line-height: 1;
-        word-break: break-word;
-        letter-spacing: 0 !important;
-        color: #000;
-        font-family: "Roboto", Arial, sans-serif;
-        font-size: 10px;
+      /* Modern Reset & Base Styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
       }
 
+      body {
+        line-height: 1.5;
+        word-break: break-word;
+        letter-spacing: 0 !important;
+        color: #1a1a1a;
+        font-family: 'Inter', 'Roboto', Arial, sans-serif;
+        font-size: 10px;
+        background-color: #fdfdfd;
+        padding: 24px; /* Increased padding */
+        width: 100%;
+        max-width: 1200px; /* Increased maximum width */
+        margin: 0 auto; /* Center the content */
+        box-sizing: border-box; /* Ensure padding doesn't increase overall width */
+      }
+
+      /* Typography & Spacing */
       .text-center {
         text-align: center;
       }
 
       .org_orgname_logo {
         vertical-align: top;
-        font-size: 22px;
-        font-weight: bold;
-        line-height: 30px;
-        padding-bottom: 5px;
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 1.2;
+        padding-bottom: 6px;
+        color: #1e3a8a;
+        letter-spacing: -0.5px;
+      }
+
+      /* Colors & Borders */
+      :root {
+        --primary: #0052cc;
+        --primary-light: #4c9aff;
+        --primary-dark: #0747a6;
+        --accent: #f4f5f7;
+        --text: #172b4d;
+        --text-light: #6b778c;
+        --border: #dfe1e6;
+        --border-dark: #b3bac5;
+        --white: #ffffff;
+        --header: #f4f5f7;
       }
 
       .border {
-        border-top: 1px solid #0070c0;
-        border-right: 1px solid #0070c0;
-        border-bottom: 1px solid #0070c0;
-        border-left: 1px solid #0070c0;
+        border: 1px solid var(--primary);
+        border-radius: 4px;
+        overflow: hidden;
       }
 
       .border-top {
-        border-top: 1px solid #0070c0;
+        border-top: 1px solid var(--primary);
       }
 
       .border-right {
-        border-right: 1px solid #0070c0;
+        border-right: 1px solid var(--primary);
       }
 
       .border-bottom {
-        border-bottom: 1px solid #0070c0;
+        border-bottom: 1px solid var(--primary);
       }
 
       .border-left {
-        border-left: 1px solid #0070c0;
+        border-left: 1px solid var(--primary);
       }
 
+      /* Customer Data & Labels */
       .customerdata_label {
-        text-align: middle;
-        font-weight: bold;
-        border-bottom: 1px solid #0070c0;
-        width: 100%;
         text-align: center;
+        font-weight: 600;
+        border-bottom: 1px solid var(--primary);
+        width: 100%;
+        padding: 6px 0;
+        background-color: var(--accent);
+        color: var(--primary-dark);
       }
 
       .td-bold {
-        font-weight: bold;
+        font-weight: 600;
+        color: var(--primary-dark);
       }
 
       .td-light {
         font-weight: normal;
+        color: var(--text);
       }
 
       .red-color {
-        color: red;
+        color: #ef4444;
       }
 
+      /* Spacing Utilities */
       .padding {
-        padding: 5px;
+        padding: 6px;
       }
 
       .padding-top {
-        padding-top: 5px;
+        padding-top: 6px;
       }
 
       .padding-right {
-        padding-right: 5px;
+        padding-right: 6px;
       }
 
       .padding-bottom {
-        padding-bottom: 5px;
+        padding-bottom: 6px;
       }
 
       .padding-left {
-        padding-left: 5px;
+        padding-left: 6px;
       }
 
       .space-y {
-        padding: 5px 0;
+        padding: 4px 0;
       }
 
       .line-height {
@@ -100,17 +136,19 @@
       }
 
       .space-x {
-        padding: 0 5px;
+        padding: 0 4px;
       }
 
       .space {
-        padding: 5px;
+        padding: 4px;
       }
 
+      /* Background Colors */
       .light-bg {
-        background-color: #e8f3fd;
+        background-color: var(--accent);
       }
 
+      /* Alignment Utilities */
       .align-center {
         text-align: center;
       }
@@ -131,7 +169,7 @@
         vertical-align: middle;
       }
 
-      /* common ends */
+      /* Table Styling */
       .custom-table,
       .custom-table * {
         box-sizing: border-box;
@@ -140,550 +178,395 @@
       .custom-table {
         width: 100%;
         margin: 0 auto;
+        border-collapse: separate;
+        border-spacing: 0;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+        border-radius: 4px;
+        overflow: hidden;
       }
-
-      /* 
-        @media (min-width: 1001px) {
-            .custom-table {
-                width: 1000px;
-            }
-        } */
 
       .table-heading {
         text-align: center;
         font-size: 20px;
-        color: #0070c0;
-        padding: 3px 0;
-        font-weight: bold;
+        color: var(--primary-dark);
+        padding: 8px 0;
+        font-weight: 700;
+        background-color: var(--header);
+        letter-spacing: -0.5px;
+        border-radius: 4px 4px 0 0;
       }
 
       .header-row {
-        border: 1px solid #0070c0;
+        border: 1px solid var(--primary);
+        background-color: var(--header);
       }
 
-      .quoteDetailsHead td {
-        background-color: #0070c0;
-        border: 1px solid #0184e1;
-        color: white;
-        border-collapse: collapse;
-        text-align: center;
-        font-weight: bold;
-        padding: 2px 2px;
+      /* Document Header */
+      .document-header {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 12px;
+      }
+
+      .company-name {
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--primary-dark);
+        letter-spacing: -0.5px;
+        margin-bottom: 4px;
+      }
+
+      /* Customer and Order Information */
+      .info-grid {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 12px;
+      }
+
+      .info-card {
+        flex: 1;
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        padding: 8px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      }
+
+      .info-heading {
+        font-weight: 600;
+        color: var(--primary-dark);
         font-size: 12px;
+        margin-bottom: 4px;
+        padding-bottom: 4px;
+        border-bottom: 1px solid var(--border);
       }
 
-      .table-top-bar td {
-        background-color: #03385f;
-        border: 1px solid #0184e1;
-        color: #fff;
-        border-collapse: collapse;
-        text-align: center;
-        font-weight: bold;
-        padding: 5px 2px;
-        font-size: 12px;
+      .info-row {
+        display: flex;
+        margin-bottom: 2px;
       }
 
-      .invoicedataFooter td {
+      .info-label {
+        font-weight: 600;
+        color: var(--text);
+        min-width: 90px;
         font-size: 10px;
-        /* background-color: #E8F3FD; */
-        padding: 5px 1px 5px 0px;
-        border-top: 1px solid #0070c0;
-        border-left: 1px solid #0070c0;
-        border-bottom: 1px solid #0070c0;
       }
 
-      .invoice .main-border {
-        border: 1px solid #0070c0;
-        padding: 0;
-        margin: 0;
+      .info-value {
+        color: var(--text);
+        font-size: 10px;
       }
 
-      .invoice .header-row {
-        vertical-align: middle;
-        border-bottom: 1px solid #0070c0;
+      /* Order Items Table */
+      .order-items-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 12px;
+        font-size: 9px;
       }
 
-      .invoice .header .invoice-title {
-        text-align: center;
-        font-size: 20px;
-        color: #0070c0;
-        padding: 3px 0;
-        font-weight: bold;
-      }
-
-      .invoice .header .copyname {
-        text-align: right;
-        padding-right: 5px;
-        font-size: 11px;
-        font-weight: bold;
-      }
-
-      .invoice .header .gstin {
-        padding-left: 5px;
-      }
-
-      .invoice .header .gstin span {
-        font-weight: bold;
+      .order-items-header {
+        background: var(--primary);
+        color: white;
         text-align: left;
+        font-weight: 600;
+        font-size: 10px;
       }
 
-      .overall-size-table td {
-        border: none;
+      .order-items-header th {
+        padding: 6px 4px;
+        white-space: nowrap;
+        border: 1px solid var(--primary-dark);
+      }
+
+      .order-items-table td {
+        padding: 4px;
+        border: 1px solid var(--border);
+        vertical-align: middle;
+      }
+
+      .order-items-table tr:nth-child(even) {
+        background-color: var(--accent);
+      }
+
+      .product-image {
+        width: 50px;
+        height: 50px;
+        object-fit: contain;
+      }
+
+      /* Order Summary */
+      .order-summary {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 12px;
+      }
+
+      .summary-card {
+        width: 300px;
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        padding: 8px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      }
+
+      .total-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 4px 0;
+        border-bottom: 1px solid var(--border);
+        font-weight: 600;
+      }
+
+      .words-row {
+        text-align: center;
+        padding: 4px 0;
+        font-style: italic;
+        color: var(--text-light);
+        font-size: 9px;
+      }
+
+      /* Footer Sections */
+      .footer-grid {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 12px;
+      }
+
+      .footer-card {
+        flex: 1;
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        padding: 8px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      }
+
+      .footer-heading {
+        font-weight: 600;
+        color: var(--primary-dark);
+        font-size: 12px;
+        margin-bottom: 4px;
+        padding-bottom: 4px;
+        border-bottom: 1px solid var(--border);
+        text-align: center;
+      }
+
+      .bank-details {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4px;
+      }
+
+      .bank-detail {
+        margin-bottom: 2px;
+      }
+
+      .terms-list {
+        padding-left: 12px;
+        margin: 4px 0;
+      }
+
+      .terms-list li {
+        margin-bottom: 2px;
+      }
+
+      /* Signature Section */
+      .signature-section {
+        text-align: center;
+        margin-top: 12px;
+      }
+
+      .signature-image {
+        height: 60px;
+        width: auto;
+        margin-bottom: 4px;
+      }
+
+      .signature-line {
+        width: 120px;
+        margin: 4px auto;
+        border-top: 1px solid var(--border-dark);
+      }
+
+      .signature-title {
+        font-weight: 600;
+        color: var(--primary-dark);
+        font-size: 10px;
+      }
+
+      /* Print Styles */
+      @media print {
+        body {
+          width: 100%;
+          max-width: 100%;
+          padding: 0;
+          margin: 0;
+        }
+        
+        .page-break {
+          page-break-before: always;
+        }
       }
     </style>
   </head>
 
   <body>
-    <!-- Header top info -->
-    <div class="space-y">
-      <table cellspacing="0" cellpadding="0" width="100%">
-        <tr>
-          <td style="font-size: 24px; font-weight: bold">
-            <!-- <%= invoiceInfo.billing_company_name %> -->
-DJ College
-          </td>
-        </tr>
-        <col style="width: 60%" />
-        <col style="width: 40%" />
-        <tr>
-          <td>
-            <table cellspacing="0" cellpadding="0" width="100%">
-              <tr>
-                <td class="line-height">
-                  <%= invoiceInfo.billing_company_branch_address_state %><br />
-                  <%= invoiceInfo.billing_company_branch_name %><br />
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-      </table>
+    <!-- Document Header -->
+    <div class="document-header">
+      <div class="company-name">EASYSUPPLY</div>
+      <div class="table-heading">PURCHASE ORDER</div>
     </div>
-    <!-- table header container -->
-    <div>
-      <table cellspacing="0" cellpadding="0" width="100%">
-        <tr>
-          <td>
-            <table cellspacing="0" cellpadding="0" width="100%">
-              <tr>
-                <td class="table-heading header-row">PURCHASE ORDER</td>
-              </tr>
-            </table>
-            <table cellspacing="0" cellpadding="0" width="100%">
-              <col style="width: 33%" />
-              <col style="width: 33%" />
-              <col style="width: 34%" />
-              <tr>
-                <td
-                  class="vertical-top space line-height border-left border-right border-bottom"
-                >
-                  <table cellspacing="0" cellpadding="0" width="100%">
-                    <tr>
-                      <td
-                        class="td-bold"
-                        style="font-size: 15px; padding-bottom: 10px"
-                      >
-                        Customer Detail
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <span class="td-bold">Proforma Invoice No: </span>
-                        <span>
-                          <%= invoiceInfo.combined_proforma_invoice_no%>
-                        </span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="space-y">
-                        <span class="td-bold">M/S: </span>
-                        <span>
-                          <%= invoiceInfo.billing_company_branch_name %>
-                        </span>
-                      </td>
-                    </tr>
-                  </table>
-                </td>
-                <td
-                  class="vertical-top space line-height border-right border-bottom"
-                >
-                  <table cellspacing="0">
-                    <tr>
-                      <td>
-                        <span class="td-bold">Invoice Date:</span>
-                        <span> <%= invoiceInfo.create_ts%> </span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="space-y">
-                        <span class="td-bold">Billing Address:</span>
-                        <span>
-                          <%= invoiceInfo.customer_name %> <%=
-                          invoiceInfo.customer_address_line1 %> <%=
-                          invoiceInfo.customer_address_line2 %>
-                          <br />
-                          <%= invoiceInfo.customer_address_city %> , <%=
-                          invoiceInfo.customer_address_state %> <%=
-                          invoiceInfo.customer_address_country %>- <%=
-                          invoiceInfo.customer_address_pincode %>
-                        </span>
-                      </td>
-                    </tr>
-                  </table>
-                </td>
-                <td
-                  class="vertical-top space line-height border-right border-bottom"
-                >
-                  <table cellspacing="0">
-                    <tr>
-                      <td>
-                        <span class="td-bold">Due Date:</span>
-                        <span> <%= invoiceInfo.create_ts %> </span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="space-y">
-                        <span class="td-bold">Shipping Address:</span>
-                        <span>
-                          <%= invoiceInfo.customer_name %> <%=
-                          invoiceInfo.delivery_address_line1 %> <%=
-                          invoiceInfo.delivery_address_line2 %> <%=
-                          invoiceInfo.delivery_address_city %> , <%=
-                          invoiceInfo.delivery_address_state %> <%=
-                          invoiceInfo.delivery_address_country %>- <%=
-                          invoiceInfo.delivery_address_pincode %>
-                        </span>
-                      </td>
-                    </tr>
-                  </table>
-                </td>
-              </tr>
-            </table>
-            <br />
-          </td>
-        </tr>
-      </table>
-      <table
-        cellspacing="0"
-        cellpadding="0"
-        width="100%"
-        style="margin-bottom: 10px"
-      >
-        <td class="border">
-          <table cellspacing="0" cellpadding="0" width="100%">
-            <col style="width: 33%" />
-            <col style="width: 33%" />
-            <col style="width: 34%" />
-            <tr>
-              <td class="space">
-                <span class="td-bold">GST IN no :</span>
-                <span> <%= contactInfo?.gst_in %> </span>
-              </td>
-              <td class="space">
-                <span class="td-bold"> Phone No :</span>
-                <span> <%= contactInfo?.phone_number %> </span>
-              </td>
-              <td class="space">
-                <span class="td-bold"> Website:</span>
-                <span> <%= contactInfo?.website %> </span>
-              </td>
-            </tr>
-            <tr>
-              <td class="space">
-                <span class="td-bold">Project Site:</span>
-                <span> <%= invoiceInfo.project_site %> </span>
-              </td>
-              <td class="space">
-                <span class="td-bold"> ACK No:</span>
-                <span> <%= invoiceInfo.ack_no %> </span>
-              </td>
-              <td class="space">
-                <span class="td-bold"> Place of Supply: </span>
-                <span> <%= invoiceInfo.place_of_supply %> </span>
-              </td>
-            </tr>
-            <tr>
-              <td class="space" colspan="3">
-                <span class="td-bold">IRN:</span>
-                <span> <%= invoiceInfo.irn %> </span>
-              </td>
-            </tr>
-          </table>
-        </td>
-      </table>
+    
+    <!-- Customer and Order Information -->
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="info-heading">Customer Details</div>
+        <div class="info-row">
+          <div class="info-label">Proforma Invoice No:</div>
+          <div class="info-value"><%=invoiceInfo.combined_purchase_order_no %></div>
+        </div>
+        <div class="info-row">
+          <div class="info-label">M/S:</div>
+          <div class="info-value"><%= invoiceInfo.billing_company_branch_name %></div>
+        </div>
+      </div>
+      
+      <div class="info-card">
+        <div class="info-row">
+          <div class="info-label">Invoice Date:</div>
+          <div class="info-value"><%= invoiceInfo.create_ts%> %></div>
+        </div>
+        
+        <div class="info-row">
+          <div class="info-label">Status:</div>
+          <div class="info-value"><%= invoiceInfo?.status%></div>
+        </div>
+      </div>
+      
+      <div class="info-card">
+        <div class="info-heading"> Addresses:</div>
+        <div class="info-row">
+          <div class="info-label">Billing:</div>
+          <div class="info-value">
+            <%= invoiceInfo?.billing_company_name %> <%=
+                          invoiceInfo.billing_company_branch_name %> <%=
+                          invoiceInfo.billing_company_branch_address_state %>
+                          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-label">Shipping:</div>
+          <div class="info-value">
+            <%= invoiceInfo?.delivery_address_name %> <%=
+            invoiceInfo?.delivery_address_line1 %> <%=
+            invoiceInfo?.delivery_address_line2 %> <%=
+            invoiceInfo?.delivery_address_city %> , <%=
+            invoiceInfo?.delivery_address_state %> <%=
+            invoiceInfo?.delivery_address_country %>- <%=
+            invoiceInfo?.delivery_address_pincode %>
+          </div>
+        </div>
+      </div>
     </div>
-    <!-- table body content -->
-    <div>
-      <table
-        class="quoteDetailsHead"
-        style="width: 100%"
-        cellspacing="0"
-        cellpadding="0"
-      >
-        <col style="width: 5%" />
-        <col style="width: 45%" />
-        <col style="width: 5%" />
-        <col style="width: 5%" />
-        <col style="width: 5%" />
-        <col style="width: 5%" />
-        <col style="width: 5%" />
-        <col style="width: 5%" />
-        <col style="width: 5%" />
-        <col style="width: 5%" />
-        <col style="width: 5%" />
-        <col style="width: 5%" />
+    
+    <!-- Order Items -->
+    <table class="order-items-table">
+      <thead class="order-items-header">
         <tr>
-          <td>Sr. No.</td>
-          <td>Name of Item / Service</td>
-          <td>HSN/SAC</td>
-          <td>Qty</td>
-          <td>Rate</td>
-          <td>Unit</td>
-          <td>Taxable Amount</td>
-          <td>Tax Rate</td>
-          <td>Tax Amount</td>
-          <td style="text-align: center">
-            <table
-              cellspacing="0"
-              cellpadding="0"
-              class="overall-size-table"
-              style="margin: 0 auto; width: 100%"
-            >
-              <tr>
-                <td style="border-bottom: 1px solid #0184e1" colspan="3">
-                  Disc
-                </td>
-              </tr>
-              <tr>
-                <td style="border-right: 1px solid #0184e1">%</td>
-              </tr>
-            </table>
-          </td>
-          <td>Discount Amount</td>
-          <td>Total</td>
+            <td>Sr.</td>
+            <td>Name of Item/Service</td>
+            <td>HSN/</td>
+            <td>Quantity</td>
+            <td>Price</td>
+            <td>Unit</td>
+            <td>Taxable Amount</td>
+            <td>Tax Rate</td>
+            <td>Tax Amount</td>
+            <td>Discount %</td>
+            <td>Discount Amount</td>
+            <td>Total Amount</td>
         </tr>
-      </table>
-      <table cellspacing="0" cellpadding="0" width="100%">
-        <col style="width: 5%" />
-        <col style="width: 45%" />
-        <col style="width: 5%" />
-        <col style="width: 5%" />
-        <col style="width: 5%" />
-        <col style="width: 5%" />
-        <col style="width: 5%" />
-        <col style="width: 5%" />
-        <col style="width: 5%" />
-        <col style="width: 5%" />
-        <col style="width: 5%" />
-        <col style="width: 5%" />
+      </thead>
+      <tbody>
         <% for (let i=0; i < invoiceInfo?.invoice_items?.length; i++) { %>
-        <tr>
-          <td class="align-center border-left border-top border-right">
-            <p class="space-y"><%= i+1 %></p>
-          </td>
-          <td class="align-center border-top border-right">
-            <p class="space-y">
-              <%= invoiceInfo?.invoice_items[i]?.customer_product_name %>
-            </p>
-          </td>
-          <td class="align-center border-top border-right">
-            <p class="space-y">
-              <%= invoiceInfo?.invoice_items[i]?.HSN_code %>
-            </p>
-          </td>
-          <td class="align-center border-top border-right">
-            <p class="space-y">
-              <%= invoiceInfo?.invoice_items[i]?.quantity %>
-            </p>
-          </td>
-          <td class="align-center border-top border-right">
-            <p class="space-y">
-              <%= invoiceInfo?.invoice_items[i]?.unit_price %>
-            </p>
-          </td>
-          <td class="align-center border-top border-right">
-            <p class="space-y"><%= invoiceInfo?.invoice_items[i]?.unit %></p>
-          </td>
-          <td class="align-center border-top border-right">
-            <p class="space-y">
-              <%= invoiceInfo?.invoice_items[i]?.taxable_amount %>
-            </p>
-          </td>
-          <td class="align-center border-top border-right">
-            <p class="space-y">
-              <%= invoiceInfo?.invoice_items[i]?.tax_rate %>
-            </p>
-          </td>
-          <td class="align-center border-top border-right">
-            <p class="space-y">
-              <%= invoiceInfo?.invoice_items[i]?.tax_amount %>
-            </p>
-          </td>
-          <td class="align-center border-top border-right">
-            <p class="space-y">
-              <%= invoiceInfo?.invoice_items[i]?.discount %>
-            </p>
-          </td>
-          <td class="align-center border-top border-right">
-            <p class="space-y">
-              <%= invoiceInfo?.invoice_items[i]?.discount_amount %>
-            </p>
-          </td>
-          <td class="align-center border-top border-right">
-            <p class="space-y"><%= invoiceInfo?.invoice_items[i]?.total %></p>
-          </td>
-        </tr>
-        <% } %>
-      </table>
-    </div>
-    <!-- table footer -->
-    <div>
-      <table cellspacing="0" cellpadding="0" width="100%">
-        <tr>
-          <td
-            class="border-top space border-bottom border-left border-right"
-            style="padding: 0; margin: 0"
-          >
-            <table cellspacing="0" cellpadding="0" width="100%">
-              <tr>
-                <td style="vertical-align: top; padding: 0; margin: 0">
-                  <table cellspacing="0" cellpadding="0" width="100%">
-                    <col style="width: 35%" />
-                    <col style="width: 65%" />
-                    <tr>
-                      <td
-                        colspan="2"
-                        class="border-bottom td-bold align-center space"
-                      >
-                        Total in words
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colspan="2" class="border-bottom align-center space">
-                        <%= invoiceInfo?.amountInWords %>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colspan="2" class="border-bottom space">
-                        <span class="td-bold">Eway Bill No :</span>
-                        <%= invoiceInfo?.eway_bill_no %>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colspan="2" class="border-bottom space">
-                        <span class="td-bold"> Vehicle No : </span>
-                        <%= invoiceInfo?.vehicle_no %>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td
-                        colspan="2"
-                        class="border-bottom td-bold align-center space"
-                      >
-                        Bank Details
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="border-bottom space">
-                        <span class="td-bold">Bank name: </span>
-                        <%= contactInfo?.bank_name %>
-                      </td>
-                      <td class="border-bottom space">
-                        <span class="td-bold">Branch: </span>
-                        <%= contactInfo?.bank_branch_name %>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="border-bottom space">
-                        <span class="td-bold">Account no: </span>
-                        <%= contactInfo?.bank_account_no %>
-                      </td>
-                      <td class="border-bottom space">
-                        <span class="td-bold">IFSC code: </span>
-                        <%= contactInfo?.bank_ifsc_code %>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td
-                        colspan="2"
-                        class="border-bottom td-bold align-center space"
-                      >
-                        Terms and Conditions
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colspan="2" class="line-height space">
-                        Subject to our home Jurisdiction. <br />
-                        Our Responsibility Ceases as soon as goods leaves our
-                        Premises. <br />
-                        Goods once sold will not be taken back. <br />
-                        Delivery Ex-Premises.
-                      </td>
-                    </tr>
-                  </table>
-                </td>
-              </tr>
-            </table>
-          </td>
-          <td
-            class="border-top space border-bottom border-right"
-            style="padding: 0; margin: 0"
-          >
-            <table cellspacing="0" cellpadding="0" width="100%">
-              <tr>
-                <td class="td-bold space">Total Amount</td>
-                <td class="align-right td-bold space">
-                  &#8377; <%= invoiceInfo?.total_amount_after_tax %>
-                </td>
-              </tr>
 
-              <tr>
-                <td colspan="2" class="txt-right space border-bottom">
-                  (E & O.E.)
-                </td>
-              </tr>
-              <tr>
-                <td colspan="2">&nbsp;</td>
-              </tr>
-              <tr>
-                <td colspan="2" class="space td-bold">
-                  Certified that the particulars given above are true and
-                  correct.
-                </td>
-              </tr>
-              <tr>
-                <td colspan="2" class="space">
-                  For : <%= invoiceInfo?.billing_company_name %>
-                </td>
-              </tr>
-              <tr>
-                <td
-                  colspan="2"
-                  style="border-bottom: none; height: 60px; text-align: center"
-                ></td>
-              </tr>
-            </table>
-            <table cellspacing="0" cellpadding="0" width="100%">
-              <tr>
-                <td colspan="2" class="td-bold text-center space">
-                  <img
-                    src="<%= server_path %>/images/signature/signature.jpeg"
-                    width="80px"
-                    height="80px"
-                    alt="Signature image"
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td colspan="2" class="td-bold text-center space">
-                  <hr width="20%" />
-                  Authorised Signatory
-                </td>
-              </tr>
-            </table>
-          </td>
+          <td><%= i+1 %></td>
+          <td >
+            <%=invoiceInfo?.invoice_items[i]?.customer_product_name %>         </td>
+          <td><%=  invoiceInfo?.invoice_items[i]?.HSN_code  %></td>
+          <td><%=  invoiceInfo?.invoice_items[i]?.quantity  %></td>
+          <td><%= invoiceInfo?.invoice_items[i]?.unit_price  %></td>
+          <td><%=  invoiceInfo?.invoice_items[i]?.unit  %></td>
+          <td><%= invoiceInfo?.invoice_items[i]?.taxable_amount%></td>
+          <td><%= invoiceInfo?.invoice_items[i]?.tax_rate %></td>
+          <td><%=  invoiceInfo?.invoice_items[i]?.tax_amount%></td>
+          <td><%= invoiceInfo?.invoice_items[i]?.discount %></td>
+          <td><%=  invoiceInfo?.invoice_items[i]?.discount_amount%></td>
+          <td><%=  invoiceInfo?.invoice_items[i]?.total%></td>
+        
         </tr>
-      </table>
+        <% }; %>
+      </tbody>
+    </table>
+    
+    <!-- Order Summary -->
+    <div class="order-summary">
+      <div class="summary-card">
+        <div class="total-row">
+          <div>Total Amount:</div>
+          <div>₹<%= invoiceInfo?.total_amount_after_tax  %></div>
+        </div>
+        <div class="words-row">(<%=invoiceInfo?.amountInWords %>)</div>
+      </div>
+    </div>
+    
+    <!-- Footer Information -->
+    <div class="footer-grid">
+      <div class="footer-card">
+        <div class="footer-heading">Bank Details</div>
+        <div class="bank-details">
+          <div class="bank-detail">
+            <span class="info-label">Bank Name:</span>
+            <span><%=contactInfo?.bank_name%></span>
+          </div>
+          <div class="bank-detail">
+            <span class="info-label">Branch:</span>
+            <span><%=contactInfo?.bank_branch_name%></span>
+          </div>
+          <div class="bank-detail">
+            <span class="info-label">Account No:</span>
+            <span><%=contactInfo?.bank_account_no%></span>
+          </div>
+          <div class="bank-detail">
+            <span class="info-label">IFSC Code:</span>
+            <span><%=contactInfo?.bank_ifsc_code%></span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="footer-card">
+        <div class="footer-heading">Terms and Conditions</div>
+        <ul class="terms-list">
+          <li>Subject to our home Jurisdiction.</li>
+          <li>Our Responsibility Ceases as soon as goods leaves our Premises.</li>
+          <li>Goods once sold will not be taken back.</li>
+          <li>Delivery Ex-Premises.</li>
+        </ul>
+      </div>
+    </div>
+    
+    <!-- Certification and Signature -->
+    <div style="margin-top: 12px; background-color: var(--white); padding: 8px; border-radius: 4px; border: 1px solid var(--border);">
+      <p style="margin-bottom: 6px; font-weight: 600; color: var(--primary-dark);">Certified that the particulars given above are true and correct.</p>
+      <p>For: <%=invoiceInfo?.billing_company_name%></p>
+      
+      <div class="signature-section">
+        <img src="<%=  %>/images/signature/signature.jpeg" class="signature-image" alt="Signature image" />
+        <div class="signature-line"></div>
+        <div class="signature-title">Authorised Signatory</div>
+      </div>
     </div>
   </body>
 </html>
