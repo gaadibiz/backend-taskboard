@@ -533,7 +533,7 @@ exports.getApprovals = async (req, res) => {
       await dbRequest(`SELECT at.*, la.dynamic_approval_uuid, la.requested_by_uuid, la.status as approval_status FROM latest_dynamic_approval la
     INNER JOIN ${tableMap[table_name] || table_name} at ON record_uuid = ${
       result.record_column_name
-    } and at.status  LIKE "%_APPROVAL_REQUESTED" at.billing_company_uuid = '${billing_company_uuid}' ${filter} ${pageFilter}`);
+    } and at.status  LIKE "%_APPROVAL_REQUESTED" AND at.billing_company_uuid = '${billing_company_uuid}' ${filter} ${pageFilter}`);
     console.log('resultJoined', resultJoined.length);
     // resultJoined =
     //   await dbRequest(`SELECT at.*, la.dynamic_approval_uuid, la.requested_by_uuid, la.status as approval_status FROM latest_dynamic_approval la
