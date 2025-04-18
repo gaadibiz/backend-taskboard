@@ -18,7 +18,6 @@ exports.upsertPurchaseOrderSchema = Joi.object({
   transport_id: Joi.string().max(255).allow('', null),
   transport_doc_no: Joi.string().max(255).allow('', null),
   transport_doc_date: Joi.string().max(255).allow('', null),
-  delivery_address_city: Joi.string().max(255).allow('', null),
   vehicle_no: Joi.string().max(100).allow('', null),
   place_of_supply: Joi.string().max(255).allow('', null),
   billing_company_uuid: Joi.string().guid().max(100).allow('', null),
