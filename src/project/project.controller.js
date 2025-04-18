@@ -136,6 +136,7 @@ exports.upsertProjectTeam = async (req, res) => {
   let isUpadtion = false;
   if (req.body.project_team_uuid) {
     isUpadtion = true;
+
     let project_info = await getRecords(
       'latest_project_team',
       `where project_team_uuid='${req.body.project_team_uuid}'`,
@@ -147,6 +148,13 @@ exports.upsertProjectTeam = async (req, res) => {
     req.body = { ...project_info, ...req.body };
     console.log('req.body in update: ', req.body);
   } else {
+    project_info = await getRecords(
+      'latest_project_team',
+      `where project_uuid='${req.body.project_uuid}' and user_uuid='${req.body.user_uuid}'`,
+    );
+    if (project_info.length)
+      throwError(404, 'User already exists in project team.');
+
     req.body.create_ts = setDateTimeFormat('timestemp');
     req.body.project_team_uuid = uuid();
   }
