@@ -170,6 +170,18 @@ exports.getPurchaseOrder = async (req, res) => {
     filter =
       status_array[0] + "status='CANCELLED' OR status=" + status_array[1];
   }
+
+  // / self draft filter
+  filter +=
+    (filter ? ' AND ' : ' WHERE ') +
+    `(
+   status != 'DRAFT' OR (
+     status = 'DRAFT' AND (
+       created_by_uuid = '${req.user.user_uuid}' OR user_uuid = '${req.user.user_uuid}'
+     )
+   )
+ )`;
+
   filter = await roleFilterService(filter, tableName, req.user);
   let pageFilter = pagination(pageNo, itemPerPage);
   let totalRecords = await getCountRecord(tableName, filter);

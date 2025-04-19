@@ -117,6 +117,17 @@ exports.getJob = async (req, res) => {
     value,
   );
 
+  // / self draft filter
+  filter +=
+    (filter ? ' AND ' : ' WHERE ') +
+    `(
+    status != 'DRAFT' OR (
+      status = 'DRAFT' AND (
+        created_by_uuid = '${req.user.user_uuid}' OR user_uuid = '${req.user.user_uuid}'
+      )
+    )
+  )`;
+
   filter = await roleFilterService(filter, tableName, req.user);
   let pageFilter = pagination(pageNo, itemPerPage);
   let totalRecords = await getCountRecord(tableName, filter);

@@ -686,8 +686,8 @@ exports.getRecordCount = async (req, res) => {
     filter +=
       (filter ? ' AND ' : ' WHERE ') +
       `(
-    status != 'expense_requested' OR (
-      status = 'expense_requested' AND (
+    status != 'EXPENSE_REQUESTED' OR (
+      status = 'EXPENSE_REQUESTED' AND (
         created_by_uuid = '${req.user.user_uuid}' OR user_uuid = '${req.user.user_uuid}'
       )
     )
