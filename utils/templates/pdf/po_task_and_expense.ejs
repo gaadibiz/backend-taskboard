@@ -424,7 +424,7 @@
     <!-- Customer and Order Information -->
 <div class="info-grid">
   <div class="info-card">
-    <div class="info-heading">Customer Details</div>
+    <div class="info-heading">Vendor Details</div>
     <div class="info-row">
       <div class="info-label">Proforma Invoice No:</div>
       <div class="info-value"><%=invoiceInfo.combined_purchase_order_no %></div>
@@ -467,6 +467,13 @@
       <div class="info-value">
         <%= invoiceInfo?.status.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, c => c.toUpperCase()) %>
       </div>
+      <div class="info-label">Expected Delivery Date:</div>
+      <div class="info-value"><%= invoiceInfo.expected_delivery_date%></div>
+      <div class="info-label">Date of Delivery:</div>
+      <div class="info-value"><%= invoiceInfo.date_of_delivery%></div>
+      <div class="info-label">Due Date:</div>
+      <div class="info-value"><%= invoiceInfo.due_date%></div>
+     
     </div>
   </div>
 
