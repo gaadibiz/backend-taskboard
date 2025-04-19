@@ -177,7 +177,7 @@ exports.getPurchaseOrder = async (req, res) => {
     `(
    status != 'DRAFT' OR (
      status = 'DRAFT' AND (
-       created_by_uuid = '${req.user.user_uuid}' OR user_uuid = '${req.user.user_uuid}'
+       created_by_uuid = '${req.user.user_uuid}''
      )
    )
  )`;
