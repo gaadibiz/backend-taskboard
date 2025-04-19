@@ -758,7 +758,7 @@ exports.getExpenseApprovalWorkFlow = async (req, res) => {
     'latest_dynamic_approval_count',
     `where dynamic_uuid = '${expense.expense_category_uuid}'`,
   );
-
+  console.log(approvalCount, '...........................');
   const EXPENSE_APPROVAL_REQUESTED = approvalCount.find(
     (item) => item.approval_raise_status === 'EXPENSE_APPROVAL_REQUESTED',
   );
@@ -766,11 +766,13 @@ exports.getExpenseApprovalWorkFlow = async (req, res) => {
   const FINANCE_APPROVAL_REQUESTED = approvalCount.find(
     (item) => item.approval_raise_status === 'FINANCE_APPROVAL_REQUESTED',
   );
+  console.log(EXPENSE_APPROVAL_REQUESTED, '...........................');
+  console.log(FINANCE_APPROVAL_REQUESTED, '...........................');
 
   const expense_Hierarchy = [];
   const finance_Hierarchy = [];
   let approval_expense_level = 0;
-  for (const items of EXPENSE_APPROVAL_REQUESTED.approval_hierarchy) {
+  for (const items of EXPENSE_APPROVAL_REQUESTED?.approval_hierarchy || []) {
     approval_expense_level++;
     for (const item of items) {
       let user_name = '';
@@ -857,7 +859,7 @@ exports.getExpenseApprovalWorkFlow = async (req, res) => {
   }
 
   let approval_finance_level = 0;
-  for (const items of FINANCE_APPROVAL_REQUESTED.approval_hierarchy) {
+  for (const items of FINANCE_APPROVAL_REQUESTED?.approval_hierarchy || []) {
     approval_finance_level++;
     for (const item of items) {
       let user_name = '';
