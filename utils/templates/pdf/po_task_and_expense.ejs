@@ -416,7 +416,7 @@
   <body>
     <!-- Document Header -->
     <div class="document-header">
-      <div class="company-name">Dj College</div>
+      <div class="company-name">TASKBOARD</div>
       <div class="table-heading">PURCHASE ORDER</div>
     </div>
     
@@ -424,15 +424,12 @@
     <!-- Customer and Order Information -->
 <div class="info-grid">
   <div class="info-card">
-    <div class="info-heading">Vendor Details</div>
+    <div class="info-heading">Customer Details</div>
     <div class="info-row">
       <div class="info-label">Proforma Invoice No:</div>
       <div class="info-value"><%=invoiceInfo.combined_purchase_order_no %></div>
     </div>
-    <div class="info-row">
-      <div class="info-label">M/S:</div>
-      <div class="info-value"><%= invoiceInfo.billing_company_branch_name %></div>
-    </div>
+   
     <div class="info-row">
       <div class="info-label">Vendor's name:</div>
       <div class="info-value"><%= contactInfo?.vendor_name %></div>
@@ -463,17 +460,22 @@
       <div class="info-value"><%= invoiceInfo.create_ts%></div>
     </div>
     <div class="info-row">
+      <div class="info-label">Date of Delivery:</div>
+      <div class="info-value"><%= invoiceInfo.date_of_delivery%></div>
+    </div>
+    <div class="info-row">
+      <div class="info-label">Due Date:</div>
+      <div class="info-value"><%= invoiceInfo.due_date%></div>
+    </div>
+    <div class="info-row">
+      <div class="info-label">Invoice Date:</div>
+      <div class="info-value"><%= invoiceInfo.create_ts%></div>
+    </div>
+    <div class="info-row">
       <div class="info-label">Status:</div>
       <div class="info-value">
         <%= invoiceInfo?.status.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, c => c.toUpperCase()) %>
       </div>
-      <div class="info-label">Expected Delivery Date:</div>
-      <div class="info-value"><%= invoiceInfo.expected_delivery_date%></div>
-      <div class="info-label">Date of Delivery:</div>
-      <div class="info-value"><%= invoiceInfo.date_of_delivery%></div>
-      <div class="info-label">Due Date:</div>
-      <div class="info-value"><%= invoiceInfo.due_date%></div>
-     
     </div>
   </div>
 
