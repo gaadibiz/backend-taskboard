@@ -30,11 +30,13 @@ exports.upsertJob = async (req, res) => {
   let old_job_date;
   let highest_job_no = await getHighestParameterValue(
     'latest_job',
-    'job_order_no',
+    'CAST(job_order_no AS UNSIGNED)',
     '1=1',
   );
+  console.log('highest_job_no.highestValue', highest_job_no);
   highest_job_no.highestValue = highest_job_no.highestValue || '0';
   const job_order_no = incrementStringWithReset(highest_job_no.highestValue);
+  console.log('job_order_no', job_order_no);
   if (req.body.job_uuid) {
     isUpadtion = true;
     let job_info = await getRecords(
