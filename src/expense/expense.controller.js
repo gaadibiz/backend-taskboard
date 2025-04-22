@@ -241,6 +241,12 @@ exports.getExpense = async (req, res) => {
     }
   }
 
+  // get expense status count
+  const expenseStatus = await dbRequest(`SELECT status, COUNT(*) AS count
+  FROM ${tableName} 
+  ${filter}
+  GROUP BY status;`);
+  console.log('expenseStatus', expenseStatus);
   return res.json(responser('expense: ', result, result.length, totalRecords));
 };
 
@@ -767,188 +773,249 @@ exports.getExpenseApprovalWorkFlow = async (req, res) => {
     (item) => item.approval_raise_status === 'FINANCE_APPROVAL_REQUESTED',
   );
 
-  const expense_Hierarchy = [];
-  const finance_Hierarchy = [];
-  let approval_expense_level = 0;
-  for (const items of EXPENSE_APPROVAL_REQUESTED.approval_hierarchy) {
-    approval_expense_level++;
-    for (const item of items) {
-      let user_name = '';
-      let user_uuid = '';
-      let role_name = '';
-      let role_uuid = '';
-      if (item.type === 'ROLE') {
-        const [role] = await getRecords(
-          'latest_roles',
-          `where role_uuid = '${item.uuid}'`,
-        );
+  // const expense_Hierarchy = [];
+  // const finance_Hierarchy = [];
 
-        if (!role) continue;
+  const expense_Hierarchy = await buildHierarchy(
+    EXPENSE_APPROVAL_REQUESTED,
+    expense,
+    'EXPENSE_APPROVAL_REQUESTED',
+    'latest_expense',
+    expense_uuid,
+    ['FINANCE_APPROVAL_REQUESTED', 'FINANCE', 'CLEARED'],
+  );
 
-        const role_value = role.role_value;
+  const finance_Hierarchy = await buildHierarchy(
+    FINANCE_APPROVAL_REQUESTED,
+    expense,
+    'FINANCE_APPROVAL_REQUESTED',
+    'latest_expense',
+    expense_uuid,
+    ['FINANCE', 'CLEARED'],
+  );
 
-        role_name = role_value;
-        role_uuid = item.uuid;
-        switch (role_value) {
-          case 'PROJECT_MANAGER':
-            user_name = expense.project_manager_name;
-            user_uuid = expense.project_manager_uuid;
-            break;
-          case 'CATEGORY_MANAGER':
-            user_name = expense.category_manager_name;
-            user_uuid = expense.category_manager_uuid;
-            break;
-          case 'FINANCE_MANAGER':
-            user_name = expense.finance_manager_name;
-            user_uuid = expense.finance_manager_uuid;
-            break;
-          default:
-            user_name = role.role_value;
-            user_uuid = role.role_uuid;
-        }
-      } else {
-        const [user] = await getRecords(
-          'latest_user',
-          `where user_uuid = '${item.uuid}'`,
-        );
+  // let approval_expense_level = 0;
+  // for (const items of EXPENSE_APPROVAL_REQUESTED.approval_hierarchy) {
+  //   approval_expense_level++;
+  //   for (const item of items) {
+  //     let user_name = '';
+  //     let user_uuid = '';
+  //     let role_name = '';
+  //     let role_uuid = '';
+  //     if (item.type === 'ROLE') {
+  //       const [role] = await getRecords(
+  //         'latest_roles',
+  //         `where role_uuid = '${item.uuid}'`,
+  //       );
 
-        if (!user) continue;
+  //       if (!role) continue;
 
-        user_name = user.user_name;
-        user_uuid = user.user_uuid;
-      }
+  //       const role_value = role.role_value;
 
-      const [approval] = await getRecords(
-        'dynamic_approval',
-        `where dynamic_uuid = '${expense.expense_category_uuid}' 
-        AND current_level = ${approval_expense_level}
-        AND table_name = 'latest_expense'
-        AND previous_status = '${EXPENSE_APPROVAL_REQUESTED.previous_status}'
-        AND next_status = '${EXPENSE_APPROVAL_REQUESTED.next_status}'
-        AND record_uuid = '${expense_uuid}'
-        AND status = 'APPROVED'
-       AND JSON_CONTAINS(approval_uuids, JSON_OBJECT('type', '${item.type}', 'uuid', '${item.uuid}'))
-        `,
-      );
+  //       role_name = role_value;
+  //       role_uuid = item.uuid;
+  //       switch (role_value) {
+  //         case 'PROJECT_MANAGER':
+  //           user_name = expense.project_manager_name;
+  //           user_uuid = expense.project_manager_uuid;
+  //           break;
+  //         case 'CATEGORY_MANAGER':
+  //           user_name = expense.category_manager_name;
+  //           user_uuid = expense.category_manager_uuid;
+  //           break;
+  //         case 'FINANCE_MANAGER':
+  //           user_name = expense.finance_manager_name;
+  //           user_uuid = expense.finance_manager_uuid;
+  //           break;
+  //         default:
+  //           user_name = role.role_value;
+  //           user_uuid = role.role_uuid;
+  //       }
+  //     } else {
+  //       const [user] = await getRecords(
+  //         'latest_user',
+  //         `where user_uuid = '${item.uuid}'`,
+  //       );
 
-      const [approver] = await getRecords(
-        'latest_user',
-        `where user_uuid = '${approval?.created_by_uuid}'`,
-      );
+  //       if (!user) continue;
 
-      expense_Hierarchy.push({
-        role: role_name,
-        role_uuid: role_uuid,
-        user_name: user_name,
-        user_uuid: user_uuid,
-        next_status: EXPENSE_APPROVAL_REQUESTED.next_status,
-        previous_status: EXPENSE_APPROVAL_REQUESTED.previous_status,
-        current_status: EXPENSE_APPROVAL_REQUESTED.approval_raise_status,
-        previous_status: EXPENSE_APPROVAL_REQUESTED.previous_status,
-        level: approval_expense_level,
-        approved_by_uuid: !approver ? approver?.user_uuid : null,
-        approved_by_name: !approver
-          ? approver?.first_name +
-            (approver?.last_name ? ' ' + approver?.last_name : '')
-          : null,
-        current_pointer: approver ? true : false,
-      });
-    }
-  }
+  //       user_name = user.user_name;
+  //       user_uuid = user.user_uuid;
+  //     }
 
-  let approval_finance_level = 0;
-  for (const items of FINANCE_APPROVAL_REQUESTED.approval_hierarchy) {
-    approval_finance_level++;
-    for (const item of items) {
-      let user_name = '';
-      let user_uuid = '';
-      let role_name = '';
-      let role_uuid = '';
-      if (item.type === 'ROLE') {
-        const [role] = await getRecords(
-          'latest_roles',
-          `where role_uuid = '${item.uuid}'`,
-        );
+  //     const [approval] = await getRecords(
+  //       'dynamic_approval',
+  //       `where dynamic_uuid = '${expense.expense_category_uuid}'
+  //       AND current_level = ${approval_expense_level}
+  //       AND table_name = 'latest_expense'
+  //       AND previous_status = '${EXPENSE_APPROVAL_REQUESTED.previous_status}'
+  //       AND next_status = '${EXPENSE_APPROVAL_REQUESTED.next_status}'
+  //       AND record_uuid = '${expense_uuid}'
+  //       AND status = 'APPROVED'
+  //      AND JSON_CONTAINS(approval_uuids, JSON_OBJECT('type', '${item.type}', 'uuid', '${item.uuid}'))
+  //       `,
+  //     );
 
-        if (!role) continue;
+  //     const [approver] = await getRecords(
+  //       'latest_user',
+  //       `where user_uuid = '${approval?.created_by_uuid}'`,
+  //     );
 
-        const role_value = role.role_value;
+  //     expense_Hierarchy.push({
+  //       role: role_name,
+  //       role_uuid: role_uuid,
+  //       user_name: user_name,
+  //       user_uuid: user_uuid,
+  //       next_status: EXPENSE_APPROVAL_REQUESTED.next_status,
+  //       previous_status: EXPENSE_APPROVAL_REQUESTED.previous_status,
+  //       current_status: EXPENSE_APPROVAL_REQUESTED.approval_raise_status,
+  //       previous_status: EXPENSE_APPROVAL_REQUESTED.previous_status,
+  //       level: approval_expense_level,
+  //       approved_by_uuid: approver ? approver.user_uuid : null,
+  //       approved_by_name: approver
+  //         ? approver.first_name +
+  //           (approver.last_name ? ' ' + approver.last_name : '')
+  //         : null,
+  //       remark: approval?.remark,
+  //       current_pointer:
+  //         expense.status === 'EXPENSE_APPROVAL_REQUESTED' ? true : false,
+  //       is_completed:
+  //         approver &&
+  //         ['FINANCE_APPROVAL_REQUESTED', 'FINANCE', 'CLEARED'].includes(
+  //           expense.status,
+  //         )
+  //           ? true
+  //           : false,
+  //     });
+  //   }
+  // }
 
-        role_name = role_value;
-        role_uuid = item.uuid;
-        switch (role_value) {
-          case 'PROJECT_MANAGER':
-            user_name = expense.project_manager_name;
-            user_uuid = expense.project_manager_uuid;
-            break;
-          case 'CATEGORY_MANAGER':
-            user_name = expense.category_manager_name;
-            user_uuid = expense.category_manager_uuid;
-            break;
-          case 'FINANCE_MANAGER':
-            user_name = expense.finance_manager_name;
-            user_uuid = expense.finance_manager_uuid;
-            break;
-          default:
-            user_name = role.role_value;
-            user_uuid = role.role_uuid;
-        }
-      } else {
-        const [user] = await getRecords(
-          'latest_user',
-          `where user_uuid = '${item.uuid}'`,
-        );
+  // let approval_finance_level = 0;
+  // for (const items of FINANCE_APPROVAL_REQUESTED.approval_hierarchy) {
+  //   approval_finance_level++;
+  //   for (const item of items) {
+  //     let user_name = '';
+  //     let user_uuid = '';
+  //     let role_name = '';
+  //     let role_uuid = '';
+  //     if (item.type === 'ROLE') {
+  //       const [role] = await getRecords(
+  //         'latest_roles',
+  //         `where role_uuid = '${item.uuid}'`,
+  //       );
 
-        if (!user) continue;
+  //       if (!role) continue;
 
-        user_name = user.user_name;
-        user_uuid = user.user_uuid;
-      }
+  //       const role_value = role.role_value;
 
-      const [approval] = await getRecords(
-        'dynamic_approval',
-        `where dynamic_uuid = '${expense.expense_category_uuid}' 
-        AND current_level = ${approval_finance_level}
-        AND table_name = 'latest_expense'
-        AND previous_status = '${EXPENSE_APPROVAL_REQUESTED.previous_status}'
-        AND next_status = '${EXPENSE_APPROVAL_REQUESTED.next_status}'
-        AND record_uuid = '${expense_uuid}'
-        AND status = 'APPROVED'
-       AND JSON_CONTAINS(approval_uuids, JSON_OBJECT('type', '${item.type}', 'uuid', '${item.uuid}'))
-        `,
-      );
+  //       role_name = role_value;
+  //       role_uuid = item.uuid;
+  //       switch (role_value) {
+  //         case 'PROJECT_MANAGER':
+  //           user_name = expense.project_manager_name;
+  //           user_uuid = expense.project_manager_uuid;
+  //           break;
+  //         case 'CATEGORY_MANAGER':
+  //           user_name = expense.category_manager_name;
+  //           user_uuid = expense.category_manager_uuid;
+  //           break;
+  //         case 'FINANCE_MANAGER':
+  //           user_name = expense.finance_manager_name;
+  //           user_uuid = expense.finance_manager_uuid;
+  //           break;
+  //         default:
+  //           user_name = role.role_value;
+  //           user_uuid = role.role_uuid;
+  //       }
+  //     } else {
+  //       const [user] = await getRecords(
+  //         'latest_user',
+  //         `where user_uuid = '${item.uuid}'`,
+  //       );
 
-      const [approver] = await getRecords(
-        'latest_user',
-        `where user_uuid = '${approval?.created_by_uuid}'`,
-      );
+  //       if (!user) continue;
 
-      finance_Hierarchy.push({
-        role: role_name,
-        role_uuid: role_uuid,
-        user_name: user_name,
-        user_uuid: user_uuid,
-        next_status: EXPENSE_APPROVAL_REQUESTED.next_status,
-        previous_status: EXPENSE_APPROVAL_REQUESTED.previous_status,
-        current_status: EXPENSE_APPROVAL_REQUESTED.approval_raise_status,
-        previous_status: EXPENSE_APPROVAL_REQUESTED.previous_status,
-        level: approval_finance_level,
-        approved_by_uuid: !approver ? approver?.user_uuid : null,
-        approved_by_name: !approver
-          ? approver?.first_name +
-            (approver?.last_name ? ' ' + approver?.last_name : '')
-          : null,
-        current_pointer: approver ? true : false,
-      });
-    }
-  }
+  //       user_name = user.user_name;
+  //       user_uuid = user.user_uuid;
+  //     }
+
+  //     const [approval] = await getRecords(
+  //       'dynamic_approval',
+  //       `where dynamic_uuid = '${expense.expense_category_uuid}'
+  //       AND current_level = ${approval_finance_level}
+  //       AND table_name = 'latest_expense'
+  //       AND previous_status = '${EXPENSE_APPROVAL_REQUESTED.previous_status}'
+  //       AND next_status = '${EXPENSE_APPROVAL_REQUESTED.next_status}'
+  //       AND record_uuid = '${expense_uuid}'
+  //       AND status = 'APPROVED'
+  //      AND JSON_CONTAINS(approval_uuids, JSON_OBJECT('type', '${item.type}', 'uuid', '${item.uuid}'))
+  //       `,
+  //     );
+
+  //     const [approver] = await getRecords(
+  //       'latest_user',
+  //       `where user_uuid = '${approval?.created_by_uuid}'`,
+  //     );
+
+  //     finance_Hierarchy.push({
+  //       role: role_name,
+  //       role_uuid: role_uuid,
+  //       user_name: user_name,
+  //       user_uuid: user_uuid,
+  //       next_status: EXPENSE_APPROVAL_REQUESTED.next_status,
+  //       previous_status: EXPENSE_APPROVAL_REQUESTED.previous_status,
+  //       current_status: EXPENSE_APPROVAL_REQUESTED.approval_raise_status,
+  //       previous_status: EXPENSE_APPROVAL_REQUESTED.previous_status,
+  //       level: approval_finance_level,
+  //       approved_by_uuid: approver ? approver.user_uuid : null,
+  //       approved_by_name: approver
+  //         ? approver.first_name +
+  //           (approver.last_name ? ' ' + approver.last_name : '')
+  //         : null,
+  //       remark: approval?.remark,
+  //       current_pointer:
+  //         expense.status === 'FINANCE_APPROVAL_REQUESTED' ? true : false,
+  //       is_completed:
+  //         approver && ['FINANCE', 'CLEARED'].includes(expense.status)
+  //           ? true
+  //           : false,
+  //     });
+  //   }
+  // }
 
   const workflow = {
-    EXPENSE_REQUESTED: [],
+    EXPENSE_REQUESTED: [
+      {
+        current_pointer: expense.status === 'EXPENSE_REQUESTED' ? true : false,
+        is_completed:
+          expense.status !== 'EXPENSE_REQUESTED' &&
+          [
+            'EXPENSE_APPROVAL_REQUESTED',
+            'FINANCE_APPROVAL_REQUESTED',
+            'FINANCE',
+            'CLEARED',
+          ].includes(expense.status)
+            ? true
+            : false,
+      },
+    ],
     EXPENSE_APPROVAL_REQUESTED: [...expense_Hierarchy],
     FINANCE_APPROVAL_REQUESTED: [...finance_Hierarchy],
-    FINANCE: [],
-    CLEARED: [],
+    FINANCE: [
+      {
+        current_pointer: expense.status === 'FINANCE',
+        is_completed:
+          expense.status !== 'FINANCE' && ['CLEARED'].includes(expense.status)
+            ? true
+            : false,
+      },
+    ],
+    CLEARED: [
+      {
+        current_pointer: expense.status === 'CLEARED',
+        is_completed: expense.status === 'CLEARED',
+      },
+    ],
   };
 
   return res.json(
@@ -956,4 +1023,104 @@ exports.getExpenseApprovalWorkFlow = async (req, res) => {
       workflow,
     }),
   );
+};
+
+const buildHierarchy = async (
+  approvalData,
+  expense,
+  currentStatus,
+  tableName,
+  record_uuid,
+  comingStatus,
+) => {
+  const hierarchy = [];
+  let approval_level = 0;
+
+  for (const items of approvalData.approval_hierarchy) {
+    approval_level++;
+    for (const item of items) {
+      let user_name = '';
+      let user_uuid = '';
+      let role_name = '';
+      let role_uuid = '';
+
+      if (item.type === 'ROLE') {
+        const [role] = await getRecords(
+          'latest_roles',
+          `where role_uuid = '${item.uuid}'`,
+        );
+        if (!role) continue;
+
+        const role_value = role.role_value;
+        role_name = role_value;
+        role_uuid = item.uuid;
+
+        switch (role_value) {
+          case 'PROJECT_MANAGER':
+            user_name = expense.project_manager_name;
+            user_uuid = expense.project_manager_uuid;
+            break;
+          case 'CATEGORY_MANAGER':
+            user_name = expense.category_manager_name;
+            user_uuid = expense.category_manager_uuid;
+            break;
+          case 'FINANCE_MANAGER':
+            user_name = expense.finance_manager_name;
+            user_uuid = expense.finance_manager_uuid;
+            break;
+          default:
+            user_name = role.role_value;
+            user_uuid = role.role_uuid;
+        }
+      } else {
+        const [user] = await getRecords(
+          'latest_user',
+          `where user_uuid = '${item.uuid}'`,
+        );
+        if (!user) continue;
+
+        user_name = user.user_name;
+        user_uuid = user.user_uuid;
+      }
+
+      const [approval] = await getRecords(
+        'dynamic_approval',
+        `where dynamic_uuid = '${expense.expense_category_uuid}' 
+          AND current_level = ${approval_level}
+          AND table_name = '${tableName}'
+          AND previous_status = '${approvalData.previous_status}'
+          AND next_status = '${approvalData.next_status}'
+          AND record_uuid = '${record_uuid}'
+          AND status = 'APPROVED'
+          AND JSON_CONTAINS(approval_uuids, JSON_OBJECT('type', '${item.type}', 'uuid', '${item.uuid}'))`,
+      );
+
+      const [approver] = approval?.created_by_uuid
+        ? await getRecords(
+            'latest_user',
+            `where user_uuid = '${approval.created_by_uuid}'`,
+          )
+        : [null];
+
+      hierarchy.push({
+        role: role_name,
+        role_uuid: role_uuid,
+        user_name,
+        user_uuid,
+        next_status: approvalData.next_status,
+        previous_status: approvalData.previous_status,
+        current_status: approvalData.approval_raise_status,
+        level: approval_level,
+        approved_by_uuid: approver ? approver.user_uuid : null,
+        approved_by_name: approver
+          ? `${approver.first_name}${approver.last_name ? ' ' + approver.last_name : ''}`
+          : null,
+        remark: approval?.remark,
+        current_pointer: expense.status === currentStatus,
+        is_completed: !!approver && comingStatus.includes(expense.status),
+      });
+    }
+  }
+
+  return hierarchy;
 };
