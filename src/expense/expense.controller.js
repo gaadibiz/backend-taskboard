@@ -351,12 +351,12 @@ exports.upsertExpenseCategory = async (req, res) => {
             is_conditional: true,
             filter: [
               {
-                column: 'reimbursed_amount',
+                column: 'actual_reimbursed_amount',
                 operator: 'GREATER_THAN_EQUAL',
                 value: '10000',
               },
               {
-                column: 'requested_advance_amount',
+                column: 'actual_requested_advance_amount',
                 operator: 'GREATER_THAN_EQUAL',
                 value: '10000',
                 logicalOperator: 'OR',

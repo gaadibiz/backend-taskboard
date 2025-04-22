@@ -137,6 +137,10 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: true,
       },
+      actual_requested_advance_amount: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+      },
       is_deduct_from_advance: {
         type: Sequelize.BOOLEAN,
         allowNull: true,
