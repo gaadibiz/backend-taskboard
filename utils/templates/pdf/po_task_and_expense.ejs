@@ -523,21 +523,18 @@
 
         <!-- Empty rows -->
         <% for (let j = 0; j < 5; j++) { %>
-        <tr>
-          <td class="border-left border-top border-right">&nbsp;</td>
-          <td class="border-top border-right">&nbsp;</td>
-          <td class="border-top border-right">&nbsp;</td>
-          <td class="border-top border-right">&nbsp;</td>
-          <td class="border-top border-right">&nbsp;</td>
-          <td class="border-top border-right">&nbsp;</td>
-          <td class="border-top border-right">&nbsp;</td>
-          <td class="border-top border-right">&nbsp;</td>
-          <td class="border-top border-right">&nbsp;</td>
-          <td class="border-top border-right">&nbsp;</td>
-          <td class="border-top border-right">&nbsp;</td>
-          <td class="border-top border-right">&nbsp;</td>
-        </tr>
+          <tr>
+            <% for (let i = 0; i < 12; i++) { %>
+              <td class="
+                <%= i === 0 ? 'border-left' : '' %>
+                <%= i === 11 ? 'border-right' : '' %>
+                <%= j === 0 ? 'border-top' : '' %>
+                <%= j === 4 ? 'border-bottom' : '' %>
+              ">&nbsp;</td>
+            <% } %>
+          </tr>
         <% } %>
+        
 
         <!-- Totals row -->
         <tr>
