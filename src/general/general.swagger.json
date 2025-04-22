@@ -944,6 +944,14 @@
             "schema": {
               "type": "number"
             }
+          },
+          {
+            "in": "query",
+            "name": "expense_type",
+            "description": "Expense type in array",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
