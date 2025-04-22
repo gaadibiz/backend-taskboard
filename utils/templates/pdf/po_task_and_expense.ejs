@@ -460,7 +460,7 @@
 
         <% for (let i = 0; i < invoiceInfo?.invoice_items?.length; i++) { %>
         <tr>
-          <td class="align-center border-left border-right">
+          <td class="align-center border-right">
             <p class="space-y"><%= i + 1 %></p>
           </td>
           <td class="align-center border-right">
@@ -486,7 +486,10 @@
           <td class="align-center border-right">
             <p class="space-y"><%= invoiceInfo?.invoice_items[i]?.unit %></p>
           </td>
-          <td class="align-center border-right">
+          <td
+            class="align-center border-right"
+            style="background-color: #f1f6fa"
+          >
             <p class="space-y">
               <%= invoiceInfo?.invoice_items[i]?.taxable_amount %>
             </p>
@@ -511,7 +514,7 @@
               <%= invoiceInfo?.invoice_items[i]?.discount_amount %>
             </p>
           </td>
-          <td class="align-center border-right">
+          <td class="align-center" style="background-color: #f1f6fa">
             <p class="space-y"><%= invoiceInfo?.invoice_items[i]?.total %></p>
           </td>
         </tr>
@@ -521,9 +524,7 @@
         <% for (let j = 0; j < 15; j++) { %>
         <tr>
           <% for (let i = 0; i < 12; i++) { %>
-          <td class="<%= i === 0 ? 'border-left' : '' %> border-right">
-            &nbsp;
-          </td>
+          <td>&nbsp;</td>
           <% } %>
         </tr>
         <% } %>
@@ -543,22 +544,52 @@
         <tr>
           <td
             colspan="3"
-            class="td-bold align-center border-left border-right"
-            style="padding: 7px"
+            class="td-bold align-center border-top border-right"
+            style="padding: 7px; background-color: #f1f6fa"
           >
             Total
           </td>
-          <td class="align-center border-right td-bold"><%= totalQty %></td>
-          <td class="align-center border-right td-bold"><%= totalRate %></td>
-          <td class="border-right">&nbsp;</td>
-          <td class="align-center border-right td-bold"><%= totalTaxable %></td>
-          <td class="align-center border-right td-bold">-</td>
-          <td class="align-center border-right td-bold"><%= totalTax %></td>
-          <td class="border-right">&nbsp;</td>
-          <td class="align-center border-right td-bold">
+          <td
+            class="align-center border-top border-right td-bold"
+            style="background-color: #f1f6fa"
+          >
+            <%= totalQty %>
+          </td>
+          <td
+            class="align-center border-top border-right td-bold"
+            style="background-color: #f1f6fa"
+          >
+            <%= totalRate %>
+          </td>
+          <td class="border-top border-right">&nbsp;</td>
+          <td
+            class="align-center border-top border-right td-bold"
+            style="background-color: #f1f6fa"
+          >
+            <%= totalTaxable %>
+          </td>
+          <td
+            class="align-center border-top border-right td-bold"
+            style="background-color: #f1f6fa"
+          >
+            -
+          </td>
+          <td
+            class="align-center border-top border-right td-bold"
+            style="background-color: #f1f6fa"
+          >
+            <%= totalTax %>
+          </td>
+          <td class="border-top border-right" style="background-color: #f1f6fa">
+            &nbsp;
+          </td>
+          <td
+            class="align-center border-top border-right td-bold"
+            style="background-color: #f1f6fa"
+          >
             <%= totalDiscountAmt %>
           </td>
-          <td class="align-center border-right td-bold"><%= overallTotal %></td>
+          <td class="align-center border-top td-bold"><%= overallTotal %></td>
         </tr>
       </table>
     </div>
