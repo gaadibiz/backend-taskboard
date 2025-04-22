@@ -521,18 +521,26 @@
         <% } %>
 
       <!-- Empty rows for visual balance -->
-      <% for (let j = 0; j < 15; j++) { %>
-        <tr>
-          <% for (let i = 0; i < 12; i++) { %>
-            <% 
-              const borderRight = (i !== 11) ? 'border-right' : ''; // Add right border for all except the last column
-              const bgColor = (i === 6 || i === 11) ? 'style="background-color: #f1f6fa;"' : ''; // Background color for column 6 and 11
-              const borderLeft = (i === 0) ? 'border-right' : ''; // Add right border on first column (SR No.)
-            %>
-            <td class="<%= borderRight %> <%= borderLeft %>" <%= bgColor %>>&nbsp;</td>
-          <% } %>
-        </tr>
-      <% } %>
+  <tr>
+    <% for (let j = 0; j < 15; j++) { %>
+      <tr>
+        <% for (let i = 0; i < 12; i++) {
+          const classes = [];
+          const styles = [];
+    
+          if (i === 0 || i !== 11) classes.push('border-right'); // Right border for all except last, and for SR No.
+          if (i === 6 || i === 11) styles.push('background-color: #f1f6fa;');
+    
+          const classAttr = classes.length ? `class="${classes.join(' ')}"` : '';
+          const styleAttr = styles.length ? `style="${styles.join(' ')}"` : '';
+        %>
+          <td <%= classAttr %> <%= styleAttr %>> &nbsp;</td>
+        <% } %>
+      </tr>
+    <% } %>
+    
+
+      
       
 
           
@@ -599,7 +607,7 @@
           >
             <%= totalDiscountAmt %>
           </td>
-          <td class="align-center border-top td-bold" style="background-color: #f1f6fa"><%= overallTotal %></td>
+          <td class="align-center border-top td-bold" style="background-color: #f1f6fa"><%= invoiceInfo?.total_amount_after_tax %></td>
         </tr>
       </table>
     </div>
