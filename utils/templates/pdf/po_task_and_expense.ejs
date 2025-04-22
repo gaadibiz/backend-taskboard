@@ -167,9 +167,9 @@
       }
 
       .quoteDetailsHead td {
-        background-color: #0070c0;
-        border: 2px solid #0184e1;
-        color: white;
+        background-color: #f1f6fa;
+        border: 1px solid #0184e1;
+        color: black;
         border-collapse: collapse;
         text-align: center;
         font-weight: bold;
@@ -342,33 +342,6 @@
                     </tr>
                   </table>
                 </td>
-                <!-- <td
-                  class="vertical-top space line-height border-right border-bottom"
-                >
-                  <table cellspacing="0">
-                    <tr>
-                      <td>
-                        <span class="td-bold">Invoice Date:</span>
-                        <span> <%= invoiceInfo.create_ts%> </span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="space-y">
-                        <span class="td-bold">Billing Address:</span>
-                        <span>
-                          <%= invoiceInfo.customer_name %> <%=
-                          invoiceInfo.customer_address_line1 %> <%=
-                          invoiceInfo.customer_address_line2 %>
-                          <br />
-                          <%= invoiceInfo.customer_address_city %> , <%=
-                          invoiceInfo.customer_address_state %> <%=
-                          invoiceInfo.customer_address_country %>- <%=
-                          invoiceInfo.customer_address_pincode %>
-                        </span>
-                      </td>
-                    </tr>
-                  </table>
-                <!-- </td> -->
                 <td
                   class="vertical-top space line-height border-right border-bottom"
                 >
@@ -466,7 +439,7 @@
           <td>Total</td>
         </tr>
       </table>
-      <table cellspacing="0" cellpadding="0" width="100%">
+      <table cellspacing="0" cellpadding="0" width="100%" class="border-bottom">
         <col style="width: 5%" />
         <col style="width: 20%" />
         <col style="width: 7%" />
@@ -536,23 +509,83 @@
             <p class="space-y"><%= invoiceInfo?.invoice_items[i]?.total %></p>
           </td>
         </tr>
+        <% } %> <% let totalQty = 0; let totalRate = 0; let totalTaxable = 0;
+        let totalTax = 0; let totalDiscountAmt = 0; let overallTotal = 0; for
+        (let i = 0; i < invoiceInfo?.invoice_items?.length; i++) { totalQty +=
+        parseFloat(invoiceInfo.invoice_items[i]?.quantity || 0); totalRate +=
+        parseFloat(invoiceInfo.invoice_items[i]?.unit_price || 0); totalTaxable
+        += parseFloat(invoiceInfo.invoice_items[i]?.taxable_amount || 0);
+        totalTax += parseFloat(invoiceInfo.invoice_items[i]?.tax_amount || 0);
+        totalDiscountAmt +=
+        parseFloat(invoiceInfo.invoice_items[i]?.discount_amount || 0);
+        overallTotal += parseFloat(invoiceInfo.invoice_items[i]?.total || 0); }
+        %>
+
+        <!-- Empty rows -->
+        <% for (let j = 0; j < 5; j++) { %>
+        <tr>
+          <td class="border-left border-top border-right">&nbsp;</td>
+          <td class="border-top border-right">&nbsp;</td>
+          <td class="border-top border-right">&nbsp;</td>
+          <td class="border-top border-right">&nbsp;</td>
+          <td class="border-top border-right">&nbsp;</td>
+          <td class="border-top border-right">&nbsp;</td>
+          <td class="border-top border-right">&nbsp;</td>
+          <td class="border-top border-right">&nbsp;</td>
+          <td class="border-top border-right">&nbsp;</td>
+          <td class="border-top border-right">&nbsp;</td>
+          <td class="border-top border-right">&nbsp;</td>
+          <td class="border-top border-right">&nbsp;</td>
+        </tr>
         <% } %>
+
+        <!-- Totals row -->
+        <tr>
+          <td
+            colspan="3"
+            class="td-bold align-center border-top border-left border-right"
+          >
+            Total
+          </td>
+          <td class="align-center border-top border-right td-bold">
+            <%= totalQty %>
+          </td>
+          <td class="align-center border-top border-right td-bold">
+            <%= totalRate %>
+          </td>
+          <td class="border-top border-right">&nbsp;</td>
+          <td class="align-center border-top border-right td-bold">
+            <%= totalTaxable %>
+          </td>
+          <td class="align-center border-top border-right td-bold">
+            <!-- Optional: Add logic here for totalTaxRate if you want -->
+            -
+          </td>
+          <td class="align-center border-top border-right td-bold">
+            <%= totalTax %>
+          </td>
+          <td class="border-top border-right">&nbsp;</td>
+          <td class="align-center border-top border-right td-bold">
+            <%= totalDiscountAmt %>
+          </td>
+          <td class="align-center border-top border-right td-bold">
+            <%= overallTotal %>
+          </td>
+        </tr>
       </table>
     </div>
-    <!-- table footer -->
+    <br />
     <div>
       <table cellspacing="0" cellpadding="0" width="100%">
         <tr>
           <td
-            class="border-top space border-bottom border-left border-right"
+            class="border-top border-bottom border-left border-right"
             style="padding: 0; margin: 0"
           >
             <table cellspacing="0" cellpadding="0" width="100%">
               <tr>
-                <td style="vertical-align: top; padding: 0; margin: 0">
+                <td style="padding: 0; margin: 0">
                   <table cellspacing="0" cellpadding="0" width="100%">
-                    <col style="width: 35%" />
-                    <col style="width: 65%" />
                     <tr>
                       <td colspan="2" class="td-bold align-center">
                         Total in words
@@ -598,12 +631,18 @@
             </table>
           </td>
           <td
-            class="border-top space border-bottom border-right"
+            class="border-top border-bottom border-right"
             style="padding: 0; margin: 0"
           >
             <table cellspacing="0" cellpadding="0" width="100%">
               <tr>
-                <td class="td-bold space">Total Amount</td>
+                <td class="td-bold space">Total Tax :</td>
+                <td class="align-right td-bold space">
+                  &#8377; <%= totalTax %>
+                </td>
+              </tr>
+              <tr>
+                <td class="td-bold space">Total Amount :</td>
                 <td class="align-right td-bold space">
                   &#8377; <%= invoiceInfo?.total_amount_after_tax %>
                 </td>
