@@ -521,18 +521,19 @@
         <% } %>
 
       <!-- Empty rows for visual balance -->
-<% for (let j = 0; j < 15; j++) { %>
-  <tr>
-    <% for (let i = 0; i < 12; i++) { %>
-      <% 
-        const borderRight = (i !== 0 && i !== 11) ? 'border-right' : '';
-        const bgColor = (i === 6 || i === 11) ? 'style="background-color: #f1f6fa;"' : '';
-      %>
-      <td class="<%= borderRight %>" <%= bgColor %>>&nbsp;</td>
-    <% } %>
-  </tr>
-<% } %>
-
+      <% for (let j = 0; j < 15; j++) { %>
+        <tr>
+          <% for (let i = 0; i < 12; i++) { %>
+            <% 
+              const borderRight = (i !== 11) ? 'border-right' : ''; // Add right border for all except the last column
+              const bgColor = (i === 6 || i === 11) ? 'style="background-color: #f1f6fa;"' : ''; // Background color for column 6 and 11
+              const borderLeft = (i === 0) ? 'border-right' : ''; // Add right border on first column (SR No.)
+            %>
+            <td class="<%= borderRight %> <%= borderLeft %>" <%= bgColor %>>&nbsp;</td>
+          <% } %>
+        </tr>
+      <% } %>
+      
 
           
 
@@ -543,12 +544,12 @@
         parseFloat(invoiceInfo.invoice_items[i]?.quantity || 0); totalRate += parseFloat(
           (invoiceInfo.invoice_items[i]?.unit_price || "0").toString().replace(/,/g, '')
         );
-        totalTaxable += invoiceInfo.invoice_items[i]?.taxable_amount || 0; 
-         totalTax += invoiceInfo.invoice_items[i]?.tax_amount || 0;
+        totalTaxable += parseFloat(invoiceInfo.invoice_items[i]?.taxable_amount || 0);
+         totalTax += parseFloat(invoiceInfo.invoice_items[i]?.tax_amount || 0);
 
         totalDiscountAmt +=
         invoiceInfo.invoice_items[i]?.discount_amount || 0;
-        overallTotal += invoiceInfo.invoice_items[i]?.total || 0; }
+        overallTotal += parseFloat(invoiceInfo.invoice_items[i]?.total || 0); }
         %>
         <tr>
           <td
