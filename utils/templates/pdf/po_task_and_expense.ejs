@@ -521,30 +521,18 @@
         <% } %>
 
       <!-- Empty rows for visual balance -->
-  <tr>
-    <% for (let j = 0; j < 15; j++) { %>
-      <tr>
-        <% for (let i = 0; i < 12; i++) {
-          const classes = [];
-          const styles = [];
-    
-          if (i === 0 || i !== 11) classes.push('border-right'); // Right border for all except last, and for SR No.
-          if (i === 6 || i === 11) styles.push('background-color: #f1f6fa;');
-    
-          const classAttr = classes.length ? `class="${classes.join(' ')}"` : '';
-          const styleAttr = styles.length ? `style="${styles.join(' ')}"` : '';
-        %>
-          <td <%= classAttr %> <%= styleAttr %>> &nbsp;</td>
-        <% } %>
-      </tr>
-    <% } %>
-    
-
-      
-      
-
-          
-
+      <% for (let j = 0; j < 15; j++) { %>
+        <tr>
+          <% for (let i = 0; i < 12; i++) { %>
+            <% 
+              const borderRight = (i !== 11) ? 'border-right' : ''; // Add right border for all except last column
+              const bgColor = (i === 6 || i === 11) ? 'style="background-color: #f1f6fa;"' : '';
+              const borderLeft = (i === 0) ? 'border-right' : ''; // Add right border on first column (SR No.)
+            %>
+            <td class="<%= borderRight %> <%= borderLeft %>" <%= bgColor %>>&nbsp;</td>
+          <% } %>
+        </tr>
+      <% } %>
         <!-- Totals row -->
         <% let totalQty = 0, totalRate = 0, totalTaxable = 0, totalTax = 0,
         totalDiscountAmt = 0, overallTotal = 0; for (let i = 0; i <
@@ -552,8 +540,10 @@
         parseFloat(invoiceInfo.invoice_items[i]?.quantity || 0); totalRate += parseFloat(
           (invoiceInfo.invoice_items[i]?.unit_price || "0").toString().replace(/,/g, '')
         );
-        totalTaxable += parseFloat(invoiceInfo.invoice_items[i]?.taxable_amount || 0);
-         totalTax += parseFloat(invoiceInfo.invoice_items[i]?.tax_amount || 0);
+        totalTaxable += parseFloat(
+          (invoiceInfo.invoice_items[i]?.taxable_amount || 0).toString().replace(/,/g, '')
+        );
+                 totalTax += parseFloat(invoiceInfo.invoice_items[i]?.tax_amount || 0);
 
         totalDiscountAmt +=
         invoiceInfo.invoice_items[i]?.discount_amount || 0;
