@@ -443,7 +443,7 @@
         cellspacing="0"
         cellpadding="0"
         width="100%"
-        class="border-bottom border-top border-left border-right"
+        class="border-bottom border-left border-right"
       >
         <col style="width: 5%" />
         <col style="width: 20%" />
@@ -524,7 +524,9 @@
         <% for (let j = 0; j < 15; j++) { %>
         <tr>
           <% for (let i = 0; i < 12; i++) { %>
-          <td>&nbsp;</td>
+          <td class="<%= (i !== 0 && i !== 11) ? 'border-right' : '' %>">
+            &nbsp;
+          </td>
           <% } %>
         </tr>
         <% } %>
