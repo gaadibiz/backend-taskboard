@@ -544,7 +544,7 @@
         totalTaxable += parseFloat(
           (invoiceInfo.invoice_items[i]?.taxable_amount || 0).toString().replace(/,/g, '')
         );
-                 totalTax += parseFloat(invoiceInfo.invoice_items[i]?.tax_amount || 0).toString().replace(/,/g, '');
+        totalTax += parseFloat((invoiceInfo.invoice_items[i]?.tax_amount || '0').toString().replace(/,/g, ''));
 
         totalDiscountAmt +=
         invoiceInfo.invoice_items[i]?.discount_amount || 0;
