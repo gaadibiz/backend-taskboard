@@ -168,13 +168,17 @@
 
       .quoteDetailsHead td {
         background-color: #f1f6fa;
-        border: 1px solid #0184e1;
+        border: 2px solid #0184e1;
         color: black;
         border-collapse: collapse;
         text-align: center;
         font-weight: bold;
         padding: 2px 2px;
         font-size: 12px;
+        border-right: 0px solid #0184e1;
+      }
+      .quoteDetailsHead td:last-child {
+        border-right: 2px solid #0184e1;
       }
       .quoteDetailsHead2 td {
         background-color: #c3def1;
@@ -438,139 +442,151 @@
           <td>Discount Amount</td>
           <td>Total</td>
         </tr>
-      </table>
-      <table cellspacing="0" cellpadding="0" width="100%" class="border-bottom">
-        <col style="width: 5%" />
-        <col style="width: 20%" />
-        <col style="width: 7%" />
-        <col style="width: 7%" />
-        <col style="width: 7%" />
-        <col style="width: 7%" />
-        <col style="width: 7%" />
-        <col style="width: 7%" />
-        <col style="width: 7%" />
-        <col style="width: 7%" />
-        <col style="width: 7%" />
-        <col style="width: 7%" />
-        <% for (let i=0; i < invoiceInfo?.invoice_items?.length; i++) { %>
         <tr>
-          <td class="align-center border-left border-top border-right">
-            <p class="space-y"><%= i+1 %></p>
-          </td>
-          <td class="align-center border-top border-right">
-            <p class="space-y">
-              <%= invoiceInfo?.invoice_items[i]?.customer_product_name %>
-            </p>
-          </td>
-          <td class="align-center border-top border-right">
-            <p class="space-y">
-              <%= invoiceInfo?.invoice_items[i]?.HSN_code %>
-            </p>
-          </td>
-          <td class="align-center border-top border-right">
-            <p class="space-y">
-              <%= invoiceInfo?.invoice_items[i]?.quantity %>
-            </p>
-          </td>
-          <td class="align-center border-top border-right">
-            <p class="space-y">
-              <%= invoiceInfo?.invoice_items[i]?.unit_price %>
-            </p>
-          </td>
-          <td class="align-center border-top border-right">
-            <p class="space-y"><%= invoiceInfo?.invoice_items[i]?.unit %></p>
-          </td>
-          <td class="align-center border-top border-right">
-            <p class="space-y">
-              <%= invoiceInfo?.invoice_items[i]?.taxable_amount %>
-            </p>
-          </td>
-          <td class="align-center border-top border-right">
-            <p class="space-y">
-              <%= invoiceInfo?.invoice_items[i]?.tax_rate %>
-            </p>
-          </td>
-          <td class="align-center border-top border-right">
-            <p class="space-y">
-              <%= invoiceInfo?.invoice_items[i]?.tax_amount %>
-            </p>
-          </td>
-          <td class="align-center border-top border-right">
-            <p class="space-y">
-              <%= invoiceInfo?.invoice_items[i]?.discount %>
-            </p>
-          </td>
-          <td class="align-center border-top border-right">
-            <p class="space-y">
-              <%= invoiceInfo?.invoice_items[i]?.discount_amount %>
-            </p>
-          </td>
-          <td class="align-center border-top border-right">
-            <p class="space-y"><%= invoiceInfo?.invoice_items[i]?.total %></p>
-          </td>
-        </tr>
-        <% } %> <% let totalQty = 0; let totalRate = 0; let totalTaxable = 0;
-        let totalTax = 0; let totalDiscountAmt = 0; let overallTotal = 0; for
-        (let i = 0; i < invoiceInfo?.invoice_items?.length; i++) { totalQty +=
-        parseFloat(invoiceInfo.invoice_items[i]?.quantity || 0); totalRate +=
-        parseFloat(invoiceInfo.invoice_items[i]?.unit_price || 0); totalTaxable
-        += parseFloat(invoiceInfo.invoice_items[i]?.taxable_amount || 0);
-        totalTax += parseFloat(invoiceInfo.invoice_items[i]?.tax_amount || 0);
-        totalDiscountAmt +=
-        parseFloat(invoiceInfo.invoice_items[i]?.discount_amount || 0);
-        overallTotal += parseFloat(invoiceInfo.invoice_items[i]?.total || 0); }
-        %>
-
-        <!-- Empty rows -->
-        <% for (let j = 0; j < 5; j++) { %>
-        <tr>
-          <td class="border-left border-top border-right">&nbsp;</td>
-          <td class="border-top border-right">&nbsp;</td>
-          <td class="border-top border-right">&nbsp;</td>
-          <td class="border-top border-right">&nbsp;</td>
-          <td class="border-top border-right">&nbsp;</td>
-          <td class="border-top border-right">&nbsp;</td>
-          <td class="border-top border-right">&nbsp;</td>
-          <td class="border-top border-right">&nbsp;</td>
-          <td class="border-top border-right">&nbsp;</td>
-          <td class="border-top border-right">&nbsp;</td>
-          <td class="border-top border-right">&nbsp;</td>
-          <td class="border-top border-right">&nbsp;</td>
-        </tr>
-        <% } %>
-
-        <!-- Totals row -->
-        <tr>
-          <td
-            colspan="3"
-            class="td-bold align-center border-top border-left border-right"
+          <table
+            cellspacing="0"
+            cellpadding="0"
+            width="100%"
+            class="border-bottom"
           >
-            Total
-          </td>
-          <td class="align-center border-top border-right td-bold">
-            <%= totalQty %>
-          </td>
-          <td class="align-center border-top border-right td-bold">
-            <%= totalRate %>
-          </td>
-          <td class="border-top border-right">&nbsp;</td>
-          <td class="align-center border-top border-right td-bold">
-            <%= totalTaxable %>
-          </td>
-          <td class="align-center border-top border-right td-bold">
-            <!-- Optional: Add logic here for totalTaxRate if you want -->
-            -
-          </td>
-          <td class="align-center border-top border-right td-bold">
-            <%= totalTax %>
-          </td>
-          <td class="border-top border-right">&nbsp;</td>
-          <td class="align-center border-top border-right td-bold">
-            <%= totalDiscountAmt %>
-          </td>
-          <td class="align-center border-top border-right td-bold">
-            <%= overallTotal %>
-          </td>
+            <col style="width: 5%" />
+            <col style="width: 20%" />
+            <col style="width: 7%" />
+            <col style="width: 7%" />
+            <col style="width: 7%" />
+            <col style="width: 7%" />
+            <col style="width: 7%" />
+            <col style="width: 7%" />
+            <col style="width: 7%" />
+            <col style="width: 7%" />
+            <col style="width: 7%" />
+            <col style="width: 7%" />
+            <% for (let i=0; i < invoiceInfo?.invoice_items?.length; i++) { %>
+            <tr>
+              <td class="align-center border-left border-top border-right">
+                <p class="space-y"><%= i+1 %></p>
+              </td>
+              <td class="align-center border-top border-right">
+                <p class="space-y">
+                  <%= invoiceInfo?.invoice_items[i]?.customer_product_name %>
+                </p>
+              </td>
+              <td class="align-center border-top border-right">
+                <p class="space-y">
+                  <%= invoiceInfo?.invoice_items[i]?.HSN_code %>
+                </p>
+              </td>
+              <td class="align-center border-top border-right">
+                <p class="space-y">
+                  <%= invoiceInfo?.invoice_items[i]?.quantity %>
+                </p>
+              </td>
+              <td class="align-center border-top border-right">
+                <p class="space-y">
+                  <%= invoiceInfo?.invoice_items[i]?.unit_price %>
+                </p>
+              </td>
+              <td class="align-center border-top border-right">
+                <p class="space-y">
+                  <%= invoiceInfo?.invoice_items[i]?.unit %>
+                </p>
+              </td>
+              <td class="align-center border-top border-right">
+                <p class="space-y">
+                  <%= invoiceInfo?.invoice_items[i]?.taxable_amount %>
+                </p>
+              </td>
+              <td class="align-center border-top border-right">
+                <p class="space-y">
+                  <%= invoiceInfo?.invoice_items[i]?.tax_rate %>
+                </p>
+              </td>
+              <td class="align-center border-top border-right">
+                <p class="space-y">
+                  <%= invoiceInfo?.invoice_items[i]?.tax_amount %>
+                </p>
+              </td>
+              <td class="align-center border-top border-right">
+                <p class="space-y">
+                  <%= invoiceInfo?.invoice_items[i]?.discount %>
+                </p>
+              </td>
+              <td class="align-center border-top border-right">
+                <p class="space-y">
+                  <%= invoiceInfo?.invoice_items[i]?.discount_amount %>
+                </p>
+              </td>
+              <td class="align-center border-top border-right">
+                <p class="space-y">
+                  <%= invoiceInfo?.invoice_items[i]?.total %>
+                </p>
+              </td>
+            </tr>
+            <% } %> <% let totalQty = 0; let totalRate = 0; let totalTaxable =
+            0; let totalTax = 0; let totalDiscountAmt = 0; let overallTotal = 0;
+            for (let i = 0; i < invoiceInfo?.invoice_items?.length; i++) {
+            totalQty += parseFloat(invoiceInfo.invoice_items[i]?.quantity || 0);
+            totalRate += parseFloat(invoiceInfo.invoice_items[i]?.unit_price ||
+            0); totalTaxable +=
+            parseFloat(invoiceInfo.invoice_items[i]?.taxable_amount || 0);
+            totalTax += parseFloat(invoiceInfo.invoice_items[i]?.tax_amount ||
+            0); totalDiscountAmt +=
+            parseFloat(invoiceInfo.invoice_items[i]?.discount_amount || 0);
+            overallTotal += parseFloat(invoiceInfo.invoice_items[i]?.total ||
+            0); } %>
+
+            <!-- Empty rows -->
+            <% for (let j = 0; j < 5; j++) { %>
+            <tr>
+              <td class="border-left border-top border-right">&nbsp;</td>
+              <td class="border-top border-right">&nbsp;</td>
+              <td class="border-top border-right">&nbsp;</td>
+              <td class="border-top border-right">&nbsp;</td>
+              <td class="border-top border-right">&nbsp;</td>
+              <td class="border-top border-right">&nbsp;</td>
+              <td class="border-top border-right">&nbsp;</td>
+              <td class="border-top border-right">&nbsp;</td>
+              <td class="border-top border-right">&nbsp;</td>
+              <td class="border-top border-right">&nbsp;</td>
+              <td class="border-top border-right">&nbsp;</td>
+              <td class="border-top border-right">&nbsp;</td>
+            </tr>
+            <% } %>
+
+            <!-- Totals row -->
+            <tr>
+              <td
+                colspan="3"
+                class="td-bold align-center border-top border-left border-right"
+              >
+                Total
+              </td>
+              <td class="align-center border-top border-right td-bold">
+                <%= totalQty %>
+              </td>
+              <td class="align-center border-top border-right td-bold">
+                <%= totalRate %>
+              </td>
+              <td class="border-top border-right">&nbsp;</td>
+              <td class="align-center border-top border-right td-bold">
+                <%= totalTaxable %>
+              </td>
+              <td class="align-center border-top border-right td-bold">
+                <!-- Optional: Add logic here for totalTaxRate if you want -->
+                -
+              </td>
+              <td class="align-center border-top border-right td-bold">
+                <%= totalTax %>
+              </td>
+              <td class="border-top border-right">&nbsp;</td>
+              <td class="align-center border-top border-right td-bold">
+                <%= totalDiscountAmt %>
+              </td>
+              <td class="align-center border-top border-right td-bold">
+                <%= overallTotal %>
+              </td>
+            </tr>
+          </table>
         </tr>
       </table>
     </div>
