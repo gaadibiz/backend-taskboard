@@ -1094,7 +1094,7 @@ const buildHierarchy = async (
           AND previous_status = '${approvalData.previous_status}'
           AND next_status = '${approvalData.next_status}'
           AND record_uuid = '${record_uuid}'
-          AND status in ('APPROVED', 'REJECTED')
+          AND status in ('APPROVED', 'REJECTED', 'REQUESTED')
           AND JSON_CONTAINS(approval_uuids, JSON_OBJECT('type', '${item.type}', 'uuid', '${item.uuid}'))`,
       );
 
@@ -1120,7 +1120,8 @@ const buildHierarchy = async (
           : null,
         remark: approval?.remark,
         approval_status: approval?.status || null,
-        current_pointer: expense.status === currentStatus,
+        current_pointer:
+          expense.status === currentStatus && approval.status === 'REQUESTED',
         is_completed: !!approver || comingStatus.includes(expense.status),
       });
     }
