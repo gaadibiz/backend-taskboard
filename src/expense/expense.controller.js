@@ -1121,7 +1121,7 @@ const buildHierarchy = async (
         remark: approval?.remark,
         approval_status: approval?.status || null,
         current_pointer:
-          expense.status === currentStatus && approval.status === 'REQUESTED',
+          expense.status === currentStatus && approval?.status === 'REQUESTED',
         is_completed: !!approver || comingStatus.includes(expense.status),
       });
     }
