@@ -764,6 +764,7 @@ exports.getExpenseApprovalWorkFlow = async (req, res) => {
     'latest_dynamic_approval_count',
     `where dynamic_uuid = '${expense.expense_category_uuid}'`,
   );
+  console.log(approvalCount, '...........................');
 
   const EXPENSE_APPROVAL_REQUESTED = approvalCount.find(
     (item) => item.approval_raise_status === 'EXPENSE_APPROVAL_REQUESTED',
@@ -773,6 +774,8 @@ exports.getExpenseApprovalWorkFlow = async (req, res) => {
     (item) => item.approval_raise_status === 'FINANCE_APPROVAL_REQUESTED',
   );
 
+  console.log(EXPENSE_APPROVAL_REQUESTED, '...........................');
+  console.log(FINANCE_APPROVAL_REQUESTED, '...........................');
   // const expense_Hierarchy = [];
   // const finance_Hierarchy = [];
 
@@ -1036,7 +1039,7 @@ const buildHierarchy = async (
   const hierarchy = [];
   let approval_level = 0;
 
-  for (const items of approvalData.approval_hierarchy) {
+  for (const items of approvalData?.approval_hierarchy || []) {
     approval_level++;
     for (const item of items) {
       let user_name = '';
@@ -1091,7 +1094,7 @@ const buildHierarchy = async (
           AND previous_status = '${approvalData.previous_status}'
           AND next_status = '${approvalData.next_status}'
           AND record_uuid = '${record_uuid}'
-          AND status = 'APPROVED'
+          AND status in ('APPROVED', 'REJECTED', 'REQUESTED')
           AND JSON_CONTAINS(approval_uuids, JSON_OBJECT('type', '${item.type}', 'uuid', '${item.uuid}'))`,
       );
 
@@ -1116,8 +1119,10 @@ const buildHierarchy = async (
           ? `${approver.first_name}${approver.last_name ? ' ' + approver.last_name : ''}`
           : null,
         remark: approval?.remark,
-        current_pointer: expense.status === currentStatus,
-        is_completed: !!approver && comingStatus.includes(expense.status),
+        approval_status: approval?.status || null,
+        current_pointer:
+          expense.status === currentStatus && approval?.status === 'REQUESTED',
+        is_completed: !!approver || comingStatus.includes(expense.status),
       });
     }
   }

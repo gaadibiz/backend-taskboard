@@ -949,8 +949,11 @@
             "in": "query",
             "name": "expense_type",
             "description": "Expense type in array",
+            "type": "array",
             "schema": {
-              "type": "string"
+              "items": {
+                "type": "string"
+              }
             }
           }
         ],
