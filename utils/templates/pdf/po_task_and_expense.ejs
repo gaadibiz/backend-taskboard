@@ -357,7 +357,7 @@
                     <tr>
                       <td>
                         <span class="td-bold">Purchase Order Type :</span>
-                        <span> <%= invoiceInfo.purchase_order_type.replace('_', ' ') %> </span>
+                        <span> <%= invoiceInfo.purchase_order_type.replace(/_/g, ' ') %> </span>
                       </td>
                     </tr>
                     <tr>
