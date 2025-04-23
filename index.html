@@ -443,7 +443,7 @@
         cellspacing="0"
         cellpadding="0"
         width="100%"
-        class="border-bottom  border-left border-right"
+        class="border-bottom border-left border-right"
       >
         <col style="width: 5%" />
         <col style="width: 20%" />
@@ -520,33 +520,27 @@
         </tr>
         <% } %>
 
-      <!-- Empty rows for visual balance -->
-      <% for (let j = 0; j < 15; j++) { %>
+        <!-- Empty rows for visual balance -->
+        <% for (let j = 0; j < 15; j++) { %>
         <tr>
           <% for (let i = 0; i < 12; i++) { %>
-            <% 
-              const borderRight = (i !== 11) ? 'border-right' : ''; // Add right border for all except last column
-              const bgColor = (i === 6 || i === 11) ? 'style="background-color: #f1f6fa;"' : '';
-              const borderLeft = (i === 0) ? 'border-right' : ''; // Add right border on first column (SR No.)
-            %>
-            <td class="<%= borderRight %> <%= borderLeft %>" <%= bgColor %>>&nbsp;</td>
+          <td class="<%= (i !== 0 && i !== 11) ? 'border-right' : '' %>">
+            &nbsp;
+          </td>
           <% } %>
         </tr>
-      <% } %>
+        <% } %>
+
         <!-- Totals row -->
         <% let totalQty = 0, totalRate = 0, totalTaxable = 0, totalTax = 0,
         totalDiscountAmt = 0, overallTotal = 0; for (let i = 0; i <
         invoiceInfo?.invoice_items?.length; i++) { totalQty +=
-        parseFloat(invoiceInfo.invoice_items[i]?.quantity || 0); totalRate += parseFloat(
-          (invoiceInfo.invoice_items[i]?.unit_price || "0").toString().replace(/,/g, '')
-        );
-        totalTaxable += parseFloat(
-          (invoiceInfo.invoice_items[i]?.taxable_amount || 0).toString().replace(/,/g, '')
-        );
-                 totalTax += parseFloat(invoiceInfo.invoice_items[i]?.tax_amount || 0);
-
+        parseFloat(invoiceInfo.invoice_items[i]?.quantity || 0); totalRate +=
+        parseFloat(invoiceInfo.invoice_items[i]?.unit_price || 0); totalTaxable
+        += parseFloat(invoiceInfo.invoice_items[i]?.taxable_amount || 0);
+        totalTax += parseFloat(invoiceInfo.invoice_items[i]?.tax_amount || 0);
         totalDiscountAmt +=
-        invoiceInfo.invoice_items[i]?.discount_amount || 0;
+        parseFloat(invoiceInfo.invoice_items[i]?.discount_amount || 0);
         overallTotal += parseFloat(invoiceInfo.invoice_items[i]?.total || 0); }
         %>
         <tr>
@@ -569,7 +563,7 @@
           >
             <%= totalRate %>
           </td>
-          <td class="border-top border-right" style="background-color: #f1f6fa">&nbsp;</td>
+          <td class="border-top border-right">&nbsp;</td>
           <td
             class="align-center border-top border-right td-bold"
             style="background-color: #f1f6fa"
@@ -597,7 +591,7 @@
           >
             <%= totalDiscountAmt %>
           </td>
-          <td class="align-center border-top td-bold" style="background-color: #f1f6fa"><%= invoiceInfo?.total_amount_after_tax %></td>
+          <td class="align-center border-top td-bold"><%= overallTotal %></td>
         </tr>
       </table>
     </div>

@@ -19,12 +19,8 @@ exports.upsertJobSchema = Joi.object({
   vendor_name: Joi.string().max(100).required().allow('', null),
   priority: Joi.string().max(100).allow('', null),
   additional_fields: Joi.array().allow('', null),
-  expected_delivery_date: Joi.string()
-    .regex(/^\d{4}-\d{2}-\d{2}$/)
-    .allow('', null),
-  due_date: Joi.string()
-    .regex(/^\d{4}-\d{2}-\d{2}$/)
-    .allow('', null),
+  expected_delivery_date: Joi.string().allow('', null),
+  due_date: Joi.string().allow('', null),
 
   attachment: Joi.array(),
   status: Joi.string()

@@ -234,6 +234,8 @@ exports.getPOPreview = async (req, res) => {
       `where purchase_order_uuid='${purchase_order_uuid}'`,
     )
   )[0];
+  console.log('items', invoiceInfo.invoice_items);
+
   const company_uuid = invoiceInfo.vendor_uuid;
   let contactInfo = (
     await getRecords('latest_vendors', `where vendor_uuid='${company_uuid}'`)

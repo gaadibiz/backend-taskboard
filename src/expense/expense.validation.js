@@ -33,6 +33,7 @@ exports.upsertExpenseSchema = Joi.object({
   expense_date: Joi.string().allow('', null),
   business_purpose: Joi.string().max(100).allow('', null),
   advance_amount: Joi.number().allow('', null),
+  actual_advance_amount: Joi.number().allow('', null),
   requested_advance_amount: Joi.number().allow('', null),
   actual_reimbursed_amount: Joi.number().allow('', null),
   actual_requested_advance_amount: Joi.number().allow('', null),
