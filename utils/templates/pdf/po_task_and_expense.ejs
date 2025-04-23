@@ -357,13 +357,13 @@
                     <tr>
                       <td>
                         <span class="td-bold">Purchase Order Type :</span>
-                        <span> <%= invoiceInfo.purchase_order_type %> </span>
+                        <span> <%= invoiceInfo.purchase_order_type.replace(/_/g, ' ') %> </span>
                       </td>
                     </tr>
                     <tr>
                       <td>
                         <span class="td-bold">Purchase Order Date :</span>
-                        <span> <%= invoiceInfo.purchase_order_date %> </span>
+                        <span> <%= invoiceInfo.purchase_order_date.toLocaleDateString('en-US') %> </span>
                       </td>
                     </tr>
                     <tr>
