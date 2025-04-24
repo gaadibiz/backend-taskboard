@@ -695,8 +695,8 @@ exports.getRecordCount = async (req, res) => {
     filter +=
       (filter ? ' AND ' : ' WHERE ') +
       `(
-   expense_type in (${expense_type.join(',')}) AND status != 'EXPENSE_REQUESTED' OR (
-      expense_type in (${expense_type.join(',')}) AND status = 'EXPENSE_REQUESTED' AND (
+   expense_type in ('${expense_type.join("' , '")}') AND status != 'EXPENSE_REQUESTED' OR (
+      expense_type in ('${expense_type.join("' , '")}') AND status = 'EXPENSE_REQUESTED' AND (
         created_by_uuid = '${req.user.user_uuid}' OR user_uuid = '${req.user.user_uuid}'
       )
     )
