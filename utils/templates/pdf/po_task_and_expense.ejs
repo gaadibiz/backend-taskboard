@@ -357,13 +357,14 @@
                     <tr>
                       <td>
                         <span class="td-bold">Purchase Order Type :</span>
-                        <span> <%= invoiceInfo.purchase_order_type %> </span>
+                        <span> <%= invoiceInfo.purchase_order_type.replace(/_/g, ' ') %> </span>
                       </td>
                     </tr>
                     <tr>
                       <td>
                         <span class="td-bold">Purchase Order Date :</span>
-                        <span> <%= invoiceInfo.purchase_order_date %> </span>
+                        <span> <%= new Date(invoiceInfo.purchase_order_date).toLocaleDateString('en-US') %>
+                        </span>
                       </td>
                     </tr>
                     <tr>
@@ -543,7 +544,7 @@
         totalTaxable += parseFloat(
           (invoiceInfo.invoice_items[i]?.taxable_amount || 0).toString().replace(/,/g, '')
         );
-                 totalTax += parseFloat(invoiceInfo.invoice_items[i]?.tax_amount || 0);
+        totalTax += parseFloat((invoiceInfo.invoice_items[i]?.tax_amount || '0').toString().replace(/,/g, ''));
 
         totalDiscountAmt +=
         invoiceInfo.invoice_items[i]?.discount_amount || 0;
