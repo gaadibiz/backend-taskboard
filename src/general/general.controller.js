@@ -22,6 +22,7 @@ const {
 const ms = require('../../utils/microservice_func');
 const { base_url } = require('../../config/server.config');
 const { options } = require('joi');
+const e = require('cors');
 require('dotenv').config();
 
 const uuid = v4;
@@ -685,6 +686,11 @@ exports.getRecordCount = async (req, res) => {
 
   if (table_name === 'latest_expense') {
     expense_type = Array.isArray(expense_type) ? expense_type : [expense_type];
+
+    console.log(
+      expense_type,
+      '...............................................',
+    );
 
     filter +=
       (filter ? ' AND ' : ' WHERE ') +
