@@ -490,8 +490,11 @@ function aggregateData({
   return Object.values(aggregated);
 }
 
-exports.convertAmountToWords = (amount) => {
-  // Single digit and teen numbers
+exports.convertAmountToWords = (
+  amount,
+  mainCurrency = 'Dollars',
+  subCurrency = 'Cents',
+) => {
   const words = [
     'Zero',
     'One',
@@ -515,7 +518,6 @@ exports.convertAmountToWords = (amount) => {
     'Nineteen',
   ];
 
-  // Tens multiples
   const tens = [
     '',
     '',
@@ -529,53 +531,51 @@ exports.convertAmountToWords = (amount) => {
     'Ninety',
   ];
 
-  if (amount < 20) {
-    return words[amount];
+  function convertNumber(num) {
+    if (num < 20) return words[num];
+    if (num < 100) {
+      return (
+        tens[Math.floor(num / 10)] + (num % 10 ? ' ' + words[num % 10] : '')
+      );
+    }
+    if (num < 1000) {
+      return (
+        words[Math.floor(num / 100)] +
+        ' Hundred' +
+        (num % 100 ? ' ' + convertNumber(num % 100) : '')
+      );
+    }
+    if (num < 1000000) {
+      return (
+        convertNumber(Math.floor(num / 1000)) +
+        ' Thousand' +
+        (num % 1000 ? ' ' + convertNumber(num % 1000) : '')
+      );
+    }
+    if (num < 1000000000) {
+      return (
+        convertNumber(Math.floor(num / 1000000)) +
+        ' Million' +
+        (num % 1000000 ? ' ' + convertNumber(num % 1000000) : '')
+      );
+    }
+    return 'Amount out of range';
   }
 
-  if (amount < 100) {
-    return (
-      tens[Math.floor(amount / 10)] +
-      (amount % 10 !== 0 ? ' ' + words[amount % 10] : '')
-    );
+  const [wholePart, decimalPart] = amount.toFixed(2).split('.');
+
+  let result = convertNumber(parseInt(wholePart)) + ' ' + mainCurrency;
+
+  if (parseInt(decimalPart) > 0) {
+    result +=
+      ' and ' + convertNumber(parseInt(decimalPart)) + ' ' + subCurrency;
   }
 
-  if (amount < 1000) {
-    return (
-      words[Math.floor(amount / 100)] +
-      ' Hundred' +
-      (amount % 100 !== 0
-        ? ' and ' + this.convertAmountToWords(amount % 100)
-        : '')
-    );
-  }
-
-  if (amount < 1000000) {
-    return (
-      this.convertAmountToWords(Math.floor(amount / 1000)) +
-      ' Thousand' +
-      (amount % 1000 !== 0
-        ? ' ' + this.convertAmountToWords(amount % 1000)
-        : '')
-    );
-  }
-
-  if (amount < 1000000000) {
-    return (
-      this.convertAmountToWords(Math.floor(amount / 1000000)) +
-      ' Million' +
-      (amount % 1000000 !== 0
-        ? ' ' + this.convertAmountToWords(amount % 1000000)
-        : '')
-    );
-  }
-
-  return 'Amount out of range';
+  return result;
 };
 
 //Same as above but with Indian Style(lakh, crore)
 exports.convertAmountToIndianStyleWords = (amount) => {
-  // Single digit and teen numbers
   const words = [
     'Zero',
     'One',
@@ -599,7 +599,6 @@ exports.convertAmountToIndianStyleWords = (amount) => {
     'Nineteen',
   ];
 
-  // Tens multiples
   const tens = [
     '',
     '',
@@ -613,58 +612,62 @@ exports.convertAmountToIndianStyleWords = (amount) => {
     'Ninety',
   ];
 
-  if (amount < 20) {
-    return words[amount];
+  function convert(num) {
+    num = Math.floor(num);
+
+    if (num < 20) {
+      return words[num];
+    }
+
+    if (num < 100) {
+      return (
+        tens[Math.floor(num / 10)] +
+        (num % 10 !== 0 ? ' ' + words[num % 10] : '')
+      );
+    }
+
+    if (num < 1000) {
+      return (
+        words[Math.floor(num / 100)] +
+        ' Hundred' +
+        (num % 100 !== 0 ? ' and ' + convert(num % 100) : '')
+      );
+    }
+
+    if (num < 1000000) {
+      return (
+        convert(Math.floor(num / 1000)) +
+        ' Thousand' +
+        (num % 1000 !== 0 ? ' ' + convert(num % 1000) : '')
+      );
+    }
+
+    if (num < 1000000000) {
+      return (
+        convert(Math.floor(num / 1000000)) +
+        ' Million' +
+        (num % 1000000 !== 0 ? ' ' + convert(num % 1000000) : '')
+      );
+    }
+
+    return 'Amount out of range';
   }
 
-  if (amount < 100) {
-    return (
-      tens[Math.floor(amount / 10)] +
-      (amount % 10 !== 0 ? ' ' + words[amount % 10] : '')
+  // Handle decimal parts safely
+  const [whole, fraction] = amount.toString().split('.');
+
+  let result = convert(parseInt(whole));
+
+  if (fraction) {
+    const fractionalPart = Number(
+      (parseFloat('0.' + fraction) * 100).toFixed(0),
     );
+    if (fractionalPart > 0) {
+      result += ' and ' + convert(fractionalPart) + ' Paise';
+    }
   }
 
-  if (amount < 1000) {
-    return (
-      words[Math.floor(amount / 100)] +
-      ' Hundred' +
-      (amount % 100 !== 0
-        ? ' and ' + this.convertAmountToWords(amount % 100)
-        : '')
-    );
-  }
-
-  if (amount < 100000) {
-    return (
-      this.convertAmountToWords(Math.floor(amount / 1000)) +
-      ' Thousand' +
-      (amount % 1000 !== 0
-        ? ' ' + this.convertAmountToWords(amount % 1000)
-        : '')
-    );
-  }
-
-  if (amount < 10000000) {
-    return (
-      this.convertAmountToWords(Math.floor(amount / 100000)) +
-      ' Lakh' +
-      (amount % 100000 !== 0
-        ? ' ' + this.convertAmountToWords(amount % 100000)
-        : '')
-    );
-  }
-
-  if (amount < 1000000000) {
-    return (
-      this.convertAmountToWords(Math.floor(amount / 10000000)) +
-      ' Crore' +
-      (amount % 10000000 !== 0
-        ? ' ' + this.convertAmountToWords(amount % 10000000)
-        : '')
-    );
-  }
-
-  return 'Amount out of range';
+  return result;
 };
 
 /**

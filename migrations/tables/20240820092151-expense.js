@@ -121,6 +121,10 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: true,
       },
+      actual_advance_amount: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+      },
       requested_advance_amount: {
         type: Sequelize.INTEGER,
         allowNull: true,
@@ -134,6 +138,10 @@ module.exports = {
         allowNull: true,
       },
       actual_reimbursed_amount: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+      },
+      actual_requested_advance_amount: {
         type: Sequelize.INTEGER,
         allowNull: true,
       },

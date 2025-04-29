@@ -51,7 +51,7 @@ module.exports = {
         submodule_name: 'Job',
         table_name: 'latest_job',
         table_status:
-          '["INACTIVE", "JOB_REQUESTED", "JOB_APPROVAL_REQUESTED", "JOB", "REJECTED", "ROLLBACK"]',
+          '["INACTIVE", "DRAFT", "PR_APPROVAL_REQUESTED", "PR", "REJECTED", "ROLLBACK"]',
         create_ts: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
     ]);
@@ -62,7 +62,7 @@ module.exports = {
         submodule_name: 'Purchase Order',
         table_name: 'latest_purchase_order',
         table_status:
-          '["INACTIVE", "PURCHASE_ORDER_REQUESTED", "PURCHASE_ORDER_APPROVAL_REQUESTED", "PURCHASE_ORDER", "REJECTED", "ROLLBACK"]',
+          '["INACTIVE", "DRAFT", "PURCHASE_ORDER_APPROVAL_REQUESTED", "PURCHASE_ORDER", "REJECTED", "ROLLBACK"]',
         create_ts: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
     ]);

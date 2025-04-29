@@ -10,6 +10,8 @@ const checkAuth = (req, res, next) => {
       return res.status(401).json(responser('Invalid Auth Key.'));
     return next();
   }
+
+  console.log(req.query, '...........................');
   if (!token) return res.status(404).json(responser('Token not found.'));
 
   jwt.verify(token, config.jwt.jwtAccessKey, async (err, user) => {

@@ -22,6 +22,7 @@ const {
 const ms = require('../../utils/microservice_func');
 const { base_url } = require('../../config/server.config');
 const { options } = require('joi');
+const e = require('cors');
 require('dotenv').config();
 
 const uuid = v4;
@@ -672,7 +673,8 @@ exports.getDocuments = async (req, res) => {
 };
 
 exports.getRecordCount = async (req, res) => {
-  let { table_name, to_date, from_date, billing_company_uuid } = req.query;
+  let { table_name, to_date, from_date, billing_company_uuid, expense_type } =
+    req.query;
   let filter = filterFunctionality(
     { billing_company_uuid },
     null,
@@ -683,11 +685,18 @@ exports.getRecordCount = async (req, res) => {
   filter = await roleFilterService(filter, table_name, req.user);
 
   if (table_name === 'latest_expense') {
+    expense_type = Array.isArray(expense_type) ? expense_type : [expense_type];
+
+    console.log(
+      expense_type,
+      '...............................................',
+    );
+
     filter +=
       (filter ? ' AND ' : ' WHERE ') +
       `(
-    status != 'EXPENSE_REQUESTED' OR (
-      status = 'EXPENSE_REQUESTED' AND (
+   expense_type in ('${expense_type.join("' , '")}') AND status != 'EXPENSE_REQUESTED' OR (
+      expense_type in ('${expense_type.join("' , '")}') AND status = 'EXPENSE_REQUESTED' AND (
         created_by_uuid = '${req.user.user_uuid}' OR user_uuid = '${req.user.user_uuid}'
       )
     )

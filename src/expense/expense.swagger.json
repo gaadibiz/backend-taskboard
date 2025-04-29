@@ -122,6 +122,10 @@
                   "type": "number",
                   "default": null
                 },
+                "actual_advance_amount": {
+                  "type": "number",
+                  "default": null
+                },
                 "requested_advance_amount": {
                   "type": "number",
                   "default": null
