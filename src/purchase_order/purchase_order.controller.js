@@ -8,7 +8,6 @@ const {
   getHighestParameterValue,
   isEditAccess,
   roleFilterService,
-  dbRequest,
 } = require('../../utils/dbFunctions');
 const moment = require('moment');
 

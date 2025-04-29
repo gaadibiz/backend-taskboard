@@ -51,7 +51,7 @@ module.exports = {
         submodule_name: 'Job',
         table_name: 'latest_job',
         table_status:
-          '["INACTIVE", "JOB_REQUESTED", "JOB_APPROVAL_REQUESTED", "JOB", "REJECTED", "ROLLBACK"]',
+          '["INACTIVE", "DRAFT", "PR_APPROVAL_REQUESTED", "PR", "REJECTED", "ROLLBACK"]',
         create_ts: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
     ]);
