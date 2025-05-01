@@ -316,7 +316,7 @@ exports.upsertExpenseCategory = async (req, res) => {
       ],
       approval_raise_status: 'FINANCE_APPROVAL_REQUESTED',
       previous_status: 'EXPENSE_REQUESTED',
-      next_status: 'FINANCE',
+      next_status: 'FINANCE_APPROVED',
       status: 'ACTIVE',
       created_by_uuid: req.body.created_by_uuid,
     };
@@ -441,7 +441,7 @@ exports.getAdvanceAmount = async (req, res) => {
     COALESCE(
         SUM(
             CASE 
-                WHEN status = 'FINANCE' AND expense_type = 'ADVANCE'  THEN IFNULL(requested_advance_amount, 0)
+                WHEN status = 'FINANCE_APPROVED' AND expense_type = 'ADVANCE'  THEN IFNULL(requested_advance_amount, 0)
                 ELSE 0
             END
             - IF(is_deduct_from_advance, IFNULL(reimbursed_amount, 0), 0)
@@ -482,7 +482,7 @@ exports.convertFinanceToCleared = async (req, res) => {
 
   let expense = await getRecords(
     'latest_expense',
-    `where expense_uuid in ('${expense_uuids.join("','")}') AND status = 'FINANCE'`,
+    `where expense_uuid in ('${expense_uuids.join("','")}') AND status = 'FINANCE_APPROVED'`,
   );
 
   if (!expense.length) {
@@ -685,7 +685,7 @@ exports.getPreviewExpense = async (req, res) => {
       workflow.data.workflow.EXPENSE_APPROVAL_REQUESTED,
     workflow_finance_approval_requested:
       workflow.data.workflow.FINANCE_APPROVAL_REQUESTED,
-    workflow_finance: workflow.data.workflow.FINANCE,
+    workflow_finance: workflow.data.workflow.FINANCE_APPROVED,
     workflow_cleared: workflow.data.workflow.CLEARED,
   };
 
@@ -797,7 +797,7 @@ exports.getExpenseApprovalWorkFlow = async (req, res) => {
     'EXPENSE_APPROVAL_REQUESTED',
     'latest_expense',
     expense_uuid,
-    ['FINANCE_APPROVAL_REQUESTED', 'FINANCE', 'CLEARED'],
+    ['FINANCE_APPROVAL_REQUESTED', 'FINANCE_APPROVED', 'CLEARED'],
   );
 
   const finance_Hierarchy = await buildHierarchy(
@@ -806,7 +806,7 @@ exports.getExpenseApprovalWorkFlow = async (req, res) => {
     'FINANCE_APPROVAL_REQUESTED',
     'latest_expense',
     expense_uuid,
-    ['FINANCE', 'CLEARED'],
+    ['FINANCE_APPROVED', 'CLEARED'],
   );
 
   // let approval_expense_level = 0;
@@ -1007,7 +1007,7 @@ exports.getExpenseApprovalWorkFlow = async (req, res) => {
           [
             'EXPENSE_APPROVAL_REQUESTED',
             'FINANCE_APPROVAL_REQUESTED',
-            'FINANCE',
+            'FINANCE_APPROVED',
             'CLEARED',
           ].includes(expense.status)
             ? true
@@ -1016,11 +1016,12 @@ exports.getExpenseApprovalWorkFlow = async (req, res) => {
     ],
     EXPENSE_APPROVAL_REQUESTED: [...expense_Hierarchy],
     FINANCE_APPROVAL_REQUESTED: [...finance_Hierarchy],
-    FINANCE: [
+    FINANCE_APPROVED: [
       {
-        current_pointer: expense.status === 'FINANCE',
+        current_pointer: expense.status === 'FINANCE_APPROVED',
         is_completed:
-          expense.status !== 'FINANCE' && ['CLEARED'].includes(expense.status)
+          expense.status !== 'FINANCE_APPROVED' &&
+          ['CLEARED'].includes(expense.status)
             ? true
             : false,
       },

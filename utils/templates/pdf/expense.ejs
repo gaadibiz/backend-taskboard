@@ -446,8 +446,8 @@
       <% } %>
 
       <!-- Finance Final Step -->
-      <% if (workflow_finance && workflow_finance.length > 0) { const workflow =
-      workflow_finance[0]; %>
+      <% if (workflow_finance_approved && workflow_finance_approved.length > 0) { const workflow =
+      workflow_finance_approved[0]; %>
       <div class="simple-workflow <%= getSimpleStatusClass(workflow) %>">
         <span class="workflow-icon"><%= getStatusIcon(workflow) %></span>
         <span class="workflow-title">Finance Final Step</span>

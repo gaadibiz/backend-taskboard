@@ -49,7 +49,7 @@ exports.upsertExpenseSchema = Joi.object({
       'EXPENSE_APPROVAL_REQUESTED',
       'FINANCE_APPROVAL_REQUESTED',
       'EXPENSE_REQUESTED',
-      'FINANCE',
+      'FINANCE_APPROVED',
     )
     .required(),
   special_approval_uuids: Joi.array()
