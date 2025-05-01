@@ -685,7 +685,7 @@ exports.getPreviewExpense = async (req, res) => {
       workflow.data.workflow.EXPENSE_APPROVAL_REQUESTED,
     workflow_finance_approval_requested:
       workflow.data.workflow.FINANCE_APPROVAL_REQUESTED,
-    workflow_finance: workflow.data.workflow.FINANCE_APPROVED,
+    workflow_finance_approved: workflow.data.workflow.FINANCE_APPROVED,
     workflow_cleared: workflow.data.workflow.CLEARED,
   };
 
