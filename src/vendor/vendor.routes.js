@@ -21,4 +21,23 @@ router
     requestErrorHandlingDecorator(Schema.getVendorSchema, controller.getVendor),
   );
 
+router
+  .route('/upsert-vendor-expense')
+  .post(
+    checkAuth,
+    requestErrorHandlingDecorator(
+      Schema.upsertVendorExpenseSchema,
+      controller.upsertVendorExpense,
+    ),
+  );
+
+router
+  .route('/get-vendor-expense')
+  .get(
+    checkAuth,
+    requestErrorHandlingDecorator(
+      Schema.getvendorExpenseSchema,
+      controller.getVendorExpense,
+    ),
+  );
 module.exports = router;

@@ -18,6 +18,7 @@ const {
 const { v4 } = require('uuid');
 const { base_url } = require('../../config/server.config');
 const { saveHistory } = require('../../utils/microservice_func');
+const { UUID, UUIDV4 } = require('sequelize');
 
 exports.upsertVendor = async (req, res) => {
   await isEditAccess('latest_vendors', req.user);
@@ -108,5 +109,84 @@ exports.getVendor = async (req, res) => {
 
   return res.json(
     responser('All Vendors', result, result.length, totalRecords),
+  );
+};
+
+exports.upsertVendorExpense = async (req, res) => {
+  isEditAccess('latest_vendor_expense', req.user);
+  removeNullValueKey(req.body);
+  let isUpadtion = false;
+
+  let expense_info = await getRecords(
+    'latest_vendor_expense',
+    `where vendor_expense_uuid='${req.body.vendor_expense_uuid}'`,
+  );
+  if (req.body.vendor_expense_uuid) {
+    isUpadtion = true;
+
+    if (!expense_info.length) throwError(404, 'expense_info not found.');
+    expense_info = expense_info[0];
+    req.body.modified_by_uuid = req.body.created_by_uuid;
+    req.body.created_by_uuid = expense_info.created_by_uuid;
+    req.body.created_by_name = expense_info.created_by_name;
+    req.body = { ...expense_info, ...req.body };
+    console.log('req.body in update: ', req.body);
+  } else {
+    req.body.create_ts = setDateTimeFormat('timestemp');
+    req.body.vendor_expense_uuid = v4();
+  }
+  const insertexpense = await insertRecords('vendor_expense', req.body);
+
+  saveHistory(
+    {
+      oldRecord: expense_info,
+      newRecord: req.body,
+    },
+    'Vendor expense',
+    'vendor_expense_uuid',
+    'Vendor expense',
+    insertexpense.insertId,
+    req.user,
+  );
+  return res.json(
+    responser(
+      `Vendor Expense ${isUpadtion ? 'updated' : 'created'} successfully.`,
+      req.body,
+    ),
+  );
+};
+
+exports.getVendorExpense = async (req, res) => {
+  const {
+    vendor_expense_uuid,
+    vendor_uuid,
+    billing_company_uuid,
+    pageNo,
+    itemPerPage,
+    from_date,
+    to_date,
+    status,
+    columns,
+    value,
+  } = req.query;
+  let tableName = 'latest_vendor_expense';
+  let filter = filterFunctionality(
+    {
+      vendor_expense_uuid,
+      vendor_uuid,
+      billing_company_uuid,
+    },
+    status,
+    to_date,
+    from_date,
+    Array.isArray(columns) ? columns : [columns],
+    value,
+  );
+  filter = await roleFilterService(filter, tableName, req.user);
+  let pageFilter = pagination(pageNo, itemPerPage);
+  let totalRecords = await getCountRecord(tableName, filter);
+  let result = await getRecords(tableName, filter, pageFilter);
+  return res.json(
+    responser('Vendor expense', result, result.length, totalRecords),
   );
 };
