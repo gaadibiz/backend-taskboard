@@ -649,6 +649,10 @@ exports.getPreviewExpense = async (req, res) => {
     req.headers,
   );
   console.log('workflow ---------------------', workflow);
+  let [approval] = await getRecords(
+    'latest_dynamic_approval',
+    `where record_uuid = '${expense_uuid}'`,
+  );
 
   let data = {
     expense_details: {
@@ -687,6 +691,10 @@ exports.getPreviewExpense = async (req, res) => {
       workflow.data.workflow.FINANCE_APPROVAL_REQUESTED,
     workflow_finance_approved: workflow.data.workflow.FINANCE_APPROVED,
     workflow_cleared: workflow.data.workflow.CLEARED,
+    approval,
+    remarks: approval?.remark,
+    // approval_status: approval?.status,
+    date: approval?.create_ts,
   };
 
   console.log('data ---------------------', data);
