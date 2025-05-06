@@ -38,6 +38,7 @@ exports.insertApproval = async (req, res) => {
   let columns = await getTableColumnsNames(
     tableMap[req.body.table_name] || req.body.table_name,
   );
+
   if (!columns.includes(req.body.record_column_name))
     throwError(
       400,
@@ -49,6 +50,7 @@ exports.insertApproval = async (req, res) => {
       `where ${req.body.record_column_name}='${req.body.record_uuid}'`,
     )
   )[0];
+  console.log('approval RecordInfo', approvalRecordInfo);
   if (!approvalRecordInfo)
     throwError(404, 'ApprovalRecordInfo not found and access cannot be given.');
 
@@ -59,6 +61,7 @@ exports.insertApproval = async (req, res) => {
       and status="ACTIVE"`,
     )
   )[0];
+  console.log('approvalCount', approvalCount);
 
   if (!approvalCount) {
     return res.status(200).json(responser(`No approval for current status : `));
@@ -99,7 +102,7 @@ exports.insertApproval = async (req, res) => {
     ),
     `where ${req.body.record_column_name}='${req.body.record_uuid}'`,
   );
-
+  console.log('record------------', record);
   if (!record.length) {
     return throwError(400, 'Record not found');
   }

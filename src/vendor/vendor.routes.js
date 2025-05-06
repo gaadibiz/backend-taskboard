@@ -40,4 +40,24 @@ router
       controller.getVendorExpense,
     ),
   );
+
+router
+  .route('/upsert-vendor-expense-category')
+  .post(
+    checkAuth,
+    requestErrorHandlingDecorator(
+      Schema.upsertVendorExpenseCategorySchema,
+      controller.upsertVendorExpenseCategory,
+    ),
+  );
+
+router
+  .route('/get-vendor-expense-category')
+  .get(
+    checkAuth,
+    requestErrorHandlingDecorator(
+      Schema.getVendorExpenseCategorySchema,
+      controller.getVendorExpenseCategory,
+    ),
+  );
 module.exports = router;

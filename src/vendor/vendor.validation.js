@@ -67,8 +67,8 @@ exports.upsertVendorExpenseSchema = Joi.object({
   finance_manager_name: Joi.string().max(100).required(),
   department_uuid: Joi.string().guid().allow('', null),
   department_name: Joi.string().max(100).allow('', null),
-  expense_category_uuid: Joi.string().guid().max(500).allow('', null),
-  expense_category_name: Joi.string().max(100).allow('', null),
+  vendor_expense_category_uuid: Joi.string().guid().max(500).allow('', null),
+  vendor_expense_category_name: Joi.string().max(100).allow('', null),
   category_manager_name: Joi.string().max(100).required(),
   category_manager_uuid: Joi.string().guid().required(),
   receipt: Joi.array(),
@@ -147,4 +147,32 @@ exports.getvendorExpenseSchema = Joi.object({
       ),
     )
     .allow(null),
+});
+
+exports.upsertVendorExpenseCategorySchema = Joi.object({
+  vendor_expense_category_uuid: Joi.string().guid().max(500).allow('', null),
+  vendor_expense_category_name: Joi.string().max(100).required(),
+  category_manager_name: Joi.string().max(100).required(),
+  category_manager_uuid: Joi.string().guid().required(),
+  billing_company_uuid: Joi.string().guid().max(100).allow('', null),
+  billing_company_name: Joi.string().max(255).allow('', null),
+  billing_company_branch_uuid: Joi.string().guid().max(100).allow('', null),
+  billing_company_branch_name: Joi.string().max(255).allow('', null),
+  vendor_expense_category_description: Joi.string().max(500).allow('', null),
+  status: Joi.string().valid('ACTIVE', 'INACTIVE'),
+  created_by_uuid: Joi.string().guid().max(50).allow(null),
+  modified_by_uuid: Joi.string().guid().allow('', null),
+});
+
+exports.getVendorExpenseCategorySchema = Joi.object({
+  vendor_expense_category_uuid: Joi.string().guid(),
+  billing_company_uuid: Joi.string().guid().max(100),
+  billing_company_branch_uuid: Joi.string().guid().max(100).allow('', null),
+  pageNo: Joi.number().integer().min(1),
+  itemPerPage: Joi.number().integer().min(1),
+  from_date: Joi.string().isoDate(),
+  to_date: Joi.string().isoDate(),
+  status: Joi.string(),
+  columns: Joi.string(),
+  value: Joi.string(),
 });
