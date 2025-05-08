@@ -168,7 +168,7 @@
                 },
                 "status": {
                   "type": "string",
-                  "default": "INACTIVE | EXPENSE_REQUESTED | EXPENSE_APPROVAL_REQUESTED | FINANCE_APPROVAL_REQUESTED | FINANCE"
+                  "default": "INACTIVE | EXPENSE_REQUESTED | EXPENSE_APPROVAL_REQUESTED | FINANCE_APPROVAL_REQUESTED | FINANCE_APPROVED"
                 }
               }
             }
