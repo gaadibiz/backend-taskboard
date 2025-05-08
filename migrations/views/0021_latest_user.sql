@@ -11,6 +11,7 @@ select
     lud.role_uuid,
     lr.role_name,
     lud.affiliated_billing_company_uuids,
+    lud.billing_company_branches,
     up.user_profile_id,
     up.first_name,
     up.last_name,

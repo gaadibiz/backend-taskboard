@@ -251,7 +251,7 @@ exports.getUser = async (req, res) => {
       user_uuid,
       role_uuid,
       // billing_company_uuid,
-      billing_company_branch_uuid,
+      // billing_company_branch_uuid,
       role_group,
       role_value,
     },
@@ -279,6 +279,11 @@ exports.getUser = async (req, res) => {
     filter +=
       (filter ? ' and ' : 'Where ') +
       `JSON_CONTAINS(affiliated_billing_company_uuids, '{"billing_company_uuid": "${billing_company_uuid}"}')`;
+  }
+  if (billing_company_branch_uuid) {
+    filter +=
+      (filter ? ' and ' : 'Where ') +
+      `JSON_CONTAINS(billing_company_branches, '{"billing_company_branch_uuid": "${billing_company_branch_uuid}"}')`;
   }
   let pageFilter = pagination(pageNo, itemPerPage);
   let totalRecords = await getCountRecord(tableName, filter);
