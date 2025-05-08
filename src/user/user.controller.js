@@ -9,6 +9,8 @@ const {
   isValidRecord,
   isRecordExist,
   upsertRecords,
+  handleAuditColumns,
+  updateRecord,
 } = require('../../utils/dbFunctions');
 const {
   responser,
@@ -152,6 +154,42 @@ exports.upsertUserProfile = async (req, res) => {
     // log out user
     userSessionService({ user_uuid });
   }
+  if (user.status !== req.body.status) {
+    await updateRecord(
+      'user_fact',
+      { status: req.body.status },
+      { user_uuid: user.user_uuid },
+    );
+  }
+
+  if (
+    req.body.billing_company_branches &&
+    req.body.billing_company_branches.length > 0
+  ) {
+    let branchData = req.body.billing_company_branches.map((branch) => ({
+      user_uuid: req.body.user_uuid,
+      billing_company_branch_uuid: branch.billing_company_branch_uuid,
+      status: req.body.status,
+    }));
+    await handleAuditColumns('latest_user', branchData, ['user_uuid']);
+    await insertRecords('branch', branchData);
+  }
+  if (
+    req.body.affiliated_billing_company_uuids &&
+    req.body.affiliated_billing_company_uuids.length > 0
+  ) {
+    let oldUserDimRecord = (
+      await getRecords('latest_user_dim', filterFunctionality({ user_uuid }))
+    )[0];
+    if (oldUserDimRecord) {
+      let newUserDimRecord = {
+        ...oldUserDimRecord,
+        affiliated_billing_company_uuids:
+          req.body.affiliated_billing_company_uuids,
+      };
+      await insertRecords('user_dim', newUserDimRecord);
+    }
+  }
 
   await insertRecords('user_profile', updatedData);
   res.json(responser('User Profile created  successfully.', updatedData));
@@ -212,7 +250,7 @@ exports.getUser = async (req, res) => {
     {
       user_uuid,
       role_uuid,
-      billing_company_uuid,
+      // billing_company_uuid,
       billing_company_branch_uuid,
       role_group,
       role_value,
@@ -223,8 +261,24 @@ exports.getUser = async (req, res) => {
     Array.isArray(columns) ? columns : [columns],
     value,
   );
+  let userUuids = [];
+
   if (user_uuid !== req.user.user_uuid) {
-    filter = await roleFilterService(filter, tableName, req.user);
+    let roleFilter = await roleFilterService(filter, tableName, req.user);
+    console.log('roleFilter==>', roleFilter);
+    // if (roleFilter.includes('branch_uuid')) {
+    //   userUuids = (await getRecords('latest_branch', roleFilter)).map(
+    //     (user) => user.user_uuid,
+    //   );
+    //   filter +=
+    //     (filter ? ` and ` : 'Where ') +
+    //     `user_uuid in ("${userUuids.join('","')}")`;
+    // }
+  }
+  if (!user_uuid) {
+    filter +=
+      (filter ? ' and ' : 'Where ') +
+      `JSON_CONTAINS(affiliated_billing_company_uuids, '{"billing_company_uuid": "${billing_company_uuid}"}')`;
   }
   let pageFilter = pagination(pageNo, itemPerPage);
   let totalRecords = await getCountRecord(tableName, filter);
@@ -235,6 +289,16 @@ exports.getUser = async (req, res) => {
       `where role_uuid= '${req.user.role_uuid}'`,
     );
   }
+  // if (result.length === 1) {
+  //   let userBranches = await getRecords(
+  //     'latest_branch',
+  //     filterFunctionality({ user_uuid, status: 'ACTIVE' }),
+  //   );
+  //   result[0].branches = userBranches.map((branch) => ({
+  //     branch_name: branch.branch_name,
+  //     branch_uuid: branch.branch_uuid,
+  //   }));
+  // }
   deleteKeyValuePair(result, ['user_password']);
   return res.json(responser('All User', result, result.length, totalRecords));
 };
