@@ -316,7 +316,7 @@ exports.upsertExpenseCategory = async (req, res) => {
       ],
       approval_raise_status: 'FINANCE_APPROVAL_REQUESTED',
       previous_status: 'EXPENSE_REQUESTED',
-      next_status: 'FINANCE',
+      next_status: 'FINANCE_APPROVED',
       status: 'ACTIVE',
       created_by_uuid: req.body.created_by_uuid,
     };
@@ -441,7 +441,7 @@ exports.getAdvanceAmount = async (req, res) => {
     COALESCE(
         SUM(
             CASE 
-                WHEN status = 'FINANCE' AND expense_type = 'ADVANCE'  THEN IFNULL(requested_advance_amount, 0)
+                WHEN status = 'FINANCE_APPROVED' AND expense_type = 'ADVANCE'  THEN IFNULL(requested_advance_amount, 0)
                 ELSE 0
             END
             - IF(is_deduct_from_advance, IFNULL(reimbursed_amount, 0), 0)
@@ -482,7 +482,7 @@ exports.convertFinanceToCleared = async (req, res) => {
 
   let expense = await getRecords(
     'latest_expense',
-    `where expense_uuid in ('${expense_uuids.join("','")}') AND status = 'FINANCE'`,
+    `where expense_uuid in ('${expense_uuids.join("','")}') AND status = 'FINANCE_APPROVED'`,
   );
 
   if (!expense.length) {
@@ -634,58 +634,78 @@ exports.getPreviewExpense = async (req, res) => {
     'latest_expense',
     `where expense_uuid = '${expense_uuid}'`,
   );
-
   if (!expense) throwError(404, 'Expense not found.');
 
-  // let templateFile = '';
-  // console.log('expense', expense);
-  // if (expense.expense_type === 'EXPENSE' || expense.expense_type === 'JOB') {
-  //   templateFile = 'expense.ejs';
-  // } else if (expense.expense_type === 'ADVANCE') {
-  //   templateFile = 'advanceExpense.ejs';
-  // } else if (expense.expense_type === 'JOB') {
-  //   templateFile = 'job.ejs';
-  // } else {
-  //   return res.status(400).json(responser('Invalid expense type'));
-  // }
+  const [user_details] = await getRecords(
+    'latest_user',
+    `where user_uuid = '${expense.user_uuid}'`,
+  );
+  let workflow = await getData(
+    `${base_url}/api/v1/expense/get-expense-approval-workflow`,
+    { expense_uuid: expense_uuid },
+    'json',
+    null,
+    'GET',
+    req.headers,
+  );
+  console.log('workflow ---------------------', workflow);
+  let [approval] = await getRecords(
+    'latest_dynamic_approval',
+    `where record_uuid = '${expense_uuid}'`,
+  );
+
+  let data = {
+    expense_details: {
+      status: expense.status.replace('_', ' ').toUpperCase(),
+      expense_type: expense.expense_type,
+      project_name: expense.project_name,
+      reimbursed_amount:
+        expense.reimbursed_amount?.toLocaleString('en-IN') || '0',
+      eligible_reimbursement_amount:
+        expense.eligible_reimbursement_amount?.toLocaleString('en-IN') || '0',
+      actual_reimbursement_amount:
+        expense.actual_reimbursement_amount?.toLocaleString('en-IN') || '0',
+      created_by_name: expense.created_by_name,
+      user_name: expense.user_name,
+      expense_category_name: expense.expense_category_name,
+      expense_date: expense.expense_date,
+      requested_advance_amount: expense.requested_advance_amount,
+      advance_amount: expense.advance_amount,
+      business_purpose: expense.business_purpose,
+      merchant: expense.merchant,
+      job_order_no: expense.job_order_no,
+      job_name: expense.job_name,
+    },
+    employee_details: {
+      employee_name: user_details.full_name,
+      department_name: user_details.department_name,
+      role_value: user_details.role_value,
+      branch_name: user_details.branch_name,
+      company_name: user_details.billing_company_name,
+    },
+
+    workflow_expense_requested: workflow.data.workflow.EXPENSE_REQUESTED,
+    workflow_expense_approval_requested:
+      workflow.data.workflow.EXPENSE_APPROVAL_REQUESTED,
+    workflow_finance_approval_requested:
+      workflow.data.workflow.FINANCE_APPROVAL_REQUESTED,
+    workflow_finance_approved: workflow.data.workflow.FINANCE_APPROVED,
+    workflow_cleared: workflow.data.workflow.CLEARED,
+    approval,
+    remarks: approval?.remark,
+    // approval_status: approval?.status,
+    date: approval?.create_ts,
+  };
+
+  console.log('data ---------------------', data);
+
   if (isPreview === 'true') {
-    result = await ejsPreview(
-      {
-        status: expense.status.replace('_', ' ').toUpperCase(),
-        expense_type: expense.expense_type,
-        project_name: expense.project_name,
-        reimbursed_amount: expense.reimbursed_amount,
-        created_by_name: expense.created_by_name,
-        user_name: expense.user_name,
-        expense_category_name: expense.expense_category_name,
-        expense_date: expense.expense_date,
-        requested_advance_amount: expense.requested_advance_amount,
-        job_order_no: expense.job_order_no,
-        job_name: expense.job_name,
-      },
-      `pdf/expense.ejs`,
-    );
+    result = await ejsPreview(data, `pdf/expense.ejs`);
     return res.json(responser('PO EJS', result));
   } else {
-    result = await pdfMaker(
-      {
-        status: expense.status,
-        expense_type: expense.expense_type,
-        project_name: expense.project_name,
-        reimbursed_amount: expense.reimbursed_amount,
-        created_by_name: expense.created_by_name,
-        user_name: expense.user_name,
-        expense_category_name: expense.expense_category_name,
-        expense_date: expense.expense_date,
-        requested_advance_amount: expense.requested_advance_amount,
-        job_order_no: expense.job_order_no,
-        job_name: expense.job_name,
-      },
-      `expense.ejs`,
-      {
-        isTitlePage: false,
-      },
-    );
+    result = await pdfMaker(data, `expense.ejs`, {
+      isTitlePage: false,
+    });
     res.setHeader('Content-Type', 'application/pdf');
     res.setHeader(
       'Content-Disposition',
@@ -764,7 +784,7 @@ exports.getExpenseApprovalWorkFlow = async (req, res) => {
     'latest_dynamic_approval_count',
     `where dynamic_uuid = '${expense.expense_category_uuid}'`,
   );
-  console.log(approvalCount, '...........................');
+  // console.log(approvalCount, '...........................');
 
   const EXPENSE_APPROVAL_REQUESTED = approvalCount.find(
     (item) => item.approval_raise_status === 'EXPENSE_APPROVAL_REQUESTED',
@@ -776,8 +796,8 @@ exports.getExpenseApprovalWorkFlow = async (req, res) => {
   console.log(EXPENSE_APPROVAL_REQUESTED, '...........................');
   console.log(FINANCE_APPROVAL_REQUESTED, '...........................');
 
-  console.log(EXPENSE_APPROVAL_REQUESTED, '...........................');
-  console.log(FINANCE_APPROVAL_REQUESTED, '...........................');
+  // console.log(EXPENSE_APPROVAL_REQUESTED, '...........................');
+  // console.log(FINANCE_APPROVAL_REQUESTED, '...........................');
   // const expense_Hierarchy = [];
   // const finance_Hierarchy = [];
 
@@ -787,7 +807,7 @@ exports.getExpenseApprovalWorkFlow = async (req, res) => {
     'EXPENSE_APPROVAL_REQUESTED',
     'latest_expense',
     expense_uuid,
-    ['FINANCE_APPROVAL_REQUESTED', 'FINANCE', 'CLEARED'],
+    ['FINANCE_APPROVAL_REQUESTED', 'FINANCE_APPROVED', 'CLEARED'],
   );
 
   const finance_Hierarchy = await buildHierarchy(
@@ -796,7 +816,7 @@ exports.getExpenseApprovalWorkFlow = async (req, res) => {
     'FINANCE_APPROVAL_REQUESTED',
     'latest_expense',
     expense_uuid,
-    ['FINANCE', 'CLEARED'],
+    ['FINANCE_APPROVED', 'CLEARED'],
   );
 
   // let approval_expense_level = 0;
@@ -997,7 +1017,7 @@ exports.getExpenseApprovalWorkFlow = async (req, res) => {
           [
             'EXPENSE_APPROVAL_REQUESTED',
             'FINANCE_APPROVAL_REQUESTED',
-            'FINANCE',
+            'FINANCE_APPROVED',
             'CLEARED',
           ].includes(expense.status)
             ? true
@@ -1006,11 +1026,12 @@ exports.getExpenseApprovalWorkFlow = async (req, res) => {
     ],
     EXPENSE_APPROVAL_REQUESTED: [...expense_Hierarchy],
     FINANCE_APPROVAL_REQUESTED: [...finance_Hierarchy],
-    FINANCE: [
+    FINANCE_APPROVED: [
       {
-        current_pointer: expense.status === 'FINANCE',
+        current_pointer: expense.status === 'FINANCE_APPROVED',
         is_completed:
-          expense.status !== 'FINANCE' && ['CLEARED'].includes(expense.status)
+          expense.status !== 'FINANCE_APPROVED' &&
+          ['CLEARED'].includes(expense.status)
             ? true
             : false,
       },

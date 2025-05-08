@@ -1,161 +1,428 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8" />
-    <title>Report Invoice</title>
-    <style>
-      * {
-        box-sizing: border-box;
-      }
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Expense Reimbursement Summary</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      color: #1f2937;
+      max-width: 1000px;
+      margin: 0 20px;
+      padding: 10px;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .header-underline {
+      height: 4px;
+      width: 100px;
+      background-color: #9b87f5;
+      margin: 0 auto;
+    }
+    .details-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+    }
+    .details-card {
+      width: 100%;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 0.5rem;
+    }
+    .employee-details {
+      background-color: #f8f5ff;
+      border: 1px solid #e9e3f8;
+    }
+    .expense-details {
+      background-color: #f0f7ff;
+      border: 1px solid #d4e5fa;
+    }
+    .details-card h2 {
+      font-size: 1.125rem;
+      margin-top: 0;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    .details-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
+    .details-label {
+      font-weight: 500;
+      color: #555;
+    }
+    .workflow-container {
+      background: white;
+      border: 1px solid #e4e4e7;
+      padding: 1.25rem;
+      border-radius: 0.5rem;
+    }
+    .workflow-container h2 {
+      font-size: 1.125rem;
+      margin-top: 0;
+      padding-bottom: 0.625rem;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    .simple-workflow {
+      padding: 0.75rem 1rem;
+      border-radius: 0.375rem;
+      margin-bottom: 1rem;
+      border: 1px solid #e4e4e7;
+      display: flex;
+      align-items: center;
+    }
+    .simple-workflow-completed {
+      background-color: #f0fdf4;
+      border-color: #dcfce7;
+    }
+    .simple-workflow-current {
+      background-color: #eff6ff;
+      border-color: #dbeafe;
+    }
+    .simple-workflow-pending {
+      background-color: #fefce8;
+      border-color: #fef9c3;
+    }
+    .workflow-icon {
+      margin-right: 0.75rem;
+      font-size: 1.125rem;
+    }
+    .workflow-title {
+      font-weight: 500;
+      flex-grow: 1;
+    }
+    .workflow-status {
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+    .timeline-section {
+      margin-bottom: 1.5rem;
+    }
+    .timeline-section h3 {
+      font-size: 1rem;
+      margin-bottom: 0.75rem;
+    }
+    .timeline-item {
+      position: relative;
+      padding: 1rem;
+      border-radius: 0.375rem;
+      margin-bottom: 0.75rem;
+      border: 1px solid #e4e4e7;
+    }
+    .timeline-item-completed {
+      background-color: #f0fdf4;
+      border-color: #dcfce7;
+    }
+    .timeline-item-current {
+      background-color: #eff6ff;
+      border-color: #dbeafe;
+    }
+    .timeline-item-pending {
+      background-color: #fefce8;
+      border-color: #fef9c3;
+    }
+    .timeline-content {
+      display: flex;
+    }
+    .timeline-icon {
+      margin-top: 0.25rem;
+      margin-right: 0.75rem;
+      font-size: 1.125rem;
+    }
+    .timeline-details {
+      flex: 1;
+    }
+    .timeline-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
+    .timeline-title {
+      font-weight: 500;
+    }
+    .timeline-status {
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+    .timeline-info {
+      margin-top: 0.5rem;
+      font-size: 0.875rem;
+    }
+    .timeline-info p {
+      margin: 0.25rem 0;
+    }
+    .timeline-connector {
+      position: absolute;
+      left: 25px;
+      top: 42px;
+      bottom: -12px;
+      width: 2px;
+      background-color: #e4e4e7;
+    }
+    .footer {
+      margin-top: 2rem;
+      text-align: center;
+      font-size: 0.75rem;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <div class="header">
+    <h1 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Expense Reimbursement Summary</h1>
+    <div class="header-underline"></div>
+  </div>
 
-      body {
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        font-size: 14px;
-        padding: 40px;
-        background: linear-gradient(to bottom right, #eaf4f4, #fefefe);
-        color: #333;
-      }
-
-      .container {
-        max-width: 750px;
-        margin: 0 auto;
-        background-color: #ffffff;
-        padding: 40px 50px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        border-radius: 16px;
-        transition: all 0.3s ease-in-out;
-      }
-
-      h2 {
-        text-align: center;
-        margin-bottom: 35px;
-        color: #1c3d5a;
-        font-size: 26px;
-        position: relative;
-      }
-
-      h2::after {
-        content: "";
-        display: block;
-        margin: 10px auto 0;
-        width: 60px;
-        height: 3px;
-        background-color: #00796b;
-        border-radius: 2px;
-      }
-
-      .section {
-        margin-bottom: 25px;
-      }
-
-      .row {
-        display: flex;
-        justify-content: space-between;
-        padding: 12px 0;
-        border-bottom: 1px dashed #d0d0d0;
-        align-items: center;
-        transition: background-color 0.2s;
-      }
-
-      .row:hover {
-        background-color: #f6f6f6;
-      }
-      .label {
-        font-weight: 600;
-        color: #444;
-        width: 45%;
-        font-size: 15px;
-      }
-
-      .value {
-        font-weight: 400;
-        color: #222;
-        text-align: right;
-        width: 50%;
-        font-size: 15px;
-      }
-
-      .highlight {
-        padding: 6px 12px;
-        border-radius: 20px;
-        font-weight: 600;
-        background-color: #e0f7fa;
-        color: #00796b;
-        display: inline-block;
-        font-size: 13px;
-        letter-spacing: 0.5px;
-      }
-
-      .footer {
-        margin-top: 40px;
-        text-align: center;
-        font-size: 13px;
-        color: #888;
-        border-top: 1px solid #eee;
-        padding-top: 20px;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <h2><%= expense_type %> REPORT</h2>
-
-      <div class="section">
-        <div class="row">
-          <div class="label">Status:</div>
-          <div class="value"><span class="highlight"><%= status.replace('_', ' ') %></span></div>
-        </div>
-        <div class="row">
-          <div class="label">Expense Type:</div>
-          <div class="value"><%= expense_type %></div>
-        </div>
-        <% if (job_name && job_order_no) { %>
-        <div class="row">
-          <div class="label">Job Name:</div>
-          <div class="value"><%= job_name %></div>
-        </div>
-        <div class="row">
-          <div class="label">Job Order No:</div>
-          <div class="value"><%= job_order_no %></div>
-        </div>
-        <% } %>
-
-        <div class="row">
-          <div class="label">Project:</div>
-          <div class="value"><%= project_name || '-' %></div>
-        </div>
-        <div class="row">
-          <div class="label">Reimbursed Amount:</div>
-          <div class="value">
-            ₹ <%= (requested_advance_amount || reimbursed_amount) ?
-            (requested_advance_amount ||
-            reimbursed_amount).toLocaleString('en-IN') : 'N/A' %>
-          </div>
-        </div>
-        <div class="row">
-          <div class="label">Created By:</div>
-          <div class="value"><%= created_by_name || '-' %></div>
-        </div>
-        <div class="row">
-          <div class="label">Expense For:</div>
-          <div class="value"><%= user_name || '-' %></div>
-        </div>
-        <div class="row">
-          <div class="label">Category:</div>
-          <div class="value"><%= expense_category_name || '-' %></div>
-        </div>
-        <div class="row">
-          <div class="label">Expense Date:</div>
-          <div class="value">
-            <%= new Date(expense_date).toLocaleDateString("en-GB") %>
-          </div>
-        </div>
+  <!-- Employee and Expense Details -->
+  <div class="details-container">
+    <!-- Employee Details -->
+    <div class="details-card employee-details">
+      <h2>Employee Details</h2>
+      <div class="details-row">
+        <span class="details-label">Name:</span>
+        <span><%= employee_details.employee_name %></span>
       </div>
-
-      <div class="footer">
-        © <%= new Date().getFullYear() %> Expense Management System. All rights
-        reserved.
+      <div class="details-row">
+        <span class="details-label">Department:</span>
+        <span><%= employee_details.department_name %></span>
+      </div>
+      <div class="details-row">
+        <span class="details-label">Role:</span>
+        <span><%= employee_details.role_value %></span>
+      </div>
+      <div class="details-row">
+        <span class="details-label">Branch:</span>
+        <span><%= employee_details.branch_name %></span>
+      </div>
+      <div class="details-row">
+        <span class="details-label">Company:</span>
+        <span><%= employee_details.company_name %></span>
       </div>
     </div>
-  </body>
+
+    <!-- Expense Details -->
+    <div class="details-card expense-details">
+      <h2>Expense Details</h2>
+      <div class="details-row">
+        <span class="details-label">Status:</span>
+        <span><%= expense_details.status.replace(/_/g, ' ') %></span>
+      </div>
+      <div class="details-row">
+        <span class="details-label">Type:</span>
+        <span><%= expense_details.expense_type %></span>
+      </div>
+      <div class="details-row">
+        <span class="details-label">Project:</span>
+        <span><%= expense_details.project_name %></span>
+      </div>
+      <div class="details-row">
+        <span class="details-label">Category:</span>
+        <span><%= expense_details.expense_category_name %></span>
+      </div>
+      <div class="details-row">
+        <span class="details-label">Date:</span>
+        <span><%= new Date(expense_details.expense_date).toLocaleDateString() %></span>
+      </div>
+      <div class="details-row">
+        <span class="details-label">Merchant:</span>
+        <span><%= expense_details.merchant %></span>
+      </div>
+      <div class="details-row">
+        <span class="details-label">Business Purpose:</span>
+        <span><%= expense_details.business_purpose %></span>
+      </div>
+      <div class="details-row">
+        <span class="details-label">Reimbursed Amount:</span>
+        <span>₹<%= expense_details.reimbursed_amount %></span>
+      </div>
+      <div class="details-row">
+        <span class="details-label">Eligible Reimbursement:</span>
+        <span>₹<%= expense_details.eligible_reimbursement_amount %></span>
+      </div>
+      <div class="details-row">
+        <span class="details-label">Actual Reimbursement:</span>
+        <span><%= expense_details.actual_reimbursement_amount || 'N/A' %></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Workflow Summary -->
+  <div class="workflow-container">
+
+    <!-- Helper functions for status rendering -->
+    <%
+    function getStatusIcon(workflow) {
+      if (workflow.is_completed) return "✅";
+      if (workflow.current_pointer) return "🔵";
+      return "⏳";
+    }
+    
+    function getStatusText(workflow) {
+      if (workflow.is_completed) return "Approved";
+      if (workflow.current_pointer) return "Current";
+      return "Pending";
+    }
+    
+    function getStatusClass(workflow) {
+      if (workflow.is_completed) return "timeline-item-completed";
+      if (workflow.current_pointer) return "timeline-item-current";
+      return "timeline-item-pending";
+    }
+    
+    function getSimpleStatusClass(workflow) {
+      if (workflow.is_completed) return "simple-workflow-completed";
+      if (workflow.current_pointer) return "simple-workflow-current";
+      return "simple-workflow-pending";
+    }
+    %>
+
+    <!-- Initial Request - Only show if current_pointer is true -->
+    <% if (workflow_expense_requested && 
+           workflow_expense_requested.some(workflow => workflow.current_pointer)) { %>
+      <% workflow_expense_requested
+        .filter(workflow => workflow.current_pointer)
+        .forEach((workflow, index) => { %>
+        <div class="simple-workflow <%= getSimpleStatusClass(workflow) %>">
+          <span class="workflow-icon"><%= getStatusIcon(workflow) %></span>
+          <span class="workflow-title">Initial Request</span>
+          <span class="workflow-status"><%= getStatusText(workflow) %></span>
+        </div>
+      <% }); %>
+    <% } %>
+
+    <!-- Expense Approval Workflow - Only show items where current_pointer is true -->
+    <% if (workflow_expense_approval_requested && 
+    workflow_expense_approval_requested.some(workflow => workflow.current_pointer)) { %>
+<div class="timeline-section">
+ <h3>Current Approval : Expense</h3>
+
+ <% 
+   const currentPointerWorkflows = workflow_expense_approval_requested.filter(workflow => workflow.current_pointer);
+   const highestLevelWorkflow = currentPointerWorkflows.reduce((prev, curr) => {
+     return (curr.level > prev.level) ? curr : prev;
+   }, currentPointerWorkflows[0]);
+ %>
+
+ <div class="timeline-item <%= getStatusClass(highestLevelWorkflow) %>">
+   <div class="timeline-content">
+     <div class="timeline-icon"><%= getStatusIcon(highestLevelWorkflow) %></div>
+     <div class="timeline-details">
+       <div class="timeline-header">
+         <div class="timeline-title">
+           Level <%= highestLevelWorkflow.level %>: <%= highestLevelWorkflow.role.replace(/_/g, ' ') %>
+         </div>
+         <div class="timeline-status">
+           <%= getStatusText(highestLevelWorkflow) %>
+         </div>
+       </div>
+
+       <div class="timeline-info">
+         <% if (highestLevelWorkflow.approved_by_name) { %>
+           <p><strong>Approved By:</strong> <%= highestLevelWorkflow.approved_by_name %></p>
+           <% if (date) { %>
+             <p><strong>Approved On Date:</strong> <%= new Date(date).toLocaleDateString('en-IN') %></p>
+           <% } else { %>
+             <p><strong>Approved On Date:</strong> Not Available</p>
+           <% } %>
+           <p><strong>Remarks:</strong> <%= remarks %></p>
+         <% } %>
+       </div>
+     </div>
+   </div>
+ </div>
+</div>
+<% } %>
+
+
+    <!-- Finance Approval Workflow - Only show items where current_pointer is true -->
+    <% if (workflow_finance_approval_requested && 
+           workflow_finance_approval_requested.some(workflow => workflow.current_pointer)) { %>
+      <div class="timeline-section">
+        <h3>Current Approval : Finance</h3>
+        <% const filteredFinanceWorkflows = workflow_finance_approval_requested
+          .filter(workflow => workflow.current_pointer); %>
+          
+        <% filteredFinanceWorkflows.forEach((workflow, index) => { %>
+          <div class="timeline-item <%= getStatusClass(workflow) %>">
+            <div class="timeline-content">
+              <div class="timeline-icon"><%= getStatusIcon(workflow) %></div>
+              <div class="timeline-details">
+                <div class="timeline-header">
+                  <div class="timeline-title">
+                    Level <%= workflow.level %>: <%= workflow.role.replace(/_/g, ' ') %>
+                  </div>
+                  <div class="timeline-status">
+                    <%= getStatusText(workflow) %>
+                  </div>
+                </div>
+
+                <div class="timeline-info">
+                  <% if (workflow.approved_by_name) { %>
+                    <p><strong>Approved By:</strong> <%= workflow.approved_by_name %></p>
+                    <% if (date) { %>
+                      <p><strong>Approved On Date:</strong> <%= new Date(date).toLocaleDateString('en-IN') %></p>
+                    <% } else { %>
+                      <p><strong>Approved On Date:</strong> Not Available</p>
+                    <% } %> 
+                      <p><strong>Remarks:</strong> <%= remarks %></p>
+
+
+                  <% } %>
+                </div>
+              </div>
+            </div>
+
+            <% if (index < filteredFinanceWorkflows.length - 1) { %>
+              <div class="timeline-connector"></div>
+            <% } %>
+          </div>
+        <% }); %>
+      </div>
+    <% } %>
+
+    <!-- Finance Final Step - Only show if current_pointer is true -->
+    <% if (workflow_finance_approved && 
+           workflow_finance_approved.some(workflow => workflow.current_pointer)) { %>
+      <% workflow_finance_approved
+        .filter(workflow => workflow.current_pointer)
+        .forEach((workflow, index) => { %>
+        <div class="simple-workflow <%= getSimpleStatusClass(workflow) %>">
+          <span class="workflow-icon"><%= getStatusIcon(workflow) %></span>
+          <span class="workflow-title">Finance Approved</span>
+          <span class="workflow-status"><%= getStatusText(workflow) %></span>
+        </div>
+      <% }); %>
+    <% } %>
+
+    <!-- Clearance - Only show if current_pointer is true -->
+    <% if (workflow_cleared && 
+           workflow_cleared.some(workflow => workflow.current_pointer)) { %>
+      <% workflow_cleared
+        .filter(workflow => workflow.current_pointer)
+        .forEach((workflow, index) => { %>
+        <div class="simple-workflow <%= getSimpleStatusClass(workflow) %>">
+          <span class="workflow-icon"><%= getStatusIcon(workflow) %></span>
+          <span class="workflow-title">Clearance</span>
+          <span class="workflow-status"><%= getStatusText(workflow) %></span>
+        </div>
+      <% }); %>
+    <% } %>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>
+      Generated on <%= new Date().toLocaleDateString() %> • Expense
+      Reimbursement System
+    </p>
+  </div>
+</body>
 </html>
