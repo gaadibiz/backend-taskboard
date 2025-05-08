@@ -652,7 +652,7 @@
         }
       }
     },
-    "/api/v1/vendorget-vendor-expense-category": {
+    "/api/v1/vendor/get-vendor-expense-category": {
       "get": {
         "tags": ["job board - Vendor"],
         "summary": "Get all User ",
