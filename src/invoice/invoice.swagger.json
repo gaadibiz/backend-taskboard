@@ -1,0 +1,1364 @@
+{
+  "paths": {
+    "/api/v1/invoice/upsert-invoice": {
+      "post": {
+        "tags": ["Invoice"],
+        "summary": "Post Invoice",
+        "description": "Endpoint to create or update invoice",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "customer_type": {
+                  "type": "string",
+                  "default": "PVT | GOVT | N/A"
+                },
+                "invoice_items": {
+                  "type": "object",
+                  "default": [{
+                    "product_uuid": "",
+                    "product_name": "",
+                    "customer_product_name":"",
+                    "description": "",
+                    "HSN_code": "",
+                    "quantity": 0,
+                    "unit": "",
+                    "unit_price": 0,
+                    "discount": 0,
+                    "discount_amount":0,
+                    "taxable_amount": 0,
+                    "tax_rate": 0,
+                    "tax_amount":0,
+                    "total": 0,
+                    "cess_rate":0,
+                    "state_cess_rate":0
+                    }]
+                },
+                "invoice_uuid": {
+                  "type": "string",
+                  "default": null
+                },
+                "invoice_no": {
+                  "type": "string",
+                  "default": null
+                },
+                "delivery_challan_uuid": {
+                  "type": "string",
+                  "default": null
+                },
+                "delivery_challan_no": {
+                  "type": "string",
+                  "default": null
+                },
+                "invoice_date": {
+                  "type": "string",
+                  "default": "YYYY-MM-DD"
+                },
+                "challan_no": {
+                  "type": "string",
+                  "default": null
+                },
+                "challan_date": {
+                  "type": "string",
+                  "default": null
+                },
+                "po_number": {
+                  "type": "string",
+                  "default": null
+                },
+                "po_date": {
+                  "type": "string",
+                  "default": null
+                },
+                "invoice_type": {
+                  "type": "string",
+                  "default": null
+                },
+                "project_site": {
+                  "type": "string",
+                  "default": null
+                },
+                "ack_no": {
+                  "type": "string",
+                  "default": null
+                },
+                "ack_date": {
+                  "type": "string",
+                  "default": null
+                },
+                "irn": {
+                  "type": "string",
+                  "default": null
+                },
+                "supply_type_code": {
+                  "type": "string",
+                  "default": "B2B"
+                },
+                "lr_no": {
+                  "type": "string",
+                  "default": null
+                },
+                "eway_bill_no": {
+                  "type": "string",
+                  "default": null
+                },
+                "eway_bill_date": {
+                  "type": "string",
+                  "default": null
+                },
+                "valid_till_date": {
+                  "type": "string",
+                  "default": null
+                },
+                "vehicle_no": {
+                  "type": "string",
+                  "default": null
+                },
+                "payment_mode": {
+                  "type": "string",
+                  "default": null
+                },
+                "document_type": {
+                  "type": "string",
+                  "default": "TAX INVOICE"
+                },
+                "remark": {
+                  "type": "string",
+                  "default": null
+                },
+                "region": {
+                  "type": "string",
+                  "default": null
+                },
+                "place_of_supply": {
+                  "type": "string",
+                  "default": null
+                },
+                "billing_company_uuid": {
+                  "type": "string",
+                  "default": null
+                },
+                "billing_company_name": {
+                  "type": "string",
+                  "default": null
+                },
+                "billing_company_branch_uuid": {
+                  "type": "string",
+                  "default": null
+                },
+                "billing_company_branch_name": {
+                  "type": "string",
+                  "default": null
+                },
+                "billing_company_branch_state": {
+                  "type": "string",
+                  "default": null
+                },
+                "billing_company_branch_country": {
+                  "type": "string",
+                  "default": null
+                },
+                "customer_uuid" :{
+                  "type": "string",
+                  "default": ""
+                },
+                "customer_name" :{
+                  "type": "string",
+                  "default": ""
+                },
+                "customer_registration_type" :{
+                  "type": "string",
+                  "default": ""
+                },
+                "customer_branch_uuid" :{
+                  "type": "string",
+                  "default": ""
+                },
+                "customer_branch_name" :{
+                  "type": "string",
+                  "default": ""
+                },
+                "customer_gstin" :{
+                  "type": "string",
+                  "default": ""
+                },
+                "customer_address_line1" :{
+                  "type": "string",
+                  "default": null
+                },
+                "customer_address_line2" :{
+                  "type": "string",
+                  "default": null
+                },
+                "customer_address_city" :{
+                  "type": "string",
+                  "default": null
+                },
+                "customer_address_state" :{
+                  "type": "string",
+                  "default": null
+                },
+                "customer_address_pincode" :{
+                  "type": "string",
+                  "default": null
+                },
+                "customer_address_country" :{
+                  "type": "string",
+                  "default": null
+                },
+                "dispatch_address_line1" :{
+                  "type": "string",
+                  "default": null
+                },
+                "dispatch_address_line2" :{
+                  "type": "string",
+                  "default": null
+                },
+                "dispatch_address_city" :{
+                  "type": "string",
+                  "default": null
+                },
+                "dispatch_address_state" :{
+                  "type": "string",
+                  "default": null
+                },
+                "dispatch_address_pincode" :{
+                  "type": "string",
+                  "default": null
+                },
+                "dispatch_address_country" :{
+                  "type": "string",
+                  "default": null
+                },
+                "dispatch_through" :{
+                  "type": "string",
+                  "default": null
+                },
+                "transport_id" :{
+                  "type": "string",
+                  "default": null
+                },
+                "transport_doc_no" :{
+                  "type": "string",
+                  "default": null
+                },
+                "transport_doc_date" :{
+                  "type": "string",
+                  "default": null
+                },
+                "advising_bank_uuid": {
+                  "type": "string",
+                  "default": null
+                },
+                "advising_bank_name": {
+                  "type": "string",
+                  "default": null
+                },
+                "sales_type": {
+                  "type": "string",
+                  "default": null
+                },
+                "approved_flag": {
+                  "type": "string",
+                  "default": null
+                },
+                "approved_by": {
+                  "type": "string",
+                  "default": null
+                },
+                "total_amount": {
+                  "type": "number",
+                  "default": 0
+                },
+                "tcs": {
+                  "type": "number",
+                  "default": 0
+                },
+                "tcs_amount": {
+                  "type": "number",
+                  "default": 0
+                },
+                "tcs_sign": {
+                  "type": "string",
+                  "default": "ADD | DEDUCT"
+                },
+                "discount": {
+                  "type": "number",
+                  "default": 0
+                },
+                "discount_amount": {
+                  "type": "number",
+                  "default": 0
+                },
+                "is_round_off": {
+                  "type": "number",
+                  "default": 0
+                },
+                "term_and_condition": {
+                  "type": "string",
+                  "default": null
+                },
+                "total_amount_after_tax": {
+                  "type": "number",
+                  "default": 0
+                },
+                "delivery_name" :{
+                  "type": "string",
+                  "default": null
+                },
+                "delivery_address_line1" :{
+                  "type": "string",
+                  "default": null
+                },
+                "delivery_address_line2" :{
+                  "type": "string",
+                  "default": null
+                },
+                "delivery_address_city" :{
+                  "type": "string",
+                  "default": null
+                },
+                "delivery_address_state" :{
+                  "type": "string",
+                  "default": null
+                },
+                "delivery_address_pincode" :{
+                  "type": "string",
+                  "default": null
+                },
+                "delivery_address_country" :{
+                  "type": "string",
+                  "default": null
+                },
+                "qr_code": {
+                  "type": "string",
+                  "default": ""
+                },
+                "status": {
+                  "type": "string",
+                  "default": "ACTIVE | INACTIVE"
+                }
+              }
+            }
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+
+    "/api/v1/invoice/get-invoice": {
+      "get": {
+        "tags": ["Invoice"],
+        "summary": "Get Invoice",
+        "description": "Endpoint to retrieve invoice",
+        "produces": ["application/json"],
+
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "combined_invoice_no",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },            
+          {
+            "in": "query",
+            "name": "invoice_uuid",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "columns",
+            "description": "",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "value",
+            "description": "",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "description": "",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "cancelled_status",
+            "description": "Sale Invoice Cancelled status",
+            "required": false,
+            "type": "string",
+            "default": "FALSE"
+          },
+          {
+            "in": "query",
+            "name": "from_date",
+            "description": "Format will be YYYY-MM-DD.",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "to_date",
+            "description": "Format will be YYYY-MM-DD.",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "pageNo",
+            "description": "",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "in": "query",
+            "name": "itemPerPage",
+            "description": "",
+            "required": true,
+            "type": "number"
+          }
+        ],
+
+        "responses": {
+          "200": { "description": "successful operation" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+
+    "/api/v1/invoice/upsert-proforma-invoice": {
+      "post": {
+        "tags": ["Invoice"],
+        "summary": "Post Proforma Invoice",
+        "description": "Endpoint to create or update proforma invoice",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "customer_type": {
+                  "type": "string",
+                  "default": "PVT | GOVT"
+                },
+                "invoice_items": {
+                  "type": "object",
+                  "default": [{
+                    "product_uuid": "",
+                    "product_name": "",
+                    "customer_product_name":"",
+                    "description": "",
+                    "HSN_code": "",
+                    "quantity": 0,
+                    "unit": "",
+                    "unit_price": 0,
+                    "discount": 0,
+                    "discount_amount":0,
+                    "taxable_amount": 0,
+                    "tax_rate": 0,
+                    "tax_amount":0,
+                    "total": 0,
+                    "cess_rate":0,
+                    "state_cess_rate":0
+                    }]
+                },
+                "proforma_invoice_uuid": {
+                  "type": "string",
+                  "default": null
+                },
+                "proforma_invoice_no": {
+                  "type": "string",
+                  "default": null
+                },
+                "proforma_invoice_date": {
+                  "type": "string",
+                  "default": "YYYY-MM-DD"
+                },
+                "invoice_no": {
+                  "type": "string",
+                  "default": ""
+                },
+                "invoice_type": {
+                  "type": "string",
+                  "default": null
+                },
+                "project_site": {
+                  "type": "string",
+                  "default": null
+                },
+                "challan_no": {
+                  "type": "string",
+                  "default": null
+                },
+                "challan_date": {
+                  "type": "string",
+                  "default": null
+                },
+                "lr_no": {
+                  "type": "string",
+                  "default": null
+                },
+                "supply_type_code": {
+                  "type": "string",
+                  "default": "B2B"
+                },
+                "eway_bill_no": {
+                  "type": "string",
+                  "default": null
+                },
+                "eway_bill_date": {
+                  "type": "string",
+                  "default": null
+                },
+                "valid_till_date": {
+                  "type": "string",
+                  "default": null
+                },
+                "delivery_options": {
+                  "type": "string",
+                  "default": null
+                },
+                "dispatch_through": {
+                  "type": "string",
+                  "default": null
+                },
+                "transport_id": {
+                  "type": "string",
+                  "default": null
+                },
+                "transport_doc_no": {
+                  "type": "string",
+                  "default": null
+                },
+                "transport_doc_date": {
+                  "type": "string",
+                  "default": null
+                },
+                "vehicle_no": {
+                  "type": "string",
+                  "default": null
+                },
+                "payment_mode": {
+                  "type": "string",
+                  "default": null
+                },
+                "document_type": {
+                  "type": "string",
+                  "default": "TAX INVOICE"
+                },
+                "remark": {
+                  "type": "string",
+                  "default": null
+                },
+                "region": {
+                  "type": "string",
+                  "default": null
+                },
+                "place_of_supply": {
+                  "type": "string",
+                  "default": null
+                },
+                "billing_company_uuid": {
+                  "type": "string",
+                  "default": null
+                },
+                "billing_company_name": {
+                  "type": "string",
+                  "default": null
+                },
+                "billing_company_branch_uuid": {
+                  "type": "string",
+                  "default": null
+                },
+                "billing_company_branch_name": {
+                  "type": "string",
+                  "default": null
+                },
+                "billing_company_branch_state": {
+                  "type": "string",
+                  "default": null
+                },
+                "billing_company_branch_country": {
+                  "type": "string",
+                  "default": null
+                },
+                "customer_uuid" :{
+                  "type": "string",
+                  "default": ""
+                },
+                "customer_name" :{
+                  "type": "string",
+                  "default": ""
+                },
+                "customer_branch_uuid" :{
+                  "type": "string",
+                  "default": ""
+                },
+                "customer_branch_name" :{
+                  "type": "string",
+                  "default": ""
+                },
+                "customer_gstin" :{
+                  "type": "string",
+                  "default": ""
+                },
+                "customer_registration_type" :{
+                  "type": "string",
+                  "default": ""
+                },
+                "customer_address_line1" :{
+                  "type": "string",
+                  "default": null
+                },
+                "customer_address_line2" :{
+                  "type": "string",
+                  "default": null
+                },
+                "customer_address_city" :{
+                  "type": "string",
+                  "default": null
+                },
+                "customer_address_state" :{
+                  "type": "string",
+                  "default": null
+                },
+                "customer_address_pincode" :{
+                  "type": "string",
+                  "default": null
+                },
+                "customer_address_country" :{
+                  "type": "string",
+                  "default": null
+                },
+                "dispatch_address_line1" :{
+                  "type": "string",
+                  "default": null
+                },
+                "dispatch_address_line2" :{
+                  "type": "string",
+                  "default": null
+                },
+                "dispatch_address_city" :{
+                  "type": "string",
+                  "default": null
+                },
+                "dispatch_address_state" :{
+                  "type": "string",
+                  "default": null
+                },
+                "dispatch_address_pincode" :{
+                  "type": "string",
+                  "default": null
+                },
+                "dispatch_address_country" :{
+                  "type": "string",
+                  "default": null
+                },
+                "advising_bank_uuid": {
+                  "type": "string",
+                  "default": null
+                },
+                "advising_bank_name": {
+                  "type": "string",
+                  "default": null
+                },
+                "sales_type": {
+                  "type": "string",
+                  "default": null
+                },
+                "approved_flag": {
+                  "type": "string",
+                  "default": null
+                },
+                "approved_by": {
+                  "type": "string",
+                  "default": null
+                },
+                "total_amount": {
+                  "type": "number",
+                  "default": 0
+                },
+                "tcs": {
+                  "type": "number",
+                  "default": 0
+                },
+                "tcs_amount": {
+                  "type": "number",
+                  "default": 0
+                },
+                "tcs_sign": {
+                  "type": "string",
+                  "default": "ADD | DEDUCT"
+                },
+                "discount": {
+                  "type": "number",
+                  "default": 0
+                },
+                "discount_amount": {
+                  "type": "number",
+                  "default": 0
+                },
+                "is_round_off": {
+                  "type": "number",
+                  "default": 0
+                },
+                "term_and_condition": {
+                  "type": "string",
+                  "default": null
+                },
+                "total_amount_after_tax": {
+                  "type": "number",
+                  "default": 0
+                },
+                "delivery_address_line1" :{
+                  "type": "string",
+                  "default": null
+                },
+                "delivery_address_line2" :{
+                  "type": "string",
+                  "default": null
+                },
+                "delivery_address_city" :{
+                  "type": "string",
+                  "default": null
+                },
+                "delivery_address_state" :{
+                  "type": "string",
+                  "default": null
+                },
+                "delivery_address_pincode" :{
+                  "type": "string",
+                  "default": null
+                },
+                "delivery_address_country" :{
+                  "type": "string",
+                  "default": null
+                },
+                "qr_code": {
+                  "type": "string",
+                  "default": ""
+                },
+                "status": {
+                  "type": "string",
+                  "default": "ACTIVE | INACTIVE"
+                }
+              }
+            }
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+
+    "/api/v1/invoice/get-proforma-invoice": {
+      "get": {
+        "tags": ["Invoice"],
+        "summary": "Get Proforma Invoice",
+        "description": "Endpoint to retrieve proforma invoice",
+        "produces": ["application/json"],
+
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "combined_proforma_invoice_no",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },            
+          {
+            "in": "query",
+            "name": "invoice_no",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },            
+          {
+            "in": "query",
+            "name": "proforma_invoice_uuid",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "columns",
+            "description": "",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "value",
+            "description": "",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "description": "",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "cancelled_status",
+            "description": "PI Cancelled status",
+            "required": false,
+            "type": "string",
+            "default": "FALSE"
+          },
+          {
+            "in": "query",
+            "name": "from_date",
+            "description": "Format will be YYYY-MM-DD.",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "to_date",
+            "description": "Format will be YYYY-MM-DD.",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "pageNo",
+            "description": "",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "in": "query",
+            "name": "itemPerPage",
+            "description": "",
+            "required": true,
+            "type": "number"
+          }
+        ],
+
+        "responses": {
+          "200": { "description": "successful operation" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+
+    "/api/v1/invoice/get-single-invoice": {
+      "get": {
+        "tags": ["Invoice"],
+        "summary": "Get Invoice based on quote_uuid",
+        "description": "Endpoint to retrieve single invoice based of quote_uuid",
+        "produces": ["application/json"],
+
+        "parameters": [
+          {
+            "in": "query",
+            "name": "invoice_uuid",
+            "description": "",
+            "required": true,
+            "type": "string"
+          }
+        ],
+
+        "responses": {
+          "200": { "description": "successful operation" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+
+    "/api/v1/invoice/get-invoice-preview": {
+      "get": {
+        "tags": ["Invoice"],
+        "summary": "Get the invoice preview",
+        "description": "This endpoint gives the invoice preview.",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "invoice_uuid",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "isPreview",
+            "description": "",
+            "required": false,
+            "type": "boolean",
+            "default": false
+          },
+          {
+            "in": "query",
+            "name": "IndianStyle",
+            "description": "",
+            "required": false,
+            "type": "boolean",
+            "default": true
+          },
+          {
+            "in": "query",
+            "name": "isBankDetails",
+            "description": "",
+            "required": false,
+            "type": "boolean",
+            "default": true
+          },
+          {
+            "in": "query",
+            "name": "currency",
+            "description": "",
+            "required": false,
+            "type": "string",
+            "default": "₹"
+          },
+          {
+            "in": "query",
+            "name": "conversionRate",
+            "description": "",
+            "required": false,
+            "type": "number",
+            "default": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful logout. The user has been logged out."
+          },
+          "404": {
+            "description": "Not Found. The provided user identifier was not found."
+          },
+          "500": {
+            "description": "Internal Server Error. An unexpected error occurred on the server."
+          }
+        }
+      }
+    },
+
+    "/api/v1/invoice/get-pi-preview": {
+      "get": {
+        "tags": ["Invoice"],
+        "summary": "Get the pi preview",
+        "description": "This endpoint gives the pi preview.",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "proforma_invoice_uuid",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "invoice_no",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "isPreview",
+            "description": "",
+            "required": false,
+            "type": "boolean",
+            "default": false
+          },
+          {
+            "in": "query",
+            "name": "IndianStyle",
+            "description": "",
+            "required": false,
+            "type": "boolean",
+            "default": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful logout. The user has been logged out."
+          },
+          "404": {
+            "description": "Not Found. The provided user identifier was not found."
+          },
+          "500": {
+            "description": "Internal Server Error. An unexpected error occurred on the server."
+          }
+        }
+      }
+    },
+
+    "/api/v1/invoice/upsert-invoice-export-data": {
+      "post": {
+        "tags": ["Invoice"],
+        "summary": "Upsert Export data for an Invoice",
+        "description": "Endpoint to create or update Export data for an Invoice",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "invoice_export_data_uuid": {
+                  "type": "string",
+                  "default": null
+                },
+                "invoice_uuid": {
+                  "type": "string",
+                  "default": ""
+                },
+                "invoice_no": {
+                  "type": "string",
+                  "default": ""
+                },
+                "ship_bill_no": {
+                  "type": "string",
+                  "default": null
+                },
+                "ship_bill_date": {
+                  "type": "string",
+                  "default": null
+                },
+                "ship_port_code": {
+                  "type": "string",
+                  "default": null
+                },
+                "precarriage_by": {
+                  "type": "string",
+                  "default": null
+                },
+                "place_of_precarriage": {
+                  "type": "string",
+                  "default": null
+                },
+                "vessel_no": {
+                  "type": "string",
+                  "default": null
+                },
+                "port_of_loading": {
+                  "type": "string",
+                  "default": null
+                },
+                "port_of_discharge": {
+                  "type": "string",
+                  "default": null
+                },
+                "final_destination": {
+                  "type": "string",
+                  "default": null
+                },
+                "country_of_origin": {
+                  "type": "string",
+                  "default": null
+                },
+                "country_of_final": {
+                  "type": "string",
+                  "default": null
+                },
+                "weight": {
+                  "type": "string",
+                  "default": null
+                },
+                "packages": {
+                  "type": "string",
+                  "default": null
+                },
+                "status": {
+                  "type": "string",
+                  "default": "ACTIVE"
+                }
+              }
+            }
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+
+    "/api/v1/invoice/get-invoice-export-data": {
+      "get": {
+        "tags": ["Invoice"],
+        "summary": "Get Export data for an Invoice",
+        "description": "Endpoint to retrieve Export data for an Invoice",
+        "produces": ["application/json"],
+
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "invoice_export_data_uuid",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },            
+          {
+            "in": "query",
+            "name": "invoice_uuid",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },            
+          {
+            "in": "query",
+            "name": "invoice_no",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "columns",
+            "description": "",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "value",
+            "description": "",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "description": "",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "from_date",
+            "description": "Format will be YYYY-MM-DD.",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "to_date",
+            "description": "Format will be YYYY-MM-DD.",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "pageNo",
+            "description": "",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "in": "query",
+            "name": "itemPerPage",
+            "description": "",
+            "required": true,
+            "type": "number"
+          }
+        ],
+
+        "responses": {
+          "200": { "description": "successful operation" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    
+    "/api/v1/invoice/get-shipping-envelope-preview": {
+      "get": {
+        "tags": ["Invoice"],
+        "summary": "Get the shipping/envelope preview",
+        "description": "This endpoint gives the shipping/envelope preview.",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "invoice_uuid",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "isPreview",
+            "description": "",
+            "required": false,
+            "type": "boolean",
+            "default": false
+          },
+          {
+            "in": "query",
+            "name": "isEnvelope",
+            "description": "",
+            "required": false,
+            "type": "boolean",
+            "default": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful logout. The user has been logged out."
+          },
+          "404": {
+            "description": "Not Found. The provided user identifier was not found."
+          },
+          "500": {
+            "description": "Internal Server Error. An unexpected error occurred on the server."
+          }
+        }
+      }
+    }
+  }
+}

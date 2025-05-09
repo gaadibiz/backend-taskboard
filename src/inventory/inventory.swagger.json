@@ -1,0 +1,453 @@
+{
+  "paths": {
+    "/api/v1/inventory/upsert_inventory": {
+      "post": {
+        "tags": ["Inventory"],
+        "summary": "Create or update inventory",
+        "description": "Endpoint to create or update an inventory",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "Authentication token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Inventory data",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "inventory_uuid": {
+                  "type": "string",
+                  "default": null
+                },
+                "grn_uuid": {
+                  "type": "string",
+                  "default": null
+                },
+                "grn_no": {
+                  "type": "string",
+                  "default": null
+                },
+                "purchase_invoice_type": {
+                  "type": "string",
+                  "default": ""
+                },
+                "dated": {
+                  "type": "string",
+                  "default": null
+                },
+                "challan_no": {
+                  "type": "string",
+                  "default": null
+                },
+                "challan_date": {
+                  "type": "string",
+                  "default": null
+                },
+                "inv_invoice_no": {
+                  "type": "string",
+                  "default": ""
+                },
+                "po_number": {
+                  "type": "string",
+                  "default": null
+                },
+                "po_date": {
+                  "type": "string",
+                  "default": null
+                },
+                "eway_bill_no": {
+                  "type": "string",
+                  "default": null
+                },
+                "lr_no": {
+                  "type": "string",
+                  "default": null
+                },
+                "delivery_note": {
+                  "type": "string",
+                  "default": null
+                },
+                "mode_of_payment": {
+                  "type": "string",
+                  "default": null
+                },
+                "reference_no": {
+                  "type": "string",
+                  "default": null
+                },
+                "other_references": {
+                  "type": "string",
+                  "default": null
+                },
+                "buyers_order_no": {
+                  "type": "string",
+                  "default": null
+                },
+                "dispatch_doc_no": {
+                  "type": "string",
+                  "default": null
+                },
+                "delivery_note_date": {
+                  "type": "string",
+                  "default": null
+                },
+                "dispatched_through": {
+                  "type": "string",
+                  "default": null
+                },
+                "destination": {
+                  "type": "string",
+                  "default": null
+                },
+                "bill_of_lading": {
+                  "type": "string",
+                  "default": null
+                },
+                "motor_vehicle_no": {
+                  "type": "string",
+                  "default": null
+                },
+                "products": {
+                  "type": "object",
+                  "default": [
+                    {
+                      "product_uuid": "",
+                      "product_name": "",
+                      "description": null,
+                      "HSN": "",
+                      "quantity": 0,
+                      "rate": 0,
+                      "unit": "",
+                      "discount": 0,
+                      "amount": 0
+                    }
+                  ]
+                },
+                "total_amount": {
+                  "type": "number",
+                  "default": 0
+                },
+                "tcs": {
+                  "type": "number",
+                  "default": 0
+                },
+                "tcs_amount": {
+                  "type": "number",
+                  "default": 0
+                },
+                "tcs_sign": {
+                  "type": "string",
+                  "default": "ADD | DEDUCT"
+                },
+                "discount": {
+                  "type": "number",
+                  "default": 0
+                },
+                "discount_amount": {
+                  "type": "number",
+                  "default": 0
+                },
+                "total_amount_after_tax": {
+                  "type": "number",
+                  "default": 0
+                },
+                "consignee_uuid": {
+                  "type": "string",
+                  "default": ""
+                },
+                "consignee_name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "consignee_branch_uuid": {
+                  "type": "string",
+                  "default": ""
+                },
+                "consignee_branch_name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "consignee_address_line1": {
+                  "type": "string",
+                  "default": null
+                },
+                "consignee_address_line2": {
+                  "type": "string",
+                  "default": null
+                },
+                "consignee_address_city": {
+                  "type": "string",
+                  "default": null
+                },
+                "consignee_address_state": {
+                  "type": "string",
+                  "default": null
+                },
+                "consignee_address_country": {
+                  "type": "string",
+                  "default": null
+                },
+                "consignee_GSTIN": {
+                  "type": "string",
+                  "default": null
+                },
+                "consignee_code": {
+                  "type": "string",
+                  "default": null
+                },
+                "consignee_address_pincode": {
+                  "type": "string",
+                  "default": null
+                },
+                "buyer_uuid": {
+                  "type": "string",
+                  "default": ""
+                },
+                "buyer_name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "buyer_branch_uuid": {
+                  "type": "string",
+                  "default": ""
+                },
+                "buyer_branch_name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "buyer_address_line1": {
+                  "type": "string",
+                  "default": null
+                },
+                "buyer_address_line2": {
+                  "type": "string",
+                  "default": null
+                },
+                "buyer_address_city": {
+                  "type": "string",
+                  "default": null
+                },
+                "buyer_address_state": {
+                  "type": "string",
+                  "default": null
+                },
+                "buyer_address_country": {
+                  "type": "string",
+                  "default": null
+                },
+                "buyer_GSTIN": {
+                  "type": "string",
+                  "default": null
+                },
+                "buyer_code": {
+                  "type": "string",
+                  "default": null
+                },
+                "buyer_address_pincode": {
+                  "type": "string",
+                  "default": null
+                },
+                "seller_uuid": {
+                  "type": "string",
+                  "default": ""
+                },
+                "seller_name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "vendor_registration_type": {
+                  "type": "string",
+                  "default": ""
+                },
+                "seller_address_line1": {
+                  "type": "string",
+                  "default": null
+                },
+                "seller_address_line2": {
+                  "type": "string",
+                  "default": null
+                },
+                "seller_address_city": {
+                  "type": "string",
+                  "default": null
+                },
+                "seller_address_state": {
+                  "type": "string",
+                  "default": ""
+                },
+                "seller_address_country": {
+                  "type": "string",
+                  "default": null
+                },
+                "seller_GSTIN": {
+                  "type": "string",
+                  "default": null
+                },
+                "seller_code": {
+                  "type": "string",
+                  "default": null
+                },
+                "seller_address_pincode": {
+                  "type": "string",
+                  "default": null
+                },
+                "dispatch_through": {
+                  "type": "string",
+                  "default": null
+                },
+                "transport_id": {
+                  "type": "string",
+                  "default": null
+                },
+                "transport_doc_no": {
+                  "type": "string",
+                  "default": null
+                },
+                "transport_doc_date": {
+                  "type": "string",
+                  "default": null
+                },
+                "bank_account_uuid": {
+                  "type": "string",
+                  "default": ""
+                },
+                "bank_account_name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "document": {
+                  "type": "string",
+                  "default": null
+                },
+                "status": {
+                  "type": "string",
+                  "default": "ACTIVE"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+
+    "/api/v1/inventory/get-inventory": {
+      "get": {
+        "tags": ["Inventory"],
+        "summary": "Get all inventory",
+        "description": "This endpoint is used to get inventory details.",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "Authentication token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "inventory_uuid",
+            "description": "Inventory UUID",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "columns",
+            "description": "Array of columns to filter",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "value",
+            "description": "Filter value",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "description": "Inventory status",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "cancelled_status",
+            "description": "Inventory Cancelled status",
+            "required": false,
+            "type": "string",
+            "default": "FALSE"
+          },
+          {
+            "in": "query",
+            "name": "from_date",
+            "description": "Format will be YYYY-MM-DD",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "to_date",
+            "description": "Format will be YYYY-MM-DD",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "pageNo",
+            "description": "Page number",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "in": "query",
+            "name": "itemPerPage",
+            "description": "Items per page",
+            "required": true,
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation. Returns product details."
+          },
+          "404": {
+            "description": "Not Found. The provided product identifier was not found."
+          },
+          "500": {
+            "description": "Internal Server Error. An unexpected error occurred on the server."
+          }
+        }
+      }
+    }
+  }
+}
