@@ -4,7 +4,7 @@ exports.upsertExpenseSchema = Joi.object({
   expense_uuid: Joi.string().guid().allow('', null),
   expense_type: Joi.string()
     .max(50)
-    .valid('EXPENSE', 'JOB', 'ADVANCE')
+    .valid('EXPENSE', 'VENDOR_PAYMENT', 'ADVANCE')
     .allow('', null),
   job_order_no: Joi.string().max(100).allow('', null),
   job_uuid: Joi.string().guid().allow('', null),
@@ -68,9 +68,9 @@ exports.getExpenseSchema = Joi.object({
   project_uuid: Joi.string().guid(),
   billing_company_uuid: Joi.string().guid(),
   billing_company_branch_uuid: Joi.string().guid(),
-  is_type_expense: Joi.boolean().allow(null),
-  is_type_advance: Joi.boolean().allow(null),
-  is_type_job: Joi.boolean(),
+  expense_type: Joi.string()
+    .valid('EXPENSE', 'VENDOR_PAYMENT', 'ADVANCE')
+    .allow(null, ''),
   pageNo: Joi.number().integer().min(1),
   itemPerPage: Joi.number().integer().min(1),
   pageLimit: Joi.number()

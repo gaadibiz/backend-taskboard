@@ -244,25 +244,15 @@
 
           {
             "in": "query",
-            "name": "is_type_expense",
-            "description": "Boolean",
+            "name": "expense_type",
+            "description": "string",
             "required": false,
-            "type": "boolean"
+            "schema": {
+              "type": "string",
+              "enum": ["EXPENSE", "VENDOR_PAYMENT", "ADVANCE"]
+            }
           },
-          {
-            "in": "query",
-            "name": "is_type_advance",
-            "description": "Boolean",
-            "required": false,
-            "type": "boolean"
-          },
-          {
-            "in": "query",
-            "name": "is_type_job",
-            "description": "Boolean",
-            "required": false,
-            "type": "boolean"
-          },
+        
 
           {
             "in": "query",
