@@ -42,6 +42,11 @@ exports.upsertExpenseSchema = Joi.object({
   is_deduct_from_advance: Joi.boolean().allow(0, 1, null),
   description: Joi.string().min(30).max(10000).allow(null),
   additional_fields: Joi.array().allow('', null),
+  payment_type: Joi.string().allow('', null),
+  vendor_name: Joi.string().allow('', null),
+  vendor_advance_amount: Joi.number().allow('', null),
+  vendor_payable_amount: Joi.number().allow('', null),
+  net_vendor_payable_amount: Joi.number().allow('', null),
   status: Joi.string()
     .valid(
       'INACTIVE',

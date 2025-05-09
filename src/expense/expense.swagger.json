@@ -31,6 +31,10 @@
                   "type": "string",
                   "default": "JOB | EXPENSE | ADVANCE"
                 },
+                "payment_type": {
+                  "type": "string",
+                  "default": null
+                },
                 "user_uuid": {
                   "type": "string",
                   "default": ""
@@ -106,6 +110,10 @@
                   "type": "string",
                   "default": null
                 },
+                "vendor_name": {
+                  "type": "string",
+                  "default": null
+                },
                 "merchant": {
                   "type": "string",
                   "default": null
@@ -139,6 +147,18 @@
                   "default": null
                 },
                 "eligible_reimbursement_amount": {
+                  "type": "number",
+                  "default": null
+                },
+                "vendor_advance_amount": {
+                  "type": "number",
+                  "default": null
+                },
+                "vendor_payable_amount": {
+                  "type": "number",
+                  "default": null
+                },
+                "net_vendor_payable_amount": {
                   "type": "number",
                   "default": null
                 },
@@ -252,7 +272,6 @@
               "enum": ["EXPENSE", "VENDOR_PAYMENT", "ADVANCE"]
             }
           },
-        
 
           {
             "in": "query",
