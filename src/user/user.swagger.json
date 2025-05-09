@@ -63,22 +63,7 @@
                   "type": "string",
                   "default": null
                 },
-                "billing_company_uuid": {
-                  "type": "string",
-                  "default": null
-                },
-                "billing_company_name": {
-                  "type": "string",
-                  "default": ""
-                },
-                "billing_company_branch_name": {
-                  "type": "string",
-                  "default": ""
-                },
-                "billing_company_branch_uuid": {
-                  "type": "string",
-                  "default": ""
-                },
+
                 "affiliated_billing_company_uuids": {
                   "type": "array",
                   "items": {
@@ -208,22 +193,7 @@
                   "type": "string",
                   "default": null
                 },
-                "billing_company_uuid": {
-                  "type": "string",
-                  "default": ""
-                },
-                "billing_company_name": {
-                  "type": "string",
-                  "default": ""
-                },
-                "billing_company_branch_uuid": {
-                  "type": "string",
-                  "default": null
-                },
-                "billing_company_branch_name": {
-                  "type": "string",
-                  "default": null
-                },
+
                 "hierarchy_uuids": {
                   "type": "string",
                   "default": null
