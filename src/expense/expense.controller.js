@@ -153,9 +153,7 @@ exports.getExpense = async (req, res) => {
     value,
     pageLimit,
     advanceFilter,
-    is_type_expense,
-    is_type_advance,
-    is_type_job,
+    expense_type,
   } = req.query;
 
   console.log('req.query---->', req.query);
@@ -168,6 +166,7 @@ exports.getExpense = async (req, res) => {
       expense_category_uuid,
       billing_company_uuid,
       billing_company_branch_uuid,
+      expense_type,
     },
     status,
     to_date,
@@ -177,32 +176,26 @@ exports.getExpense = async (req, res) => {
     advanceFilter,
   );
 
-  let condition = '';
-
-  if (toBoolean(is_type_expense)) {
-    condition += (condition ? ' OR ' : '') + "expense_type = 'EXPENSE'";
-  }
-  if (toBoolean(is_type_advance)) {
-    condition += (condition ? ' OR ' : '') + "expense_type = 'ADVANCE'";
-  }
-  if (toBoolean(is_type_job)) {
-    condition += (condition ? ' OR ' : '') + "expense_type = 'JOB'";
-  }
-
-  if (condition) {
-    filter += (filter ? ' AND ' : ' WHERE ') + `(${condition})`;
-  }
+  // if (toBoolean(is_type_expense)) {
+  //   condition += (condition ? ' OR ' : '') + "expense_type = 'EXPENSE'";
+  // }
+  // if (toBoolean(is_type_advance)) {
+  //   condition += (condition ? ' OR ' : '') + "expense_type = 'ADVANCE'";
+  // }
+  // if (toBoolean(is_type_job)) {
+  //   condition += (condition ? ' OR ' : '') + "expense_type = 'JOB'";
+  // }
 
   // self draft filter
   filter +=
     (filter ? ' AND ' : ' WHERE ') +
     `(
-    status != 'EXPENSE_REQUESTED' OR (
-      status = 'EXPENSE_REQUESTED' AND (
-        created_by_uuid = '${req.user.user_uuid}' OR user_uuid = '${req.user.user_uuid}'
-      )
-    )
-  )`;
+ AND status != 'EXPENSE_REQUESTED' OR (
+  AND status = 'EXPENSE_REQUESTED' AND (
+    created_by_uuid = '${req.user.user_uuid}' OR user_uuid = '${req.user.user_uuid}'
+  )
+)
+)`;
 
   if (advanceFilter) filter = advanceFiltering(filter, advanceFilter);
   console.log('filter', filter);

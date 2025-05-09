@@ -109,8 +109,7 @@
                         "default": ""
                       }
                     }
-                  },
-                  "default": []
+                  }
                 },
                 "hierarchy_uuids": {
                   "type": "string",
