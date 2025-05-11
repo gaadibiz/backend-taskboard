@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Advance Expense Request</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 20px;
+      font-size: 12px;
+      color: #333;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 20px;
+      border-bottom: 3px solid #007BFF;
+      padding-bottom: 5px;
+    }
+
+    .section {
+      margin-top: 20px;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: bold;
+      color: #fff;
+      background-color: #007BFF;
+      padding: 8px 12px;
+      border-radius: 4px 4px 0 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 0;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 8px 10px;
+      border: 1px solid #ccc;
+    }
+
+    th {
+      background-color: #f1f1f1;
+    }
+
+    .two-column td {
+      width: 50%;
+    }
+
+    .workflow-stage {
+      margin-top: 10px;
+      margin-bottom: 5px;
+      font-weight: bold;
+      font-size: 13px;
+      color: #444;
+      padding-left: 4px;
+    }
+
+    .timeline-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 6px;
+    }
+
+    .timeline-table th {
+      background-color: #e9ecef;
+      font-size: 12px;
+    }
+
+    .timeline-table td {
+      background-color: #fdfdfd;
+      border: 1px solid #dee2e6;
+      border-radius: 4px;
+      font-size: 11.5px;
+    }
+
+    .timeline-table td.status-approved {
+      background-color: #d4edda;
+      color: #155724;
+      font-weight: bold;
+    }
+
+    .timeline-table td.status-pending {
+      background-color: #fff3cd;
+      color: #856404;
+      font-weight: bold;
+    }
+
+    .timeline-table td.status-rejected {
+      background-color: #f8d7da;
+      color: #721c24;
+      font-weight: bold;
+    }
+
+    .footer-note {
+      margin-top: 20px;
+      font-size: 11px;
+      text-align: center;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Advance Expense Request</h2>
+
+  <div class="section">
+    <div class="section-title">Request Summary</div>
+    <table class="two-column">
+      <tr>
+        <td><strong>Expense Type:</strong> <%= data.expense_type %></td>
+        <td><strong>Payment Type:</strong> <%= data.payment_type %></td>
+      </tr>
+      <tr>
+        <td><strong>Billing Company:</strong> <%= data.billing_company_name %></td>
+        <td><strong>Project:</strong> <%= data.project_name %></td>
+      </tr>
+      <tr>
+        <td><strong>Project Manager:</strong> <%= data.project_manager_name %></td>
+        <td><strong>Finance Manager:</strong> <%= data.finance_manager_name %></td>
+      </tr>
+      <tr>
+        <td><strong>Category:</strong> <%= data.expense_category_name %></td>
+        <td><strong>Category Manager:</strong> <%= data.category_manager_name %></td>
+      </tr>
+      <tr>
+        <td><strong>Merchant:</strong> <%= data.merchant %></td>
+        <td><strong>Business Purpose:</strong> <%= data.business_purpose %></td>
+      </tr>
+      <tr>
+        <td><strong>Unsetteled  Amount:</strong> ₹ <%= data.advance_amount %> </td>
+        <td><strong>Payable Amount:</strong> ₹ <%= data.vendor_payable_amount %> </td>
+      </tr>
+      <tr>
+          <td><strong>Net Payable Amount:</strong> ₹ <%= data.net_vendor_payable_amount %></td>
+          <td><strong>Status:</strong> <%= data.status %></td>
+      </tr>
+    
+      <tr>
+        <td colspan="2"><strong>Description:</strong> <%= data.description %></td>
+      </tr>
+    </table>
+  </div>
+
+  <% if (data.vendor) { %>
+    <div class="section">
+      <div class="section-title">Vendor Information</div>
+      <table class="two-column">
+        <tr>
+          <td><strong>Vendor Name:</strong> <%= data.vendor.vendor_name %></td>
+          <td><strong>Registration Type:</strong> <%= data.vendor.registration_type %></td>
+        </tr>
+        <tr>
+          <td><strong>Contact Name:</strong> <%= data.vendor.contact_name %></td>
+          <td><strong>Email:</strong> <%= data.vendor.mail_id %></td>
+        </tr>
+        <tr>
+          <td><strong>Mobile:</strong> <%= data.vendor.mobile %></td>
+          <td><strong>Phone Number:</strong> <%= data.vendor.phone_number %></td>
+        </tr>
+        <tr>
+          <td><strong>Website:</strong> <%= data.vendor.website %></td>
+          <td><strong>Status:</strong> <%= data.vendor.status %></td>
+        </tr>
+        <tr>
+          <td><strong>GSTIN:</strong> <%= data.vendor.gst_in %></td>
+          <td><strong>PAN No:</strong> <%= data.vendor.pan_no %></td>
+        </tr>
+        <tr>
+          <td><strong>Address Line 1:</strong> <%= data.vendor.vendor_address_line1 %></td>
+          <td><strong>Address Line 2:</strong> <%= data.vendor.vendor_address_line2 %></td>
+        </tr>
+        <tr>
+          <td><strong>City/State:</strong> <%= data.vendor.vendor_address_city %>, <%= data.vendor.vendor_address_state %></td>
+          <td><strong>Pincode:</strong> <%= data.vendor.vendor_address_pincode %></td>
+        </tr>
+        <tr>
+          <td><strong>Country:</strong> <%= data.vendor.vendor_address_country %></td>
+          <td><strong>Note:</strong> <%= data.vendor.note %></td>
+        </tr>
+        <tr>
+          <td><strong>Bank Name:</strong> <%= data.vendor.bank_name %></td>
+          <td><strong>Bank Branch:</strong> <%= data.vendor.bank_branch_name %></td>
+        </tr>
+        <tr>
+          <td><strong>Account No:</strong> <%= data.vendor.bank_account_no %></td>
+          <td><strong>IFSC Code:</strong> <%= data.vendor.bank_ifsc_code %></td>
+        </tr>
+        <% if (data.vendor.additional_fields) { %>
+          <tr>
+            <td colspan="2"><strong>Additional Fields:</strong> <%= data.vendor.additional_fields %></td>
+          </tr>
+        <% } %>
+      </table>
+    </div>
+  <% } %>
+
+  <% if (data.workflow) { %>
+  <div class="section">
+    <div class="section-title">Approval Workflow</div>
+    <% Object.entries(data.workflow).forEach(([stage, steps]) => { %>
+      <div class="workflow-stage"><%= stage.replace(/_/g, " ") %></div>
+      <table class="timeline-table">
+        <tr>
+          <th>Role</th>
+          <th>User</th>
+          <th>Status</th>
+          <th>Level</th>
+          <th>Approved By</th>
+          <th>Current</th>
+          <th>Completed</th>
+        </tr>
+        <% steps.forEach(step => { %>
+          <tr>
+            <td><%= step.role || "-" %></td>
+            <td><%= step.user_name || "-" %></td>
+            <td class="status-<%= step.current_status?.toLowerCase() || 'pending' %>">
+              <%= step.current_status || "-" %>
+            </td>
+            <td><%= step.level || "-" %></td>
+            <td><%= step.approved_by_name || "-" %></td>
+            <td><%= step.current_pointer ? "Yes" : "No" %></td>
+            <td><%= step.is_completed ? "Yes" : "No" %></td>
+          </tr>
+        <% }) %>
+      </table>
+    <% }) %>
+  </div>
+  <% } %>
+
+  <% if (data.additional_fields) { %>
+  <div class="section">
+    <div class="section-title">Additional Fields</div>
+    <table>
+      <tr><th>Field</th><th>Value</th></tr>
+      <% Object.entries(data.additional_fields).forEach(([key, value]) => { %>
+        <tr><td><%= key %></td><td><%= value %></td></tr>
+      <% }) %>
+    </table>
+  </div>
+  <% } %>
+
+  <div class="footer-note">
+    This document was auto-generated. Please verify with HR/Finance in case of discrepancies.
+  </div>
+
+</body>
+</html>
