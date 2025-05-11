@@ -30,6 +30,8 @@ const {
   ejsPreview,
   pdfMaker,
 } = require('../../utils/microservice_func');
+const e = require('cors');
+const { z } = require('zod');
 
 function toBoolean(value) {
   if (value === 'true' || value === true || value === 1) return true;
@@ -467,7 +469,7 @@ GROUP BY vendor_uuid;`;
     COALESCE(
         SUM(
             CASE 
-                WHEN status = 'FINANCE_APPROVED' AND expense_type = 'ADVANCE'  THEN IFNULL(actual_requested_advance_amount, 0)
+                WHEN status = 'CLEARED' AND expense_type = 'ADVANCE'  THEN IFNULL(actual_requested_advance_amount, 0)
                 ELSE 0
             END
             - IF(is_deduct_from_advance, IFNULL(actual_reimbursed_amount, 0), 0)
@@ -665,83 +667,69 @@ exports.getPreviewExpense = async (req, res) => {
   );
   if (!expense) throwError(404, 'Expense not found.');
 
-  const [user_details] = await getRecords(
-    'latest_user',
-    `where user_uuid = '${expense.user_uuid}'`,
-  );
-  let workflow = await getData(
+  const workflowRes = await getData(
     `${base_url}/api/v1/expense/get-expense-approval-workflow`,
-    { expense_uuid: expense_uuid },
+    { expense_uuid },
     'json',
     null,
     'GET',
     req.headers,
   );
-  console.log('workflow ---------------------', workflow);
-  let [approval] = await getRecords(
-    'latest_dynamic_approval',
-    `where record_uuid = '${expense_uuid}'`,
-  );
 
-  let data = {
-    expense_details: {
-      status: expense.status.replace('_', ' ').toUpperCase(),
-      expense_type: expense.expense_type,
-      project_name: expense.project_name,
-      reimbursed_amount:
-        expense.reimbursed_amount?.toLocaleString('en-IN') || '0',
-      eligible_reimbursement_amount:
-        expense.eligible_reimbursement_amount?.toLocaleString('en-IN') || '0',
-      actual_reimbursement_amount:
-        expense.actual_reimbursement_amount?.toLocaleString('en-IN') || '0',
-      created_by_name: expense.created_by_name,
-      user_name: expense.user_name,
-      expense_category_name: expense.expense_category_name,
-      expense_date: expense.expense_date,
-      requested_advance_amount: expense.requested_advance_amount,
-      advance_amount: expense.advance_amount,
-      business_purpose: expense.business_purpose,
-      merchant: expense.merchant,
-      job_order_no: expense.job_order_no,
-      job_name: expense.job_name,
-    },
-    employee_details: {
-      employee_name: user_details.full_name,
-      department_name: user_details.department_name,
-      role_value: user_details.role_value,
-      branch_name: user_details.branch_name,
-      company_name: user_details.billing_company_name,
-    },
-
-    workflow_expense_requested: workflow.data.workflow.EXPENSE_REQUESTED,
-    workflow_expense_approval_requested:
-      workflow.data.workflow.EXPENSE_APPROVAL_REQUESTED,
-    workflow_finance_approval_requested:
-      workflow.data.workflow.FINANCE_APPROVAL_REQUESTED,
-    workflow_finance_approved: workflow.data.workflow.FINANCE_APPROVED,
-    workflow_cleared: workflow.data.workflow.CLEARED,
-    approval,
-    remarks: approval?.remark,
-    // approval_status: approval?.status,
-    date: approval?.create_ts,
+  const workflowData = workflowRes?.data?.workflow || {};
+  const workflow = {
+    EXPENSE_APPROVAL_REQUESTED: workflowData.EXPENSE_APPROVAL_REQUESTED || [],
+    FINANCE_APPROVAL_REQUESTED: workflowData.FINANCE_APPROVAL_REQUESTED || [],
   };
 
-  console.log('data ---------------------', data);
+  let extraData = {};
+  let template = '';
+
+  if (expense.expense_type === 'VENDOR_PAYMENT') {
+    const [vendor] = await getRecords(
+      'latest_vendors',
+      `where vendor_uuid = '${expense.vendor_uuid}'`,
+    );
+    extraData.vendor = vendor || {};
+
+    template =
+      expense.payment_type === 'ADVANCE'
+        ? 'vendorExpenseAd.ejs'
+        : 'vendorExpense.ejs';
+  } else {
+    const [user_details] = await getRecords(
+      'latest_user',
+      `where user_uuid = '${expense.user_uuid}'`,
+    );
+    extraData.user_details = user_details || {};
+
+    template =
+      expense.expense_type === 'ADVANCE'
+        ? 'advanceExpense.ejs'
+        : 'expenseExpense.ejs';
+  }
+
+  const data = {
+    data: {
+      ...expense,
+      ...extraData,
+      workflow,
+    },
+  };
 
   if (isPreview === 'true') {
-    result = await ejsPreview(data, `pdf/expense.ejs`);
+    const result = await ejsPreview(data, `pdf/${template}`);
     return res.json(responser('PO EJS', result));
-  } else {
-    result = await pdfMaker(data, `expense.ejs`, {
-      isTitlePage: false,
-    });
-    res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader(
-      'Content-Disposition',
-      'attachment; filename="expense_invoice.pdf"',
-    );
-    res.send(Buffer.from(result));
   }
+
+  const pdfBuffer = await pdfMaker(data, template, { isTitlePage: false });
+
+  res.setHeader('Content-Type', 'application/pdf');
+  res.setHeader(
+    'Content-Disposition',
+    'attachment; filename="expense_invoice.pdf"',
+  );
+  res.send(Buffer.from(pdfBuffer));
 };
 
 exports.getExpenseDynamicApprovalHistory = async (req, res) => {
@@ -884,7 +872,7 @@ exports.getExpenseApprovalWorkFlow = async (req, res) => {
     ],
   };
 
-  console.log(workflow, '................workflow');
+  // console.log(workflow, '................workflow');
 
   return res.json(
     responser('Expense approval workflow', {
@@ -963,13 +951,16 @@ const buildHierarchy = async (
           AND JSON_CONTAINS(approval_uuids, JSON_OBJECT('type', '${item.type}', 'uuid', '${item.uuid}'))`,
       );
 
-      const [approver] = approval?.created_by_uuid
-        ? await getRecords(
-            'latest_user',
-            `where user_uuid = '${approval.created_by_uuid}'`,
-          )
-        : [null];
+      let approver = null;
 
+      if (approval?.status === 'APPROVED') {
+        [approver] = approval?.created_by_uuid
+          ? await getRecords(
+              'latest_user',
+              `where user_uuid = '${approval.created_by_uuid}'`,
+            )
+          : [null];
+      }
       console.log(approval, '...........................');
 
       hierarchy.push({
