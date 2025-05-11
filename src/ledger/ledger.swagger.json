@@ -1,0 +1,184 @@
+{
+    "paths": {
+      "/api/v1/ledger/upsert_ledger": {
+        "post": {
+          "tags": ["Ledger"],
+          "summary": "Create or update ledger",
+          "description": "Endpoint to create or update a ledger",
+          "consumes": ["application/json"],
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "header",
+              "name": "auth-Token",
+              "description": "Authentication token",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Ledger data",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "ledger_uuid": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "selling_name": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "quantity": {
+                    "type": "number",
+                    "default": ""
+                  },
+                  "invoice_no": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "billing_company_name": {
+                    "type": "string",
+                    "default": null
+                  },
+                  "billing_company_uuid": {
+                    "type": "string",
+                    "default": null
+                  },
+                  "balance": {
+                    "type": "number",
+                    "default": ""
+                  },
+                  "customer_name": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "type": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "status": {
+                    "type": "string",
+                    "default": "ACTIVE"
+                  }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful operation"
+            },
+            "404": {
+              "description": "Not Found"
+            },
+            "500": {
+              "description": "Internal Server Error"
+            }
+          }
+        }
+      },
+
+      "/api/v1/ledger/get-ledger": {
+            "get": {
+              "tags": ["Ledger"],
+              "summary": "Get all ledgers",
+              "description": "This endpoint is used to get ledger details.",
+              "consumes": ["application/json"],
+              "produces": ["application/json"],
+              "parameters": [
+                {
+                  "in": "header",
+                  "name": "auth-Token",
+                  "description": "Authentication token",
+                  "required": true,
+                  "type": "string"
+                },
+                {
+                  "in": "query",
+                  "name": "ledger_uuid",
+                  "description": "Ledger UUID",
+                  "required": false,
+                  "type": "string"
+                },
+                {
+                  "in": "query",
+                  "name": "product_uuid",
+                  "description": "Product UUID",
+                  "required": false,
+                  "type": "string"
+                },
+                {
+                  "in": "query",
+                  "name": "columns",
+                  "description": "Array of columns to filter",
+                  "required": false,
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                {
+                  "in": "query",
+                  "name": "value",
+                  "description": "Filter value",
+                  "required": false,
+                  "type": "string",
+                  "default": ""
+                },
+                {
+                  "in": "query",
+                  "name": "status",
+                  "description": "Ledger status",
+                  "required": false,
+                  "type": "string",
+                  "default": ""
+                },
+                {
+                  "in": "query",
+                  "name": "from_date",
+                  "description": "Format will be YYYY-MM-DD",
+                  "required": false,
+                  "type": "string",
+                  "default": ""
+                },
+                {
+                  "in": "query",
+                  "name": "to_date",
+                  "description": "Format will be YYYY-MM-DD",
+                  "required": false,
+                  "type": "string",
+                  "default": ""
+                },
+                {
+                  "in": "query",
+                  "name": "pageNo",
+                  "description": "Page number",
+                  "required": true,
+                  "type": "number"
+                },
+                {
+                  "in": "query",
+                  "name": "itemPerPage",
+                  "description": "Items per page",
+                  "required": true,
+                  "type": "number"
+                }
+              ],
+              "responses": {
+                "200": {
+                  "description": "Successful operation. Returns product details."
+                },
+                "404": {
+                  "description": "Not Found. The provided product identifier was not found."
+                },
+                "500": {
+                  "description": "Internal Server Error. An unexpected error occurred on the server."
+                }
+              }
+            }
+      }
+        }
+}

@@ -62,7 +62,7 @@ module.exports = {
         submodule_name: 'Purchase Order',
         table_name: 'latest_purchase_order',
         table_status:
-          '["INACTIVE", "DRAFT", "PURCHASE_ORDER_APPROVAL_REQUESTED", "PURCHASE_ORDER", "REJECTED", "ROLLBACK"]',
+          '["INACTIVE", "DRAFT", "PURCHASE_ORDER_APPROVAL_REQUESTED", "PURCHASE_ORDER_APPROVED", "REJECTED", "ROLLBACK"]',
         create_ts: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
     ]);

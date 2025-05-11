@@ -21,6 +21,14 @@ module.exports = {
         type: Sequelize.CHAR(36),
         allowNull: false,
       },
+      affiliated_billing_company_uuids: {
+        type: Sequelize.JSON,
+        allowNull: true,
+      },
+      billing_company_branches: {
+        type: Sequelize.JSON,
+        allowNull: true,
+      },
       created_by_uuid: {
         type: Sequelize.CHAR(36),
         allowNull: true,

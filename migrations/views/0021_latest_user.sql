@@ -1,0 +1,77 @@
+CREATE
+or REPLACE VIEW latest_user AS
+select
+    uf.user_fact_id,
+    uf.user_uuid,
+    uf.email,
+    `uf`.status,
+    uf.created_by_uuid,
+    uf.insert_ts,
+    lud.user_dim_id,
+    lud.user_password,
+    lr.role_value,
+    lud.role_uuid,
+    lr.role_name,
+    lr.role_group,
+    lud.affiliated_billing_company_uuids,
+    lud.billing_company_branches,
+    up.user_profile_id,
+    up.first_name,
+    up.last_name,
+    CONCAT (
+        up.first_name,
+        CASE
+            WHEN up.last_name IS NOT NULL THEN CONCAT (' ', up.last_name)
+            ELSE ''
+        END
+    ) AS full_name,
+    up.personal_email,
+    up.department_uuid,
+    up.department_name,
+    up.job_title,
+    up.manager_uuid,
+    up.manager_name,
+    up.hierarchy_uuids,
+    up.user_type,
+    up.assigned_phone_number,
+    up.shared_email,
+    up.mobile,
+    up.home_phone,
+    up.linkedin_profile,
+    up.hire_date,
+    up.last_day_at_work,
+    up.department,
+    up.fax,
+    up.date_of_birth,
+    up.mother_maiden_name,
+    up.photo,
+    up.signature,
+    up.street_address,
+    up.unit_or_suite,
+    up.city,
+    up.province_or_state,
+    up.postal_code,
+    up.country,
+    up.languages_known,
+    up.documents,
+    up.branch_name,
+    up.branch_uuid,
+    up.father_name,
+    up.mother_name,
+    up.spouse_name,
+    up.father_contact_no,
+    up.mother_contact_no,
+    up.spouse_contact_no,
+    up.marital_status,
+    up.attachment,
+    up.bank_name,
+    up.bank_account_number,
+    up.bank_ifsc_code,
+    up.bank_branch
+from
+    user_fact uf
+    INNER JOIN latest_user_dim as lud on uf.user_uuid = lud.user_uuid
+    left join user_profile as up on uf.user_uuid = up.user_uuid
+    left join latest_roles as lr on lr.role_uuid = lud.role_uuid
+ORDER BY
+    uf.insert_ts DESC;

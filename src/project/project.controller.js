@@ -45,8 +45,20 @@ exports.upsertProject = async (req, res) => {
   const insertProject = await insertRecords('project', req.body);
   res.json(responser('Project created or updated successfully.', req.body));
 
-  // res.json(responser('Project created or updated successfully.', req.body));
-
+  //<------------ handle project approval module properly ----------->
+  const bodyData = {
+    table_name: 'latest_project',
+    record_uuid: req.body.project_uuid,
+    record_column_name: 'project_uuid',
+  };
+  getData(
+    base_url + '/api/v1/approval/insert-approval',
+    null,
+    'json',
+    bodyData,
+    'POST',
+    req.headers,
+  );
   // <---------------- history entry ---------------->
   (async () => {
     try {
@@ -112,20 +124,14 @@ exports.getProject = async (req, res) => {
     value,
   );
 
-  let totalRecords = await getCountRecord(tableName, filter);
-
   filter = await roleFilterService(
     filter,
     'latest_project_with_team',
     req.user,
   );
-
   let pageFilter = pagination(pageNo, itemPerPage);
-
-  // let result = await getRecords(tableName, filter, pageFilter);
-
-  let sql = `SELECT * FROM latest_project WHERE project_uuid IN (SELECT project_uuid FROM latest_project_with_team ${filter} )  ${pageFilter}`;
-  let result = await dbRequest(sql);
+  let totalRecords = await getCountRecord(tableName, filter);
+  let result = await getRecords(tableName, filter, pageFilter);
 
   return res.json(responser('Project: ', result, result.length, totalRecords));
 };

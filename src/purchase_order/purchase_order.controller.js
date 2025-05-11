@@ -96,25 +96,25 @@ exports.upsertPurchaseOrder = async (req, res) => {
   );
 
   //<------------ update analytics data for updates ------------>
-  // if (isUpadtion) {
-  //   if (
-  //     old_purchase_order_date != convertISOToDate(req.body.purchase_order_date)
-  //   ) {
-  //     console.log(
-  //       old_purchase_order_date,
-  //       '-',
-  //       convertISOToDate(req.body.purchase_order_date),
-  //     );
-  //     await dbRequest(
-  //       `CALL analytics_purchase_order("${old_purchase_order_date}","${old_purchase_order_date}")`,
-  //     );
-  //   }
-  //   await dbRequest(
-  //     `CALL analytics_purchase_order("${convertISOToDate(
-  //       req.body.purchase_order_date,
-  //     )}","${convertISOToDate(req.body.purchase_order_date)}")`,
-  //   );
-  // }
+  if (isUpadtion) {
+    if (
+      old_purchase_order_date != convertISOToDate(req.body.purchase_order_date)
+    ) {
+      console.log(
+        old_purchase_order_date,
+        '-',
+        convertISOToDate(req.body.purchase_order_date),
+      );
+      await dbRequest(
+        `CALL analytics_purchase_order("${old_purchase_order_date}","${old_purchase_order_date}")`,
+      );
+    }
+    await dbRequest(
+      `CALL analytics_purchase_order("${convertISOToDate(
+        req.body.purchase_order_date,
+      )}","${convertISOToDate(req.body.purchase_order_date)}")`,
+    );
+  }
 
   res.json(responser('Purchase Order created successfully.', req.body));
 
@@ -171,53 +171,53 @@ exports.getPurchaseOrder = async (req, res) => {
   }
 
   // / self draft filter
-  filter +=
-    (filter ? ' AND ' : ' WHERE ') +
-    `(
-   status != 'DRAFT' OR (
-     status = 'DRAFT' AND (
-       created_by_uuid = '${req.user.user_uuid}'
-     )
-   )
- )`;
+  //   filter +=
+  //     (filter ? ' AND ' : ' WHERE ') +
+  //     `(
+  //    status != 'DRAFT' OR (
+  //      status = 'DRAFT' AND (
+  //        created_by_uuid = '${req.user.user_uuid}'
+  //      )
+  //    )
+  //  )`;
 
   filter = await roleFilterService(filter, tableName, req.user);
   let pageFilter = pagination(pageNo, itemPerPage);
   let totalRecords = await getCountRecord(tableName, filter);
   let result = await getRecords(tableName, filter, pageFilter);
   if (purchase_order_uuid) {
-    // const date_string = result[0].purchase_order_date.toISOString();
-    // result[0].purchase_order_date = date_string.split('T')[0];
+    const date_string = result[0].purchase_order_date.toISOString();
+    result[0].purchase_order_date = date_string.split('T')[0];
   }
 
-  if (result.length > 0) {
-    // // merge approval record logic
-    mergeExpense = await getData(
-      base_url + '/api/v1/approval/merge-approval-record',
-      null,
-      'json',
-      {
-        record_uuid: result[0].purchase_order_uuid,
-        table_name: tableName,
-        data: {},
-      },
-      'POST',
-      req.headers,
-    );
+  // if (result.length > 0) {
+  //   // // merge approval record logic
+  //   mergeExpense = await getData(
+  //     base_url + '/api/v1/approval/merge-approval-record',
+  //     null,
+  //     'json',
+  //     {
+  //       record_uuid: result[0].purchase_order_uuid,
+  //       table_name: tableName,
+  //       data: {},
+  //     },
+  //     'POST',
+  //     req.headers,
+  //   );
 
-    // console.log(mergeExpense);
+  //   // console.log(mergeExpense);
 
-    // Update the first order with response data
-    if (mergeExpense) {
-      const { approval_uuid, requested_by_uuid, is_user_approver } =
-        mergeExpense; // Destructure for direct assignments
-      Object.assign(result[0], {
-        approval_uuid,
-        requested_by_uuid,
-        is_user_approver,
-      });
-    }
-  }
+  //   // Update the first order with response data
+  //   if (mergeExpense) {
+  //     const { approval_uuid, requested_by_uuid, is_user_approver } =
+  //       mergeExpense; // Destructure for direct assignments
+  //     Object.assign(result[0], {
+  //       approval_uuid,
+  //       requested_by_uuid,
+  //       is_user_approver,
+  //     });
+  //   }
+  // }
 
   return res.json(
     responser('Purchase Order : ', result, result.length, totalRecords),

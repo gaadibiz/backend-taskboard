@@ -1,0 +1,209 @@
+{
+    "paths": {
+      "/api/v1/billing_company/upsert-billing-company": {
+        "post": {
+          "tags": ["Billing Company"],
+          "summary": "Create or update billing company",
+          "description": "Endpoint to create or update a billing company",
+          "consumes": ["application/json"],
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "header",
+              "name": "auth-Token",
+              "description": "Authentication token",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Billing Company data",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "billing_company_uuid": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "billing_company_name": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "billing_company_line1" :{
+                    "type": "string",
+                    "default": null
+                  },
+                  "billing_company_line2" :{
+                    "type": "string",
+                    "default": null
+                  },
+                  "billing_company_city" :{
+                    "type": "string",
+                    "default": null
+                  },
+                  "billing_company_state" :{
+                    "type": "string",
+                    "default": null
+                  },
+                  "billing_company_pincode" :{
+                    "type": "string",
+                    "default": null
+                  },
+                  "billing_company_country" :{
+                    "type": "string",
+                    "default": null
+                  },
+                  "mobile": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "phone_number": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "website": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "gst_in": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "mail_id": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "bank_name": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "branch": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "account_no": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "swift_code": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "ifsc_code": {
+                    "type": "string",
+                    "default": ""
+                  }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful operation"
+            },
+            "404": {
+              "description": "Not Found"
+            },
+            "500": {
+              "description": "Internal Server Error"
+            }
+          }
+        }
+      },
+
+      "/api/v1/billing_company/get-billing-company": {
+            "get": {
+              "tags": ["Billing Company"],
+              "summary": "Get all billing company",
+              "description": "This endpoint is used to get billing company details.",
+              "consumes": ["application/json"],
+              "produces": ["application/json"],
+              "parameters": [
+                {
+                  "in": "header",
+                  "name": "auth-Token",
+                  "description": "Authentication token",
+                  "required": true,
+                  "type": "string"
+                },
+                {
+                  "in": "query",
+                  "name": "billing_company_uuid",
+                  "description": "Billing Company UUID",
+                  "required": false,
+                  "type": "string"
+                },
+                {
+                  "in": "query",
+                  "name": "columns",
+                  "description": "Array of columns to filter",
+                  "required": false,
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                {
+                  "in": "query",
+                  "name": "value",
+                  "description": "Filter value",
+                  "required": false,
+                  "type": "string",
+                  "default": ""
+                },
+                {
+                  "in": "query",
+                  "name": "status",
+                  "description": "Billing Company status",
+                  "required": false,
+                  "type": "string",
+                  "default": ""
+                },
+                {
+                  "in": "query",
+                  "name": "from_date",
+                  "description": "Format will be YYYY-MM-DD",
+                  "required": false,
+                  "type": "string",
+                  "default": ""
+                },
+                {
+                  "in": "query",
+                  "name": "to_date",
+                  "description": "Format will be YYYY-MM-DD",
+                  "required": false,
+                  "type": "string",
+                  "default": ""
+                },
+                {
+                  "in": "query",
+                  "name": "pageNo",
+                  "description": "Page number",
+                  "required": true,
+                  "type": "number"
+                },
+                {
+                  "in": "query",
+                  "name": "itemPerPage",
+                  "description": "Items per page",
+                  "required": true,
+                  "type": "number"
+                }
+              ],
+              "responses": {
+                "200": {
+                  "description": "Successful operation. Returns product details."
+                },
+                "404": {
+                  "description": "Not Found. The provided product identifier was not found."
+                },
+                "500": {
+                  "description": "Internal Server Error. An unexpected error occurred on the server."
+                }
+              }
+            }
+      }
+        }
+}

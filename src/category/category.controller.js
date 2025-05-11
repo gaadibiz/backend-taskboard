@@ -36,6 +36,20 @@ exports.upsertCategory = async (req, res) => {
   }
   await insertRecords('category', req.body);
   res.json(responser('category created or updated successfully.', req.body));
+  //<------------ handle category approval module properly ----------->
+  const bodyData = {
+    table_name: 'latest_category',
+    record_uuid: req.body.category_uuid,
+    record_column_name: 'category_uuid',
+  };
+  getData(
+    base_url + '/api/v1/approval/insert-approval',
+    null,
+    'json',
+    bodyData,
+    'POST',
+    req.headers,
+  );
 };
 
 exports.getCategory = async (req, res) => {

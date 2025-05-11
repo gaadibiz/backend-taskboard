@@ -1,0 +1,388 @@
+{
+  "paths": {
+    "/api/v1/grn/upsert-grn": {
+      "post": {
+        "tags": ["GRN"],
+        "summary": "Post GRN",
+        "description": "Endpoint to create or update grn",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "grn_uuid": {
+                  "type": "string",
+                  "default": null
+                },
+                "grn_type": {
+                  "type": "string",
+                  "default": null
+                },
+                "grn_no": {
+                  "type": "string",
+                  "default": ""
+                },
+                "grn_date": {
+                  "type": "string",
+                  "default": ""
+                },
+                "project": {
+                  "type": "string",
+                  "default": ""
+                },
+                "manager": {
+                  "type": "string",
+                  "default": ""
+                },
+                "po_number": {
+                  "type": "string",
+                  "default": null
+                },
+                "po_date": {
+                  "type": "string",
+                  "default": null
+                },
+                "lr_no": {
+                  "type": "string",
+                  "default": null
+                },
+                "delivery_type": {
+                  "type": "string",
+                  "default": ""
+                },
+                "dispatch_through" :{
+                  "type": "string",
+                  "default": null
+                },
+                "transport_id" :{
+                  "type": "string",
+                  "default": null
+                },
+                "transport_doc_no" :{
+                  "type": "string",
+                  "default": null
+                },
+                "transport_doc_date" :{
+                  "type": "string",
+                  "default": null
+                },
+                "vehicle_no": {
+                  "type": "string",
+                  "default": null
+                },
+                "place_of_supply": {
+                  "type": "string",
+                  "default": null
+                },
+                "billing_company_uuid": {
+                  "type": "string",
+                  "default": null
+                },
+                "billing_company_name": {
+                  "type": "string",
+                  "default": null
+                },
+                "billing_company_branch_uuid": {
+                  "type": "string",
+                  "default": null
+                },
+                "billing_company_branch_name": {
+                  "type": "string",
+                  "default": null
+                },
+                "billing_company_branch_state": {
+                  "type": "string",
+                  "default": null
+                },
+                "vendor_uuid" :{
+                  "type": "string",
+                  "default": ""
+                },
+                "vendor_name" :{
+                  "type": "string",
+                  "default": ""
+                },
+                "registration_type" :{
+                  "type": "string",
+                  "default": ""
+                },
+                "vendor_gstin" :{
+                  "type": "string",
+                  "default": ""
+                },
+                "vendor_address_line1" :{
+                  "type": "string",
+                  "default": null
+                },
+                "vendor_address_line2" :{
+                  "type": "string",
+                  "default": null
+                },
+                "vendor_address_city" :{
+                  "type": "string",
+                  "default": null
+                },
+                "vendor_address_state" :{
+                  "type": "string",
+                  "default": null
+                },
+                "vendor_address_pincode" :{
+                  "type": "string",
+                  "default": null
+                },
+                "vendor_address_country" :{
+                  "type": "string",
+                  "default": null
+                },
+                "delivery_address_name" :{
+                  "type": "string",
+                  "default": null
+                },
+                "delivery_address_line1" :{
+                  "type": "string",
+                  "default": null
+                },
+                "delivery_address_line2" :{
+                  "type": "string",
+                  "default": null
+                },
+                "delivery_address_city" :{
+                  "type": "string",
+                  "default": null
+                },
+                "delivery_address_state" :{
+                  "type": "string",
+                  "default": null
+                },
+                "delivery_address_pincode" :{
+                  "type": "string",
+                  "default": null
+                },
+                "delivery_address_country" :{
+                  "type": "string",
+                  "default": null
+                },
+                "contact_uuid" :{
+                  "type": "string",
+                  "default": null
+                },
+                "contact_name" :{
+                  "type": "string",
+                  "default": null
+                },
+                "phone_number" :{
+                  "type": "string",
+                  "default": null
+                },
+                "remark": {
+                  "type": "string",
+                  "default": null
+                },
+                "invoice_items": {
+                  "type": "object",
+                  "default": [{
+                    "product_uuid": "",
+                    "product_name": "",
+                    "customer_product_name":"",
+                    "description": "",
+                    "HSN_code": "",
+                    "quantity": 0,
+                    "unit": "",
+                    "unit_price": 0,
+                    "discount": 0,
+                    "discount_amount":0,
+                    "taxable_amount": 0,
+                    "tax_rate": 0,
+                    "tax_amount":0,
+                    "total": 0,
+                    "cess_rate":0,
+                    "state_cess_rate":0
+                    }]
+                },
+                "total_amount": {
+                  "type": "number",
+                  "default": 0
+                },
+                "tcs": {
+                  "type": "number",
+                  "default": 0
+                },
+                "tcs_amount": {
+                  "type": "number",
+                  "default": 0
+                },
+                "tcs_sign": {
+                  "type": "string",
+                  "default": "ADD | DEDUCT"
+                },
+                "discount": {
+                  "type": "number",
+                  "default": 0
+                },
+                "discount_amount": {
+                  "type": "number",
+                  "default": 0
+                },
+                "is_round_off": {
+                  "type": "number",
+                  "default": 0
+                },
+                "term_and_condition": {
+                  "type": "string",
+                  "default": null
+                },
+                "total_amount_after_tax": {
+                  "type": "number",
+                  "default": 0
+                },
+                "attachments": {
+                  "type": "object",
+                  "default": ["links"]
+                },
+                "status": {
+                  "type": "string",
+                  "default": "ACTIVE | INACTIVE"
+                }
+              }
+            }
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+
+    "/api/v1/grn/get-grn": {
+      "get": {
+        "tags": ["GRN"],
+        "summary": "Get GRN",
+        "description": "Endpoint to retrieve GRN",
+        "produces": ["application/json"],
+
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "combined_grn_no",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },            
+          {
+            "in": "query",
+            "name": "billing_company_uuid",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "grn_uuid",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "columns",
+            "description": "",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "value",
+            "description": "",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "description": "",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "cancelled_status",
+            "description": "Inventory Cancelled status",
+            "required": false,
+            "type": "string",
+            "default": "FALSE"
+          },
+          {
+            "in": "query",
+            "name": "from_date",
+            "description": "Format will be YYYY-MM-DD.",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "to_date",
+            "description": "Format will be YYYY-MM-DD.",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "pageNo",
+            "description": "",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "in": "query",
+            "name": "itemPerPage",
+            "description": "",
+            "required": true,
+            "type": "number"
+          }
+        ],
+
+        "responses": {
+          "200": { "description": "successful operation" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    }
+  }
+}

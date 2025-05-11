@@ -1,0 +1,276 @@
+{
+  "paths": {
+    "/api/v1/product/upsert_product": {
+      "post": {
+        "tags": ["Product"],
+        "summary": "Create or update Product",
+        "description": "Endpoint to create or update a Product",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "Authentication token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Product data",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "product_uuid": {
+                  "type": "string",
+                  "default": ""
+                },
+                "product_name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "item_type": {
+                  "type": "string",
+                  "default": "PRODUCT | SERVICE"
+                },
+                "hsn_code": {
+                  "type": "string",
+                  "default": null
+                },
+                "unit": {
+                  "type": "string",
+                  "default": null
+                },
+                "product_type": {
+                  "type": "string",
+                  "default": null
+                },
+                "gst": {
+                  "type": "string",
+                  "default": null
+                },
+                "cess": {
+                  "type": "string",
+                  "default": null
+                },
+                "cess_amount": {
+                  "type": "string",
+                  "default": null
+                },
+                "no_itc": {
+                  "type": "string",
+                  "default": "YES | NO"
+                },
+                "category_uuid": {
+                  "type": "string",
+                  "default": null
+                },
+                "category_name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "sell_price": {
+                  "type": "string",
+                  "default": ""
+                },
+                "sell_price_tax": {
+                  "type": "string",
+                  "default": ""
+                },
+                "purchase_price": {
+                  "type": "string",
+                  "default": ""
+                },
+                "purchase_price_tax": {
+                  "type": "string",
+                  "default": ""
+                },
+                "image": {
+                  "type": "string",
+                  "default": ""
+                },
+                "colour": {
+                  "type": "string",
+                  "default": ""
+                },
+                "description": {
+                  "type": "string",
+                  "default": ""
+                },
+                "status": {
+                  "type": "string",
+                  "default": "ACTIVE"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+
+    "/api/v1/product/get-product": {
+      "get": {
+        "tags": ["Product"],
+        "summary": "Get all Products",
+        "description": "This endpoint is used to get product details.",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "Authentication token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "product_uuid",
+            "description": "Product UUID",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "billing_company_uuid",
+            "description": "Billing Company UUID",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "columns",
+            "description": "Array of columns to filter",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "value",
+            "description": "Filter value",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "description": "Product status",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "from_date",
+            "description": "Format will be YYYY-MM-DD",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "to_date",
+            "description": "Format will be YYYY-MM-DD",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "in": "query",
+            "name": "pageNo",
+            "description": "Page number",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "in": "query",
+            "name": "itemPerPage",
+            "description": "Items per page",
+            "required": true,
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation. Returns product details."
+          },
+          "404": {
+            "description": "Not Found. The provided product identifier was not found."
+          },
+          "500": {
+            "description": "Internal Server Error. An unexpected error occurred on the server."
+          }
+        }
+      }
+    },
+
+    "/api/v1/product/get-stock-info": {
+      "get": {
+        "tags": ["Product"],
+        "summary": "Get stock info",
+        "description": "This endpoint is used to get stock info.",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "Authentication token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "product_uuid",
+            "description": "Product UUID",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "billing_company_uuid",
+            "description": "Billing Company UUID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "product_name",
+            "description": "Product Name",
+            "required": false,
+            "type": "string",
+            "default": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation. Returns product details."
+          },
+          "404": {
+            "description": "Not Found. The provided product identifier was not found."
+          },
+          "500": {
+            "description": "Internal Server Error. An unexpected error occurred on the server."
+          }
+        }
+      }
+    }
+  }
+}
