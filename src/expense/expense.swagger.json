@@ -604,9 +604,16 @@
           },
           {
             "in": "query",
-            "name": "type",
+            "name": "billing_company_uuid",
             "description": "",
             "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "project_uuid",
+            "description": "",
+            "required": false,
             "type": "string"
           }
         ],

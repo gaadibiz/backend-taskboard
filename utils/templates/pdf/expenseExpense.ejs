@@ -118,7 +118,14 @@
     <table class="two-column">
       <tr>
         <td><strong>Expense Type:</strong> <%= data.expense_type %></td>
-        <td><strong>Expense Date:</strong> <%= data.expense_date %></td>
+        <td>
+          <strong>Expense Date:</strong>
+          <%= new Date(data.expense_date).toLocaleDateString('en-GB', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric'
+              }) %>
+        </td>
       </tr>
       <tr>
         <td><strong>Billing Company:</strong> <%= data.billing_company_name %></td>

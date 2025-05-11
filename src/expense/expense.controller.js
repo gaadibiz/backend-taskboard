@@ -32,6 +32,7 @@ const {
 } = require('../../utils/microservice_func');
 const e = require('cors');
 const { z } = require('zod');
+const { insertExpenseLedger } = require('./expense.service');
 
 function toBoolean(value) {
   if (value === 'true' || value === true || value === 1) return true;
@@ -440,56 +441,23 @@ exports.getExpenseCategory = async (req, res) => {
 };
 
 exports.getAdvanceAmount = async (req, res) => {
-  const { user_uuid, type } = req.query;
+  const { user_uuid, billing_company_uuid, project_uuid } = req.query;
 
-  let sql = '';
-  if (type === 'VENDOR') {
-    sql = `SELECT 
-     vendor_uuid,
-      GREATEST(
-    COALESCE(
-        SUM(
-            CASE 
-                WHEN status = 'FINANCE_APPROVED' AND payment_type = 'ADVANCE'  THEN IFNULL(vendor_advance_amount, 0)
-                ELSE 0
-            END
-        ), 
-        0
+  const sql = `SELECT user_uuid, sum(advance_amount) as advance_amount, sum(pending_amount) as pending_amount FROM latest_user_advance where user_uuid = '${user_uuid}' and billing_company_uuid = '${billing_company_uuid}' ${project_uuid ? `and project_uuid = '${project_uuid}'` : ''} GROUP BY user_uuid;`;
 
-        ),
-        0
-    ) AS advance_amount
-FROM expense
-WHERE vendor_uuid = '${user_uuid}'
-GROUP BY vendor_uuid;`;
-  } else if (type === 'USER') {
-    sql = `SELECT 
-     user_uuid,
-      GREATEST(
-    COALESCE(
-        SUM(
-            CASE 
-                WHEN status = 'CLEARED' AND expense_type = 'ADVANCE'  THEN IFNULL(actual_requested_advance_amount, 0)
-                ELSE 0
-            END
-            - IF(is_deduct_from_advance, IFNULL(actual_reimbursed_amount, 0), 0)
-        ), 
-        0
+  const [advance_amount] = await dbRequest(sql);
 
-        ),
-        0
-    ) AS advance_amount
-FROM expense
-WHERE user_uuid = '${user_uuid}'
-GROUP BY user_uuid;`;
-  }
+  console.log(
+    advance_amount,
+    '...............................................',
+  );
 
-  const advance_amount = await dbRequest(sql);
-  if (!advance_amount.length) {
+  if (!advance_amount) {
     res.json(
       responser('advance_amount', {
         user_uuid,
-        advance_amount: '0',
+        advance_amount: 0,
+        pending_amount: 0,
       }),
     );
   } else {
@@ -519,7 +487,50 @@ exports.convertFinanceToCleared = async (req, res) => {
   if (!expense.length) {
     return res.json(responser('No expense found', expense));
   }
-  expense = expense.map((item) => ({ ...item, status: 'CLEARED' }));
+  expense = expense.map((item) => {
+    if (item.expense_type === 'EXPENSE') {
+      // ledger entry debit
+      if (item.is_deduct_from_advance) {
+        insertExpenseLedger(
+          parseFloat(item.actual_reimbursed_amount),
+          0,
+          item.expense_uuid,
+        );
+      }
+    } else if (
+      item.expense_type === 'VENDOR_PAYMENT' &&
+      item.payment_type === 'PAYMENT'
+    ) {
+      insertExpenseLedger(
+        parseFloat(item.vendor_payable_amount),
+        0,
+        item.expense_uuid,
+      );
+
+      // ledger entry debit
+    } else if (
+      item.expense_type === 'VENDOR_PAYMENT' &&
+      item.payment_type === 'ADVANCE'
+    ) {
+      insertExpenseLedger(
+        0,
+        parseFloat(item.vendor_advance_amount),
+        item.expense_uuid,
+      );
+
+      // ledger entry cradit
+    } else if (item.expense_type === 'ADVANCE') {
+      insertExpenseLedger(
+        0,
+        parseFloat(item.actual_requested_advance_amount),
+        item.expense_uuid,
+      );
+      // ledger entry cradit
+    }
+
+    return { ...item, status: 'CLEARED' };
+  });
+
   await insertRecords('expense', expense);
   return res.json(responser('Expense converted to cleared', expense));
 };

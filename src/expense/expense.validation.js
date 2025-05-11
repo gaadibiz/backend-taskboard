@@ -147,7 +147,8 @@ exports.getExpenseCategory = Joi.object({
 
 exports.getAdvanceAmount = Joi.object({
   user_uuid: Joi.string().guid().required(),
-  type: Joi.string().valid('USER', 'VENDOR').required(),
+  billing_company_uuid: Joi.string().guid().required(),
+  project_uuid: Joi.string().guid().allow(null, ''),
 });
 
 exports.convertFinanceToCleared = Joi.object({
