@@ -35,10 +35,8 @@ exports.upsertUserSchema = Joi.object({
   department_uuid: Joi.string().guid().max(50).allow(null, ''),
   department_name: Joi.string().allow('', null),
   hierarchy_uuids: Joi.array().items(Joi.string().guid()).allow(null, ''),
-  affiliated_billing_company_uuids: Joi.array()
-    .items(Joi.string())
-    .allow(null, ''),
-  billing_company_branches: Joi.array().items(Joi.string()).allow(null, ''),
+  affiliated_billing_company_uuids: Joi.array(),
+  billing_company_branches: Joi.array(),
   status: Joi.string().valid('ACTIVE', 'INACTIVE').default('ACTIVE').required(),
   created_by_uuid: Joi.string().guid().max(50).allow(null, ''),
 });

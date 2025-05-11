@@ -47,6 +47,7 @@ exports.upsertExpenseSchema = Joi.object({
   vendor_advance_amount: Joi.number().allow('', null),
   vendor_payable_amount: Joi.number().allow('', null),
   net_vendor_payable_amount: Joi.number().allow('', null),
+  payment_type: Joi.string().valid('ADVANCE', 'PAYMENT').allow('', null),
   status: Joi.string()
     .valid(
       'INACTIVE',
@@ -146,6 +147,7 @@ exports.getExpenseCategory = Joi.object({
 
 exports.getAdvanceAmount = Joi.object({
   user_uuid: Joi.string().guid().required(),
+  type: Joi.string().valid('USER', 'VENDOR').required(),
 });
 
 exports.convertFinanceToCleared = Joi.object({

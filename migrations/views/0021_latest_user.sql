@@ -1,4 +1,5 @@
-CREATE or REPLACE VIEW latest_user AS
+CREATE
+or REPLACE VIEW latest_user AS
 select
     uf.user_fact_id,
     uf.user_uuid,
@@ -8,18 +9,21 @@ select
     uf.insert_ts,
     lud.user_dim_id,
     lud.user_password,
+    lr.role_value,
     lud.role_uuid,
     lr.role_name,
+    lr.role_group,
     lud.affiliated_billing_company_uuids,
     lud.billing_company_branches,
     up.user_profile_id,
     up.first_name,
     up.last_name,
-    CONCAT(up.first_name, 
-       CASE 
-           WHEN up.last_name IS NOT NULL THEN CONCAT(' ', up.last_name)
-           ELSE ''
-       END
+    CONCAT (
+        up.first_name,
+        CASE
+            WHEN up.last_name IS NOT NULL THEN CONCAT (' ', up.last_name)
+            ELSE ''
+        END
     ) AS full_name,
     up.personal_email,
     up.department_uuid,
@@ -61,10 +65,13 @@ select
     up.marital_status,
     up.attachment,
     up.bank_name,
-    up.bank_account_number, 
+    up.bank_account_number,
     up.bank_ifsc_code,
     up.bank_branch
-from user_fact uf
+from
+    user_fact uf
     INNER JOIN latest_user_dim as lud on uf.user_uuid = lud.user_uuid
-    left join user_profile as up on uf.user_uuid = up.user_uuid 
-    left join latest_roles as lr on lr.role_uuid = lud.role_uuid ORDER BY uf.insert_ts DESC ;
+    left join user_profile as up on uf.user_uuid = up.user_uuid
+    left join latest_roles as lr on lr.role_uuid = lud.role_uuid
+ORDER BY
+    uf.insert_ts DESC;

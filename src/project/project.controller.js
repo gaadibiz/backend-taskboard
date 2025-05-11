@@ -124,7 +124,11 @@ exports.getProject = async (req, res) => {
     value,
   );
 
-  filter = await roleFilterService(filter, tableName, req.user);
+  filter = await roleFilterService(
+    filter,
+    'latest_project_with_team',
+    req.user,
+  );
   let pageFilter = pagination(pageNo, itemPerPage);
   let totalRecords = await getCountRecord(tableName, filter);
   let result = await getRecords(tableName, filter, pageFilter);

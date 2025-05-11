@@ -601,6 +601,13 @@
             "description": "",
             "required": true,
             "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "type",
+            "description": "",
+            "required": true,
+            "type": "string"
           }
         ],
         "responses": {
