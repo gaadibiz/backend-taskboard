@@ -22,18 +22,27 @@ const checkAuth = (req, res, next) => {
     );
     if (result !== 1) return res.status(401).json(responser('Invalid token.'));
     req.user = user;
+
+    console.log(user, '................................................user');
     if (req.method === 'POST') {
       if (Array.isArray(req.body)) {
         req.body = req.body.map((item) => {
           return {
             ...item,
             created_by_uuid: user.user_uuid, // handle create_by_id for every table
+            created_by_name: user.full_name,
+            modified_by_uuid: user.user_uuid,
+            modified_by_name: user.full_name,
           };
         });
       } else {
         req.body = {
           ...req.body,
+
           created_by_uuid: user.user_uuid, // handle create_by_id for every table
+          created_by_name: user.full_name,
+          modified_by_uuid: user.user_uuid,
+          modified_by_name: user.full_name,
         };
       }
     }

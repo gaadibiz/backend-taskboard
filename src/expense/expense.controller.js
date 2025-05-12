@@ -98,6 +98,8 @@ exports.upsertExpense = async (req, res) => {
     console.log('approval for the admin');
   }
 
+  console.log(req.body, '................................................body');
+
   res.json(responser('expense created or updated successfully.', req.body));
 
   // res.json(responser('expense created or updated successfully.', req.body));
