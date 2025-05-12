@@ -66,6 +66,7 @@ exports.loginUser = async (req, res, next) => {
   delete userDetail[0].insert_ts;
   let payload = {
     first_name: userDetail[0].first_name,
+    full_name: userDetail[0].full_name,
     user_uuid: userDetail[0].user_uuid,
     email: userDetail[0].email,
     role_uuid: userDetail[0].role_uuid,

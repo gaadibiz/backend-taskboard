@@ -154,7 +154,9 @@ exports.getAdvanceAmount = Joi.object({
 exports.convertFinanceToCleared = Joi.object({
   expense_uuids: Joi.array(),
   created_by_uuid: Joi.string().guid().max(50).allow(null),
-  modified_by_uuid: Joi.string().guid().allow('', null),
+  created_by_name: Joi.string().max(50).allow(null),
+  modified_by_uuid: Joi.string().guid().max(50).allow('', null),
+  modified_by_name: Joi.string().max(50).allow('', null),
 });
 exports.exportFinanceExpense = Joi.object({
   expense_uuids: Joi.array().items(Joi.string().uuid()),

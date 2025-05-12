@@ -98,6 +98,8 @@ exports.upsertExpense = async (req, res) => {
     console.log('approval for the admin');
   }
 
+  console.log(req.body, '................................................body');
+
   res.json(responser('expense created or updated successfully.', req.body));
 
   // res.json(responser('expense created or updated successfully.', req.body));
@@ -991,7 +993,9 @@ const buildHierarchy = async (
         current_pointer:
           expense.status === currentStatus &&
           selectedApproval?.status === 'REQUESTED',
-        is_completed: !!approver && comingStatus.includes(expense.status),
+        is_completed:
+          selectedApproval?.status === 'APPROVED' ||
+          comingStatus.includes(expense.status),
       });
     }
   }
