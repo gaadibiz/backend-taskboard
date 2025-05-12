@@ -42,6 +42,7 @@ function toBoolean(value) {
 
 exports.upsertExpense = async (req, res) => {
   isEditAccess('latest_expense', req.user);
+  console.log('req.user---', req.user);
   removeNullValueKey(req.body);
   let isUpadtion = false;
 
@@ -62,6 +63,7 @@ exports.upsertExpense = async (req, res) => {
   } else {
     req.body.create_ts = setDateTimeFormat('timestemp');
     req.body.expense_uuid = uuid();
+    req.body.created_by_name = req.user.first_name;
   }
   const insertexpense = await insertRecords('expense', req.body);
 
