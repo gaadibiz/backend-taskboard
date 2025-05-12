@@ -18,14 +18,13 @@
     h1{
       text-align: center;
       padding-bottom: 5px;
-      font-size: 20px;
-
+      font-size: 23px;
+      border-bottom: 3px solid #007BFF;
     }
 
     h2 {
       text-align: center;
       margin-bottom: 20px;
-      border-bottom: 3px solid #007BFF;
       padding-bottom: 5px;
     }
 
@@ -178,11 +177,7 @@
       </tr>
       <tr>
         <td><strong>Role:</strong> <%= data.user_details.role_name %> (<%= data.user_details.role_value %>)</td>
-        <td><strong>Job Title:</strong> <%= data.user_details.job_title %></td>
-      </tr>
-      <tr>
         <td><strong>Manager:</strong> <%= data.user_details.manager_name %></td>
-        <td><strong>User Type:</strong> <%= data.user_details.user_type %></td>
       </tr>
       <tr>
         <td><strong>Department:</strong> <%= data.user_details.department_name %> / <%= data.user_details.department %></td>

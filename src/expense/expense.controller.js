@@ -727,6 +727,7 @@ exports.getPreviewExpense = async (req, res) => {
       workflow,
     },
   };
+  console.log('data------------>', data);
 
   if (isPreview === 'true') {
     const result = await ejsPreview(data, `pdf/${template}`);
