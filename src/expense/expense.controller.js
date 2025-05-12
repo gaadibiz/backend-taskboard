@@ -991,7 +991,9 @@ const buildHierarchy = async (
         current_pointer:
           expense.status === currentStatus &&
           selectedApproval?.status === 'REQUESTED',
-        is_completed: !!approver && comingStatus.includes(expense.status),
+        is_completed:
+          selectedApproval?.status === 'APPROVED' ||
+          comingStatus.includes(expense.status),
       });
     }
   }
