@@ -727,6 +727,7 @@ exports.getPreviewExpense = async (req, res) => {
       workflow,
     },
   };
+  console.log('data------------>', data);
 
   if (isPreview === 'true') {
     const result = await ejsPreview(data, `pdf/${template}`);
@@ -812,7 +813,6 @@ exports.getExpenseApprovalWorkFlow = async (req, res) => {
     'latest_dynamic_approval_count',
     `where dynamic_uuid = '${expense.expense_category_uuid}'`,
   );
-  // console.log(approvalCount, '...........................');
 
   const EXPENSE_APPROVAL_REQUESTED = approvalCount.find(
     (item) => item.approval_raise_status === 'EXPENSE_APPROVAL_REQUESTED',
@@ -823,11 +823,6 @@ exports.getExpenseApprovalWorkFlow = async (req, res) => {
   );
   console.log(EXPENSE_APPROVAL_REQUESTED, '...........................');
   console.log(FINANCE_APPROVAL_REQUESTED, '...........................');
-
-  // console.log(EXPENSE_APPROVAL_REQUESTED, '...........................');
-  // console.log(FINANCE_APPROVAL_REQUESTED, '...........................');
-  // const expense_Hierarchy = [];
-  // const finance_Hierarchy = [];
 
   const expense_Hierarchy = await buildHierarchy(
     EXPENSE_APPROVAL_REQUESTED,
@@ -950,7 +945,7 @@ const buildHierarchy = async (
         user_uuid = user.user_uuid;
       }
 
-      const [approval] = await getRecords(
+      let approval = await getRecords(
         'dynamic_approval',
         `where dynamic_uuid = '${expense.expense_category_uuid}' 
           AND current_level = ${approval_level}
@@ -962,17 +957,21 @@ const buildHierarchy = async (
           AND JSON_CONTAINS(approval_uuids, JSON_OBJECT('type', '${item.type}', 'uuid', '${item.uuid}'))`,
       );
 
+      const priority = ['APPROVED', 'REQUESTED', 'REJECTED'];
+
+      const selectedApproval =
+        priority
+          .map((status) => approval.find((item) => item.status === status))
+          .find(Boolean) || null;
+
       let approver = null;
 
-      if (approval?.status === 'APPROVED') {
-        [approver] = approval?.created_by_uuid
-          ? await getRecords(
-              'latest_user',
-              `where user_uuid = '${approval.created_by_uuid}'`,
-            )
-          : [null];
+      if (selectedApproval?.status === 'APPROVED') {
+        [approver] = await getRecords(
+          'latest_user',
+          `where user_uuid = '${selectedApproval.created_by_uuid}'`,
+        );
       }
-      console.log(approval, '...........................');
 
       hierarchy.push({
         role: role_name,
@@ -987,10 +986,11 @@ const buildHierarchy = async (
         approved_by_name: approver
           ? `${approver.first_name}${approver.last_name ? ' ' + approver.last_name : ''}`
           : null,
-        remark: approval?.remark,
-        approval_status: approval?.status || null,
+        remark: selectedApproval?.remark,
+        approval_status: selectedApproval?.status || null,
         current_pointer:
-          expense.status === currentStatus && approval?.status === 'REQUESTED',
+          expense.status === currentStatus &&
+          selectedApproval?.status === 'REQUESTED',
         is_completed: !!approver && comingStatus.includes(expense.status),
       });
     }

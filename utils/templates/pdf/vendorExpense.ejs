@@ -15,12 +15,20 @@
       color: #333;
     }
 
+    h1{
+      text-align: center;
+      padding-bottom: 5px;
+      font-size: 23px;
+      border-bottom: 2px solid #007BFF;
+      margin-bottom: 20px;
+    }
+
     h2 {
       text-align: center;
-      margin-bottom: 20px;
-      font-size: 20px;
-      border-bottom: 3px solid #007BFF;
+      margin-bottom: 10px;
       padding-bottom: 5px;
+      font-size: 16px;
+      color: #333;
     }
 
     .section {
@@ -110,6 +118,7 @@
   </style>
 </head>
 <body>
+<h1> <%= data.billing_company_name %></h1>
 
   <h2>Advance Expense Request</h2>
 
@@ -121,7 +130,7 @@
         <td><strong>Payment Type:</strong> <%= data.payment_type %></td>
       </tr>
       <tr>
-        <td><strong>Billing Company:</strong> <%= data.billing_company_name %></td>
+        <td><strong>Entity Name:</strong> <%= data.billing_company_name %></td>
         <td><strong>Project:</strong> <%= data.project_name %></td>
       </tr>
       <tr>
@@ -133,7 +142,7 @@
         <td><strong>Category Manager:</strong> <%= data.category_manager_name %></td>
       </tr>
       <tr>
-        <td><strong>Merchant:</strong> <%= data.merchant %></td>
+        <td><strong>Vendor:</strong> <%= data.merchant %></td>
         <td><strong>Business Purpose:</strong> <%= data.business_purpose %></td>
       </tr>
       <tr>
@@ -216,7 +225,6 @@
           <th>Status</th>
           <th>Level</th>
           <th>Approved By</th>
-          <th>Current</th>
           <th>Completed</th>
         </tr>
         <% steps.forEach(step => { %>
@@ -228,7 +236,6 @@
             </td>
             <td><%= step.level || "-" %></td>
             <td><%= step.approved_by_name || "-" %></td>
-            <td><%= step.current_pointer ? "Yes" : "No" %></td>
             <td><%= step.is_completed ? "Yes" : "No" %></td>
           </tr>
         <% }) %>
