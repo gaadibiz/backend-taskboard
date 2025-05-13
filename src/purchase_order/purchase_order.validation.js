@@ -60,6 +60,7 @@ exports.upsertPurchaseOrderSchema = Joi.object({
   is_round_off: Joi.number().precision(2).allow(null),
   term_and_condition: Joi.string().max(255).allow('', null),
   total_amount_after_tax: Joi.number().precision(2).allow(null),
+  receipt: Joi.alternatives().try(Joi.object(), Joi.string(), Joi.array()),
   status: Joi.string()
     .max(255)
     .valid('DRAFT', 'PURCHASE_ORDER_APPROVAL_REQUESTED', 'INACTIVE')
