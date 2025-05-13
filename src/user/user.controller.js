@@ -585,3 +585,129 @@ exports.changeUserPwd = async (req, res) => {
 
   res.json(responser('password has been changed.'));
 };
+
+exports.insertUserInBulk = async (req, res) => {
+  console.log('req.body', req.body.length);
+  for (const i of req.body) {
+    req.body = {
+      user_id: i['Employee '],
+      user_password: '12345678',
+      role_uuid: 'ef6fcb01-44d1-4528-94d0-27e5a755b086',
+      affiliated_billing_company_uuids: [
+        {
+          billing_company_name: 'Sharma Sawhney and Co.',
+          billing_company_uuid: '4b7ecf35-611c-433a-82ec-3124833f29af',
+        },
+      ],
+      billing_company_branches: [
+        {
+          billing_company_branch_name: 'Modinagar',
+          billing_company_branch_uuid: 'e4d70f3f-aebb-4a75-9591-fb3d4f8b55ec',
+        },
+      ],
+      branch_uuid: 'e4d70f3f-aebb-4a75-9591-fb3d4f8b55ec',
+      first_name: i['First Name'],
+      last_name: i['Last Name'],
+      middle_name: i['Middle Name'],
+      email: i['Email'],
+      mobile_number: i['Mobile Number'],
+      gender: i['Gender'],
+      date_of_birth: i['Date Of Birth (dd-mmm-yyyy)'],
+      hire_date: i['Date Joined (dd-mmm-yyyy)'],
+      last_day_of_work: i['Contract End Date (dd-mmm-yyyy)'],
+      legal_entity: i['Legal Entity'],
+      department_name: i['Department'],
+      sub_department: i['Sub Department'],
+      business_unit: i['Business Unit'],
+      job_title: i['Job Title'],
+      secondary_job_title: i['Secondary Job Title'],
+      branch_name: i['Location'],
+      user_type: i['Worker Type'],
+      reporting_manager_employee_no: i["Reporting Manager's Employee Number"],
+      assigned_phone_number: i['Work Phone'],
+      mobile: i['Residence Number'],
+      email: i['Email'],
+      personal_email: i['Personal Email'],
+      skype_id: i['Skype Id'],
+      marital_status: i['Marital Status'],
+      marriage_date: i['Marriage Date (dd-mmm-yyyy)'],
+      father_name: i['Father Name'],
+      mother_name: i['Mother Name'],
+      spouse_name: i['Spouse Name'],
+      spouse_gender: i['Spouse Gender'],
+      is_physically_handicapped:
+        i['Physically Handicapped'] == 'Yes' ? true : false,
+      blood_group: i['Blood Group'],
+      nationality: i['Nationality'],
+      salary_payment_mode: i['Salary Payment Mode'],
+      bank_name: i['Bank Name'],
+      bank_ifsc_code: i['IFSC Code'],
+      bank_account_number: i['Bank Account Number'],
+      bank_account_name: i['Name On Bank Account'],
+      pf_establishment_id: i['PF Establishment Id'],
+      pf_details_available: i['PF Details Available'],
+      pf_number: i['PF Number'],
+      pf_account_name: i['Name On PF Account'],
+      uan: i['UAN'],
+      esi_eligible: i['ESI Eligible'] == null ? null : 'Yes' ? true : false,
+      employee_esi_number: i['Employer ESI Number'],
+      esi_details_available: i['ESI Details Available'],
+      esi_number: i['ESI Number'],
+      pt_establishment_id: i['PT Establishment Id'],
+      lwf_eligible: i['LWF Eligible'] == null ? null : 'Yes' ? true : false,
+      aadhaar_number: i['Aadhaar Number'],
+      enrollment_number: i['Enrollment Number'],
+      dob_in_aadhaar_card: i['DOB in Aadhaar card (dd-mmm-yyyy)'],
+      full_name_as_per_aadhaar_card: i['Full name as per Aadhaar card'],
+      address_as_in_aadhaar_card: i['Address as in Aadhaar card'],
+      gender_as_in_aadhaar_card: i['Gender as in Aadhaar card'],
+      pan_card_available:
+        i['Pan Card Available'] == null ? null : 'Yes' ? true : false,
+      pan_number: i['PAN Number'],
+      full_name_as_per_pan_card: i['Full name as per PAN card'],
+      dob_in_pan_card: i['DOB in PAN card (dd-mmm-yyyy)'],
+      parents_name_as_per_pan_card: i[`Parent's Name as per PAN card`],
+    };
+    console.log('req.body', req.body);
+    const isExistRole = await isValidRecord('latest_roles', {
+      role_uuid: req.body.role_uuid,
+      status: 'ACTIVE',
+    });
+
+    if (!isExistRole) throwError(404, 'Role not found or inactive role.');
+
+    const isExistBranch = await isValidRecord('latest_branch', {
+      branch_uuid: req.body.branch_uuid,
+      status: 'ACTIVE',
+    });
+
+    if (!isExistBranch) throwError(404, 'Role not found or inactive role.');
+
+    let user = [];
+
+    const isExist = await isRecordExist(
+      'user_fact',
+      ['email'],
+      [req.body.email],
+    );
+    if (isExist) throwError(406, 'User already exist.');
+    if (!req.body.user_password) throwError(406, 'Password should be filled.');
+    req.body.user_password = bycrpt.hashSync(req.body.user_password, 10);
+    req.body.user_uuid = uuidv4();
+    await insertRecords('user_fact', req.body);
+    user = await getRecords(
+      'user_fact',
+      `where email='${req.body.email}'`,
+      null,
+      null,
+      { isPrmiaryId: true },
+    );
+
+    req.body = { ...user[0], ...req.body };
+    await insertRecords('user_dim', req.body);
+    // req.body.personal_email = req.body.email;
+    await insertRecords('user_profile', req.body);
+    delete req.body.user_password;
+  }
+  res.json(responser('User Details imported successfully.'));
+};

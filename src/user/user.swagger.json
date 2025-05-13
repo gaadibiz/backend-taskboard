@@ -1076,6 +1076,153 @@
           }
         }
       }
+    },
+    "/api/v1/user/insert-user-in-bulk": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Bulk import employee user data",
+        "description": "Accepts an array of employee data objects for creation or update.",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "List of employee data",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "Employee": { "type": "string", "default": "" },
+                  "First Name": { "type": "string", "default": "" },
+                  "Middle Name": { "type": "string", "default": "" },
+                  "Last Name": { "type": "string", "default": "" },
+                  "Email": {
+                    "type": "string",
+                    "format": "email",
+                    "default": ""
+                  },
+                  "Dial Code": { "type": "string", "default": "" },
+                  "Mobile Number": { "type": "string", "default": "" },
+                  "Gender": { "type": "string", "default": "" },
+                  "Date Of Birth (dd-mmm-yyyy)": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "Date Joined (dd-mmm-yyyy)": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "Contract End Date (dd-mmm-yyyy)": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "Legal Entity": { "type": "string", "default": "" },
+                  "Department": { "type": "string", "default": "" },
+                  "Sub Department": { "type": "string", "default": "" },
+                  "Business Unit": { "type": "string", "default": "" },
+                  "Job Title": { "type": "string", "default": "" },
+                  "Secondary Job Title": { "type": "string", "default": "" },
+                  "Location": { "type": "string", "default": "" },
+                  "Worker Type": { "type": "string", "default": "" },
+                  "Reporting Manager's Employee Number": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "Work Phone": { "type": "string", "default": "" },
+                  "Residence Number": { "type": "string", "default": "" },
+                  "Personal Email": {
+                    "type": "string",
+                    "format": "email",
+                    "default": ""
+                  },
+                  "Skype Id": { "type": "string", "default": "" },
+                  "Marital Status": { "type": "string", "default": "" },
+                  "Marriage Date (dd-mmm-yyyy)": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "Father Name": { "type": "string", "default": "" },
+                  "Mother Name": { "type": "string", "default": "" },
+                  "Spouse Name": { "type": "string", "default": "" },
+                  "Spouse Gender": { "type": "string", "default": "" },
+                  "Physically Handicapped": { "type": "string", "default": "" },
+                  "Blood Group": { "type": "string", "default": "" },
+                  "Nationality": { "type": "string", "default": "" },
+                  "Salary Payment Mode": { "type": "string", "default": "" },
+                  "Bank Name": { "type": "string", "default": "" },
+                  "IFSC Code": { "type": "string", "default": "" },
+                  "Bank Account Number": { "type": "string", "default": "" },
+                  "Name On Bank Account": { "type": "string", "default": "" },
+                  "PF Establishment Id": { "type": "string", "default": "" },
+                  "PF Details Available": { "type": "string", "default": "" },
+                  "PF Number": { "type": "string", "default": "" },
+                  "PF Joining Date (dd-mmm-yyyy)": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "Name On PF Account": { "type": "string", "default": "" },
+                  "UAN": { "type": "string", "default": "" },
+                  "ESI Eligible": { "type": "string", "default": "" },
+                  "Employer ESI Number": { "type": "string", "default": "" },
+                  "ESI Details Available": { "type": "string", "default": "" },
+                  "ESI Number": { "type": "string", "default": "" },
+                  "PT Establishment Id": { "type": "string", "default": "" },
+                  "LWF Eligible": { "type": "string", "default": "" },
+                  "Aadhaar Number": { "type": "string", "default": "" },
+                  "Enrollment Number": { "type": "string", "default": "" },
+                  "DOB in Aadhaar card (dd-mmm-yyyy)": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "Full name as per Aadhaar card": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "Address as in Aadhaar card": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "Gender as in Aadhaar card": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "Pan Card Available": { "type": "string", "default": "" },
+                  "PAN Number": { "type": "string", "default": "" },
+                  "Full name as per PAN card": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "DOB in PAN card (dd-mmm-yyyy)": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "Parent's Name as per PAN card": {
+                    "type": "string",
+                    "default": ""
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully imported employee data"
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
     }
   }
 }
