@@ -41,7 +41,9 @@ exports.upsertProjectTeamSchema = Joi.object({
   user_name: Joi.string().allow('', null),
   status: Joi.string().valid('ACTIVE', 'INACTIVE').default('ACTIVE').required(),
   created_by_uuid: Joi.string().guid().allow('', null),
+  created_by_name: Joi.string().allow('', null),
   modified_by_uuid: Joi.string().guid().allow('', null),
+  modified_by_name: Joi.string().allow('', null),
 });
 
 exports.getProjectTeamSchema = Joi.object({
