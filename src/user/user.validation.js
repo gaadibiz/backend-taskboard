@@ -87,7 +87,7 @@ exports.upsertUserProfileSchema = Joi.object({
   bank_name: Joi.string().max(50).allow(null, ''),
   bank_account_number: Joi.string().max(50).allow(null, ''),
   bank_ifsc_code: Joi.string().max(50).allow(null, ''),
-  bank_branch: Joi.string().max(50).allow(null, ''),
+  bank_branch: Joi.string().allow(null, ''),
   attachment: Joi.array(),
   status: Joi.string().valid('ACTIVE', 'INACTIVE').default('ACTIVE').required(),
   created_by_uuid: Joi.string().guid().max(50).allow('', null),
