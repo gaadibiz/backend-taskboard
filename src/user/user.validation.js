@@ -92,7 +92,7 @@ exports.upsertUserProfileSchema = Joi.object({
   status: Joi.string().valid('ACTIVE', 'INACTIVE').default('ACTIVE').required(),
   created_by_uuid: Joi.string().guid().max(50).allow('', null),
   created_by_name: Joi.string().max(50).allow(null, ''),
-
+  modified_by_name: Joi.string().max(50).allow(null, ''),
   modified_by_uuid: Joi.string().guid().allow('', null),
 });
 
@@ -121,7 +121,7 @@ exports.upsertManageSiteSchema = Joi.object({
   status: Joi.string().valid('ACTIVE', 'INACTIVE'),
   created_by_uuid: Joi.string().guid().max(50).allow(null, ''),
   created_by_name: Joi.string().max(50).allow(null, ''),
-
+  modified_by_name: Joi.string().max(50).allow(null, ''),
   modified_by_uuid: Joi.string().guid().allow('', null),
 });
 
@@ -142,6 +142,6 @@ exports.changeUserPwd = Joi.object({
   user_password: Joi.string().min(8).max(500).required(),
   created_by_uuid: Joi.string().guid().max(50).allow(null, ''),
   created_by_name: Joi.string().max(50).allow(null, ''),
-
   modified_by_uuid: Joi.string().guid().allow('', null),
+  modified_by_name: Joi.string().max(50).allow('', null),
 });
