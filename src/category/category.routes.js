@@ -9,7 +9,7 @@ router
   .post(
     checkAuth,
     requestErrorHandlingDecorator(
-      Schema.upsertCommentSchema,
+      Schema.upsertCategorySchema,
       controller.upsertCategory,
     ),
   );
@@ -18,7 +18,7 @@ router
   .get(
     checkAuth,
     requestErrorHandlingDecorator(
-      Schema.getCommentSchema,
+      Schema.getCategorySchema,
       controller.getCategory,
     ),
   );
