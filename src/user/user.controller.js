@@ -168,7 +168,8 @@ exports.upsertUserProfile = async (req, res) => {
   ) {
     let branchData = req.body.billing_company_branches.map((branch) => ({
       user_uuid: req.body.user_uuid,
-      billing_company_branch_uuid: branch.billing_company_branch_uuid,
+      branch_uuid: branch.billing_company_branch_uuid,
+      branch_name: branch.billing_company_branch_name,
       status: req.body.status,
     }));
     await handleAuditColumns('latest_user', branchData, ['user_uuid']);
