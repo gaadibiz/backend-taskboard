@@ -21,6 +21,10 @@ select
     CONCAT (
         up.first_name,
         CASE
+            WHEN up.middle_name IS NOT NULL THEN CONCAT (' ', up.middle_name)
+            ELSE ''
+        END,
+        CASE
             WHEN up.last_name IS NOT NULL THEN CONCAT (' ', up.last_name)
             ELSE ''
         END

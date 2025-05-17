@@ -93,5 +93,8 @@ router
       controller.changeUserPwd,
     ),
   );
-
+router.route('/insert-user-in-bulk').post(
+  // checkAuth,
+  requestErrorHandlingDecorator(null, controller.insertUserInBulk),
+);
 module.exports = router;

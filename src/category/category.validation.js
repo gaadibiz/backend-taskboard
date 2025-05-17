@@ -3,6 +3,7 @@ const Joi = require('joi');
 exports.upsertCategorySchema = Joi.object({
   category_uuid: Joi.string().guid().max(100).allow(null),
   category_name: Joi.string().max(100),
+  billing_company_uuid: Joi.string().guid().max(100).allow(null),
   description: Joi.string().max(250),
   status: Joi.string().valid('ACTIVE', 'INACTIVE'),
   created_by_uuid: Joi.string().guid().max(50).allow('', null),
@@ -12,10 +13,9 @@ exports.upsertCategorySchema = Joi.object({
 });
 
 exports.getCategorySchema = Joi.object({
-  comment_t_id: Joi.number().integer(),
-  comment_t_uuid: Joi.string().guid(),
-  parent_module_no: Joi.string(),
-  module_uuid: Joi.string().guid().max(50),
+  category_id: Joi.number().integer(),
+  category_uuid: Joi.string().guid(),
+  billing_company_uuid: Joi.string().guid(),
   pageNo: Joi.number().integer().min(1),
   itemPerPage: Joi.number().integer().min(1),
   from_date: Joi.string().isoDate(),
