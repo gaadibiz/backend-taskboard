@@ -94,6 +94,12 @@
           },
           {
             "in": "query",
+            "name": "billing_company_uuid",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "query",
             "name": "is_user_approver",
             "type": "boolean",
             "required": false,
@@ -403,6 +409,5 @@
         }
       }
     }
-
   }
 }

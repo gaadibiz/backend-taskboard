@@ -562,7 +562,7 @@ exports.getApprovals = async (req, res) => {
           'POST',
           req.headers,
         );
-
+        console.log('Finalresponse', mergeApproval);
         if (mergeApproval) {
           const { dynamic_approval_uuid, requested_by_uuid, is_user_approver } =
             mergeApproval; // Destructure for direct assignments
@@ -730,14 +730,10 @@ exports.mergeApprovalWithRecord = async (req, res) => {
   );
 
   if (approvalRecord.length) {
-    console.log('approvalRecord: ', approvalRecord);
+    console.log('approvalRecord: ', approvalRecord[0].approval_uuids);
     let is_user_approver = approvalRecord[0].approval_uuids.some(
       (ele) =>
-        ele.uuid === req.user.user_uuid ||
-        ele.uuid === req.user.role_uuid ||
-        req.user.role_value === 'ADMIN' ||
-        req.user.role_value === 'SUPERADMIN' ||
-        req.user.role_value === 'CEO',
+        ele.uuid === req.user.user_uuid || ele.uuid === req.user.role_uuid,
     );
     deleteKeyValuePair(approvalRecord[0], ['approval_uuids']);
     data = { ...data, ...approvalRecord[0], is_user_approver };
