@@ -341,12 +341,14 @@ exports.getBranch = async (req, res) => {
     status,
     columns,
     value,
+    billing_company_uuid,
   } = req.query;
 
   let tableName = 'latest_branch';
   let filter = filterFunctionality(
     {
       branch_uuid,
+      billing_company_uuid,
     },
     status,
     to_date,

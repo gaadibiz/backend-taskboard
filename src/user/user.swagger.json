@@ -516,6 +516,10 @@
                   "type": "string",
                   "default": null
                 },
+                "billing_company_uuid": {
+                  "type": "string",
+                  "default": null
+                },
                 "status": {
                   "type": "string",
                   "default": "ACTIVE"
@@ -556,6 +560,12 @@
           {
             "in": "query",
             "name": "branch_uuid",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "billing_company_uuid",
             "required": false,
             "type": "string"
           },
