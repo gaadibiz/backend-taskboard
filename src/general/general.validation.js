@@ -17,7 +17,10 @@ exports.sendGridEmailBodySchema = Joi.object({
   }).allow(null),
 
   attachments: Joi.array(),
-  created_by_uuid: Joi.string().allow('', null),
+  created_by_uuid: Joi.string().guid().max(50).allow('', null),
+  created_by_name: Joi.string().max(50).allow('', null),
+  modified_by_uuid: Joi.string().guid().allow('', null),
+  modified_by_name: Joi.string().max(50).allow('', null),
 });
 
 exports.getSignedUrlschema = Joi.object({ key: Joi.string().required() });
@@ -26,13 +29,19 @@ exports.uploadFiles = Joi.object({
   files: Joi.array(),
   module_name: Joi.string(),
   as_payload: Joi.string().allow('', null),
-  created_by_uuid: Joi.string().allow('', null),
+  created_by_uuid: Joi.string().guid().max(50).allow('', null),
+  created_by_name: Joi.string().max(50).allow('', null),
+  modified_by_uuid: Joi.string().guid().allow('', null),
+  modified_by_name: Joi.string().max(50).allow('', null),
 });
 
 exports.downloadFiles = Joi.object({
   type: Joi.string().valid('json', '').allow('', null),
   keys: Joi.array(),
-  created_by_uuid: Joi.string().allow('', null),
+  created_by_uuid: Joi.string().guid().max(50).allow('', null),
+  created_by_name: Joi.string().max(50).allow('', null),
+  modified_by_uuid: Joi.string().guid().allow('', null),
+  modified_by_name: Joi.string().max(50).allow('', null),
 });
 
 exports.emailConversationSchema = Joi.object({
@@ -40,7 +49,10 @@ exports.emailConversationSchema = Joi.object({
   subject: Joi.string().max(100),
   search_type: Joi.string().max(255).default('subject'),
   body: Joi.object().default(null), // JSON object type
-  created_by_uuid: Joi.string().max(50).allow(null),
+  created_by_uuid: Joi.string().guid().max(50).allow('', null),
+  created_by_name: Joi.string().max(50).allow('', null),
+  modified_by_uuid: Joi.string().guid().allow('', null),
+  modified_by_name: Joi.string().max(50).allow('', null),
 });
 
 exports.upsertstatusApproval = Joi.object({

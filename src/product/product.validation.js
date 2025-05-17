@@ -21,7 +21,10 @@ exports.upsertProductSchema = Joi.object({
   colour: Joi.string().max(50).allow(null, ''),
   description: Joi.string().allow(null).max(65535), // TEXT column can hold longer data
   status: Joi.string().valid('ACTIVE', 'INACIVE'),
-  created_by_uuid: Joi.string().guid().required().max(50),
+  created_by_uuid: Joi.string().guid().max(50).allow('', null),
+  created_by_name: Joi.string().max(50).allow('', null),
+  modified_by_uuid: Joi.string().guid().allow('', null),
+  modified_by_name: Joi.string().max(50).allow('', null),
 });
 
 exports.getProductSchema = Joi.object({

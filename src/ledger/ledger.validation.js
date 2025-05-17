@@ -11,7 +11,10 @@ exports.upsertLedgerSchema = Joi.object({
   customer_name: Joi.string().max(100),
   type: Joi.string().max(100).required(),
   status: Joi.string().valid('ACTIVE', 'INACIVE'),
-  created_by_uuid: Joi.string().guid().required().max(50),
+  created_by_uuid: Joi.string().guid().max(50).allow('', null),
+  created_by_name: Joi.string().max(50).allow('', null),
+  modified_by_uuid: Joi.string().guid().allow('', null),
+  modified_by_name: Joi.string().max(50).allow('', null),
 });
 
 exports.getLedgerSchema = Joi.object({

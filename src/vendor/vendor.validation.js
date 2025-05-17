@@ -29,7 +29,10 @@ exports.upsertVendorSchema = Joi.object({
   pan_no: Joi.string().allow(null),
   status: Joi.string().max(255).allow(null, ''),
   modified_by_uuid: Joi.string().guid().max(50).allow(null),
-  created_by_uuid: Joi.string().guid().max(50).allow(null),
+  created_by_uuid: Joi.string().guid().max(50).allow('', null),
+  created_by_name: Joi.string().max(50).allow('', null),
+  modified_by_uuid: Joi.string().guid().allow('', null),
+  modified_by_name: Joi.string().max(50).allow('', null),
 });
 
 exports.getVendorSchema = Joi.object({

@@ -16,8 +16,10 @@ exports.upsertProjectSchema = Joi.object({
   finance_manager_name: Joi.string().required(),
   finance_manager_uuid: Joi.string().guid().required(),
   status: Joi.string().valid('ACTIVE', 'INACTIVE').default('ACTIVE').required(),
-  created_by_uuid: Joi.string().guid().allow('', null),
+  created_by_uuid: Joi.string().guid().max(50).allow('', null),
+  created_by_name: Joi.string().max(50).allow('', null),
   modified_by_uuid: Joi.string().guid().allow('', null),
+  modified_by_name: Joi.string().max(50).allow('', null),
 });
 
 exports.getProjectSchema = Joi.object({
@@ -40,8 +42,10 @@ exports.upsertProjectTeamSchema = Joi.object({
   user_uuid: Joi.string().guid().allow('', null),
   user_name: Joi.string().allow('', null),
   status: Joi.string().valid('ACTIVE', 'INACTIVE').default('ACTIVE').required(),
-  created_by_uuid: Joi.string().guid().allow('', null),
+  created_by_uuid: Joi.string().guid().max(50).allow('', null),
+  created_by_name: Joi.string().max(50).allow('', null),
   modified_by_uuid: Joi.string().guid().allow('', null),
+  modified_by_name: Joi.string().max(50).allow('', null),
 });
 
 exports.getProjectTeamSchema = Joi.object({

@@ -9,7 +9,9 @@ exports.upsertCommentSchema = Joi.object({
   status: Joi.string().valid('ACTIVE', 'INACTIVE'),
   created_by_name: Joi.string().allow(null, ''),
   created_by_uuid: Joi.string().guid().max(50).allow('', null),
+  created_by_name: Joi.string().max(50).allow('', null),
   modified_by_uuid: Joi.string().guid().allow('', null),
+  modified_by_name: Joi.string().max(50).allow('', null),
 });
 
 exports.getCommentSchema = Joi.object({
