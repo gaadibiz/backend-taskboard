@@ -7,8 +7,10 @@ exports.postHistorySchema = Joi.object({
   module_id: Joi.number().integer().allow(null, ''),
   module_column_name: Joi.string().max(100).allow(null, ''),
   message: Joi.string().allow('').optional().allow(null),
-  created_by_uuid: Joi.string().guid().max(100).allow(null),
-  modified_by_uuid: Joi.string().guid().max(100).allow(null),
+  created_by_uuid: Joi.string().guid().max(50).allow('', null),
+  created_by_name: Joi.string().max(50).allow('', null),
+  modified_by_uuid: Joi.string().guid().allow('', null),
+  modified_by_name: Joi.string().max(50).allow('', null),
   payload: Joi.object().allow(null),
   status: Joi.string().allow(null),
 });
@@ -41,6 +43,9 @@ exports.upsertEmailHistorySchema = Joi.object({
   comment: Joi.string().allow('', null),
   send_received_ts: Joi.string().allow('', null),
   created_by_uuid: Joi.string().guid().max(50).allow('', null),
+  created_by_name: Joi.string().max(50).allow('', null),
+  modified_by_uuid: Joi.string().guid().allow('', null),
+  modified_by_name: Joi.string().max(50).allow('', null),
 });
 
 exports.getEmailHistorySchema = Joi.object({

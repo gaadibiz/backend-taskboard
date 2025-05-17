@@ -20,6 +20,9 @@ exports.upsertBillingCompanySchema = Joi.object({
   swift_code: Joi.string().max(500).allow('', null),
   ifsc_code: Joi.string().max(100).allow('', null),
   created_by_uuid: Joi.string().guid().max(50).allow('', null),
+  created_by_name: Joi.string().max(50).allow('', null),
+  modified_by_uuid: Joi.string().guid().allow('', null),
+  modified_by_name: Joi.string().max(50).allow('', null),
 });
 
 exports.getBillingCompanySchema = Joi.object({

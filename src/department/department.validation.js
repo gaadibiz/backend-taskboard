@@ -12,8 +12,10 @@ exports.upsertDepartmentSchema = Joi.object({
   department_details: Joi.string().max(500).allow('', null),
   category: Joi.string().max(500).allow(null),
   status: Joi.string().valid('ACTIVE', 'INACTIVE').default('ACTIVE').required(),
-  created_by_uuid: Joi.string().guid().allow('', null),
+  created_by_uuid: Joi.string().guid().max(50).allow('', null),
+  created_by_name: Joi.string().max(50).allow('', null),
   modified_by_uuid: Joi.string().guid().allow('', null),
+  modified_by_name: Joi.string().max(50).allow('', null),
 });
 
 exports.getDepartmentSchema = Joi.object({

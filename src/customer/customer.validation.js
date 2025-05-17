@@ -9,10 +9,10 @@ exports.upsertCustomerSchema = Joi.object({
   legal_entity: Joi.string().max(100).allow(null, ''),
   registration_type: Joi.string().max(100).allow(null, ''),
   status: Joi.string().valid('ACTIVE', 'INACTIVE').default('ACTIVE').required(),
-  created_by_uuid: Joi.string().guid().allow('', null),
-  created_by_name: Joi.string().max(255).allow('', null),
-  modified_by_name: Joi.string().max(255).allow('', null),
+  created_by_uuid: Joi.string().guid().max(50).allow('', null),
+  created_by_name: Joi.string().max(50).allow('', null),
   modified_by_uuid: Joi.string().guid().allow('', null),
+  modified_by_name: Joi.string().max(50).allow('', null),
 });
 
 exports.getCustomerSchema = Joi.object({
@@ -46,9 +46,9 @@ exports.upsertCustomerBranchSchema = Joi.object({
   customer_branch_website: Joi.string().max(255).allow('', null),
   customer_branch_mail_id: Joi.string().max(255).allow('', null),
   created_by_uuid: Joi.string().guid().max(50).allow('', null),
-  created_by_name: Joi.string().max(255).allow('', null),
-  modified_by_name: Joi.string().max(255).allow('', null),
+  created_by_name: Joi.string().max(50).allow('', null),
   modified_by_uuid: Joi.string().guid().allow('', null),
+  modified_by_name: Joi.string().max(50).allow('', null),
 });
 
 exports.getCustomerBranchSchema = Joi.object({
@@ -80,9 +80,9 @@ exports.upsertCustomerDeliveryAddressSchema = Joi.object({
     .default('ACTIVE')
     .max(20),
   created_by_uuid: Joi.string().guid().max(50).allow('', null),
-  created_by_name: Joi.string().max(255).allow('', null),
-  modified_by_name: Joi.string().max(255).allow('', null),
+  created_by_name: Joi.string().max(50).allow('', null),
   modified_by_uuid: Joi.string().guid().allow('', null),
+  modified_by_name: Joi.string().max(50).allow('', null),
 });
 
 exports.getCustomerDeliveryAddressSchema = Joi.object({
@@ -123,10 +123,10 @@ exports.upsertContactSchema = Joi.object({
   contact_number: Joi.string().max(20).allow(null, ''),
   mail_id: Joi.string().email().max(255).required(),
   status: Joi.string().valid('ACTIVE', 'INACTIVE').default('ACTIVE').required(),
-  created_by_uuid: Joi.string().guid().allow('', null),
-  created_by_name: Joi.string().max(255).allow('', null),
-  modified_by_name: Joi.string().max(255).allow('', null),
+  created_by_uuid: Joi.string().guid().max(50).allow('', null),
+  created_by_name: Joi.string().max(50).allow('', null),
   modified_by_uuid: Joi.string().guid().allow('', null),
+  modified_by_name: Joi.string().max(50).allow('', null),
 });
 
 exports.getContactSchema = Joi.object({
@@ -150,10 +150,10 @@ exports.upsertBankDetailsSchema = Joi.object({
   account_no: Joi.string().max(100).required(),
   ifsc_code: Joi.string().max(100).allow(null, ''),
   status: Joi.string().valid('ACTIVE', 'INACTIVE').default('ACTIVE').required(),
-  created_by_uuid: Joi.string().guid().allow('', null),
-  created_by_name: Joi.string().max(255).allow('', null),
-  modified_by_name: Joi.string().max(255).allow('', null),
+  created_by_uuid: Joi.string().guid().max(50).allow('', null),
+  created_by_name: Joi.string().max(50).allow('', null),
   modified_by_uuid: Joi.string().guid().allow('', null),
+  modified_by_name: Joi.string().max(50).allow('', null),
 });
 
 exports.getBankDetailsSchema = Joi.object({
@@ -223,10 +223,10 @@ exports.loadCustomerDataSchema = Joi.object({
   customer_delivery_address_state: Joi.string().max(100).allow(null, ''),
   customer_delivery_address_pincode: Joi.string().max(20).allow(null, ''),
   customer_delivery_address_country: Joi.string().max(100).allow(null, ''),
-  created_by_uuid: Joi.string().guid().allow('', null),
-  created_by_name: Joi.string().max(255).allow('', null),
-  modified_by_name: Joi.string().max(255).allow('', null),
+  created_by_uuid: Joi.string().guid().max(50).allow('', null),
+  created_by_name: Joi.string().max(50).allow('', null),
   modified_by_uuid: Joi.string().guid().allow('', null),
+  modified_by_name: Joi.string().max(50).allow('', null),
 });
 
 exports.upsertBillingDispatchAddressSchema = Joi.object({
@@ -246,10 +246,10 @@ exports.upsertBillingDispatchAddressSchema = Joi.object({
   transport_doc_date: Joi.string().max(255).allow('', null),
   vehicle_no: Joi.string().max(100).allow(null, ''),
   status: Joi.string().valid('ACTIVE', 'INACTIVE').default('ACTIVE').required(),
-  created_by_uuid: Joi.string().guid().allow('', null),
-  created_by_name: Joi.string().max(255).allow('', null),
-  modified_by_name: Joi.string().max(255).allow('', null),
+  created_by_uuid: Joi.string().guid().max(50).allow('', null),
+  created_by_name: Joi.string().max(50).allow('', null),
   modified_by_uuid: Joi.string().guid().allow('', null),
+  modified_by_name: Joi.string().max(50).allow('', null),
 });
 
 exports.getBillingDispatchAddressSchema = Joi.object({
@@ -273,10 +273,10 @@ exports.upsertCustomerAttachmentSchema = Joi.object({
   is_vendor: Joi.string().required().valid('YES', 'NO'),
   link: Joi.string().max(100).required(),
   status: Joi.string().valid('ACTIVE', 'INACTIVE').default('ACTIVE').required(),
-  created_by_uuid: Joi.string().guid().allow('', null),
-  created_by_name: Joi.string().max(255).allow('', null),
-  modified_by_name: Joi.string().max(255).allow('', null),
+  created_by_uuid: Joi.string().guid().max(50).allow('', null),
+  created_by_name: Joi.string().max(50).allow('', null),
   modified_by_uuid: Joi.string().guid().allow('', null),
+  modified_by_name: Joi.string().max(50).allow('', null),
 });
 
 exports.getCustomerAttachmentSchema = Joi.object({

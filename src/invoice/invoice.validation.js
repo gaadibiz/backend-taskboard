@@ -83,6 +83,9 @@ exports.upsertInvoiceSchema = Joi.object({
   qr_code: Joi.string().max(255).allow(null, ''),
   status: Joi.string().max(255).required().default('ACTIVE'),
   created_by_uuid: Joi.string().guid().max(50).allow('', null),
+  created_by_name: Joi.string().max(50).allow('', null),
+  modified_by_uuid: Joi.string().guid().allow('', null),
+  modified_by_name: Joi.string().max(50).allow('', null),
 });
 
 exports.getInvoiceSchema = Joi.object({
@@ -172,6 +175,9 @@ exports.upsertProformaInvoiceSchema = Joi.object({
   qr_code: Joi.string().max(255).allow(null, ''),
   status: Joi.string().max(255).required().default('ACTIVE'),
   created_by_uuid: Joi.string().guid().max(50).allow('', null),
+  created_by_name: Joi.string().max(50).allow('', null),
+  modified_by_uuid: Joi.string().guid().allow('', null),
+  modified_by_name: Joi.string().max(50).allow('', null),
 });
 
 exports.getProformaInvoiceSchema = Joi.object({
@@ -226,7 +232,10 @@ exports.upsertInvoiceExportDataSchema = Joi.object({
   weight: Joi.string().allow(null),
   packages: Joi.string().allow(null),
   status: Joi.string().required().valid('ACTIVE', 'INACTIVE', 'DELETED'),
-  created_by_uuid: Joi.string().guid().max(50).allow(null),
+  created_by_uuid: Joi.string().guid().max(50).allow('', null),
+  created_by_name: Joi.string().max(50).allow('', null),
+  modified_by_uuid: Joi.string().guid().allow('', null),
+  modified_by_name: Joi.string().max(50).allow('', null),
 });
 
 exports.getInvoiceExportDataSchema = Joi.object({

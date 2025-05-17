@@ -75,6 +75,9 @@ exports.upsertCreditDebitNoteSchema = Joi.object({
   bank_name: Joi.string().allow(null),
   status: Joi.string().allow(null).default('ACTIVE'),
   created_by_uuid: Joi.string().guid().max(50).allow('', null),
+  created_by_name: Joi.string().max(50).allow('', null),
+  modified_by_uuid: Joi.string().guid().allow('', null),
+  modified_by_name: Joi.string().max(50).allow('', null),
 });
 
 exports.getCreditDebitNoteSchema = Joi.object({
@@ -145,6 +148,9 @@ exports.upsertDebitNoteSchema = Joi.object({
   bank_name: Joi.string().allow(null),
   status: Joi.string().allow(null).default('ACTIVE'),
   created_by_uuid: Joi.string().guid().max(50).allow('', null),
+  created_by_name: Joi.string().max(50).allow('', null),
+  modified_by_uuid: Joi.string().guid().allow('', null),
+  modified_by_name: Joi.string().max(50).allow('', null),
 });
 
 exports.getDebitNoteSchema = Joi.object({

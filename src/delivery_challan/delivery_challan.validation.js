@@ -57,6 +57,9 @@ exports.upsertDeliveryChallanSchema = Joi.object({
   delivery_address_country: Joi.string().max(255).allow('', null),
   status: Joi.string().required().default('ACTIVE'),
   created_by_uuid: Joi.string().guid().max(50).allow('', null),
+  created_by_name: Joi.string().max(50).allow('', null),
+  modified_by_uuid: Joi.string().guid().allow('', null),
+  modified_by_name: Joi.string().max(50).allow('', null),
 });
 
 exports.getDeliveryChallanSchema = Joi.object({

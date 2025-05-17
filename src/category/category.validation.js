@@ -6,8 +6,10 @@ exports.upsertCategorySchema = Joi.object({
   billing_company_uuid: Joi.string().guid().max(100).allow(null),
   description: Joi.string().max(250),
   status: Joi.string().valid('ACTIVE', 'INACTIVE'),
-  created_by_uuid: Joi.string().guid().max(50).allow(null),
+  created_by_uuid: Joi.string().guid().max(50).allow('', null),
+  created_by_name: Joi.string().max(50).allow('', null),
   modified_by_uuid: Joi.string().guid().allow('', null),
+  modified_by_name: Joi.string().max(50).allow('', null),
 });
 
 exports.getCategorySchema = Joi.object({

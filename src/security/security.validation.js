@@ -7,7 +7,9 @@ exports.upsertRoleSchema = Joi.object({
   role_group: Joi.string().min(2).max(100).required(),
   status: Joi.string().valid('ACTIVE', 'INACTIVE').required(),
   created_by_uuid: Joi.string().guid().max(50).allow('', null),
+  created_by_name: Joi.string().max(50).allow('', null),
   modified_by_uuid: Joi.string().guid().allow('', null),
+  modified_by_name: Joi.string().max(50).allow('', null),
 });
 
 exports.getRoleSchema = Joi.object({
@@ -92,6 +94,9 @@ exports.upsertRoleRecordAccessPermissionSchema = Joi.object({
   filter_values: Joi.object(),
   status: Joi.string().valid('ACTIVE', 'INACTIVE'),
   created_by_uuid: Joi.string().guid().max(50).allow('', null),
+  created_by_name: Joi.string().max(50).allow('', null),
+  modified_by_uuid: Joi.string().guid().allow('', null),
+  modified_by_name: Joi.string().max(50).allow('', null),
 });
 
 exports.getRoleRecordAccessPermissionSchema = Joi.object({

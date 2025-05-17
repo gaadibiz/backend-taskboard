@@ -30,8 +30,10 @@ exports.upsertUserSchema = Joi.object({
   affiliated_billing_company_uuids: Joi.array(),
   billing_company_branches: Joi.array(),
   status: Joi.string().valid('ACTIVE', 'INACTIVE').default('ACTIVE').required(),
-  created_by_uuid: Joi.string().guid().max(50).allow(null, ''),
-  created_by_name: Joi.string().max(50).allow(null, ''),
+  created_by_uuid: Joi.string().guid().max(50).allow('', null),
+  created_by_name: Joi.string().max(50).allow('', null),
+  modified_by_uuid: Joi.string().guid().allow('', null),
+  modified_by_name: Joi.string().max(50).allow('', null),
 });
 
 exports.upsertUserProfileSchema = Joi.object({
@@ -91,9 +93,9 @@ exports.upsertUserProfileSchema = Joi.object({
   attachment: Joi.array(),
   status: Joi.string().valid('ACTIVE', 'INACTIVE').default('ACTIVE').required(),
   created_by_uuid: Joi.string().guid().max(50).allow('', null),
-  created_by_name: Joi.string().max(50).allow(null, ''),
-  modified_by_name: Joi.string().max(50).allow(null, ''),
+  created_by_name: Joi.string().max(50).allow('', null),
   modified_by_uuid: Joi.string().guid().allow('', null),
+  modified_by_name: Joi.string().max(50).allow('', null),
 });
 
 exports.getUserSchema = Joi.object({
@@ -119,10 +121,10 @@ exports.upsertManageSiteSchema = Joi.object({
   site_name: Joi.string().max(250).allow(null, ''),
   login_title: Joi.string().max(250).allow(null, ''),
   status: Joi.string().valid('ACTIVE', 'INACTIVE'),
-  created_by_uuid: Joi.string().guid().max(50).allow(null, ''),
-  created_by_name: Joi.string().max(50).allow(null, ''),
-  modified_by_name: Joi.string().max(50).allow(null, ''),
+  created_by_uuid: Joi.string().guid().max(50).allow('', null),
+  created_by_name: Joi.string().max(50).allow('', null),
   modified_by_uuid: Joi.string().guid().allow('', null),
+  modified_by_name: Joi.string().max(50).allow('', null),
 });
 
 exports.getManageSiteSchema = Joi.object({
@@ -140,8 +142,9 @@ exports.getManageSiteSchema = Joi.object({
 exports.changeUserPwd = Joi.object({
   user_uuid: Joi.string().guid().required(),
   user_password: Joi.string().min(8).max(500).required(),
-  created_by_uuid: Joi.string().guid().max(50).allow(null, ''),
-  created_by_name: Joi.string().max(50).allow(null, ''),
+  created_by_uuid: Joi.string().guid().max(50).allow('', null),
+  created_by_name: Joi.string().max(50).allow('', null),
   modified_by_uuid: Joi.string().guid().allow('', null),
+  modified_by_name: Joi.string().max(50).allow('', null),
   modified_by_name: Joi.string().max(50).allow('', null),
 });
