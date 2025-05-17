@@ -31,6 +31,10 @@
                   "type": "string",
                   "default": ""
                 },
+                "billing_company_uuid": {
+                  "type": "string",
+                  "default": null
+                },
                 "description": {
                   "type": "string",
                   "default": ""
@@ -83,6 +87,13 @@
           {
             "in": "query",
             "name": "category_uuid",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "billing_company_uuid",
             "description": "",
             "required": false,
             "type": "string"

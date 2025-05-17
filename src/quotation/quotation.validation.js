@@ -60,6 +60,9 @@ exports.upsertQuotationSchema = Joi.object({
   total_amount_after_tax: Joi.number().precision(2).allow(null),
   status: Joi.string().max(255).required().default('ACTIVE'),
   created_by_uuid: Joi.string().guid().max(50).allow('', null),
+  created_by_name: Joi.string().max(50).allow('', null),
+  modified_by_uuid: Joi.string().guid().allow('', null),
+  modified_by_name: Joi.string().max(50).allow('', null),
 });
 
 exports.getQuotationSchema = Joi.object({

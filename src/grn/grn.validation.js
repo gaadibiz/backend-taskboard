@@ -56,6 +56,9 @@ exports.upsertGRNSchema = Joi.object({
   attachments: Joi.array(),
   status: Joi.string().max(255).required().default('ACTIVE'),
   created_by_uuid: Joi.string().guid().max(50).allow('', null),
+  created_by_name: Joi.string().max(50).allow('', null),
+  modified_by_uuid: Joi.string().guid().allow('', null),
+  modified_by_name: Joi.string().max(50).allow('', null),
 });
 
 exports.getGRNSchema = Joi.object({

@@ -128,8 +128,10 @@ exports.upsertExpenseCategory = Joi.object({
   billing_company_branch_name: Joi.string().max(255).allow('', null),
   expense_category_description: Joi.string().max(500).allow('', null),
   status: Joi.string().valid('ACTIVE', 'INACTIVE'),
-  created_by_uuid: Joi.string().guid().max(50).allow(null),
+  created_by_uuid: Joi.string().guid().max(50).allow('', null),
+  created_by_name: Joi.string().max(50).allow('', null),
   modified_by_uuid: Joi.string().guid().allow('', null),
+  modified_by_name: Joi.string().max(50).allow('', null),
 });
 
 exports.getExpenseCategory = Joi.object({
@@ -161,8 +163,10 @@ exports.convertFinanceToCleared = Joi.object({
 exports.exportFinanceExpense = Joi.object({
   expense_uuids: Joi.array().items(Joi.string().uuid()),
   billing_company_uuid: Joi.string().guid().max(50).required(),
-  created_by_uuid: Joi.string().guid().max(50).allow(null),
+  created_by_uuid: Joi.string().guid().max(50).allow('', null),
+  created_by_name: Joi.string().max(50).allow('', null),
   modified_by_uuid: Joi.string().guid().allow('', null),
+  modified_by_name: Joi.string().max(50).allow('', null),
 });
 
 exports.getPreviewExpense = Joi.object({
