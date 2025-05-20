@@ -733,7 +733,11 @@ exports.mergeApprovalWithRecord = async (req, res) => {
     console.log('approvalRecord: ', approvalRecord[0].approval_uuids);
     let is_user_approver = approvalRecord[0].approval_uuids.some(
       (ele) =>
-        ele.uuid === req.user.user_uuid || ele.uuid === req.user.role_uuid,
+        ele.uuid === req.user.user_uuid ||
+        ele.uuid === req.user.role_uuid ||
+        req.user.role_value === 'ADMIN' ||
+        req.user.role_value === 'SUPERADMIN' ||
+        req.user.role_value === 'CEO',
     );
     deleteKeyValuePair(approvalRecord[0], ['approval_uuids']);
     data = { ...data, ...approvalRecord[0], is_user_approver };
