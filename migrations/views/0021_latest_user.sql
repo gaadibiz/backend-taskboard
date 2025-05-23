@@ -18,6 +18,7 @@ select
     up.user_profile_id,
     up.first_name,
     up.last_name,
+    up.middle_name,
     CONCAT (
         up.first_name,
         CASE
