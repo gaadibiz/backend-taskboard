@@ -149,6 +149,10 @@
                   "type": "string",
                   "default": ""
                 },
+                "middle_name": {
+                  "type": "string",
+                  "default": ""
+                },
                 "personal_email": {
                   "type": "string",
                   "default": ""

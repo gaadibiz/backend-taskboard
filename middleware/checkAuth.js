@@ -11,7 +11,6 @@ const checkAuth = (req, res, next) => {
     return next();
   }
 
-  console.log(req.query, '...........................');
   if (!token) return res.status(404).json(responser('Token not found.'));
 
   jwt.verify(token, config.jwt.jwtAccessKey, async (err, user) => {
@@ -23,7 +22,6 @@ const checkAuth = (req, res, next) => {
     if (result !== 1) return res.status(401).json(responser('Invalid token.'));
     req.user = user;
 
-    console.log(user, '................................................user');
     if (req.method === 'POST') {
       if (Array.isArray(req.body)) {
         req.body = req.body.map((item) => {
