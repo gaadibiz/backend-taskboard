@@ -2,11 +2,17 @@
   "paths": {
     "/api/v1/user/upsert-user": {
       "post": {
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "summary": "Create or Update primary details of User",
         "description": "",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -63,7 +69,6 @@
                   "type": "string",
                   "default": null
                 },
-
                 "affiliated_billing_company_uuids": {
                   "type": "array",
                   "items": {
@@ -108,7 +113,6 @@
             }
           }
         ],
-
         "responses": {
           "200": {
             "description": "successful operation"
@@ -124,11 +128,17 @@
     },
     "/api/v1/user/update-profile": {
       "post": {
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "summary": "Create or update User",
         "description": "Endpoint Create or update User",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -154,6 +164,150 @@
                   "default": ""
                 },
                 "personal_email": {
+                  "type": "string",
+                  "default": ""
+                },
+                "email": {
+                  "type": "string",
+                  "default": ""
+                },
+                "gender": {
+                  "type": "string",
+                  "default": ""
+                },
+                "legal_entity": {
+                  "type": "string",
+                  "default": ""
+                },
+                "sub_department": {
+                  "type": "string",
+                  "default": ""
+                },
+                "business_unit": {
+                  "type": "string",
+                  "default": ""
+                },
+                "secondary_job_title": {
+                  "type": "string",
+                  "default": ""
+                },
+                "reporting_manager_employee_no": {
+                  "type": "string",
+                  "default": ""
+                },
+                "skype_id": {
+                  "type": "string",
+                  "default": ""
+                },
+                "marriage_date": {
+                  "type": "string",
+                  "default": ""
+                },
+                "spouse_gender": {
+                  "type": "string",
+                  "default": ""
+                },
+                "is_physically_handicapped": {
+                  "type": "boolean",
+                  "default": false
+                },
+                "blood_group": {
+                  "type": "string",
+                  "default": ""
+                },
+                "nationality": {
+                  "type": "string",
+                  "default": ""
+                },
+                "salary_payment_mode": {
+                  "type": "string",
+                  "default": ""
+                },
+                "bank_account_name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "pf_establishment_id": {
+                  "type": "string",
+                  "default": ""
+                },
+                "pf_details_available": {
+                  "type": "boolean",
+                  "default": false
+                },
+                "pf_number": {
+                  "type": "string",
+                  "default": ""
+                },
+                "pf_account_name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "uan": {
+                  "type": "string",
+                  "default": ""
+                },
+                "esi_eligible": {
+                  "type": "boolean",
+                  "default": false
+                },
+                "employee_esi_number": {
+                  "type": "string",
+                  "default": ""
+                },
+                "esi_details_available": {
+                  "type": "string",
+                  "default": ""
+                },
+                "esi_number": {
+                  "type": "string",
+                  "default": ""
+                },
+                "lwf_eligible": {
+                  "type": "boolean",
+                  "default": false
+                },
+                "aadhaar_number": {
+                  "type": "string",
+                  "default": ""
+                },
+                "enrollment_number": {
+                  "type": "string",
+                  "default": ""
+                },
+                "dob_in_aadhaar_card": {
+                  "type": "string",
+                  "default": ""
+                },
+                "full_name_as_per_aadhaar_card": {
+                  "type": "string",
+                  "default": ""
+                },
+                "address_as_in_aadhaar_card": {
+                  "type": "string",
+                  "default": ""
+                },
+                "gender_as_in_aadhaar_card": {
+                  "type": "string",
+                  "default": ""
+                },
+                "pan_card_available": {
+                  "type": "boolean",
+                  "default": false
+                },
+                "pan_number": {
+                  "type": "string",
+                  "default": ""
+                },
+                "full_name_as_per_pan_card": {
+                  "type": "string",
+                  "default": ""
+                },
+                "dob_in_pan_card": {
+                  "type": "string",
+                  "default": ""
+                },
+                "parents_name_as_per_pan_card": {
                   "type": "string",
                   "default": ""
                 },
@@ -197,7 +351,6 @@
                   "type": "string",
                   "default": null
                 },
-
                 "hierarchy_uuids": {
                   "type": "string",
                   "default": null
@@ -349,7 +502,6 @@
             }
           }
         ],
-
         "responses": {
           "200": {
             "description": "successful operation"
@@ -365,12 +517,17 @@
     },
     "/api/v1/user/get-user": {
       "get": {
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "summary": "Get all User ",
         "description": "This endpoint to get User.",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
-
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -397,7 +554,10 @@
             "name": "role_group",
             "required": false,
             "type": "string",
-            "enum": ["MANAGER", "USER"]
+            "enum": [
+              "MANAGER",
+              "USER"
+            ]
           },
           {
             "in": "query",
@@ -413,7 +573,6 @@
             "required": false,
             "type": "string"
           },
-
           {
             "in": "query",
             "name": "billing_company_branch_uuid",
@@ -421,7 +580,6 @@
             "required": false,
             "type": "string"
           },
-
           {
             "in": "query",
             "name": "columns",
@@ -494,11 +652,17 @@
     },
     "/api/v1/user/upsert-branch": {
       "post": {
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "summary": "Create or update User",
         "description": "Endpoint Create or update Branch",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "in": "body",
@@ -547,12 +711,17 @@
     },
     "/api/v1/user/get-branch": {
       "get": {
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "summary": "Get all User ",
         "description": "This endpoint to get branches.",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
-
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -645,11 +814,17 @@
     },
     "/api/v1/user/upsert-zone": {
       "post": {
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "summary": "Create or update User",
         "description": "Endpoint Create or update ZOne",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -698,7 +873,6 @@
             }
           }
         ],
-
         "responses": {
           "200": {
             "description": "successful operation"
@@ -714,12 +888,17 @@
     },
     "/api/v1/user/get-zone": {
       "get": {
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "summary": "Get all User ",
         "description": "This endpoint to get zone.",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
-
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -806,11 +985,17 @@
     },
     "/api/v1/user/change-user-role": {
       "post": {
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "summary": "Create or update User",
         "description": "Endpoint Create or update ZOne",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -839,7 +1024,6 @@
             }
           }
         ],
-
         "responses": {
           "200": {
             "description": "successful operation"
@@ -855,11 +1039,17 @@
     },
     "/api/v1/user/upsert-manage-site": {
       "post": {
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "summary": "Post Manage Site",
         "description": "Endpoint to create or update Manage Site",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -900,7 +1090,6 @@
             }
           }
         ],
-
         "responses": {
           "200": {
             "description": "successful operation"
@@ -914,14 +1103,16 @@
         }
       }
     },
-
     "/api/v1/user/get-manage-site": {
       "get": {
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "summary": "Get Manage Site",
         "description": "Endpoint to retrieve Manage SIte",
-        "produces": ["application/json"],
-
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "in": "query",
@@ -994,22 +1185,32 @@
             "type": "number"
           }
         ],
-
         "responses": {
-          "200": { "description": "successful operation" },
-          "404": { "description": "Not Found" },
-          "500": { "description": "Internal Server Error" }
+          "200": {
+            "description": "successful operation"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
         }
       }
     },
-
     "/api/v1/user/upload-image": {
       "post": {
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "summary": "Upload user image",
         "description": "Endpoint to upload user image",
-        "consumes": ["multipart/form-data"],
-        "produces": ["application/json"],
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -1044,11 +1245,17 @@
     },
     "/api/v1/user/change-user-pwd": {
       "post": {
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "summary": "Create or update User",
         "description": "Endpoint Create or update ZOne",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -1077,7 +1284,6 @@
             }
           }
         ],
-
         "responses": {
           "200": {
             "description": "successful operation"
@@ -1093,11 +1299,17 @@
     },
     "/api/v1/user/insert-user-in-bulk": {
       "post": {
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "summary": "Bulk import employee user data",
         "description": "Accepts an array of employee data objects for creation or update.",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "in": "body",
@@ -1109,18 +1321,39 @@
               "items": {
                 "type": "object",
                 "properties": {
-                  "Employee": { "type": "string", "default": "" },
-                  "First Name": { "type": "string", "default": "" },
-                  "Middle Name": { "type": "string", "default": "" },
-                  "Last Name": { "type": "string", "default": "" },
+                  "Employee": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "First Name": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "Middle Name": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "Last Name": {
+                    "type": "string",
+                    "default": ""
+                  },
                   "Email": {
                     "type": "string",
                     "format": "email",
                     "default": ""
                   },
-                  "Dial Code": { "type": "string", "default": "" },
-                  "Mobile Number": { "type": "string", "default": "" },
-                  "Gender": { "type": "string", "default": "" },
+                  "Dial Code": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "Mobile Number": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "Gender": {
+                    "type": "string",
+                    "default": ""
+                  },
                   "Date Of Birth (dd-mmm-yyyy)": {
                     "type": "string",
                     "default": ""
@@ -1133,60 +1366,171 @@
                     "type": "string",
                     "default": ""
                   },
-                  "Legal Entity": { "type": "string", "default": "" },
-                  "Department": { "type": "string", "default": "" },
-                  "Sub Department": { "type": "string", "default": "" },
-                  "Business Unit": { "type": "string", "default": "" },
-                  "Job Title": { "type": "string", "default": "" },
-                  "Secondary Job Title": { "type": "string", "default": "" },
-                  "Location": { "type": "string", "default": "" },
-                  "Worker Type": { "type": "string", "default": "" },
+                  "Legal Entity": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "Department": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "Sub Department": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "Business Unit": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "Job Title": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "Secondary Job Title": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "Location": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "Worker Type": {
+                    "type": "string",
+                    "default": ""
+                  },
                   "Reporting Manager's Employee Number": {
                     "type": "string",
                     "default": ""
                   },
-                  "Work Phone": { "type": "string", "default": "" },
-                  "Residence Number": { "type": "string", "default": "" },
+                  "Work Phone": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "Residence Number": {
+                    "type": "string",
+                    "default": ""
+                  },
                   "Personal Email": {
                     "type": "string",
                     "format": "email",
                     "default": ""
                   },
-                  "Skype Id": { "type": "string", "default": "" },
-                  "Marital Status": { "type": "string", "default": "" },
+                  "Skype Id": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "Marital Status": {
+                    "type": "string",
+                    "default": ""
+                  },
                   "Marriage Date (dd-mmm-yyyy)": {
                     "type": "string",
                     "default": ""
                   },
-                  "Father Name": { "type": "string", "default": "" },
-                  "Mother Name": { "type": "string", "default": "" },
-                  "Spouse Name": { "type": "string", "default": "" },
-                  "Spouse Gender": { "type": "string", "default": "" },
-                  "Physically Handicapped": { "type": "string", "default": "" },
-                  "Blood Group": { "type": "string", "default": "" },
-                  "Nationality": { "type": "string", "default": "" },
-                  "Salary Payment Mode": { "type": "string", "default": "" },
-                  "Bank Name": { "type": "string", "default": "" },
-                  "IFSC Code": { "type": "string", "default": "" },
-                  "Bank Account Number": { "type": "string", "default": "" },
-                  "Name On Bank Account": { "type": "string", "default": "" },
-                  "PF Establishment Id": { "type": "string", "default": "" },
-                  "PF Details Available": { "type": "string", "default": "" },
-                  "PF Number": { "type": "string", "default": "" },
+                  "Father Name": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "Mother Name": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "Spouse Name": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "Spouse Gender": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "Physically Handicapped": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "Blood Group": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "Nationality": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "Salary Payment Mode": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "Bank Name": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "IFSC Code": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "Bank Account Number": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "Name On Bank Account": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "PF Establishment Id": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "PF Details Available": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "PF Number": {
+                    "type": "string",
+                    "default": ""
+                  },
                   "PF Joining Date (dd-mmm-yyyy)": {
                     "type": "string",
                     "default": ""
                   },
-                  "Name On PF Account": { "type": "string", "default": "" },
-                  "UAN": { "type": "string", "default": "" },
-                  "ESI Eligible": { "type": "string", "default": "" },
-                  "Employer ESI Number": { "type": "string", "default": "" },
-                  "ESI Details Available": { "type": "string", "default": "" },
-                  "ESI Number": { "type": "string", "default": "" },
-                  "PT Establishment Id": { "type": "string", "default": "" },
-                  "LWF Eligible": { "type": "string", "default": "" },
-                  "Aadhaar Number": { "type": "string", "default": "" },
-                  "Enrollment Number": { "type": "string", "default": "" },
+                  "Name On PF Account": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "UAN": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "ESI Eligible": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "Employer ESI Number": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "ESI Details Available": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "ESI Number": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "PT Establishment Id": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "LWF Eligible": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "Aadhaar Number": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "Enrollment Number": {
+                    "type": "string",
+                    "default": ""
+                  },
                   "DOB in Aadhaar card (dd-mmm-yyyy)": {
                     "type": "string",
                     "default": ""
@@ -1203,8 +1547,14 @@
                     "type": "string",
                     "default": ""
                   },
-                  "Pan Card Available": { "type": "string", "default": "" },
-                  "PAN Number": { "type": "string", "default": "" },
+                  "Pan Card Available": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "PAN Number": {
+                    "type": "string",
+                    "default": ""
+                  },
                   "Full name as per PAN card": {
                     "type": "string",
                     "default": ""
