@@ -43,7 +43,6 @@ exports.upsertUserProfileSchema = Joi.object({
   first_name: Joi.string().max(50).required(),
   last_name: Joi.string().max(50).allow('', null),
   middle_name: Joi.string().max(50).allow('', null),
-
   personal_email: Joi.string().email().max(500).required(),
   department_uuid: Joi.string().guid().max(50).allow(null, ''),
   department_name: Joi.string().allow('', null),

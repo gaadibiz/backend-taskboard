@@ -16,7 +16,8 @@ const {
   readFileContent,
 } = require('./utils/helperFunction');
 const McpServerInstance = require('./utils/mcpServer');
-
+const fs = require('fs');
+const customCss = fs.readFileSync('./swagger-dark.css', 'utf8');
 app.use(cors());
 
 // mcp server
@@ -67,6 +68,12 @@ const swagger = {
   },
   paths: {},
 };
+const uiOptions = {
+  customCss,
+  swaggerOptions: {
+    docExpansion: 'none',
+  },
+};
 const appendRoutes = async (folder) => {
   try {
     let arrayList = await readDirectory(folder);
@@ -93,7 +100,7 @@ const appendRoutes = async (folder) => {
   } catch (e) {
     console.log(e);
   }
-  app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swagger));
+  app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swagger, uiOptions));
   app.get('/', async (req, res) => {
     res.status(200).json(responser('Welcome to Server'));
   });
@@ -101,5 +108,5 @@ const appendRoutes = async (folder) => {
 appendRoutes('src');
 
 app.listen(config.PORT, () => {
-  console.log('Server is running at:', config.base_url + `/api-docs`);
+  console.log(`\x1b[38;5;208m%s\x1b[0m`,`Server is running at: ${config.base_url}/api-docs`);
 });
