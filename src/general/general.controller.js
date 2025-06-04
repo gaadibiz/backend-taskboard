@@ -800,8 +800,6 @@ exports.getCountrySate = async (req, res) => {
   if (advanceFilter) filter = advanceFiltering(filter, advanceFilter);
 
   let pageFilter = pagination(pageNo, itemPerPage);
-
-  filter = await roleFilterService(filter, tableName, req.user);
   let totalRecords = await getCountRecord(tableName, filter);
   let result = await getRecords(tableName, filter, pageFilter);
   if (!result) return res.status(500).json(responser(errMsg));

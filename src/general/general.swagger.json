@@ -970,69 +970,77 @@
     "/api/v1/general/upsert-country-state": {
       "post": {
         "tags": ["General"],
-        "summary": "Create or update country state information",
-
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "country_state_uuid": {
-                    "type": "string",
-                    "default": null
-                  },
-                  "country_id": {
-                    "type": "integer",
-                    "default": null
-                  },
-                  "country_name": {
-                    "type": "string",
-                    "default": null
-                  },
-                  "state_name": {
-                    "type": "string",
-                    "default": null
-                  },
-                  "country_code": {
-                    "type": "string",
-                    "default": null
-                  },
-                  "state_code": {
-                    "type": "string",
-                    "default": null
-                  },
-                  "type": {
-                    "type": "string",
-                    "default": null
-                  },
-                  "latitude": {
-                    "type": "string",
-                    "default": null
-                  },
-                  "longitude": {
-                    "type": "string",
-                    "default": null
-                  },
-                  "status": {
-                    "type": "string",
-                    "default": "ACTIVE"
-                  }
+        "summary": "Create or update  country state information",
+        "description": "",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "country_state_uuid": {
+                  "type": "string",
+                  "default": null
+                },
+                "country_id": {
+                  "type": "string",
+                  "default": ""
+                },
+                "country_name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "state_name": {
+                  "type": "string",
+                  "default": null
+                },
+                "country_code": {
+                  "type": "string",
+                  "default": ""
+                },
+                "state_code": {
+                  "type": "string",
+                  "default": ""
+                },
+                "type": {
+                  "type": "string",
+                  "default": ""
+                },
+                "latitude": {
+                  "type": "string",
+                  "default": null
+                },
+                "longitude": {
+                  "type": "string",
+                  "default": ""
+                },
+                "status": {
+                  "type": "string",
+                  "default": "ACTIVE | INACTIVE "
                 }
               }
             }
           }
-        },
+        ],
+
         "responses": {
           "200": {
-            "description": "Country state information created/updated successfully"
+            "description": "successful operation"
           },
-          "400": {
-            "description": "Bad Request - Invalid input parameters"
-          },
-          "401": {
-            "description": "Unauthorized - Invalid or missing token"
+          "404": {
+            "description": "Not Found"
           },
           "500": {
             "description": "Internal Server Error"
