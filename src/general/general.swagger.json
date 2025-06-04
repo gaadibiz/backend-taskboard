@@ -966,6 +966,238 @@
           }
         }
       }
+    },
+    "/api/v1/general/upsert-country-state": {
+      "post": {
+        "tags": ["General"],
+        "summary": "Create or update  country state information",
+        "description": "",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "auth-Token",
+            "description": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "country_state_uuid": {
+                  "type": "string",
+                  "default": null
+                },
+                "country_id": {
+                  "type": "string",
+                  "default": ""
+                },
+                "country_name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "state_name": {
+                  "type": "string",
+                  "default": null
+                },
+                "country_code": {
+                  "type": "string",
+                  "default": ""
+                },
+                "state_code": {
+                  "type": "string",
+                  "default": ""
+                },
+                "type": {
+                  "type": "string",
+                  "default": ""
+                },
+                "latitude": {
+                  "type": "string",
+                  "default": null
+                },
+                "longitude": {
+                  "type": "string",
+                  "default": ""
+                },
+                "status": {
+                  "type": "string",
+                  "default": "ACTIVE | INACTIVE "
+                }
+              }
+            }
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/general/get-country-state": {
+      "get": {
+        "tags": ["General"],
+        "summary": "Get country state information",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "country_state_id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "country_state_uuid",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "country_id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "country_name",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "state_name",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "country_code",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "state_code",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "type",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Status for lead would be ACTIVE or INACTIVE."
+          },
+          {
+            "in": "query",
+            "name": "to_date",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Format will be YYYY-MM-DD."
+          },
+          {
+            "in": "query",
+            "name": "from_date",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Format will be YYYY-MM-DD."
+          },
+          {
+            "in": "query",
+            "name": "column",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "default": ""
+            },
+            "description": "Column name for search value."
+          },
+          {
+            "in": "query",
+            "name": "value",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Search by specified value."
+          },
+          {
+            "in": "query",
+            "name": "pageNo",
+            "schema": {
+              "type": "number"
+            },
+            "description": "",
+            "required": false
+          },
+          {
+            "in": "query",
+            "schema": {
+              "type": "number"
+            },
+            "name": "itemPerPage",
+            "description": "",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved country state information"
+          },
+          "400": {
+            "description": "Bad Request - Invalid parameters"
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing token"
+          },
+          "404": {
+            "description": "Not Found - No matching records"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
     }
   }
 }

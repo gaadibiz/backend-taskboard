@@ -119,4 +119,22 @@ router
     requestErrorHandlingDecorator(null, controller.getRecordCount),
   );
 
+router
+  .route('/upsert-country-state')
+  .post(
+    requestErrorHandlingDecorator(
+      Schema.upsertCountryStateSchema,
+      controller.upsertCountryState,
+    ),
+  );
+
+router
+  .route('/get-country-state')
+  .get(
+    requestErrorHandlingDecorator(
+      Schema.getCountryStateSchema,
+      controller.getCountrySate,
+    ),
+  );
+
 module.exports = router;

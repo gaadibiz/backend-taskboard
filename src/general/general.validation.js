@@ -96,3 +96,69 @@ exports.getDocumentsSchema = Joi.object({
   columns: Joi.string(),
   value: Joi.string(),
 });
+
+exports.upsertCountryStateSchema = Joi.object({
+  country_state_uuid: Joi.string().guid().allow('', null),
+  country_id: Joi.number().integer().allow(null),
+  country_name: Joi.string().required(),
+  state_name: Joi.string().when('type', {
+    is: Joi.string().valid('country'),
+    then: Joi.string().allow('', null),
+    otherwise: Joi.string().required(),
+  }),
+  country_code: Joi.string().allow('', null),
+  state_code: Joi.string().allow('', null),
+  type: Joi.string().allow('', null),
+  latitude: Joi.string().allow(null),
+  longitude: Joi.string().allow(null),
+  status: Joi.string().allow('', null),
+  created_by_uuid: Joi.string().guid().allow('', null),
+  created_by_name: Joi.string().allow('', null),
+  modified_by_uuid: Joi.string().guid().allow('', null),
+  modified_by_name: Joi.string().allow('', null),
+});
+
+exports.getCountryStateSchema = Joi.object({
+  country_state_uuid: Joi.string().guid(),
+  country_id: Joi.number(),
+  country_name: Joi.string(),
+  state_name: Joi.string().when('type', {
+    is: Joi.string().valid('country'),
+    then: Joi.string().allow('', null),
+    otherwise: Joi.string().required(),
+  }),
+  country_code: Joi.string(),
+  state_code: Joi.string(),
+  type: Joi.string(),
+  status: Joi.string().valid('ACTIVE', 'INACTIVE', 'PENDING').allow(null),
+  from_date: Joi.string().isoDate().allow(null),
+  to_date: Joi.string().isoDate().allow(null),
+  column: Joi.array().items(Joi.string()).allow(null),
+  value: Joi.string().max(1000).allow(null),
+  pageNo: Joi.number().integer().min(1).default(1),
+  only_points: Joi.boolean().optional(),
+  itemPerPage: Joi.number().integer().min(1).default(10),
+  advanceFilter: Joi.array()
+    .items(
+      Joi.object({
+        column: Joi.array().items(Joi.string()).required(),
+        operator: Joi.string()
+          .valid(
+            'EQUAL',
+            'NOT_EQUAL',
+            'GREATER',
+            'LESSER',
+            'GREATER_THAN_EQUAL',
+            'LESSER_THAN_EQUAL',
+            'CONTAINS',
+            'STARTS_WITH',
+            'ENDS_WITH',
+            'DATE_RANGE',
+          )
+          .required(),
+        value: Joi.string().allow(null),
+        logicalOperator: Joi.string().valid('AND', 'OR').required(),
+      }),
+    )
+    .allow(null),
+});
