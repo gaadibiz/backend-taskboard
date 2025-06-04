@@ -715,3 +715,97 @@ exports.getRecordCount = async (req, res) => {
   console.log(totalRecords);
   return res.json(responser('Total records', totalRecords));
 };
+
+exports.upsertCountryState = async (req, res) => {
+  removeNullValueKey(req.body);
+  if (
+    !(
+      req.body.type == 'state' &&
+      (req.body.country_name || req.body.country_code) &&
+      (req.body.state_name || req.body.state_code)
+    )
+  ) {
+    throwError(
+      400,
+      'Country Name or Country Code and State Name or State Code is required.',
+    );
+  }
+  let updated = false;
+  if (req.body.country_state_uuid) {
+    const countryStateInfo = (
+      await getRecords(
+        'latest_country_state',
+        `where country_state_uuid='${req.body.country_state_uuid}'`,
+      )
+    )[0];
+    if (!countryStateInfo) throwError(404, 'Country State City not found.');
+    req.body = {
+      ...countryStateInfo,
+      ...req.body,
+    };
+    updated = true;
+  } else {
+    req.body.country_state_uuid = uuid();
+    req.body.create_ts = setDateTimeFormat('timestamp');
+  }
+  await insertRecords('country_state', req.body);
+  res.json(
+    responser(
+      `Country State City  ${updated ? 'updated' : 'created'} successfully.`,
+      req.body,
+    ),
+  );
+};
+
+exports.getCountrySate = async (req, res) => {
+  const tableName = 'latest_country_state';
+  let {
+    country_state_id,
+    country_state_uuid,
+    country_id,
+    country_name,
+    state_name,
+    country_code,
+    state_code,
+    type,
+    column,
+    value,
+    status,
+    to_date,
+    from_date,
+    pageNo,
+    itemPerPage,
+    advanceFilter,
+  } = req.query;
+
+  let filter = filterFunctionality(
+    {
+      country_state_id,
+      country_state_uuid,
+      country_id,
+      country_name,
+      state_name,
+      country_code,
+      state_code,
+      type,
+    },
+    status,
+    to_date,
+    from_date,
+    Array.isArray(column) ? column : [column],
+    value,
+    advanceFilter,
+  );
+
+  if (advanceFilter) filter = advanceFiltering(filter, advanceFilter);
+
+  let pageFilter = pagination(pageNo, itemPerPage);
+
+  filter = await roleFilterService(filter, tableName, req.user);
+  let totalRecords = await getCountRecord(tableName, filter);
+  let result = await getRecords(tableName, filter, pageFilter);
+  if (!result) return res.status(500).json(responser(errMsg));
+  return res.json(
+    responser('Country state record', result, result.length, totalRecords),
+  );
+};
