@@ -779,11 +779,7 @@ exports.getCountrySate = async (req, res) => {
     advanceFilter,
   } = req.query;
 
-  if(type === 'country'){
-    let sql = `SELECT distinct country_name FROM latest_country_state group by country_name`;
-    let result = await dbRequest(sql);
-    return res.json(responser('Country state record', result, result.length));
-  }
+
   let filter = filterFunctionality(
     {
       country_state_id,
@@ -802,7 +798,11 @@ exports.getCountrySate = async (req, res) => {
     value,
     advanceFilter,
   );
-
+  if(type === 'country'){
+    let sql = `SELECT distinct country_name FROM latest_country_state group by country_name`;
+    let result = await dbRequest(sql);
+    return res.json(responser('Country state record', result, result.length));
+  }
   if (advanceFilter) filter = advanceFiltering(filter, advanceFilter);
 
   let pageFilter = pagination(pageNo, itemPerPage);
