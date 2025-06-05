@@ -132,7 +132,7 @@ router
   .route('/get-country-state')
   .get(
     requestErrorHandlingDecorator(
-      Schema.getCountryStateSchema,
+     null,
       controller.getCountrySate,
     ),
   );
