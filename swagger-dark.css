@@ -1,0 +1,102 @@
+/* General background and text color */
+body {
+  background-color: #1e1e1e !important;
+  color: #ffffff !important; /* General text color */
+}
+
+.swagger-ui a.link {
+  color: #000000 !important;
+  text-decoration: none !important;  /* Optional: remove underline */
+}
+
+/* Universal text color override */
+.swagger-ui,
+.swagger-ui * {
+  color: #ffffff !important;
+}
+
+.swagger-ui .arrow {
+  border-color: #ffffff !important;
+  color: #ffffff !important;
+  fill: #ffffff !important; /* For SVG-based arrows */
+  stroke: #ffffff !important;
+}
+
+.swagger-ui .opblock-section-header {
+  background-color: #006400 !important;
+  color: #ffffff !important;
+  padding: 10px 16px !important;
+  font-weight: bold !important;
+  border-radius: 4px !important;
+}
+
+.swagger-ui input:not(:disabled),
+.swagger-ui textarea:not(:disabled),
+.swagger-ui select:not(:disabled) {
+  color: #28a745 !important;
+  border: 1px solid #28a745 !important;
+  background-color: #e8f5e9 !important;
+  font-weight: bold !important;
+  box-shadow: 0 0 4px #28a745 !important;
+}
+
+.swagger-ui input:disabled {
+  color: #ff4d4d !important;             /* Red text */
+  border: 1px solid #ff4d4d !important;  /* Red border */
+  background-color: #330000 !important;  /* Dark red background */
+  font-weight: bold !important;          /* Make text bold */
+  box-shadow: 0 0 4px #ff4d4d !important; /* Subtle glow */
+}
+
+
+.swagger-ui table thead tr td, .swagger-ui table thead tr th {
+  border-bottom: 1px solid rgba(59, 65, 81, .2);
+  color: #ffffff !important;
+  font-family: sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 12px 0;
+  text-align: left;
+}
+
+/* Top bar */
+.swagger-ui .topbar {
+  background-color: #1b5002 !important;
+}
+
+/* Opblock (API endpoints) */
+.swagger-ui .opblock {
+  background-color: #2d2d2d !important;
+  color: #ffffff !important; /* Ensure the text inside opblocks is white */
+}
+
+/* Method buttons (GET, POST, etc.) */
+.swagger-ui .opblock-summary-method {
+  color: #ffffff !important; /* White color for method buttons */
+}
+
+/* Ensure response codes and other status text are white */
+.swagger-ui .response-col_status {
+  color: #ffffff !important;
+}
+
+/* Titles and descriptions (ensure all titles are white) */
+.swagger-ui .opblock-summary-description,
+.swagger-ui .opblock-summary-path {
+  color: #ffffff !important;
+}
+
+/* Input fields, selects, and text areas */
+.swagger-ui input,
+.swagger-ui select,
+.swagger-ui textarea {
+  background-color: #2d2d2d !important;
+  color: #ffffff !important; /* White text color for inputs */
+  border: 1px solid #555 !important;
+}
+
+/* Button text color */
+.swagger-ui .btn,
+.swagger-ui .btn.active {
+  color: #ffffff !important; /* White color for buttons */
+}

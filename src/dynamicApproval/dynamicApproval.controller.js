@@ -562,7 +562,7 @@ exports.getApprovals = async (req, res) => {
           'POST',
           req.headers,
         );
-
+        console.log('Finalresponse', mergeApproval);
         if (mergeApproval) {
           const { dynamic_approval_uuid, requested_by_uuid, is_user_approver } =
             mergeApproval; // Destructure for direct assignments
@@ -730,7 +730,7 @@ exports.mergeApprovalWithRecord = async (req, res) => {
   );
 
   if (approvalRecord.length) {
-    console.log('approvalRecord: ', approvalRecord);
+    console.log('approvalRecord: ', approvalRecord[0].approval_uuids);
     let is_user_approver = approvalRecord[0].approval_uuids.some(
       (ele) =>
         ele.uuid === req.user.user_uuid ||

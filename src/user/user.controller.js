@@ -59,16 +59,23 @@ exports.upsertUser = async (req, res) => {
     if (req.body.user_password)
       req.body.user_password = bycrpt.hashSync(req.body.user_password, 10);
   } else {
-    const isExist = await isRecordExist(
-      'user_fact',
-      ['email'],
-      [req.body.email],
-    );
-    if (isExist) throwError(406, 'User already exist.');
+    let userExists = await getRecords('latest_user', `where email='${req.body.email}'`);
+    userExists = userExists[0];
+    console.log(userExists.status, "Status");
+
+    if (userExists.status === "ACTIVE") throwError(406, 'User already exist.');
+    if (userExists.status === "INACTIVE") {
+      await updateRecord(
+        'user_fact',
+        { status: "ACTIVE" },
+        { user_uuid: userExists.user_uuid },//Use the existing user_uuid
+      );
+      isUpadtion = true;
+    }
     if (!req.body.user_password) throwError(406, 'Password should be filled.');
     req.body.user_password = bycrpt.hashSync(req.body.user_password, 10);
     req.body.user_uuid = uuidv4();
-    await insertRecords('user_fact', req.body);
+    if (!isUpadtion) await insertRecords('user_fact', req.body);
     user = await getRecords(
       'user_fact',
       `where email='${req.body.email}'`,
@@ -341,12 +348,14 @@ exports.getBranch = async (req, res) => {
     status,
     columns,
     value,
+    billing_company_uuid,
   } = req.query;
 
   let tableName = 'latest_branch';
   let filter = filterFunctionality(
     {
       branch_uuid,
+      billing_company_uuid,
     },
     status,
     to_date,
