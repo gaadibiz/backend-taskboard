@@ -7,4 +7,3 @@ LEFT JOIN country_state AS rt
   AND ft.country_state_id < rt.country_state_id
 WHERE rt.country_state_id IS NULL
 ORDER BY  insert_ts DESC;
-
