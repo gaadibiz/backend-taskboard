@@ -27,7 +27,7 @@ module.exports = {
       state_name: {
         type: Sequelize.STRING(255),
       },
-      county_code: {
+      country_code: {
         type: Sequelize.STRING(255),
       },
       state_code: {

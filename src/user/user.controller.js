@@ -61,10 +61,10 @@ exports.upsertUser = async (req, res) => {
   } else {
     let userExists = await getRecords('latest_user', `where email='${req.body.email}'`);
     userExists = userExists[0];
-    console.log(userExists.status, "Status");
+    // console.log(userExists.status, "Status");
 
-    if (userExists.status === "ACTIVE") throwError(406, 'User already exist.');
-    if (userExists.status === "INACTIVE") {
+    if (userExists && userExists.status === "ACTIVE") throwError(406, 'User already exist.');
+    if (userExists && userExists.status === "INACTIVE") {
       await updateRecord(
         'user_fact',
         { status: "ACTIVE" },
