@@ -3,9 +3,11 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
+    await queryInterface.sequelize.query(`ALTER TABLE comment_t ADD COLUMN record_uuid CHAR(36)  NULL AFTER comment_t_uuid;`);
     await queryInterface.sequelize.query(`ALTER TABLE comment_t ADD COLUMN module_uuid CHAR(36)  NULL AFTER record_uuid;`);
     await queryInterface.sequelize.query(`ALTER TABLE comment_t ADD COLUMN module_name VARCHAR(100)  NULL AFTER module_uuid;`);
     await queryInterface.sequelize.query(`ALTER TABLE comment_t ADD COLUMN table_name VARCHAR(100)  NULL AFTER record_uuid;`);
+    await queryInterface.sequelize.query(`ALTER TABLE comment_t ADD COLUMN attachment JSON  NULL AFTER table_name;`);
 
   },
 
