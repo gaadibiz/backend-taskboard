@@ -59,16 +59,20 @@ exports.upsertUser = async (req, res) => {
     if (req.body.user_password)
       req.body.user_password = bycrpt.hashSync(req.body.user_password, 10);
   } else {
-    let userExists = await getRecords('latest_user', `where email='${req.body.email}'`);
+    let userExists = await getRecords(
+      'latest_user',
+      `where email='${req.body.email}'`,
+    );
     userExists = userExists[0];
     // console.log(userExists.status, "Status");
 
-    if (userExists && userExists.status === "ACTIVE") throwError(406, 'User already exist.');
-    if (userExists && userExists.status === "INACTIVE") {
+    if (userExists && userExists.status === 'ACTIVE')
+      throwError(406, 'User already exist.');
+    if (userExists && userExists.status === 'INACTIVE') {
       await updateRecord(
         'user_fact',
-        { status: "ACTIVE" },
-        { user_uuid: userExists.user_uuid },//Use the existing user_uuid
+        { status: 'ACTIVE' },
+        { user_uuid: userExists.user_uuid }, //Use the existing user_uuid
       );
       isUpadtion = true;
     }
@@ -679,19 +683,19 @@ exports.insertUserInBulk = async (req, res) => {
       parents_name_as_per_pan_card: i[`Parent's Name as per PAN card`],
     };
     console.log('req.body', req.body);
-    const isExistRole = await isValidRecord('latest_roles', {
-      role_uuid: req.body.role_uuid,
-      status: 'ACTIVE',
-    });
+    // const isExistRole = await isValidRecord('latest_roles', {
+    //   role_uuid: req.body.role_uuid,
+    //   status: 'ACTIVE',
+    // });
 
-    if (!isExistRole) throwError(404, 'Role not found or inactive role.');
+    // if (!isExistRole) throwError(404, 'Role not found or inactive role.');
 
-    const isExistBranch = await isValidRecord('latest_branch', {
-      branch_uuid: req.body.branch_uuid,
-      status: 'ACTIVE',
-    });
+    // const isExistBranch = await isValidRecord('latest_branch', {
+    //   branch_uuid: req.body.branch_uuid,
+    //   status: 'ACTIVE',
+    // });
 
-    if (!isExistBranch) throwError(404, 'Role not found or inactive role.');
+    // if (!isExistBranch) throwError(404, 'Role not found or inactive role.');
 
     let user = [];
 
@@ -700,7 +704,10 @@ exports.insertUserInBulk = async (req, res) => {
       ['email'],
       [req.body.email],
     );
-    if (isExist) throwError(406, 'User already exist.');
+    if (isExist || req.body.email == '') {
+      console.log('User already exists, skipping:', req.body.email);
+      continue; // Skip to the next iteration
+    }
     if (!req.body.user_password) throwError(406, 'Password should be filled.');
     req.body.user_password = bycrpt.hashSync(req.body.user_password, 10);
     req.body.user_uuid = uuidv4();
