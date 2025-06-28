@@ -208,8 +208,8 @@
                   "default": ""
                 },
                 "is_physically_handicapped": {
-                  "type": "boolean",
-                  "default": false
+                  "type": "number",
+                  "default": 0
                 },
                 "blood_group": {
                   "type": "string",
@@ -232,8 +232,8 @@
                   "default": ""
                 },
                 "pf_details_available": {
-                  "type": "boolean",
-                  "default": false
+                  "type": "integer",
+                  "default": 0
                 },
                 "pf_number": {
                   "type": "string",
@@ -248,8 +248,8 @@
                   "default": ""
                 },
                 "esi_eligible": {
-                  "type": "boolean",
-                  "default": false
+                  "type": "number",
+                  "default": 0
                 },
                 "employee_esi_number": {
                   "type": "string",
@@ -264,8 +264,8 @@
                   "default": ""
                 },
                 "lwf_eligible": {
-                  "type": "boolean",
-                  "default": false
+                  "type": "integer",
+                  "default": 0
                 },
                 "aadhaar_number": {
                   "type": "string",
@@ -292,8 +292,8 @@
                   "default": ""
                 },
                 "pan_card_available": {
-                  "type": "boolean",
-                  "default": false
+                  "type": "integer",
+                  "default": 0
                 },
                 "pan_number": {
                   "type": "string",
