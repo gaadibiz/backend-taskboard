@@ -598,6 +598,14 @@ exports.changeUserPwd = async (req, res) => {
 
 exports.insertUserInBulk = async (req, res) => {
   console.log('req.body', req.body.length);
+  const collegeName = 
+  {
+    "DJ College Of Dental Sciences and Research": "45a70ec8-84b9-41e9-912a-119fd7c48825",
+    "DJ College Pharmacy": "3a4016fe-5213-44ae-a014-3a58ec776d82",
+    "Divya Jyoti Ayurvedic Medical College & Hospital": "ef7e8eb8-9979-48f0-b116-31e578755473",
+    "Divya Jyoti Nursing College": "27b3d6c2-6cac-4a3c-ae12-63baf1395906",
+    "DJ College of Medical Sciences & Research": "943c0f84-355b-4f54-a26a-0fe9ac93927f"
+  };
   for (const i of req.body) {
     req.body = {
       user_id: i['Employee '],
@@ -605,17 +613,12 @@ exports.insertUserInBulk = async (req, res) => {
       role_uuid: 'ef6fcb01-44d1-4528-94d0-27e5a755b086',
       affiliated_billing_company_uuids: [
         {
-          billing_company_name: 'Sharma Sawhney and Co.',
-          billing_company_uuid: '4b7ecf35-611c-433a-82ec-3124833f29af',
+          billing_company_name: i['Department'],
+          billing_company_uuid: collegeName[i['Department']],
         },
       ],
-      billing_company_branches: [
-        {
-          billing_company_branch_name: 'Modinagar',
-          billing_company_branch_uuid: 'e4d70f3f-aebb-4a75-9591-fb3d4f8b55ec',
-        },
-      ],
-      branch_uuid: 'e4d70f3f-aebb-4a75-9591-fb3d4f8b55ec',
+      billing_company_branches: null,
+      branch_uuid: 'ab4a39a4-0c49-438b-96ec-a7547133a53f',
       first_name: i['First Name'],
       last_name: i['Last Name'],
       middle_name: i['Middle Name'],
